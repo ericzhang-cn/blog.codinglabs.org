@@ -33,12 +33,28 @@
             "abstract": "作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。最后在第五部分会介绍一淘数据部的开源基数估计算法库ccard-lib，这个算法库由一淘数据部工程师清无（王晓哲）、民瞻（张维）及我开发，并已用于一淘数据部多个业务线，ccard-lib实现了上述四种算法，整个库使用C写成，并附带PHP扩展模块，我会在这一部分介绍ccard-lib的实现重点及使用方法。"
         },
         {
+            "id": "cardinality-estimation",
+            "title": "基数估计算法概览",
+            "postedOn": "2012-11-23",
+            "author": "张洋",
+            "tags": [""],
+            "abstract": "翻译自《Damn Cool Algorithms: Cardinality Estimation》，原文链接：http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation"
+        },
+        {
             "id": "hash-collisions-attack-on-php",
             "title": "PHP哈希表碰撞攻击原理",
             "postedOn": "2012-01-04",
             "author": "张洋",
             "tags": [""],
             "abstract": "最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。"
+        },
+        {
+            "id": "theory-of-mysql-index",
+            "title": "MySQL索引背后的数据结构及算法原理",
+            "postedOn": "2011-10-18",
+            "author": "张洋",
+            "tags": [""],
+            "abstract": "本文以MySQL数据库为研究对象，讨论与数据库索引相关的一些话题。特别需要说明的是，MySQL支持诸多存储引擎，而各种存储引擎对索引的支持也各不相同，因此MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。为了避免混乱，本文将只关注于BTree索引，因为这是平常使用MySQL时主要打交道的索引，至于哈希索引和全文索引本文暂不讨论。"
         }
     ]
 }
