@@ -1,0 +1,24 @@
+{
+    "categories": [
+        {
+            "id": "algo",
+            "name": "算法"
+        },
+        {
+            "id": "dm",
+            "name": "数据挖掘"
+        },
+        {
+            "id": "web",
+            "name": "前端开发"
+        },
+        {
+            "id": "database",
+            "name": "数据库"
+        },
+        {
+            "id": "php",
+            "name": "PHP"
+        }
+    ]
+}

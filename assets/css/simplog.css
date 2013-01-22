@@ -85,3 +85,22 @@ div#aboutme p {
     font-weight: bold;
     color: #666666;
 }
+div#categories {
+    padding: 20px 0;
+    border-top: 1px dashed #CCCCCC;
+}
+div#categories ul {
+    margin: 0;
+    padding: 0;
+}
+div#categories ul li {
+    list-style: none;
+    float: left;
+}
+div#categories ul li a {
+    display: block;
+    color: #FFFFFF;
+    background-color: #666666;
+    padding: 6px 10px;
+    margin-right: 18px;
+}
