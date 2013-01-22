@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="{%= META_DESC %}"/>
+        <meta name="keywords" content="{%= META_KW %}"/>
+        <meta name="author" content="{%= META_AUTHOR %}"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>{%= TITLE %} - {%= SUBTITLE %}</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify.css"/>
+        <link rel="stylesheet" href="/assets/css/simplog.css"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+    </head>
+    <body onload="prettyPrint()">
+        <div id="header">
+            <div id="header-inner">
+                <div id="title"><a href="/"><small>{</small> {%= TITLE %} <small>}</small></a></div>
+                <div id="subtitle">/&gt; {%= SUBTITLE %}</div>
+            </div>
+        </div>
+        <div id="main">
+            <div id="main-inner">
+                <div id="aboutme"><p>&lt;关于我&gt;: {%= ABOUT_ME %}</p></div>
+                <div id="article-blocks">{%= ARTICLES %}</div>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) {%= COPYRIGHT_BEGINYEAR %}-{%= COPYRIGHT_ENDYEAR %} {%= COPYRIGHT_OWNER %}. Powered by <a href="https://github.com/ericzhang-cn/simplog" target="_blank">Simplog</a>.</p>
+                <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">{%= COPYRIGHT_ICP %}</a></p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
