@@ -17,6 +17,10 @@
             "name": "数据库"
         },
         {
+            "id": "math",
+            "name": "数学"
+        },
+        {
             "id": "php",
             "name": "PHP"
         }
