@@ -4,8 +4,1034 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Wed, 23 Jan 2013 11:45:55 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 23 Jan 2013 15:22:41 GMT</lastBuildDate>
         <language>zh-cn</language>
-        <item><title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title><link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</link><guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</guid><pubDate>Tue, 08 Jan 2013 16:00:00 GMT</pubDate><description>在前一篇文章中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。</description></item><item><title>解读Cardinality Estimation算法（第三部分：LogLog Counting）</title><link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</link><guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</guid><pubDate>Wed, 02 Jan 2013 16:00:00 GMT</pubDate><description>上一篇文章介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。</description></item><item><title>解读Cardinality Estimation算法（第二部分：Linear Counting）</title><link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</link><guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</guid><pubDate>Sun, 30 Dec 2012 16:00:00 GMT</pubDate><description>在上一篇文章中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。</description></item><item><title>解读Cardinality Estimation算法（第一部分：基本概念）</title><link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</link><guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</guid><pubDate>Sat, 29 Dec 2012 16:00:00 GMT</pubDate><description>作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。最后在第五部分会介绍一淘数据部的开源基数估计算法库ccard-lib，这个算法库由一淘数据部工程师清无（王晓哲）、民瞻（张维）及我开发，并已用于一淘数据部多个业务线，ccard-lib实现了上述四种算法，整个库使用C写成，并附带PHP扩展模块，我会在这一部分介绍ccard-lib的实现重点及使用方法。</description></item><item><title>基数估计算法概览</title><link>http://blog.codinglabs.org/articles/cardinality-estimation.html</link><guid>http://blog.codinglabs.org/articles/cardinality-estimation.html</guid><pubDate>Thu, 22 Nov 2012 16:00:00 GMT</pubDate><description>翻译自《Damn Cool Algorithms: Cardinality Estimation》，原文链接：http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation</description></item><item><title>从抛硬币试验看概率论的基本内容及统计方法</title><link>http://blog.codinglabs.org/articles/basis-of-probability-and-statistics.html</link><guid>http://blog.codinglabs.org/articles/basis-of-probability-and-statistics.html</guid><pubDate>Mon, 19 Nov 2012 16:00:00 GMT</pubDate><description>一般说到概率，就喜欢拿抛硬币做例子。大多数时候，会简单认为硬币正背面的概率各为二分之一，其实事情远没有这么简单。这篇文章会以抛硬币试验为例子并贯穿全文，引出一系列概率论和数理统计的基本内容。这篇文章会涉及的有古典概型、公理化概率、二项分布、正态分布、最大似然估计和假设检验等一系列内容。主要目的是以抛硬币试验为例说明现代数学观点下的概率是什么样子以及以概率论为基础的一些基本数理统计方法。</description></item><item><title>PHP哈希表碰撞攻击原理</title><link>http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html</link><guid>http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html</guid><pubDate>Tue, 03 Jan 2012 16:00:00 GMT</pubDate><description>最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。</description></item><item><title>MySQL索引背后的数据结构及算法原理</title><link>http://blog.codinglabs.org/articles/theory-of-mysql-index.html</link><guid>http://blog.codinglabs.org/articles/theory-of-mysql-index.html</guid><pubDate>Mon, 17 Oct 2011 16:00:00 GMT</pubDate><description>本文以MySQL数据库为研究对象，讨论与数据库索引相关的一些话题。特别需要说明的是，MySQL支持诸多存储引擎，而各种存储引擎对索引的支持也各不相同，因此MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。为了避免混乱，本文将只关注于BTree索引，因为这是平常使用MySQL时主要打交道的索引，至于哈希索引和全文索引本文暂不讨论。</description></item>
+        <item>
+<title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</link>
+<guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</guid>
+<pubDate>Tue, 08 Jan 2013 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;在&lt;a href=&quot;http://www.codinglabs.org/html/algorithms-for-cardinality-estimation-part-iii.html&quot; target=&quot;_blank&quot;&gt;前一篇文章&lt;/a&gt;中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。&lt;/p&gt;
+&lt;p&gt;这一篇文章中将要介绍的HyperLogLog Counting及Adaptive Counting算法均是对LLC算法的改进，可以有效克服LLC对于较小基数估计效果差的缺点。&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;h1&gt;评价基数估计算法的精度&lt;/h1&gt;
+&lt;p&gt;首先我们来分析一下LLC的问题。一般来说LLC最大问题在于当基数不太大时，估计效果比较差。上文说过，LLC的渐近标准误差为\(1.30/\sqrt{m}\)，看起来貌似只和分桶数m有关，那么为什么基数的大小也会导致效果变差呢？这就需要重点研究一下如何评价基数估计算法的精度，以及“渐近标准误差”的意义是什么。&lt;/p&gt;
+&lt;h2&gt;标准误差&lt;/h2&gt;
+&lt;p&gt;首先需要明确标准误差的意义。例如标准误差为0.02，到底表示什么意义。&lt;/p&gt;
+&lt;p&gt;标准误差是针对一个统计量（或估计量）而言。在分析基数估计算法的精度时，我们关心的统计量是\(\hat{n}/n\)。注意这个量分子分母均为一组抽样的统计量。下面正式描述一下这个问题。&lt;/p&gt;
+&lt;p&gt;设S是我们要估计基数的可重复有限集合。S中每个元素都是来自值服从均匀分布的样本空间的一个独立随机抽样样本。这个集合共有C个元素，但其基数不一定是C，因为其中可能存在重复元素。设\(f_n\)为定义在S上的函数：&lt;/p&gt;
+&lt;p&gt;\(f_n(S) = Cardinality\;of\;S\)&lt;/p&gt;
+&lt;p&gt;同时定义\(f_\hat{n}\)也是定义在S上的函数：&lt;/p&gt;
+&lt;p&gt;\(f_\hat{n}(S)=LogLog\;estimate\;value\;of\;S\)&lt;/p&gt;
+&lt;p&gt;我们想得到的第一个函数值，但是由于第一个函数值不好计算，所以我们计算同样集合的第二个函数值来作为第一个函数值得估计。因此最理想的情况是对于任意一个集合两个函数值是相等的，如果这样估计就是100%准确了。不过显然没有这么好的事，因此我们退而求其次，只希望\(f_\hat{n}(S)\)是一个无偏估计，即：&lt;/p&gt;
+&lt;p&gt;\(E(\frac{f_\hat{n}(S)}{f_n(S)})=1\)&lt;/p&gt;
+&lt;p&gt;这个在上一篇文章中已经说明了。同时也可以看到，\(\frac{f_\hat{n}(S)}{f_n(S)}\)实际上是一个随机变量，并且服从正态分布。对于正态分布随机变量，一般可以通过标准差\(\sigma\)度量其稳定性，直观来看，标准差越小，则整体分布越趋近于均值，所以估计效果就越好。这是定性的，那么定量来看标准误差\(\sigma\)到底表达了什么意思呢。它的意义是这样的：&lt;/p&gt;
+&lt;p&gt;对于无偏正态分布而言，随机变量的一次随机取值落在均值一个标准差范围内的概率是68.2%，而落在两个和三个标准差范围内的概率分别为95.4%和99.6%，如下图所示（图片来自&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E6%A0%87%E5%87%86%E8%AF%AF&quot; target=&quot;_blank&quot;&gt;维基百科&lt;/a&gt;）：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-iv/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;因此，假设标准误差是0.02（2%），它实际的意义是：假设真实基数为n，n与估计值之比落入(0.98, 1.02)的概率是68.2%，落入(0.96, 1.04)的概率是95.4%，落入(0.94, 1.06)的概率是99.6%。显然这个比值越大则估计值越不准，因此对于0.02的标准误差，这个比值大于1.06或小于0.94的概率不到0.004。&lt;/p&gt;
+&lt;p&gt;再直观一点，假设真实基数为10000，则一次估计值有99.6%的可能不大于10600且不小于9400。&lt;/p&gt;
+&lt;h2&gt;组合计数与渐近分析&lt;/h2&gt;
+&lt;p&gt;如果LLC能够做到绝对服从\(1.30/\sqrt{m}\)，那么也算很好了，因为我们只要通过控制分桶数m就可以得到一个一致的标准误差。这里的一致是指标准误差与基数无关。不幸的是并不是这样，上面已经说过，这是一个“渐近”标注误差。下面解释一下什么叫渐近。&lt;/p&gt;
+&lt;p&gt;在计算数学中，有一个非常有用的分支就是组合计数。组合计数简单来说就是分析自然数的组合函数随着自然数的增长而增长的量级。可能很多人已经意识到这个听起来很像算法复杂度分析。没错，算法复杂度分析就是组合计数在算法领域的应用。&lt;/p&gt;
+&lt;p&gt;举个例子，设A是一个有n个元素的集合（这里A是严格的集合，不存在重复元素），则A的幂集（即由A的所有子集组成的集合）有\(2^n\)个元素。&lt;/p&gt;
+&lt;p&gt;上述关于幂集的组合计数是一个非常整齐一致的组合计数，也就是不管n多大，A的幂集总有\(2^n\)个元素。&lt;/p&gt;
+&lt;p&gt;可惜的是现实中一般的组合计数都不存在如此干净一致的解。LLC的偏差和标准差其实都是组合函数，但是论文中已经分析出，LLC的偏差和标准差都是渐近组合计数，也就是说，随着n趋向于无穷大，标准差趋向于\(1.30/\sqrt{m}\)，而不是说n多大时其值都一致为\(1.30/\sqrt{m}\)。另外，其无偏性也是渐近的，只有当n远远大于m时，其估计值才近似无偏。因此当n不太大时，LLC的效果并不好。&lt;/p&gt;
+&lt;p&gt;庆幸的是，同样通过统计分析方法，我们可以得到n具体小到什么程度我们就不可忍受了，另外就是当n太小时可不可以用别的估计方法替代LLC来弥补LLC这个缺陷。HyperLogLog Counting及Adaptive Counting都是基于这个思想实现的。&lt;/p&gt;
+&lt;h1&gt;Adaptive Counting&lt;/h1&gt;
+&lt;p&gt;Adaptive Counting（简称AC）在“Fast and accurate traffic matrix measurement using adaptive cardinality counting”一文中被提出。其思想也非常简单直观：实际上AC只是简单将LC和LLC组合使用，根据基数量级决定是使用LC还是LLC。具体是通过分析两者的标准差，给出一个阈值，根据阈值选择使用哪种估计。&lt;/p&gt;
+&lt;h2&gt;基本算法&lt;/h2&gt;
+&lt;p&gt;如果分析一下LC和LLC的存储结构，可以发现两者是兼容的，区别仅仅在于LLC关心每个桶的\(\rho_{max}\)，而LC仅关心此桶是否为空。因此只要简单认为\(\rho_{max}\)值不为0的桶为非空，0为空就可以使用LLC的数据结构做LC估计了。&lt;/p&gt;
+&lt;p&gt;而我们已经知道，LC在基数不太大时效果好，基数太大时会失效；LLC恰好相反，因此两者有很好的互补性。&lt;/p&gt;
+&lt;p&gt;回顾一下，LC的标准误差为：&lt;/p&gt;
+&lt;p&gt;\(SE_{lc}(\hat{n}/n)=\sqrt{e^t-t-1}/(t\sqrt{m})\)&lt;/p&gt;
+&lt;p&gt;LLC的标准误差为：&lt;/p&gt;
+&lt;p&gt;\(SE_{llc}(\hat{n}/n)=1.30/\sqrt{m}\)&lt;/p&gt;
+&lt;p&gt;将两个公式联立：&lt;/p&gt;
+&lt;p&gt;\(\sqrt{e^t-t-1}/(t\sqrt{m})=1.30/\sqrt{m}\)&lt;/p&gt;
+&lt;p&gt;解得\(t \approx 2.89\)。注意m被消掉了，说明这个阈值与m无关。其中\(t=n/m\)。&lt;/p&gt;
+&lt;p&gt;设\(\beta\)为空桶率，根据LC的估算公式，带入上式可得：&lt;/p&gt;
+&lt;p&gt;\(\beta = e^{-t} \approx 0.051\)&lt;/p&gt;
+&lt;p&gt;因此可以知道，当空桶率大于0.051时，LC的标准误差较小，而当小于0.051时，LLC的标准误差较小。&lt;/p&gt;
+&lt;p&gt;完整的AC算法如下：&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=\left\{ \begin{eqnarray} \alpha_m m2^{\frac{1}{m}\sum{M}} &amp; if &amp; 0 \leq \beta &lt; 0.051 \\ -mlog(\beta) &amp; if &amp; 0.051 \leq \beta \leq 1 \end{eqnarray} \right.\)&lt;/p&gt;
+&lt;h2&gt;误差分析&lt;/h2&gt;
+&lt;p&gt;因为AC只是LC和LLC的简单组合，所以误差分析可以依照LC和LLC进行。值得注意的是，当\(\beta &lt; 0.051\)时，LLC最大的偏差不超过0.17%，因此可以近似认为是无偏的。&lt;/p&gt;
+&lt;h1&gt;HyperLogLog Counting&lt;/h1&gt;
+&lt;p&gt;HyperLogLog Counting（以下简称HLLC）的基本思想也是在LLC的基础上做改进，不过相对于AC来说改进的比较多，所以相对也要复杂一些。本文不做具体细节分析，具体细节请参考“HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm”这篇论文。&lt;/p&gt;
+&lt;h2&gt;基本算法&lt;/h2&gt;
+&lt;p&gt;HLLC的第一个改进是使用调和平均数替代几何平均数。注意LLC是对各个桶取算数平均数，而算数平均数最终被应用到2的指数上，所以总体来看LLC取得是几何平均数。由于几何平均数对于离群值（例如这里的0）特别敏感，因此当存在离群值时，LLC的偏差就会很大，这也从另一个角度解释了为什么n不太大时LLC的效果不太好。这是因为n较小时，可能存在较多空桶，而这些特殊的离群值强烈干扰了几何平均数的稳定性。&lt;/p&gt;
+&lt;p&gt;因此，HLLC使用调和平均数来代替几何平均数，调和平均数的定义如下：&lt;/p&gt;
+&lt;p&gt;\(H = \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + ... + \frac{1}{x_n}} = \frac{n}{\sum_{i=1}^n \frac{1}{x_i}}\)&lt;/p&gt;
+&lt;p&gt;调和平均数可以有效抵抗离群值的扰动。使用调和平均数代替几何平均数后，估计公式变为如下：&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=\frac{\alpha_m m^2}{\sum{2^{-M}}}\)&lt;/p&gt;
+&lt;p&gt;其中：&lt;/p&gt;
+&lt;p&gt;\(\alpha_m=(m\int _0^\infty (log_2(\frac{2+u}{1+u}))^m du)^{-1}\)&lt;/p&gt;
+&lt;h2&gt;偏差分析&lt;/h2&gt;
+&lt;p&gt;根据论文中的分析结论，与LLC一样HLLC是渐近无偏估计，且其渐近标准差为：&lt;/p&gt;
+&lt;p&gt;\(SE_{hllc}(\hat{n}/n)=1.04/\sqrt{m}\)&lt;/p&gt;
+&lt;p&gt;因此在存储空间相同的情况下，HLLC比LLC具有更高的精度。例如，对于分桶数m为2^13（8k字节）时，LLC的标准误差为1.4%，而HLLC为1.1%。&lt;/p&gt;
+&lt;h2&gt;分段偏差修正&lt;/h2&gt;
+&lt;p&gt;在HLLC的论文中，作者在实现建议部分还给出了在n相对于m较小或较大时的偏差修正方案。具体来说，设E为估计值：&lt;/p&gt;
+&lt;p&gt;当\(E \leq \frac{5}{2}m\)时，使用LC进行估计。&lt;/p&gt;
+&lt;p&gt;当\(\frac{5}{2}m &lt; E \leq \frac{1}{30}2^{32}\)是，使用上面给出的HLLC公式进行估计。&lt;/p&gt;
+&lt;p&gt;当\(E &gt; \frac{1}{30}2^{32}\)时，估计公式如为\(\hat{n}=-2^{32}log(1-E/2^{32})\)。&lt;/p&gt;
+&lt;p&gt;关于分段偏差修正效果分析也可以在原论文中找到。&lt;/p&gt;
+&lt;h1&gt;小结&lt;/h1&gt;
+&lt;p&gt;本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。在本系列最后一篇文章中，我会介绍一淘数据部的基数估计实现&lt;a href=&quot;https://github.com/chaoslawful/ccard-lib&quot; target=&quot;_blank&quot;&gt;ccard-lib&lt;/a&gt;的一些实现细节和使用方式。并做一些实验。&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>解读Cardinality Estimation算法（第三部分：LogLog Counting）</title>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</link>
+<guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</guid>
+<pubDate>Wed, 02 Jan 2013 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-ii.html&quot; target=&quot;_blank&quot;&gt;上一篇文章&lt;/a&gt;介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。&lt;/p&gt;
+&lt;p&gt;本文将介绍LogLog Counting。
+&lt;!--more--&gt;
+&lt;/p&gt;
+&lt;h1&gt;简介&lt;/h1&gt;
+&lt;p&gt;LogLog Counting（以下简称LLC）出自论文“Loglog Counting of Large Cardinalities”。LLC的空间复杂度仅有\(O(log_2(log_2(N_{max})))\)，使得通过KB级内存估计数亿级别的基数成为可能，因此目前在处理大数据的基数计算问题时，所采用算法基本为LLC或其几个变种。下面来具体看一下这个算法。&lt;/p&gt;
+&lt;h1&gt;基本算法&lt;/h1&gt;
+&lt;h2&gt;均匀随机化&lt;/h2&gt;
+&lt;p&gt;与LC一样，在使用LLC之前需要选取一个哈希函数H应用于所有元素，然后对哈希值进行基数估计。H必须满足如下条件（定性的）：&lt;/p&gt;
+&lt;p&gt;1、H的结果具有很好的均匀性，也就是说无论原始集合元素的值分布如何，其哈希结果的值几乎服从均匀分布（完全服从均匀分布是不可能的，D. Knuth已经证明不可能通过一个哈希函数将一组不服从均匀分布的数据映射为绝对均匀分布，但是很多哈希函数可以生成几乎服从均匀分布的结果，这里我们忽略这种理论上的差异，认为哈希结果就是服从均匀分布）。&lt;/p&gt;
+&lt;p&gt;2、H的碰撞几乎可以忽略不计。也就是说我们认为对于不同的原始值，其哈希结果相同的概率非常小以至于可以忽略不计。&lt;/p&gt;
+&lt;p&gt;3、H的哈希结果是固定长度的。&lt;/p&gt;
+&lt;p&gt;以上对哈希函数的要求是随机化和后续概率分析的基础。后面的分析均认为是针对哈希后的均匀分布数据进行。&lt;/p&gt;
+&lt;h2&gt;思想来源&lt;/h2&gt;
+&lt;p&gt;下面非正式的从直观角度描述LLC算法的思想来源。&lt;/p&gt;
+&lt;p&gt;设a为待估集合（哈希后）中的一个元素，由上面对H的定义可知，a可以看做一个长度固定的比特串（也就是a的二进制表示），设H哈希后的结果长度为L比特，我们将这L个比特位从左到右分别编号为1、2、…、L：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-iii/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;又因为a是从服从均与分布的样本空间中随机抽取的一个样本，因此a每个比特位服从如下分布且相互独立。&lt;/p&gt;
+&lt;p&gt;\(P(x=k)=\left\{\begin{matrix} 0.5 (k=0)\\ 0.5 (k=1)\end{matrix}\right.\)&lt;/p&gt;
+&lt;p&gt;通俗说就是a的每个比特位为0和1的概率各为0.5，且相互之间是独立的。&lt;/p&gt;
+&lt;p&gt;设\(\rho(a)\)为a的比特串中第一个“1”出现的位置，显然\(1 \leq \rho(a) \leq L\)，这里我们忽略比特串全为0的情况（概率为\(1/2^L\)）。如果我们遍历集合中所有元素的比特串，取\(\rho_{max}\)为所有\(\rho(a)\)的最大值。&lt;/p&gt;
+&lt;p&gt;此时我们可以将\(2^{\rho_{max}}\)作为基数的一个粗糙估计，即：&lt;/p&gt;
+&lt;p&gt;\(\hat{n} = 2^{\rho_{max}}\)&lt;/p&gt;
+&lt;p&gt;下面解释为什么可以这样估计。注意如下事实：&lt;/p&gt;
+&lt;p&gt;由于比特串每个比特都独立且服从0-1分布，因此从左到右扫描上述某个比特串寻找第一个“1”的过程从统计学角度看是一个伯努利过程，例如，可以等价看作不断投掷一个硬币（每次投掷正反面概率皆为0.5），直到得到一个正面的过程。在一次这样的过程中，投掷一次就得到正面的概率为\(1/2\)，投掷两次得到正面的概率是\(1/2^2\)，…，投掷k次才得到第一个正面的概率为\(1/2^k\)。&lt;/p&gt;
+&lt;p&gt;现在考虑如下两个问题：&lt;/p&gt;
+&lt;p&gt;1、进行n次伯努利过程，所有投掷次数都不大于k的概率是多少？&lt;/p&gt;
+&lt;p&gt;2、进行n次伯努利过程，至少有一次投掷次数等于k的概率是多少？&lt;/p&gt;
+&lt;p&gt;首先看第一个问题，在一次伯努利过程中，投掷次数大于k的概率为\(1/2^k\)，即连续掷出k个反面的概率。因此，在一次过程中投掷次数不大于k的概率为\(1-1/2^k\)。因此，n次伯努利过程投掷次数均不大于k的概率为：&lt;/p&gt;
+&lt;p&gt;\(P_n(X \leq k)=(1-1/2^k)^n\)&lt;/p&gt;
+&lt;p&gt;显然第二个问题的答案是：&lt;/p&gt;
+&lt;p&gt;\(P_n(X \geq k)=1-(1-1/2^{k-1})^n\)&lt;/p&gt;
+&lt;p&gt;从以上分析可以看出，当\(n \ll 2^k\)时，\(P_n(X \geq k)\)的概率几乎为0，同时，当\(n \gg 2^k\)时，\(P_n(X \leq k)\)的概率也几乎为0。用自然语言概括上述结论就是：当伯努利过程次数远远小于\(2^k\)时，至少有一次过程投掷次数等于k的概率几乎为0；当伯努利过程次数远远大于\(2^k\)时，没有一次过程投掷次数大于k的概率也几乎为0。&lt;/p&gt;
+&lt;p&gt;如果将上面描述做一个对应：一次伯努利过程对应一个元素的比特串，反面对应0，正面对应1，投掷次数k对应第一个“1”出现的位置，我们就得到了下面结论：&lt;/p&gt;
+&lt;p&gt;设一个集合的基数为n，\(\rho_{max}\)为所有元素中首个“1”的位置最大的那个元素的“1”的位置，如果n远远小于\(2^{\rho_{max}}\)，则我们得到\(\rho_{max}\)为当前值的概率几乎为0（它应该更小），同样的，如果n远远大于\(2^{\rho_{max}}\)，则我们得到\(\rho_{max}\)为当前值的概率也几乎为0（它应该更大），因此\(2^{\rho_{max}}\)可以作为基数n的一个粗糙估计。&lt;/p&gt;
+&lt;h2&gt;分桶平均&lt;/h2&gt;
+&lt;p&gt;上述分析给出了LLC的基本思想，不过如果直接使用上面的单一估计量进行基数估计会由于偶然性而存在较大误差。因此，LLC采用了分桶平均的思想来消减误差。具体来说，就是将哈希空间平均分成m份，每份称之为一个桶（bucket）。对于每一个元素，其哈希值的前k比特作为桶编号，其中\(2^k=m\)，而后L-k个比特作为真正用于基数估计的比特串。桶编号相同的元素被分配到同一个桶，在进行基数估计时，首先计算每个桶内元素最大的第一个“1”的位置，设为M[i]，然后对这m个值取平均后再进行估计，即：&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=2^{\frac{1}{m}\sum{M[i]}}\)&lt;/p&gt;
+&lt;p&gt;这相当于物理试验中经常使用的多次试验取平均的做法，可以有效消减因偶然性带来的误差。&lt;/p&gt;
+&lt;p&gt;下面举一个例子说明分桶平均怎么做。&lt;/p&gt;
+&lt;p&gt;假设H的哈希长度为16bit，分桶数m定为32。设一个元素哈希值的比特串为“0001001010001010”，由于m为32，因此前5个bit为桶编号，所以这个元素应该归入“00010”即2号桶（桶编号从0开始，最大编号为m-1），而剩下部分是“01010001010”且显然\(\rho(01010001010)=2\)，所以桶编号为“00010”的元素最大的\(\rho\)即为M[2]的值。&lt;/p&gt;
+&lt;h2&gt;偏差修正&lt;/h2&gt;
+&lt;p&gt;上述经过分桶平均后的估计量看似已经很不错了，不过通过数学分析可以知道这并不是基数n的无偏估计。因此需要修正成无偏估计。这部分的具体数学分析在“Loglog Counting of Large Cardinalities”中，过程过于艰涩这里不再具体详述，有兴趣的朋友可以参考原论文。这里只简要提一下分析框架：&lt;/p&gt;
+&lt;p&gt;首先上文已经得出：&lt;/p&gt;
+&lt;p&gt;\(P_n(X \leq k)=(1-1/2^k)^n\)&lt;/p&gt;
+&lt;p&gt;因此：&lt;/p&gt;
+&lt;p&gt;\(P_n(X = k)=(1-1/2^k)^n - (1-1/2^{k-1})^n\)&lt;/p&gt;
+&lt;p&gt;这是一个未知通项公式的递推数列，研究这种问题的常用方法是使用生成函数（generating function）。通过运用指数生成函数和poissonization得到上述估计量的Poisson期望和方差为：&lt;/p&gt;
+&lt;p&gt;\(\varepsilon _n\sim [(\Gamma (-1/m)\frac{1-2^{1/m}}{log2})^m+\epsilon _n]n\)&lt;/p&gt;
+&lt;p&gt;\(\nu _n\sim [(\Gamma (-2/m)\frac{1-2^{2/m}}{log2})^m - (\Gamma (-1/m)\frac{1-2^{1/m}}{log2})^{2m}+\eta _n]n^2\)&lt;/p&gt;
+&lt;p&gt;其中\(|\epsilon _n|\)和\(|\eta _n|\)不超过\(10^{-6}\)。&lt;/p&gt;
+&lt;p&gt;最后通过depoissonization得到一个渐进无偏估计量：&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=\alpha _m 2^{\frac{1}{m}\sum{M[i]}}\)&lt;/p&gt;
+&lt;p&gt;其中：&lt;/p&gt;
+&lt;p&gt;\(\alpha _m = (\Gamma (-1/m)\frac{1-2^{1/m}}{log2})^{-m}\)&lt;/p&gt;
+&lt;p&gt;\(\Gamma (s)=\frac{1}{s}\int_{0}^{\infty }e^{-t}t^sdt\)&lt;/p&gt;
+&lt;p&gt;其中m是分桶数。这就是LLC最终使用的估计量。&lt;/p&gt;
+&lt;h2&gt;误差分析&lt;/h2&gt;
+&lt;p&gt;不加证明给出如下结论：&lt;/p&gt;
+&lt;p&gt;\(E_n(\hat{n})/n = 1 + \theta_{1,n} + o(1)\)&lt;/p&gt;
+&lt;p&gt;\(\sqrt{Var_n(E)}/n = \beta_m / \sqrt{m} + \theta_{2,n} + o(1)\)&lt;/p&gt;
+&lt;p&gt;其中\(|\theta_{1,n}|\)和\(|\theta_{2,n}|\)不超过\(10^{-6}\)。&lt;/p&gt;
+&lt;p&gt;当m不太小（不小于64）时，\(\beta\)大约为1.30。因此：&lt;/p&gt;
+&lt;p&gt;\(StdError(\hat{n}/n) \approx \frac{1.30}{\sqrt{m}}\)&lt;/p&gt;
+&lt;h1&gt;算法应用&lt;/h1&gt;
+&lt;h2&gt;误差控制&lt;/h2&gt;
+&lt;p&gt;在应用LLC时，主要需要考虑的是分桶数m，而这个m主要取决于误差。根据上面的误差分析，如果要将误差控制在\(\epsilon\)之内，则：&lt;/p&gt;
+&lt;p&gt;\(m &gt; (\frac{1.30}{\epsilon})^2\)&lt;/p&gt;
+&lt;h2&gt;内存使用分析&lt;/h2&gt;
+&lt;p&gt;内存使用与m的大小及哈希值得长度（或说基数上限）有关。假设H的值为32bit，由于\(\rho_{max} \leq 32\)，因此每个桶需要5bit空间存储这个桶的\(\rho_{max}\)，m个桶就是\(5 \times m/8\)字节。例如基数上限为一亿（约\(2^{27}\)），当分桶数m为1024时，每个桶的基数上限约为\(2^{27} / 2^{10} = 2^{17}\)，而\(log_2(log_2(2^{17}))=4.09\)，因此每个桶需要5bit，需要字节数就是\(5 \times 1024 / 8 = 640\)，误差为\(1.30 / \sqrt{1024} = 0.040625\)，也就是约为4%。&lt;/p&gt;
+&lt;h2&gt;合并&lt;/h2&gt;
+&lt;p&gt;与LC不同，LLC的合并是以桶为单位而不是bit为单位，由于LLC只需记录桶的\(\rho_{max}\)，因此合并时取相同桶编号数值最大者为合并后此桶的数值即可。&lt;/p&gt;
+&lt;h1&gt;小结&lt;/h1&gt;
+&lt;p&gt;本文主要介绍了LogLog Counting算法，相比LC其最大的优势就是内存使用极少。不过LLC也有自己的问题，就是当n不是特别大时，其估计误差过大，因此目前实际使用的基数估计算法都是基于LLC改进的算法，这些改进算法通过一定手段抑制原始LLC在n较小时偏差过大的问题。后面要介绍的HyperLogLog Counting和Adaptive Counting就是这类改进算法。&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>解读Cardinality Estimation算法（第二部分：Linear Counting）</title>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</link>
+<guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</guid>
+<pubDate>Sun, 30 Dec 2012 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;在&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-i.html&quot; target=&quot;_blank&quot;&gt;上一篇文章&lt;/a&gt;中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。&lt;/p&gt;
+&lt;p&gt;在这一篇文章中，我们讨论Linear Counting算法。
+&lt;!--more--&gt;
+&lt;/p&gt;
+&lt;h1&gt;简介&lt;/h1&gt;
+&lt;p&gt;Linear Counting（以下简称LC）在1990年的一篇论文“A linear-time probabilistic counting algorithm for database applications”中被提出。作为一个早期的基数估计算法，LC在空间复杂度方面并不算优秀，实际上LC的空间复杂度与上文中简单bitmap方法是一样的（但是有个常数项级别的降低），都是\(O(N_{max})\)，因此目前很少单独使用LC。不过作为Adaptive Counting等算法的基础，研究一下LC还是比较有价值的。&lt;/p&gt;
+&lt;h1&gt;基本算法&lt;/h1&gt;
+&lt;h2&gt;思路&lt;/h2&gt;
+&lt;p&gt;LC的基本思路是：设有一哈希函数H，其哈希结果空间有m个值（最小值0，最大值m-1），并且哈希结果服从均匀分布。使用一个长度为m的bitmap，每个bit为一个桶，均初始化为0，设一个集合的基数为n，此集合所有元素通过H哈希到bitmap中，如果某一个元素被哈希到第k个比特并且第k个比特为0，则将其置为1。当集合所有元素哈希完成后，设bitmap中还有u个bit为0。则：&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=-mlog\frac{u}{m}\)&lt;/p&gt;
+&lt;p&gt;为n的一个估计，且为最大似然估计（MLE）。&lt;/p&gt;
+&lt;p&gt;示意图如下：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-ii/1.png&quot;/&gt;&lt;/p&gt;
+&lt;h2&gt;推导及证明&lt;/h2&gt;
+&lt;p&gt;（对数学推导不感兴趣的读者可以跳过本节）&lt;/p&gt;
+&lt;p&gt;由上文对H的定义已知n个不同元素的哈希值服从独立均匀分布。设\(A_j\)为事件“经过n个不同元素哈希后，第j个桶值为0”，则：&lt;/p&gt;
+&lt;p&gt;\(P(A_j)=(1-\frac{1}{m})^n\)&lt;/p&gt;
+&lt;p&gt;又每个桶是独立的，则u的期望为：&lt;/p&gt;
+&lt;p&gt;\(E(u)=\sum_{j=1}^mP(A_j)=m(1-\frac{1}{m})^n=m((1+\frac{1}{-m})^{-m})^{-n/m}\)&lt;/p&gt;
+&lt;p&gt;当n和m趋于无穷大时，其值约为\(me^{-n/m}\)&lt;/p&gt;
+&lt;p&gt;令：&lt;/p&gt;
+&lt;p&gt;\(E(u)=me^{-n/m}\)&lt;/p&gt;
+&lt;p&gt;得：&lt;/p&gt;
+&lt;p&gt;\(n=-mlog\frac{E(u)}{m}\)&lt;/p&gt;
+&lt;p&gt;显然每个桶的值服从参数相同0-1分布，因此u服从二项分布。由概率论知识可知，当n很大时，可以用正态分布逼近二项分布，因此可以认为当n和m趋于无穷大时u渐进服从正态分布。&lt;/p&gt;
+&lt;p&gt;因此u的概率密度函数为：&lt;/p&gt;
+&lt;p&gt;\(f(x) = {1 \over \sigma\sqrt{2\pi} }\,e^{- {{(x-\mu )^2 \over 2\sigma^2}}}\)&lt;/p&gt;
+&lt;p&gt;由于我们观察到的空桶数u是从正态分布中随机抽取的一个样本，因此它就是\(\mu\)的最大似然估计（正态分布的期望的最大似然估计是样本均值）。&lt;/p&gt;
+&lt;p&gt;又由如下定理：&lt;/p&gt;
+&lt;p&gt;设\(f(x)\)是可逆函数\(\hat{x}\)是\(x\)的最大似然估计，则\(f(\hat{x})\)是\(f(x)\)的最大似然估计。&lt;/p&gt;
+&lt;p&gt;且\(-mlog\frac{x}{m}\)是可逆函数，则\(\hat{n}=-mlog\frac{u}{m}\)是\(-mlog\frac{E(u)}{m}=n\)的最大似然估计。&lt;/p&gt;
+&lt;h2&gt;偏差分析&lt;/h2&gt;
+&lt;p&gt;下面不加证明给出如下结论：&lt;/p&gt;
+&lt;p&gt;\(Bias(\frac{\hat{n}}{n})=E(\frac{\hat{n}}{n})-1=\frac{e^t-t-1}{2n}\)&lt;/p&gt;
+&lt;p&gt;\(StdError(\frac{\hat{n}}{n})=\frac{\sqrt{m}(e^t-t-1)^{1/2}}{n}\)&lt;/p&gt;
+&lt;p&gt;其中\(t=n/m\)&lt;/p&gt;
+&lt;p&gt;以上结论的推导在“A linear-time probabilistic counting algorithm for database applications”可以找到。&lt;/p&gt;
+&lt;h1&gt;算法应用&lt;/h1&gt;
+&lt;p&gt;在应用LC算法时，主要需要考虑的是bitmap长度m的选择。这个选择主要受两个因素的影响：基数n的量级以及容许的误差。这里假设估计基数n的量级大约为N，允许的误差为\(\epsilon\)，则m的选择需要遵循如下约束。&lt;/p&gt;
+&lt;h2&gt;误差控制&lt;/h2&gt;
+&lt;p&gt;这里以标准差作为误差。由上面标准差公式可以推出，当基数的量级为N，容许误差为\(\epsilon\)时，有如下限制：&lt;/p&gt;
+&lt;p&gt;\(m &gt; \frac{e^t-t-1}{(\epsilon t)^2}\)&lt;/p&gt;
+&lt;p&gt;将量级和容许误差带入上式，就可以得出m的最小值。&lt;/p&gt;
+&lt;h2&gt;满桶控制&lt;/h2&gt;
+&lt;p&gt;由LC的描述可以看到，如果m比n小太多，则很有可能所有桶都被哈希到了，此时u的值为0，LC的估计公式就不起作用了（变成无穷大）。因此m的选择除了要满足上面误差控制的需求外，还要保证满桶的概率非常小。&lt;/p&gt;
+&lt;p&gt;上面已经说过，u满足二项分布，而当n非常大，p非常小时，可以用泊松分布近似逼近二项分布。因此这里我们可以认为u服从泊松分布（注意，上面我们说u也可以近似服从正态分布，这并不矛盾，实际上泊松分布和正态分布分别是二项分布的离散型和连续型概率逼近，且泊松分布以正态分布为极限）：&lt;/p&gt;
+&lt;p&gt;当n、m趋于无穷大时：&lt;/p&gt;
+&lt;p&gt;\(Pr(u=k)=(\frac{\lambda^k}{k!})e^{-\lambda}\)&lt;/p&gt;
+&lt;p&gt;因此：&lt;/p&gt;
+&lt;p&gt;\(Pr(u=0)&lt;e^{-5}=0.007\)&lt;/p&gt;
+&lt;p&gt;由于泊松分布的方差为\(\lambda\)，因此只要保证u的期望偏离0点\(\sqrt{5}\)的标准差就可以保证满桶的概率不大约0.7%。因此可得：&lt;/p&gt;
+&lt;p&gt;\(m &gt; 5(e^t-t-1)\)&lt;/p&gt;
+&lt;p&gt;综上所述，当基数量级为N，可接受误差为\(\epsilon\)，则m的选取应该遵从&lt;/p&gt;
+&lt;p&gt;\(m &gt; \beta (e^t-t-1)\)&lt;/p&gt;
+&lt;p&gt;其中\(\beta = max(5, 1/(\epsilon t)^2)\)&lt;/p&gt;
+&lt;p&gt;下图是论文作者预先计算出的关于不同基数量级和误差情况下，m的选择表：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-ii/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;可以看出精度要求越高，则bitmap的长度越大。随着m和n的增大，m大约为n的十分之一。因此LC所需要的空间只有传统的bitmap直接映射方法的1/10，但是从渐进复杂性的角度看，空间复杂度仍为\(O(N_{max})\)。&lt;/p&gt;
+&lt;h2&gt;合并&lt;/h2&gt;
+&lt;p&gt;LC非常方便于合并，合并方案与传统bitmap映射方法无异，都是通过按位或的方式。&lt;/p&gt;
+&lt;h1&gt;小结&lt;/h1&gt;
+&lt;p&gt;这篇文章主要介绍了Linear Counting。LC算法虽然由于空间复杂度不够理想已经很少被单独使用，但是由于其在元素数量较少时表现非常优秀，因此常被用于弥补LogLog Counting在元素较少时误差较大的缺陷，实际上LC及其思想是组成HyperLogLog Counting和Adaptive Counting的一部分。&lt;/p&gt;
+&lt;p&gt;在下一篇文章中，我会介绍空间复杂度仅有\(O(log_2(log_2(N_{max})))\)的基数估计算法LogLog Counting。&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>解读Cardinality Estimation算法（第一部分：基本概念）</title>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</link>
+<guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</guid>
+<pubDate>Sat, 29 Dec 2012 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;基数计数（cardinality counting）是实际应用中一种常见的计算场景，在数据分析、网络监控及数据库优化等领域都有相关需求。精确的基数计数算法由于种种原因，在面对大数据场景时往往力不从心，因此如何在误差可控的情况下对基数进行估计就显得十分重要。目前常见的基数估计算法有Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting等。这几种算法都是基于概率统计理论所设计的概率算法，它们克服了精确基数计数算法的诸多弊端（如内存需求过大或难以合并等），同时可以通过一定手段将误差控制在所要求的范围内。&lt;/p&gt;
+&lt;p&gt;作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。&lt;/p&gt;
+&lt;p&gt;后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。&lt;/p&gt;
+&lt;p&gt;最后在第五部分会介绍一淘数据部的开源基数估计算法库&lt;a href=&quot;https://github.com/chaoslawful/ccard-lib&quot; target=&quot;_blank&quot;&gt;ccard-lib&lt;/a&gt;，这个算法库由一淘数据部工程师&lt;a href=&quot;http://weibo.com/u/1919389283&quot; target=&quot;_blank&quot;&gt;清无&lt;/a&gt;（王晓哲）、&lt;a href=&quot;http://weibo.com/u/1447857772&quot; target=&quot;_blank&quot;&gt;民瞻&lt;/a&gt;（张维）及我开发，并已用于一淘数据部多个业务线，ccard-lib实现了上述四种算法，整个库使用C写成，并附带PHP扩展模块，我会在这一部分介绍ccard-lib的实现重点及使用方法。&lt;/p&gt;
+&lt;!--more--&gt;
+文章索引：
+&lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-i.html&quot; target=&quot;_blank&quot;&gt;第一部分：基本概念&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-ii.html&quot; target=&quot;_blank&quot;&gt;第二部分：Linear Counting&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-iii.html&quot;&gt;第三部分：LogLog Counting&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-iv.html&quot; target=&quot;_blank&quot;&gt;第四部分：HyperLogLog Counting及Adaptive Counting&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;第五部分：ccard-lib介绍&lt;/p&gt;
+&lt;h1&gt;基数的定义&lt;/h1&gt;
+&lt;p&gt;简单来说，基数（cardinality，也译作势），是指一个集合（这里的集合允许存在重复元素，与集合论对集合严格的定义略有不同，如不做特殊说明，本文中提到的集合均允许存在重复元素）中不同元素的个数。例如看下面的集合：&lt;/p&gt;
+&lt;p&gt;\(\{1, 2, 3, 4, 5, 2, 3, 9, 7\}\)&lt;/p&gt;
+&lt;p&gt;这个集合有9个元素，但是2和3各出现了两次，因此不重复的元素为1,2,3,4,5,9,7，所以这个集合的基数是7。&lt;/p&gt;
+&lt;p&gt;如果两个集合具有相同的基数，我们说这两个集合等势。基数和等势的概念在有限集范畴内比较直观，但是如果扩展到无限集则会比较复杂，一个无限集可能会与其真子集等势（例如整数集和偶数集是等势的）。不过在这个系列文章中，我们仅讨论有限集的情况，关于无限集合基数的讨论，有兴趣的同学可以参考实变分析相关内容。&lt;/p&gt;
+&lt;p&gt;容易证明，如果一个集合是有限集，则其基数是一个自然数。&lt;/p&gt;
+&lt;h1&gt;基数的应用实例&lt;/h1&gt;
+&lt;p&gt;下面通过一个实例说明基数在电商数据分析中的应用。&lt;/p&gt;
+&lt;p&gt;假设一个淘宝网店在其店铺首页放置了10个宝贝链接，分别从Item01到Item10为这十个链接编号。店主希望可以在一天中随时查看从今天零点开始到目前这十个宝贝链接分别被多少个独立访客点击过。所谓独立访客（Unique Visitor，简称UV）是指有多少个自然人，例如，即使我今天点了五次Item01，我对Item01的UV贡献也是1，而不是5。&lt;/p&gt;
+&lt;p&gt;用术语说这实际是一个实时数据流统计分析问题。&lt;/p&gt;
+&lt;p&gt;要实现这个统计需求。需要做到如下三点：&lt;/p&gt;
+&lt;p&gt;1、对独立访客做标识&lt;/p&gt;
+&lt;p&gt;2、在访客点击链接时记录下链接编号及访客标记&lt;/p&gt;
+&lt;p&gt;3、对每一个要统计的链接维护一个数据结构和一个当前UV值，当某个链接发生一次点击时，能迅速定位此用户在今天是否已经点过此链接，如果没有则此链接的UV增加1&lt;/p&gt;
+&lt;p&gt;下面分别介绍三个步骤的实现方案&lt;/p&gt;
+&lt;h2&gt;对独立访客做标识&lt;/h2&gt;
+&lt;p&gt;客观来说，目前还没有能在互联网上准确对一个自然人进行标识的方法，通常采用的是近似方案。例如通过登录用户+cookie跟踪的方式：当某个用户已经登录，则采用会员ID标识；对于未登录用户，则采用跟踪cookie的方式进行标识。为了简单起见，我们假设完全采用跟踪cookie的方式对独立访客进行标识。&lt;/p&gt;
+&lt;h2&gt;记录链接编号及访客标记&lt;/h2&gt;
+&lt;p&gt;这一步可以通过javascript埋点及记录accesslog完成，具体原理和实现方案可以参考我之前的一篇文章：&lt;a href=&quot;http://www.codinglabs.org/html/how-web-analytics-data-collection-system-work.html&quot; target=&quot;_blank&quot;&gt;网站统计中的数据收集原理及实现&lt;/a&gt;。&lt;/p&gt;
+&lt;h2&gt;实时UV计算&lt;/h2&gt;
+&lt;p&gt;可以看到，如果将每个链接被点击的日志中访客标识字段看成一个集合，那么此链接当前的UV也就是这个集合的基数，因此UV计算本质上就是一个基数计数问题。&lt;/p&gt;
+&lt;p&gt;在实时计算流中，我们可以认为任何一次链接点击均触发如下逻辑（伪代码描述）：&lt;/p&gt;&lt;pre class=&quot;prettyprint linenums languague-c&quot;&gt;cand_counting(item_no, user_id) {
+    if (user_id is not in the item_no visitor set) {
+        add user_id to item_no visitor set;
+        cand[item_no]++;
+    }
+}&lt;/pre&gt;
+&lt;p&gt;逻辑非常简单，每当有一个点击事件发生，就去相应的链接被访集合中寻找此访客是否已经在里面，如果没有则将此用户标识加入集合，并将此链接的UV加1。&lt;/p&gt;
+&lt;p&gt;虽然逻辑非常简单，但是在实际实现中尤其面临大数据场景时还是会遇到诸多困难，下面一节我会介绍两种目前被业界普遍使用的精确算法实现方案，并通过分析说明当数据量增大时它们面临的问题。&lt;/p&gt;
+&lt;h1&gt;传统的基数计数实现&lt;/h1&gt;
+&lt;p&gt;接着上面的例子，我们看一下目前常用的基数计数的实现方法。&lt;/p&gt;
+&lt;h2&gt;基于B树的基数计数&lt;/h2&gt;
+&lt;p&gt;对上面的伪代码做一个简单分析，会发现关键操作有两个：查找-迅速定位当前访客是否已经在集合中，插入-将新的访客标识插入到访客集合中。因此，需要为每一个需要统计UV的点（此处就是十个宝贝链接）维护一个查找效率较高的数据结构，又因为实时数据流的关系，这个数据结构需要尽量在内存中维护，因此这个数据结构在空间复杂度上也要比较适中。综合考虑一种传统的做法是在实时计算引擎采用了B树来组织这个集合。下图是一个示意图：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-i/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;之所以选用B树是因为B树的查找和插入相关高效，同时空间复杂度也可以接受（关于B树具体的性能分析请参考&lt;a href=&quot;http://en.wikipedia.org/wiki/B-tree&quot; target=&quot;_blank&quot;&gt;这里&lt;/a&gt;）。&lt;/p&gt;
+&lt;p&gt;这种实现方案为一个基数计数器维护一棵B树，由于B树在查找效率、插入效率和内存使用之间非常平衡，所以算是一种可以接受的解决方案。但是当数据量特别巨大时，例如要同时统计几万个链接的UV，如果要将几万个链接一天的访问记录全部维护在内存中，这个内存使用量也是相当可观的（假设每个B树占用1M内存，10万个B树就是100G！）。一种方案是在某个时间点将内存数据结构写入磁盘（双十一和双十二大促时一淘数据部的效果平台是每分钟将数据写入HBase）然后将内存中的计数器和数据结构清零，但是B树并不能高效的进行合并，这就使得内存数据落地成了非常大的难题。&lt;/p&gt;
+&lt;p&gt;另一个需要数据结构合并的场景是查看并集的基数，例如在上面的例子中，如果我想查看Item1和Item2的总UV，是没有办法通过这种B树的结构快速得到的。当然可以为每一种可能的组合维护一棵B树。不过通过简单的分析就可以知道这个方案基本不可行。N个元素集合的非空幂集数量为\(2^N-1\)，因此要为10个链接维护1023棵B树，而随着链接的增加这个数量会以幂指级别增长。&lt;/p&gt;
+&lt;h2&gt;基于bitmap的基数计数&lt;/h2&gt;
+&lt;p&gt;为了克服B树不能高效合并的问题，一种替代方案是使用bitmap表示集合。也就是使用一个很长的bit数组表示集合，将bit位顺序编号，bit为1表示此编号在集合中，为0表示不在集合中。例如“00100110”表示集合 {2，5，6}。bitmap中1的数量就是这个集合的基数。&lt;/p&gt;
+&lt;p&gt;显然，与B树不同bitmap可以高效的进行合并，只需进行按位或（or）运算就可以，而位运算在计算机中的运算效率是很高的。但是bitmap方式也有自己的问题，就是内存使用问题。&lt;/p&gt;
+&lt;p&gt;很容易发现，bitmap的长度与集合中元素个数无关，而是与基数的上限有关。例如在上面的例子中，假如要计算上限为1亿的基数，则需要12.5M字节的bitmap，十个链接就需要125M。关键在于，这个内存使用与集合元素数量无关，即使一个链接仅仅有一个1UV，也要为其分配12.5M字节。&lt;/p&gt;
+&lt;p&gt;由此可见，虽然bitmap方式易于合并，却由于内存使用问题而无法广泛用于大数据场景。&lt;/p&gt;
+&lt;h1&gt;小结&lt;/h1&gt;
+&lt;p&gt;本文重点在于通过电商数据分析中UV计算的例子，说明基数的应用、传统的基数计数算法及这些算法在大数据面前遇到的问题。实际上目前还没有发现更好的在大数据场景中准确计算基数的高效算法，因此在不追求绝对准确的情况下，使用概率算法算是一个不错的解决方案。在后续文章中，我将逐一解读常用的基数估计概率算法。&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>基数估计算法概览</title>
+<link>http://blog.codinglabs.org/articles/cardinality-estimation.html</link>
+<guid>http://blog.codinglabs.org/articles/cardinality-estimation.html</guid>
+<pubDate>Thu, 22 Nov 2012 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;翻译自《&lt;a href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;Damn Cool Algorithms: Cardinality Estimation&lt;/a&gt;》，原文链接：&lt;a title=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;译注：给定一个数据集，求解数据集的基数（Cardinality，也译作“势”，表示一个数据集中不同数据项的数量）是非常普遍的一个需求。许多业务需求最终可以归结为基数求解，如网站访问分析中的UV（访客数，指一段时间内访问网站的不同用户的数量）。由于数据集基数是不可聚集指标（两个数据集总的基数无法通过分别的基数简单计算），因此如果要得到N个数据集任意组合的基数，需要\(2^N\)次数据集去重计算，是一个复杂度非常高的计算过程。当数据量较小时，可以采取bitmap“按位或”方法获得较高的计算速度；而当数据量很大时，一般会采取概率算法对基数进行估计。这篇文章是对基数估计算法的一个非常好的概览。&lt;/p&gt;
+&lt;!--more--&gt;
+以下为译文
+&lt;p&gt;--------------------&lt;/p&gt;
+&lt;p&gt;假如你有一个巨大的含有重复数据项数据集，这个数据集过于庞大以至于无法全部放到内存中处理。现在你想知道这个数据集里有多少不同的元素，但是数据集没有排好序，而且对如此大的一个数据集进行排序和计数几乎是不可行的。你要如何估计数据集中有多少不同的数据项？很多应用场景都涉及这个问题，例如设计数据库的查询策略：一个良好的数据库查询策略不但和总的数据量有关，同时也依赖于数据中不同数据项的数量。&lt;/p&gt;
+&lt;p&gt;我建议在继续阅读本文前你可以稍微是思考一下这个问题，因为接下来我们要谈的算法相当有创意，而且实在是不怎么直观。&lt;/p&gt;
+&lt;h1&gt;一个简单直观的基数估计方法&lt;/h1&gt;
+&lt;p&gt;让我们从一个简单直观的例子开始吧。假设你通过如下步骤生成了一个数据集：&lt;/p&gt;
+&lt;p&gt;1、随机生成n个服从均匀分布的数字&lt;/p&gt;
+&lt;p&gt;2、随便重复其中一些数字，重复的数字和重复次数都不确定&lt;/p&gt;
+&lt;p&gt;3、打乱这些数字的顺序，得到一个数据集&lt;/p&gt;
+&lt;p&gt;我们要如何估计这个数据集中有多少不同的数字呢？因为知道这些数字是服从均匀分布的随机数字，一个比较简单的可行方案是：找出数据集中最小的数字。假如m是数值上限，x是找到的最小的数，则\(m/x\)是基数的一个估计。例如，我们扫描一个包含0到1之间数字组成的数据集，其中最小的数是0.01，则一个比较合理的推断是数据集中大约有100个不同的元素，否则我们应该预期能找到一个更小的数。注意这个估计值和重复次数无关：就如最小值重复多少次都不改变最小值的数值。&lt;/p&gt;
+&lt;p&gt;这个估计方法的优点是十分直观，但是准确度一般。例如，一个只有很少不同数值的数据集却拥有很小的最小值；类似的一个有很多不同值的数据集可能最小值并不小。最后一点，其实只有很少的数据集符合随机均匀分布这一前提。尽管如此，这个原型算法仍然是了解基数估计思想的一个途径；后面我们会了解一些更加精巧的算法。&lt;/p&gt;
+&lt;h1&gt;基数估计的概率算法&lt;/h1&gt;
+&lt;p&gt;最早研究高精度基数估计的论文是Flajolet和Martin的&lt;a href=&quot;http://www.cse.unsw.edu.au/~cs9314/07s1/lectures/Lin_CS9314_References/fm85.pdf&quot;&gt;Probabilistic Counting Algorithms for Data Base Applications&lt;/a&gt;，后来Flajolet又发表了&lt;a href=&quot;http://www.ic.unicamp.br/~celio/peer2peer/math/bitmap-algorithms/durand03loglog.pdf&quot;&gt;LogLog counting of large cardinalities&lt;/a&gt;和&lt;a href=&quot;http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf&quot;&gt;HyperLogLog: The analysis of a near-optimal cardinality estimation algorithm&lt;/a&gt;两篇论文对算法进行了进一步改进。通过逐篇阅读这些论文来了解算法的发展和细节固然有趣，不过在这篇文章中我会忽略一些算法的理论细节，把精力主要放在如何通过论文中的算法解决问题。有兴趣的读者可以读一下这三篇论文；本文不会介绍其中的数学细节。&lt;/p&gt;
+&lt;p&gt;Flajolet和Martin最早发现通过一个良好的哈希函数，可以将任意数据集映射成服从均匀分布的（伪）随机值。根据这一事实，可以将任意数据集变换为均匀分布的随机数集合，然后就可以使用上面的方法进行估计了，不过只是这样是远远不够的。&lt;/p&gt;
+&lt;p&gt;接下来，他们陆续发现一些其它的基数估计方法，而其中一些方法的效果优于之前提到的方法。Flajolet和Martin计算了哈希值的二进制表示的0前缀，结果发现在随机数集合中，通过计算每一个元素的二进制表示的0前缀，设k为最长的0前缀的长度，则平均来说集合中大约有\(2^k\)个不同的元素；我们可以用这个方法估计基数。但是，这仍然不是很理想的估计方法，因为和基于最小值的估计一样，这个方法的方差很大。不过另一方面，这个估计方法比较节省资源：对于32位的哈希值来说，只需要5比特去存储0前缀的长度。&lt;/p&gt;
+&lt;p&gt;值得一提的是，Flajolet-Martin在最初的论文里通过一种基于bitmap的过程去提高估计算法的准确度。关于这点我就不再详述了，因为这种方法已经被后续论文中更好的方法所取代；对这个细节有兴趣的读者可以去阅读原始论文。&lt;/p&gt;
+&lt;p&gt;到目前为止，我们这种基于位模式的估计算法给出的结果仍然不够理想。如何进行改进呢？一个直观的改进方法就是使用多个相互独立的哈希函数：通过计算每个哈希函数所产生的最长0前缀，然后取其平均值可以提高算法的精度。&lt;/p&gt;
+&lt;p&gt;实践表明从统计意义来说这种方法确实可以提高估计的准确度，但是计算哈希值的消耗比较大。另一个更高效的方法就是随机平均（stochastic averaging）。这种方法不是使用多个哈希函数，而是使用一个哈希函数，但是将哈希值的区间按位切分成多个桶（bucket）。例如我们希望取1024个数进行平均，那么我们可以取哈希值的前10比特作为桶编号，然后计算剩下部分的0前缀长度。这种方法的准确度和多哈希函数方法相当，但是比计算多个哈希效率高很多。&lt;/p&gt;
+&lt;p&gt;根据上述分析，我们可以给出一个简单的算法实现。这个实现等价于Durand-Flajolet的论文中提出的LogLog算法；不过为了方便，这个实现中统计的是0尾缀而不是0前缀；其效果是等价的。&lt;/p&gt;&lt;pre class=&quot;prettyprint linenums languague-python&quot;&gt;def trailing_zeroes(num):
+    &quot;&quot;&quot;Counts the number of trailing 0 bits in num.&quot;&quot;&quot;
+    if num == 0:
+        return 32 # Assumes 32 bit integer inputs!
+    p = 0
+    while (num &gt;&gt; p) &amp; 1 == 0:
+        p += 1
+    return p
+
+def estimate_cardinality(values, k):
+    &quot;&quot;&quot;Estimates the number of unique elements in the input set values.
+
+    Arguments:
+        values: An iterator of hashable elements to estimate the cardinality of.
+        k: The number of bits of hash to use as a bucket number; there will be 2**k buckets.
+    &quot;&quot;&quot;
+    num_buckets = 2 ** k
+    max_zeroes = [0] * num_buckets
+    for value in values:
+        h = hash(value)
+        bucket = h &amp; (num_buckets - 1) # Mask out the k least significant bits as bucket ID
+        bucket_hash = h &gt;&gt; k
+        max_zeroes[bucket] = max(max_zeroes[bucket], trailing_zeroes(bucket_hash))
+    return 2 ** (float(sum(max_zeroes)) / num_buckets) * num_buckets * 0.79402&lt;/pre&gt;
+    &lt;p&gt;这段代码实现了我们上面讨论的估计算法：我们计算每个桶的0前缀（或尾缀）的最长长度；然后计算这些长度的平均数；假设平均数是x，桶数量是m，则最终的估计值是\(2^x \times m\)。其中一个没提过的地方是魔法数字0.79402。统计分析显示这种预测方法存在一个可预测的偏差；这个魔法数字是对这个偏差的修正。实际经验表明计算值随着桶数量的不同而变化，不过当桶数量不太小时（大于64），计算值会收敛于估计值。原论文中描述了这个结论的推导过程。&lt;/p&gt;
+    &lt;p&gt;这个方法给出的估计值比较精确 —— 在分桶数为m的情况下，平均误差为\(1.3/\sqrt{m}\)。因此对于分桶数为1024的情况（所需内存1024*5 = 5120位，或640字节），大约会有4%的平均误差；每桶5比特的存储已经足以估计\(2^{27}\)的数据集，而我们只用的不到1k的内存！&lt;/p&gt;
+    &lt;p&gt;让我们看一下试验结果：&lt;/p&gt;&lt;pre class=&quot;prettyprint linenums languague-python&quot;&gt;&gt;&gt;&gt; [100000/estimate_cardinality([random.random() for i in range(100000)], 10) for j in range(10)]
+[0.9825616152548807, 0.9905752876839672, 0.979241749110407, 1.050662616357679, 0.937090578752079, 0.9878968276629505, 0.9812323203117748, 1.0456960262467019, 0.9415413413873975, 0.9608567203911741]&lt;/pre&gt;
+    &lt;p&gt;不错！虽然有些估计误差大于4%的平均误差，但总体来说效果良好。如果你准备自己做一下这个试验，有一点需要注意：Python内置的 hash() 方法将整数哈希为它自己。因此诸如 estimate_cardinality(range(10000), 10) 这种方式得到的结果不会很理想，因为内置 hash() 对于这种情况并不能生成很好的散列。但是像上面例子中使用随机数会好很多。&lt;/p&gt;
+    &lt;h1&gt;提升准确度：SuperLogLog和HyperLogLog&lt;/h1&gt;
+    &lt;p&gt;虽然我们已经有了一个不错的估计算法，但是我们还能进一步提升算法的准确度。Durand和Flajolet发现离群点会大大降低估计准确度；如果在计算平均值前丢弃一些特别大的离群值，则可以提高精确度。特别的，通过丢弃最大的30%的桶的值，只使用较小的70%的桶的值来进行平均值计算，则平均误差可以从\(1.3/\sqrt{m}\)降低到\(1.05/\sqrt{m}\)！这意味着在我们上面的例子中，使用640个字节可情况下可以将平均误差从4%降低到3.2%，而所需内存并没有增加。&lt;/p&gt;
+    &lt;p&gt;最后，Flajolet等人在HyperLogLog论文中给出一种不同的平均值，使用调和平均数取代几何平均数（译注：原文有误，此处应该是算数平均数）。这一改进可以将平均误差降到\(1.04/\sqrt{m}\)，而且并没不需要额外资源。但是这个算法比前面的算法复杂很多，因为对于不同基数的数据集要做不同的修正。有兴趣的读者可以阅读原论文。&lt;/p&gt;
+    &lt;h1&gt;并行化&lt;/h1&gt;
+    &lt;p&gt;这些基数估计算法的一个好处就是非常容易并行化。对于相同分桶数和相同哈希函数的情况，多台机器节点可以独立并行的执行这个算法；最后只要将各个节点计算的同一个桶的最大值做一个简单的合并就可以得到这个桶最终的值。而且这种并行计算的结果和单机计算结果是完全一致的，所需的额外消耗仅仅是小于1k的字节在不同节点间的传输。&lt;/p&gt;
+    &lt;h1&gt;结论&lt;/h1&gt;
+    &lt;p&gt;基数估计算法使用很少的资源给出数据集基数的一个良好估计，一般只要使用少于1k的空间存储状态。这个方法和数据本身的特征无关，而且可以高效的进行分布式并行计算。估计结果可以用于很多方面，例如流量监控（多少不同IP访问过一个服务器）以及数据库查询优化（例如我们是否需要排序和合并，或者是否需要构建哈希表）。&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>从抛硬币试验看概率论的基本内容及统计方法</title>
+<link>http://blog.codinglabs.org/articles/basis-of-probability-and-statistics.html</link>
+<guid>http://blog.codinglabs.org/articles/basis-of-probability-and-statistics.html</guid>
+<pubDate>Mon, 19 Nov 2012 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;一般说到概率，就喜欢拿抛硬币做例子。大多数时候，会简单认为硬币正背面的概率各为二分之一，其实事情远没有这么简单。这篇文章会以抛硬币试验为例子并贯穿全文，引出一系列概率论和数理统计的基本内容。这篇文章会涉及的有古典概型、公理化概率、二项分布、正态分布、最大似然估计和假设检验等一系列内容。主要目的是以抛硬币试验为例说明现代数学观点下的概率是什么样子以及以概率论为基础的一些基本数理统计方法。&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;h1&gt;概率的存在性&lt;/h1&gt;
+&lt;p&gt;好吧，首先我们要回答一个基本问题就是概率为什么是存在的。其实这不是个数学问题，而是哲学问题（貌似一般存在不存在啥的都是哲学问题）。之所以要先讨论这个问题，是因为任何数学活动都是在一定哲学观点前提下进行的，如果不明确哲学前提，数学活动就无法进行了（例如如果在你的哲学观点下概率根本不存在，那还讨论啥概率论啊）。&lt;/p&gt;
+&lt;p&gt;概率的存在是在一定哲学观点前提下的，我不想用哲学术语拽文，简单来说，就是你首先得承认事物是客观存在的，并可以通过大量的观察和实践被抽象总结。举个例子，我们经常会讨论“身高”，为什么我们都认为身高是存在的？因为我们经过长期的观察实践发现一个人身体的高度在短期内不会出现大幅度的变动，因此我们可以用一个有单位的数字来描述一个人的身体在一段不算长的时间内相对稳定的高度。这就是“身高”作为被普遍承认存在的哲学前提。&lt;/p&gt;
+&lt;p&gt;与此相似，人们在长期的生活中，发现世界上有一些事情的结果是无法预料的，例如抛硬币得到正面还是背面，但是，后来有些人发现，虽然单次的结果不可预料，但是如果我不断抛，抛很多次，正面结果占全部抛硬币次数的比率是趋于稳定的，而且次数越多越接近某个固定的数值。换句话说，抛硬币这件事，单次结果不可预料，但是多次试验的结果却在总体上是有规律可循的（术语叫统计规律）。&lt;/p&gt;
+&lt;p&gt;下面是历史上一些著名的抛硬币试验的数据记录：&lt;/p&gt;
+&lt;table border=&quot;1&quot; cellspacing=&quot;0&quot; cellpadding=&quot;2&quot; width=&quot;400&quot;&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;&lt;strong&gt;试验者&lt;/strong&gt;&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;&lt;strong&gt;试验次数&lt;/strong&gt;&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;&lt;strong&gt;正面次数&lt;/strong&gt;&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;&lt;strong&gt;正面占比&lt;/strong&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;德摩根&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;4092&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;2048&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;50.05%&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;蒲丰&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;4040&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;2048&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;50.69%&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;费勒&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;10000&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;4979&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;49.79%&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;皮尔逊&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;24000&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;12012&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;50.05%&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;罗曼洛夫斯基&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;80640&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;39699&lt;/td&gt;
+&lt;td valign=&quot;top&quot; width=&quot;100&quot;&gt;49.23%&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;p&gt;可以看到，虽然这些试验在不同时间、不同地点由不同的人完成，但是冥冥中似乎有一股力量将正面的占比固定在50%附近。&lt;/p&gt;
+&lt;p&gt;后来，人们发现还有很多其它不可预测的事情都与抛硬币类似，例如掷骰子、买六合彩等等，甚至渐渐发现不只这些简单的事情，人类社会方方面面从简单到复杂的很多不可预测的事情宏观上看都具有统计规律。于是人们推测，在某些条件下的一些不可预测事件，都是有统计规律的，或者直观说很多不可预测结果的试验在多次进行后总体上看结果会趋近于一些常数（这个现象后来被严格定义为大数定律，成为概率论最基础的定理之一，下文会提到）。这种可观测现象，成为概率存在的哲学基础，而这些常数就是概率在朴素观点下的定义。&lt;/p&gt;
+&lt;h1&gt;概率模型&lt;/h1&gt;
+&lt;p&gt;在认识到上述事实后，人们希望将这种规律加以利用（人类文明的发展不就是发现和利用规律么，呵呵），但是想要利用就首先要对概率进行严格的形式化定义，也就是要建立数学模型。比较知名的数学模型有古典概型、几何概率模型和公理化概率，本文将会讨论古典概型和公理化概率。&lt;/p&gt;
+&lt;h2&gt;古典概型&lt;/h2&gt;
+&lt;p&gt;古典概型是人类对概率和统计规律最早的建模尝试，表达了朴素的数学原则下人们对概率的认识。在表述古典概型之前，需要先定义一些概念。&lt;/p&gt;
+&lt;p&gt;首先是随机试验。&lt;/p&gt;
+&lt;p&gt;如果一个同时试验满足下面三条原则，则这个试验称为随机试验：&lt;/p&gt;
+&lt;p&gt;1、可在相同条件下（相对来说）重复进行。&lt;/p&gt;
+&lt;p&gt;2、可能出现的结果不止一个，但事先明确知道所有可能的结果（可以是无限个，例如所有自然数，但必须事先明确知道结果的取值范围）。&lt;/p&gt;
+&lt;p&gt;3、事先无法预测在一次试验中哪一个结果会出现。&lt;/p&gt;
+&lt;p&gt;显然上面的抛硬币试验是一个随机试验。&lt;/p&gt;
+&lt;p&gt;然后需要定义样本空间和样本点。一个随机试验的样本空间是这个试验所有可能结果组成的集合，而其中每个元素是一个样本点。例如，抛硬币试验中，样本空间为\(\{F, B\}\)，其中F表示正面，B表示背面，而F、B就是两个样本点。&lt;/p&gt;
+&lt;p&gt;另一个非常重要的概念就是随机事件（简称事件）：样本空间的一个子集称为一个事件。例如，抛硬币试验有四个不同的事件：\(\emptyset\)，\(\{F\}\)，\(\{B\}\)，\(\{F, B\}\)，分别表示“既不出现正面也不出现反面”，“出现正面”，“出现反面”和“出现正面或反面”。在不考虑硬币立起来等特殊情况时，第一个事件不可能出现，但它确实是一个合乎定义的事件，叫不可能事件；而最后一个事件必然出现，叫必然事件。&lt;/p&gt;
+&lt;p&gt;有了上面概念，就可以定义古典概型了：&lt;/p&gt;
+&lt;p&gt;如果一个概率模型满足 1）样本空间是一个有限集合，2）每一个基本事件（只包含一个样本点的事件）出现的概率相同，则这是一个古典概型。例如，在上面的抛硬币试验中，再定义\(\{F\}\)，\(\{B\}\)的概率均为0.5，则就构成了一个古典概型。&lt;/p&gt;
+&lt;p&gt;古典概型简单、直观，在早期的概率研究中广泛被使用。但是这个模型太朴素太不严格了，在这种不完善的定义下，根本没有办法做严格的数学推理，而且有限样本空间和等可能性在很多现实随机试验中并不满足，甚至对等可能不同定义会导致不同结论。因此必须使用一个更严格的定义，以符合现代数学公理化推导的要求，这就是公理化概率。&lt;/p&gt;
+&lt;h2&gt;公理化概率&lt;/h2&gt;
+&lt;p&gt;公理化概率对概率做如下定义：&lt;/p&gt;
+&lt;p&gt;概率是事件集合到实数域的一个函数，设事件集合为E，则如若\(A\in E\overset{p}{\rightarrow}P(A)\in \mathbb{R}\)满足：&lt;/p&gt;
+&lt;p&gt;对于任意事件A，\(P(A)=0\)。&lt;/p&gt;
+&lt;p&gt;对于必然事件S，\(P(S)=1\)。&lt;/p&gt;
+&lt;p&gt;对于两两互斥的事件，有\(P(A_1\cup A_2\cup\cdots \cup A_n) = P(A_1)+P(A_2)+\cdots +P(A_n)\)。&lt;/p&gt;
+&lt;p&gt;公理化概率对概率做了严格的数学定义，可以较好的基于公理系统进行推导和证明。但是，概率模型只是给出了概率“是什么”（定性），没有回答“是多少”（定量）这个问题。也就是说，仅有概率模型，是不能定量回答抛硬币问题的。下面介绍对概率进行定量分析的方法。&lt;/p&gt;
+&lt;h1&gt;度量与估计概率&lt;/h1&gt;
+&lt;p&gt;从公理化概率的角度，我们可以这样定义抛硬币试验的概率：设\(N\)是全部抛硬币的次数，而\(C_F\)是正面向上的次数，则如下函数定义了这个概率：&lt;/p&gt;
+&lt;p&gt;\(P(A)=\left\{\begin{align} 0 &amp; A=\emptyset\\ \frac{C_F}{N} &amp; A=\{F\}\\ 1-\frac{C_F}{N} &amp; A=\{B\}\\ 1 &amp; A=\{F,B\} \end{align}\right.\)&lt;/p&gt;
+&lt;p&gt;容易验证，这个定义完全符合公理化概率的所有条件。下面就是确定\(N\)和\(C_F\)。不幸的是，显然N是无法穷尽的，因为理论上你不可能抛无数次硬币。由于不能精确度量这个概率，因此你必须通过某个可以精确度量的值去估计这个概率，而且还要从数学上证明这个估计方法是靠谱的，最好能定量给出这个估计量的可信程度。而对不可直接观测概率的一个估计度量值就是频率。&lt;/p&gt;
+&lt;h2&gt;频率估计&lt;/h2&gt;
+&lt;p&gt;频率是这样定义的：事件A的频率是在相同条件下重复一个实验n次，事件A发生的次数在n次实验中的占比。一种简单的估计概率的方法就是用频率当做概率的估计。&lt;/p&gt;
+&lt;p&gt;例如，我刚刚抛完十次硬币，其中六次正面，四次背面，因此根据此次实验，我估计我这枚硬币出现正面的概率为0.6。这就是频率估计。&lt;/p&gt;
+&lt;p&gt;不过你一定有疑惑，为什么可以使用频率估计概率？有上面理论依据？如何对估计的准确性做出定理的分析？下面解答这些问题。&lt;/p&gt;
+&lt;h2&gt;大数定律&lt;/h2&gt;
+&lt;p&gt;频率估计的理论基础是大数定律。毫不夸张的说，大数定律是整个现代概率论和统计学的最重要基石，几乎一切统计方法的正确性都依赖于大数定律的正确，因此大数定律被有些人称为概率论的首要定律。&lt;/p&gt;
+&lt;p&gt;大数定律直观来看表述了这样一种事实：在相同条件下，随着随机试验次数的增多，频率越来越接近于概率。注意大数定律陈述的是一个随着n趋向于无穷大时频率对真实概率的一种无限接近的趋势。&lt;/p&gt;
+&lt;p&gt;下面给出大数定律的数理表述，大数定律有多重数学表述，这里取伯努利大数定律：&lt;/p&gt;
+&lt;p&gt;\(\lim_{n \to \infty}{P{\left\{ \left|\frac{n_x}{n} - p \right| &lt; \varepsilon \right\}}} = 1\)&lt;/p&gt;
+&lt;p&gt;其中\(n_x\)表述在n次试验中事件x出现的次数。伯努利大数定律代表的意义是，当试验次数越来越多，频率与概率相差较大的可能性变得很小。大数定律从数学上严格证明了频率对概率的收敛性以及稳定性。这就是频率估计的理论基础。在后面关于中心极限定理的部分，还将定量给出估计的置信度（表示这个估计有多可靠）。&lt;/p&gt;
+&lt;h2&gt;最大似然估计&lt;/h2&gt;
+&lt;p&gt;下面给出另一种估计概率的方法，就是最大似然估计。最大似然估计是参数估计的一种方法，用于在已知概率分布的情况下对分布函数的参数进行估计。而这里分布函数的参数刚好是要估计的概率。&lt;/p&gt;
+&lt;p&gt;最大似然估计基于这样一个朴素的思想：如果已经得到一组试验数据，在概率分布已知的情况下，可以将出现这组试验数据的概率表述为分布函数参数的函数。&lt;/p&gt;
+&lt;p&gt;看到上面的话很多人肯定又晕了，我还是举个具体的例子吧（非数学严格的例子，但思想一致）。我来到一所陌生的大学门口，想知道这所大学男生多还是女生多，我蹲在校门口数了走出校门的100名同学，发现80个男生20个女生，如果我认为这所学校每个学生这段时间内出校门的概率都是差不多的，那么我会推断男生多。因为男生多的学校更大可能性产生我观察的结果。所以，最大似然估计的核心思想就是：知道了结果，但不知道结果所在总体的情况，然后计算在总体在每种可能下产生这个结果的概率，哪种情况下产生已知结果的概率最大，就认为这种情况是总体的情况。&lt;/p&gt;
+&lt;p&gt;下面正式使用这个方法估计硬币正面出现的概率。&lt;/p&gt;
+&lt;p&gt;还是上面的实验，我已经得到“抛了十次，六次正面”这个结果，下面我想知道正面向上的概率。由于这个概率是一定存在的（第一节已经说明了哈，在既定哲学观点下），而且这个概率的取值范围应该是0到1的开区间（正面背面都出现过，所以不可能是0或1）：&lt;/p&gt;
+&lt;p&gt;\(p\in (0,1)\)&lt;/p&gt;
+&lt;p&gt;由一些背景知识知道，每抛十次硬币，正面出现的次数服从二项分布：&lt;/p&gt;
+&lt;p&gt;\(C_n^kp^k(1-p)^{n-k}\)&lt;/p&gt;
+&lt;p&gt;由于已知n=10，k=6，将其带入，得到一个函数：&lt;/p&gt;
+&lt;p&gt;\(L(p)=C_{10}^6p^6(1-p)^{10-6}\)&lt;/p&gt;
+&lt;p&gt;其中p的定义域为\(p\in (0,1)\)。这个函数表示的是，当出现正面的真实概率为p时，“抛十次六次正面”这个事件出现的概率。我们希望估计的p让这个函数取值最大，以下是求解过程：&lt;/p&gt;
+&lt;p&gt;因为在(0,1)区间，ln(x)是x的单调递增函数，所以最大化lnL(p)就等于最大化L(p)。这样做主要是取对数可以让连乘变成连加，方便后面求导。&lt;/p&gt;
+&lt;p&gt;由微积分知识可知：&lt;/p&gt;
+&lt;p&gt;\(\frac{dlnF(p)}{dp}=C_{10}^6(\frac{6}{p}+\frac{4}{p-1})=C_{10}^6(\frac{10p-6}{p^2-p})\)&lt;/p&gt;
+&lt;p&gt;让这个导数为0，解得p为0.6，这就是我们对概率的最大似然估计，与概率估计的结果一致。&lt;/p&gt;
+&lt;h1&gt;显著性及假设检验&lt;/h1&gt;
+&lt;p&gt;到此为止，我们已经说明了概率是存在的、建立了概率的数学模型，并能对不可直接观测的概率进行估计。但似乎还缺点什么。&lt;/p&gt;
+&lt;p&gt;大数定律只说明了理论上我们的估计是靠谱的，但是到底有多靠谱，却无法通过大数定律定量计算。这一节，我们就来解决这个问题：定量计算出估计的可靠性（术语叫显著性）。&lt;/p&gt;
+&lt;h2&gt;评估显著性&lt;/h2&gt;
+&lt;p&gt;还是上面我抛那十次硬币的试验。根据最优的频率估计和最大似然估计，均估计p（出现正面的概率）为0.6。但是如果有人提出异议，说我的估计可能是错的，p实际是0.5，我那个出现六次正面是因为只是偶然性的结果。这时我需要找证据反驳他，由于不能做无数次试验，我只能给出一个较高可信度的证据，例如，我想证明至少95%的可能性出现六次正面是因为p不等于0.5，也就是说，证明如果p为0.5，则偶然出现我这个结果的可能性不超过5%（5%称作显著水平）。&lt;/p&gt;
+&lt;h2&gt;中心极限定理&lt;/h2&gt;
+&lt;p&gt;要评估显著性，首先要借助于中心极限定理。中心极限定理也是统计学的基石定理之一，它的一种表述是：&lt;/p&gt;
+&lt;p&gt;设随机变量\(X_1, X_2, \cdots ,X_n\)独立同分布，且数学期望为\(\mu\)，方差为\(\sigma^2 \neq 0\)。则其均值\(\bar{X}=\frac{1}{n}\sum_{i=1}^{n}X_{i}\)近似服从期望为\(\mu\)，方差为\(\sigma/n\)的正态分布。等价的，\(\zeta_n=\frac{\bar{X} -\mu}{\sigma/\sqrt{n}}\)近似服从标准正态分布。&lt;/p&gt;
+&lt;p&gt;中心极限定理的直观意义是，随便一个服从什么的总体中，你独立随机的抽取一组样本，那么样本的均值服从正态分布，并且可以根据总体的期望和方差推导出这个均值服从的正态分布的期望和方差，然后简单变换一下就可以得到一个服从标准正态分布的随机量。由于标准正态分布的概率密度函数是已知的，那么就可以得到这个量出现的概率。&lt;/p&gt;
+&lt;p&gt;这样说貌似太抽象了，我们下面还是看这个定理的应用实例吧。&lt;/p&gt;
+&lt;h2&gt;假设检验&lt;/h2&gt;
+&lt;p&gt;上面说过，我要反驳的是抛硬币得到正面的实际概率是0.5，那么我就要证明如果p是0.5，则得到这组结果的概率是很小的（上面要求小于5%）。&lt;/p&gt;
+&lt;p&gt;设正面取值为1，背面取值为0。如果p是0.5，则每一次抛硬币的取值服从一个p为0.5的0-1分布。由期望及方差的定义可知，这个分布的期望和方差分别为：&lt;/p&gt;
+&lt;p&gt;\(\mu = p\times 1 + (1-p)\times 0 = 0.5\times 1 + (1-0.5)\times 0=0.5\)&lt;/p&gt;
+&lt;p&gt;\(\sigma^2= (1-\mu)^2\times 0.5 + (0-\mu)^2\times 0.5 = 0.25\times 0.5 + 0.25\times 0.5 = 0.25\)&lt;/p&gt;
+&lt;p&gt;由中心极限定理\(\frac{\bar{X}-0.5}{\sqrt{0.25/10}}\)近似服从标准正态分布。&lt;/p&gt;
+&lt;p&gt;而我抛的十次硬币可以看做十个独立随机抽样，它们的均值是0.6，变换后的值为\(\frac{0.6-0.5}{\sqrt{0.25/10}}\approx 0.632\)。&lt;/p&gt;
+&lt;p&gt;标准正态分布的概率密度公式为：&lt;/p&gt;
+&lt;p&gt;\(f(x) = {1 \over \sigma\sqrt{2\pi} }\,e^{- {{(x-\mu )^2 \over 2\sigma^2}}}\)&lt;/p&gt;
+&lt;p&gt;上面说过，我们希望显著水平是5%，所以，我需要找到x=z，使得此概率密度函数从-z到z的定积分为0.95，然后看0.632在不在[-z, z]内，如果在的话，我会认为我确实错了，至少我没有95%以上的把握说p不等于0.5，而如果0.632不再这个范围内，则我可以拍着胸脯说，我已经从理论上证明我有95%以上的把握，p不是0.5（换句话说，如果p是0.5，抛十次六次正面的可能性不足5%）。&lt;/p&gt;
+&lt;p&gt;坦白说这个z不是很好算，不过还好由于这东西特别常用，任何一本概率课本后面都可以找到标准正态分布表（或者很多工具如R语言可以直接计算分位点），下面就是我在网上找到的一个（来源&lt;a title=&quot;http://www.mathsisfun.com/data/standard-normal-distribution-table.html&quot; href=&quot;http://www.mathsisfun.com/data/standard-normal-distribution-table.html&quot;&gt;http://www.mathsisfun.com/data/standard-normal-distribution-table.html&lt;/a&gt;）：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/basis-of-probability-and-statistics/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;这是一个单侧表，要保证显著水平为5%，则单侧积分上限不能低于0.475，通过查上表，可知0.475对应的z是1.96，远大于我们算出的0.632。很不幸，我在5%的显著水平下无法拒绝p=0.5的假设。同时通过上表可以看到，0.63对应的单侧概率是0.2357，也就是说，通过抛十次得到六次正面，我们只有约50%的把握说出现正面的概率不是0.5。换句话说，抛十次硬币来做频率估计是不太合适的，于是，我们需要增加试验次数。&lt;/p&gt;
+&lt;p&gt;假如，我又做了100次实验，抛出了60次正面，40次背面。那么这个试验结果可以显著的认为p不是0.5吗？用同样的方法算出\(\frac{0.6-0.5}{\sqrt{0.25/100}} = 2.0\)。很显然，2.0大于1.96，所以这个试验结果可以充分（超过95%的可能）说明这枚硬币正面朝上的概率确实不是0.5。通过查表可以看到，2.0的显著水平约为0.046，换句话说，这次试验结果95.4%以上表明硬币正面出现的概率不是0.5。当然，也有可能结论是错误的，因为毕竟还有4.6%的可能这是在p=0.5的情况下偶然出现的。&lt;/p&gt;
+&lt;p&gt;通过假设检验理论，可以通过增加试验次数，将犯错的概率缩小到任意小的值。&lt;/p&gt;
+&lt;h1&gt;总结&lt;/h1&gt;
+&lt;p&gt;这篇文章以抛硬币试验为引子引出了一系列现代数学中概率的基本模型、定理及基本的估计及显著性检验方法。写这篇文章是我无聊抛硬币时一时兴起，其中对很多东西只是给出一个轮廓，没有处处给出严格的定义和证明，不过大约说明了常用的一些统计方法及其理论基础，限于篇幅不能面面俱到，例如一个假设检验如果展开写可以单独写一篇文章。目前随着大数据概念的热炒，基于互联网的数据挖掘和机器学习也变得火热，其实很多数据挖掘和机器学习都是基于概率和统计理论的，很多方法甚至只是传统统计方法的应用。因此如果准备在这方面深入学习，不妨考虑先在概率论和数理统计方面打好基础。&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>PHP哈希表碰撞攻击原理</title>
+<link>http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html</link>
+<guid>http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html</guid>
+<pubDate>Tue, 03 Jan 2012 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;h1&gt;哈希表碰撞攻击的基本原理&lt;/h1&gt;
+&lt;p&gt;哈希表是一种查找效率极高的数据结构，很多语言都在内部实现了哈希表。PHP中的哈希表是一种极为重要的数据结构，不但用于表示Array数据类型，还在Zend虚拟机内部用于存储上下文环境信息（执行上下文的变量及函数均使用哈希表结构存储）。&lt;/p&gt;
+&lt;p&gt;理想情况下哈希表插入和查找操作的时间复杂度均为O(1)，任何一个数据项可以在一个与哈希表长度无关的时间内计算出一个哈希值（key），然后在常量时间内定位到一个桶（术语bucket，表示哈希表中的一个位置）。当然这是理想情况下，因为任何哈希表的长度都是有限的，所以一定存在不同的数据项具有相同哈希值的情况，此时不同数据项被定为到同一个桶，称为碰撞（collision）。哈希表的实现需要解决碰撞问题，碰撞解决大体有两种思路，第一种是根据某种原则将被碰撞数据定为到其它桶，例如线性探测——如果数据在插入时发生了碰撞，则顺序查找这个桶后面的桶，将其放入第一个没有被使用的桶；第二种策略是每个桶不是一个只能容纳单个数据项的位置，而是一个可容纳多个数据的数据结构（例如链表或红黑树），所有碰撞的数据以某种数据结构的形式组织起来。&lt;/p&gt;
+&lt;p&gt;不论使用了哪种碰撞解决策略，都导致插入和查找操作的时间复杂度不再是O(1)。以查找为例，不能通过key定位到桶就结束，必须还要比较原始key（即未做哈希之前的key）是否相等，如果不相等，则要使用与插入相同的算法继续查找，直到找到匹配的值或确认数据不在哈希表中。&lt;/p&gt;
+&lt;p&gt;PHP是使用单链表存储碰撞的数据，因此实际上PHP哈希表的平均查找复杂度为O(L)，其中L为桶链表的平均长度；而最坏复杂度为O(N)，此时所有数据全部碰撞，哈希表退化成单链表。下图PHP中正常哈希表和退化哈希表的示意图。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;哈希表碰撞攻击就是通过精心构造数据，使得所有数据全部碰撞，人为将哈希表变成一个退化的单链表，此时哈希表各种操作的时间均提升了一个数量级，因此会消耗大量CPU资源，导致系统无法快速响应请求，从而达到拒绝服务攻击（DoS）的目的。&lt;/p&gt;
+&lt;p&gt;可以看到，进行哈希碰撞攻击的前提是哈希算法特别容易找出碰撞，如果是MD5或者SHA1那基本就没戏了，幸运的是（也可以说不幸的是）大多数编程语言使用的哈希算法都十分简单（这是为了效率考虑），因此可以不费吹灰之力之力构造出攻击数据。下一节将通过分析Zend相关内核代码，找出攻击哈希表碰撞攻击PHP的方法。&lt;/p&gt;
+&lt;h1&gt;Zend哈希表的内部实现&lt;/h1&gt;
+&lt;h2&gt;数据结构&lt;/h2&gt;
+&lt;p&gt;PHP中使用一个叫Backet的结构体表示桶，同一哈希值的所有桶被组织为一个单链表。哈希表使用HashTable结构体表示。相关源码在zend/Zend_hash.h下：&lt;/p&gt;&lt;pre class=&quot;prettyprint linenums languague-c&quot;&gt;typedef struct bucket {
+    ulong h;                        /* Used for numeric indexing */
+    uint nKeyLength;
+    void *pData;
+    void *pDataPtr;
+    struct bucket *pListNext;
+    struct bucket *pListLast;
+    struct bucket *pNext;
+    struct bucket *pLast;
+    char arKey[1]; /* Must be last element */
+} Bucket;
+
+typedef struct _hashtable {
+    uint nTableSize;
+    uint nTableMask;
+    uint nNumOfElements;
+    ulong nNextFreeElement;
+    Bucket *pInternalPointer;   /* Used for element traversal */
+    Bucket *pListHead;
+    Bucket *pListTail;
+    Bucket **arBuckets;
+    dtor_func_t pDestructor;
+    zend_bool persistent;
+    unsigned char nApplyCount;
+    zend_bool bApplyProtection;
+#if ZEND_DEBUG
+    int inconsistent;
+#endif
+} HashTable;&lt;/pre&gt;
+&lt;p&gt;字段名很清楚的表明其用途，因此不做过多解释。重点明确下面几个字段：Bucket中的“h”用于存储原始key；HashTable中的nTableMask是一个掩码，一般被设为nTableSize - 1，与哈希算法有密切关系，后面讨论哈希算法时会详述；arBuckets指向一个指针数组，其中每个元素是一个指向Bucket链表的头指针。&lt;/p&gt;
+&lt;h2&gt;哈希算法&lt;/h2&gt;
+&lt;p&gt;PHP哈希表最小容量是8（2^3），最大容量是0x80000000（2^31），并向2的整数次幂圆整（即长度会自动扩展为2的整数次幂，如13个元素的哈希表长度为16；100个元素的哈希表长度为128）。nTableMask被初始化为哈希表长度（圆整后）减1。具体代码在zend/Zend_hash.c的_zend_hash_init函数中，这里截取与本文相关的部分并加上少量注释。&lt;/p&gt;&lt;pre class=&quot;prettyprint linenums languague-c&quot;&gt;ZEND_API int _zend_hash_init(HashTable *ht, uint nSize, hash_func_t pHashFunction, dtor_func_t pDestructor, zend_bool persistent ZEND_FILE_LINE_DC)
+{
+    uint i = 3;
+    Bucket **tmp;
+
+    SET_INCONSISTENT(HT_OK);
+
+    //长度向2的整数次幂圆整
+    if (nSize &gt;= 0x80000000) {
+        /* prevent overflow */
+        ht-&gt;nTableSize = 0x80000000;
+    } else {
+        while ((1U &lt;&lt; i) &lt; nSize) {
+            i++;
+        }
+        ht-&gt;nTableSize = 1 &lt;&lt; i;
+    }
+
+    ht-&gt;nTableMask = ht-&gt;nTableSize - 1;
+
+    /*此处省略若干代码…*/
+
+    return SUCCESS;
+}&lt;/pre&gt;
+&lt;p&gt;值得一提的是PHP向2的整数次幂取圆整方法非常巧妙，可以背下来在需要的时候使用。&lt;/p&gt;
+&lt;p&gt;Zend HashTable的哈希算法异常简单：&lt;/p&gt;
+&lt;p&gt;hash(key)=key &amp; nTableMask&lt;/p&gt;
+&lt;p&gt;即简单将数据的原始key与HashTable的nTableMask进行按位与即可。&lt;/p&gt;
+&lt;p&gt;如果原始key为字符串，则首先使用&lt;a href=&quot;http://blog.csdn.net/chen_alvin/article/details/5846714&quot; target=&quot;_blank&quot;&gt;Times33&lt;/a&gt;算法将字符串转为整形再与nTableMask按位与。&lt;/p&gt;
+&lt;p&gt;hash(strkey)=time33(strkey) &amp; nTableMask&lt;/p&gt;
+&lt;p&gt;下面是Zend源码中查找哈希表的代码：&lt;/p&gt;&lt;pre  class=&quot;prettyprint linenums languague-c&quot;&gt;ZEND_API int zend_hash_index_find(const HashTable *ht, ulong h, void **pData)
+{
+    uint nIndex;
+    Bucket *p;
+
+    IS_CONSISTENT(ht);
+
+    nIndex = h &amp; ht-&gt;nTableMask;
+
+    p = ht-&gt;arBuckets[nIndex];
+    while (p != NULL) {
+        if ((p-&gt;h == h) &amp;&amp; (p-&gt;nKeyLength == 0)) {
+            *pData = p-&gt;pData;
+            return SUCCESS;
+        }
+        p = p-&gt;pNext;
+    }
+    return FAILURE;
+}
+
+ZEND_API int zend_hash_find(const HashTable *ht, const char *arKey, uint nKeyLength, void **pData)
+{
+    ulong h;
+    uint nIndex;
+    Bucket *p;
+
+    IS_CONSISTENT(ht);
+
+    h = zend_inline_hash_func(arKey, nKeyLength);
+    nIndex = h &amp; ht-&gt;nTableMask;
+
+    p = ht-&gt;arBuckets[nIndex];
+    while (p != NULL) {
+        if ((p-&gt;h == h) &amp;&amp; (p-&gt;nKeyLength == nKeyLength)) {
+            if (!memcmp(p-&gt;arKey, arKey, nKeyLength)) {
+                *pData = p-&gt;pData;
+                return SUCCESS;
+            }
+        }
+        p = p-&gt;pNext;
+    }
+    return FAILURE;
+}&lt;/pre&gt;
+&lt;p&gt;其中zend_hash_index_find用于查找整数key的情况，zend_hash_find用于查找字符串key。逻辑基本一致，只是字符串key会通过zend_inline_hash_func转为整数key，zend_inline_hash_func封装了times33算法，具体代码就不贴出了。&lt;/p&gt;
+&lt;h1&gt;攻击&lt;/h1&gt;
+&lt;h2&gt;基本攻击&lt;/h2&gt;
+&lt;p&gt;知道了PHP内部哈希表的算法，就可以利用其原理构造用于攻击的数据。一种最简单的方法是利用掩码规律制造碰撞。上文提到Zend HashTable的长度nTableSize会被圆整为2的整数次幂，假设我们构造一个2^16的哈希表，则nTableSize的二进制表示为：1 0000 0000 0000 0000，而nTableMask = nTableSize – 1为：0 1111 1111 1111 1111。接下来，可以以0为初始值，以2^16为步长，制造足够多的数据，可以得到如下推测：&lt;/p&gt;
+&lt;p&gt;0000 0000 0000 0000 0000 &amp; 0 1111 1111 1111 1111 = 0&lt;/p&gt;
+&lt;p&gt;0001 0000 0000 0000 0000 &amp; 0 1111 1111 1111 1111 = 0&lt;/p&gt;
+&lt;p&gt;0010 0000 0000 0000 0000 &amp; 0 1111 1111 1111 1111 = 0&lt;/p&gt;
+&lt;p&gt;0011 0000 0000 0000 0000 &amp; 0 1111 1111 1111 1111 = 0&lt;/p&gt;
+&lt;p&gt;0100 0000 0000 0000 0000 &amp; 0 1111 1111 1111 1111 = 0&lt;/p&gt;
+&lt;p&gt;……&lt;/p&gt;
+&lt;p&gt;概况来说只要保证后16位均为0，则与掩码位于后得到的哈希值全部碰撞在位置0。&lt;/p&gt;
+&lt;p&gt;下面是利用这个原理写的一段攻击代码：&lt;/p&gt;&lt;pre  class=&quot;prettyprint linenums languague-php&quot;&gt;&lt;?php
+
+$size = pow(2, 16);
+
+$startTime = microtime(true);
+
+$array = array();
+for ($key = 0, $maxKey = ($size - 1) * $size; $key &lt;= $maxKey; $key += $size) {
+    $array[$key] = 0;
+}
+
+$endTime = microtime(true);
+
+echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
+&lt;p&gt;这段代码在我的VPS上（单CPU，512M内存）上用了近88秒才完成，并且在此期间CPU资源几乎被用尽：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/3.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;而普通的同样大小的哈希表插入仅用时0.036秒：&lt;/p&gt;&lt;pre  class=&quot;prettyprint linenums languague-php&quot;&gt;&lt;?php
+
+$size = pow(2, 16);
+
+$startTime = microtime(true);
+
+$array = array();
+for ($key = 0, $maxKey = ($size - 1) * $size; $key &lt;= $size; $key += 1) {
+    $array[$key] = 0;
+}
+
+$endTime = microtime(true);
+
+echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/4.png&quot;/&gt;&lt;/p&gt;
+&lt;p&gt;可以证明第二段代码插入N个元素的时间在O(N)水平，而第一段攻击代码则需O(N^2)的时间去插入N个元素。&lt;/p&gt;
+&lt;h2&gt;POST攻击&lt;/h2&gt;
+&lt;p&gt;当然，一般情况下很难遇到攻击者可以直接修改PHP代码的情况，但是攻击者仍可以通过一些方法间接构造哈希表来进行攻击。例如PHP会将接收到的HTTP POST请求中的数据构造为$_POST，而这是一个Array，内部就是通过Zend HashTable表示，因此攻击者只要构造一个含有大量碰撞key的post请求，就可以达到攻击的目的。具体做法不再演示。&lt;/p&gt;
+&lt;h1&gt;防护&lt;/h1&gt;
+&lt;h2&gt;POST攻击的防护&lt;/h2&gt;
+&lt;p&gt;针对POST方式的哈希碰撞攻击，目前PHP的防护措施是控制POST数据的数量。在&gt;=PHP5.3.9的版本中增加了一个配置项max_input_vars，用于标识一次http请求最大接收的参数个数，默认为1000。因此PHP5.3.x的用户可以通过升级至5.3.9来避免哈希碰撞攻击。5.2.x的用户可以使用这个patch：&lt;a href=&quot;http://www.laruence.com/2011/12/30/2440.html&quot;&gt;http://www.laruence.com/2011/12/30/2440.html&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;另外的防护方法是在Web服务器层面进行处理，例如限制http请求body的大小和参数的数量等，这个是现在用的最多的临时处理方案。具体做法与不同Web服务器相关，不再详述。&lt;/p&gt;
+&lt;h2&gt;其它防护&lt;/h2&gt;
+&lt;p&gt;上面的防护方法只是限制POST数据的数量，而不能彻底解决这个问题。例如，如果某个POST字段是一个json数据类型，会被PHP &lt;a href=&quot;http://cn.php.net/manual/en/function.json-decode.php&quot; target=&quot;_blank&quot;&gt;json_decode&lt;/a&gt;，那么只要构造一个超大的json攻击数据照样可以达到攻击目的。理论上，只要PHP代码中某处构造Array的数据依赖于外部输入，则都可能造成这个问题，因此彻底的解决方案要从Zend底层HashTable的实现动手。一般来说有两种方式，一是限制每个桶链表的最长长度；二是使用其它数据结构如&lt;a href=&quot;http://en.wikipedia.org/wiki/Red%E2%80%93black_tree&quot; target=&quot;_blank&quot;&gt;红黑树&lt;/a&gt;取代链表组织碰撞哈希（并不解决哈希碰撞，只是减轻攻击影响，将N个数据的操作时间从O(N^2)降至O(NlogN)，代价是普通情况下接近O(1)的操作均变为O(logN)）。&lt;/p&gt;
+&lt;p&gt;目前使用最多的仍然是POST数据攻击，因此建议生产环境的PHP均进行升级或打补丁。至于从数据结构层面修复这个问题，目前还没有任何方面的消息。&lt;/p&gt;
+&lt;h1&gt;参考&lt;/h1&gt;
+&lt;p&gt;[1] &lt;a href=&quot;http://nikic.github.com/2011/12/28/Supercolliding-a-PHP-array.html&quot; target=&quot;_blank&quot;&gt;Supercolliding a PHP array&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[2] &lt;a href=&quot;http://www.laruence.com/2011/12/30/2440.html&quot; target=&quot;_blank&quot;&gt;PHP5.2.*防止Hash冲突拒绝服务攻击的Patch&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[3] &lt;a href=&quot;http://www.laruence.com/2011/12/29/2412.html&quot; target=&quot;_blank&quot;&gt;通过构造Hash冲突实现各种语言的拒绝服务攻击&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[4] &lt;a href=&quot;http://www.laruence.com/2011/12/30/2435.html&quot; target=&quot;_blank&quot;&gt;PHP数组的Hash冲突实例&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[5] &lt;a href=&quot;http://www.php.net/archive/2011.php&quot; target=&quot;_blank&quot;&gt;PHP 5.4.0 RC4 released&lt;/a&gt;&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>MySQL索引背后的数据结构及算法原理</title>
+<link>http://blog.codinglabs.org/articles/theory-of-mysql-index.html</link>
+<guid>http://blog.codinglabs.org/articles/theory-of-mysql-index.html</guid>
+<pubDate>Mon, 17 Oct 2011 16:00:00 GMT</pubDate>
+<description>&lt;h1&gt;&lt;a name=&quot;nav-1&quot;&gt;&lt;/a&gt;摘要&lt;/h1&gt;
+&lt;p&gt;本文以MySQL数据库为研究对象，讨论与数据库索引相关的一些话题。特别需要说明的是，MySQL支持诸多存储引擎，而各种存储引擎对索引的支持也各不相同，因此MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。为了避免混乱，本文将只关注于BTree索引，因为这是平常使用MySQL时主要打交道的索引，至于哈希索引和全文索引本文暂不讨论。&lt;/p&gt;
+&lt;p&gt;文章主要内容分为三个部分。&lt;/p&gt;
+&lt;p&gt;第一部分主要从数据结构及算法理论层面讨论MySQL数据库索引的数理基础。&lt;/p&gt;
+&lt;p&gt;第二部分结合MySQL数据库中MyISAM和InnoDB数据存储引擎中索引的架构实现讨论聚集索引、非聚集索引及覆盖索引等话题。&lt;/p&gt;
+&lt;p&gt;第三部分根据上面的理论基础，讨论MySQL中高性能使用索引的策略。
+&lt;!--more--&gt;
+&lt;/p&gt;
+&lt;h1&gt;&lt;a name=&quot;nav-2&quot;&gt;&lt;/a&gt;数据结构及算法基础&lt;/h1&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-2-1&quot;&gt;&lt;/a&gt;索引的本质&lt;/h2&gt;
+&lt;p&gt;MySQL官方对索引的定义为：索引（Index）是帮助MySQL高效获取数据的数据结构。提取句子主干，就可以得到索引的本质：索引是数据结构。&lt;/p&gt;
+&lt;p&gt;我们知道，数据库查询是数据库的最主要功能之一。我们都希望查询数据的速度能尽可能的快，因此数据库系统的设计者会从查询算法的角度进行优化。最基本的查询算法当然是&lt;a href=&quot;http://en.wikipedia.org/wiki/Linear_search&quot; target=&quot;_blank&quot;&gt;顺序查找&lt;/a&gt;（linear search），这种复杂度为O(n)的算法在数据量很大时显然是糟糕的，好在计算机科学的发展提供了很多更优秀的查找算法，例如&lt;a href=&quot;http://en.wikipedia.org/wiki/Binary_search_algorithm&quot; target=&quot;_blank&quot;&gt;二分查找&lt;/a&gt;（binary search）、&lt;a href=&quot;http://en.wikipedia.org/wiki/Binary_search_tree&quot; target=&quot;_blank&quot;&gt;二叉树查找&lt;/a&gt;（binary tree search）等。如果稍微分析一下会发现，每种查找算法都只能应用于特定的数据结构之上，例如二分查找要求被检索数据有序，而二叉树查找只能应用于&lt;a href=&quot;http://en.wikipedia.org/wiki/Binary_search_tree&quot; target=&quot;_blank&quot;&gt;二叉查找树&lt;/a&gt;上，但是数据本身的组织结构不可能完全满足各种数据结构（例如，理论上不可能同时将两列都按顺序进行组织），所以，在数据之外，数据库系统还维护着满足特定查找算法的数据结构，这些数据结构以某种方式引用（指向）数据，这样就可以在这些数据结构上实现高级查找算法。这种数据结构，就是索引。&lt;/p&gt;
+&lt;p&gt;看一个例子：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/1.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图1&lt;/p&gt;
+&lt;p&gt;图1展示了一种可能的索引方式。左边是数据表，一共有两列七条记录，最左边的是数据记录的物理地址（注意逻辑上相邻的记录在磁盘上也并不是一定物理相邻的）。为了加快Col2的查找，可以维护一个右边所示的二叉查找树，每个节点分别包含索引键值和一个指向对应数据记录物理地址的指针，这样就可以运用二叉查找在\(O(log_2n)\)的复杂度内获取到相应数据。&lt;/p&gt;
+&lt;p&gt;虽然这是一个货真价实的索引，但是实际的数据库系统几乎没有使用二叉查找树或其进化品种&lt;a href=&quot;http://en.wikipedia.org/wiki/Red-black_tree&quot; target=&quot;_blank&quot;&gt;红黑树&lt;/a&gt;（red-black tree）实现的，原因会在下文介绍。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-2-2&quot;&gt;&lt;/a&gt;B-Tree和B+Tree&lt;/h2&gt;
+&lt;p&gt;目前大部分数据库系统及文件系统都采用B-Tree或其变种B+Tree作为索引结构，在本文的下一节会结合存储器原理及计算机存取原理讨论为什么B-Tree和B+Tree在被如此广泛用于索引，这一节先单纯从数据结构角度描述它们。&lt;/p&gt;
+&lt;h3&gt;B-Tree&lt;/h3&gt;
+&lt;p&gt;为了描述B-Tree，首先定义一条数据记录为一个二元组[key, data]，key为记录的键值，对于不同数据记录，key是互不相同的；data为数据记录除key外的数据。那么B-Tree是满足下列条件的数据结构：&lt;/p&gt;
+&lt;p&gt;d为大于1的一个正整数，称为B-Tree的度。&lt;/p&gt;
+&lt;p&gt;h为一个正整数，称为B-Tree的高度。&lt;/p&gt;
+&lt;p&gt;每个非叶子节点由n-1个key和n个指针组成，其中d&lt;=n&lt;=2d。&lt;/p&gt;
+&lt;p&gt;每个叶子节点最少包含一个key和两个指针，最多包含2d-1个key和2d个指针，叶节点的指针均为null 。&lt;/p&gt;
+&lt;p&gt;所有叶节点具有相同的深度，等于树高h。&lt;/p&gt;
+&lt;p&gt;key和指针互相间隔，节点两端是指针。&lt;/p&gt;
+&lt;p&gt;一个节点中的key从左到右非递减排列。&lt;/p&gt;
+&lt;p&gt;所有节点组成树结构。&lt;/p&gt;
+&lt;p&gt;每个指针要么为null，要么指向另外一个节点。&lt;/p&gt;
+&lt;p&gt;如果某个指针在节点node最左边且不为null，则其指向节点的所有key小于\(v(key_1)\)，其中\(v(key_1)\)为node的第一个key的值。&lt;/p&gt;
+&lt;p&gt;如果某个指针在节点node最右边且不为null，则其指向节点的所有key大于\(v(key_m)\)，其中\(v(key_m)\)为node的最后一个key的值。&lt;/p&gt;
+&lt;p&gt;如果某个指针在节点node的左右相邻key分别是\(key_i\)和\(key_{i+1}\)且不为null，则其指向节点的所有key小于\(v(key_{i+1})\)且大于\(v(key_i)\)。&lt;/p&gt;
+&lt;p&gt;图2是一个d=2的B-Tree示意图。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/2.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图2&lt;/p&gt;
+&lt;p&gt;由于B-Tree的特性，在B-Tree中按key检索数据的算法非常直观：首先从根节点进行二分查找，如果找到则返回对应节点的data，否则对相应区间的指针指向的节点递归进行查找，直到找到节点或找到null指针，前者查找成功，后者查找失败。B-Tree上查找算法的伪代码如下：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-c&quot;&gt;BTree_Search(node, key) {
+    if(node == null) return null;
+    foreach(node.key)
+    {
+        if(node.key[i] == key) return node.data[i];
+            if(node.key[i] &gt; key) return BTree_Search(point[i]-&gt;node);
+    }
+    return BTree_Search(point[i+1]-&gt;node);
+}
+data = BTree_Search(root, my_key);&lt;/pre&gt;
+关于B-Tree有一系列有趣的性质，例如一个度为d的B-Tree，设其索引N个key，则其树高h的上限为\(log_d((N+1)/2)\)，检索一个key，其查找节点个数的渐进复杂度为\(O(log_dN)\)。从这点可以看出，B-Tree是一个非常有效率的索引数据结构。&lt;/p&gt;
+&lt;p&gt;另外，由于插入删除新的数据记录会破坏B-Tree的性质，因此在插入删除时，需要对树进行一个分裂、合并、转移等操作以保持B-Tree性质，本文不打算完整讨论B-Tree这些内容，因为已经有许多资料详细说明了B-Tree的数学性质及插入删除算法，有兴趣的朋友可以在本文末的参考文献一栏找到相应的资料进行阅读。&lt;/p&gt;
+&lt;h3&gt;B+Tree&lt;/h3&gt;
+&lt;p&gt;B-Tree有许多变种，其中最常见的是B+Tree，例如MySQL就普遍使用B+Tree实现其索引结构。&lt;/p&gt;
+&lt;p&gt;与B-Tree相比，B+Tree有以下不同点：&lt;/p&gt;
+&lt;p&gt;每个节点的指针上限为2d而不是2d+1。&lt;/p&gt;
+&lt;p&gt;内节点不存储data，只存储key；叶子节点不存储指针。&lt;/p&gt;
+&lt;p&gt;图3是一个简单的B+Tree示意。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/3.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图3&lt;/p&gt;
+&lt;p&gt;由于并不是所有节点都具有相同的域，因此B+Tree中叶节点和内节点一般大小不同。这点与B-Tree不同，虽然B-Tree中不同节点存放的key和指针可能数量不一致，但是每个节点的域和上限是一致的，所以在实现中B-Tree往往对每个节点申请同等大小的空间。&lt;/p&gt;
+&lt;p&gt;一般来说，B+Tree比B-Tree更适合实现外存储索引结构，具体原因与外存储器原理及计算机存取原理有关，将在下面讨论。&lt;/p&gt;
+&lt;h3&gt;带有顺序访问指针的B+Tree&lt;/h3&gt;
+&lt;p&gt;一般在数据库系统或文件系统中使用的B+Tree结构都在经典B+Tree的基础上进行了优化，增加了顺序访问指针。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/4.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图4&lt;/p&gt;
+&lt;p&gt;如图4所示，在B+Tree的每个叶子节点增加一个指向相邻叶子节点的指针，就形成了带有顺序访问指针的B+Tree。做这个优化的目的是为了提高区间访问的性能，例如图4中如果要查询key为从18到49的所有数据记录，当找到18后，只需顺着节点和指针顺序遍历就可以一次性访问到所有数据节点，极大提到了区间查询效率。&lt;/p&gt;
+&lt;p&gt;这一节对B-Tree和B+Tree进行了一个简单的介绍，下一节结合存储器存取原理介绍为什么目前B+Tree是数据库系统实现索引的首选数据结构。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-2-3&quot;&gt;&lt;/a&gt;为什么使用B-Tree（B+Tree）&lt;/h2&gt;
+&lt;p&gt;上文说过，红黑树等数据结构也可以用来实现索引，但是文件系统及数据库系统普遍采用B-/+Tree作为索引结构，这一节将结合计算机组成原理相关知识讨论B-/+Tree作为索引的理论基础。&lt;/p&gt;
+&lt;p&gt;一般来说，索引本身也很大，不可能全部存储在内存中，因此索引往往以索引文件的形式存储的磁盘上。这样的话，索引查找过程中就要产生磁盘I/O消耗，相对于内存存取，I/O存取的消耗要高几个数量级，所以评价一个数据结构作为索引的优劣最重要的指标就是在查找过程中磁盘I/O操作次数的渐进复杂度。换句话说，索引的结构组织要尽量减少查找过程中磁盘I/O的存取次数。下面先介绍内存和磁盘存取原理，然后再结合这些原理分析B-/+Tree作为索引的效率。&lt;/p&gt;
+&lt;h3&gt;主存存取原理&lt;/h3&gt;
+&lt;p&gt;目前计算机使用的主存基本都是随机读写存储器（RAM），现代RAM的结构和存取原理比较复杂，这里本文抛却具体差别，抽象出一个十分简单的存取模型来说明RAM的工作原理。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/5.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图5&lt;/p&gt;
+&lt;p&gt;从抽象角度看，主存是一系列的存储单元组成的矩阵，每个存储单元存储固定大小的数据。每个存储单元有唯一的地址，现代主存的编址规则比较复杂，这里将其简化成一个二维地址：通过一个行地址和一个列地址可以唯一定位到一个存储单元。图5展示了一个4 x 4的主存模型。&lt;/p&gt;
+&lt;p&gt;主存的存取过程如下：&lt;/p&gt;
+&lt;p&gt;当系统需要读取主存时，则将地址信号放到地址总线上传给主存，主存读到地址信号后，解析信号并定位到指定存储单元，然后将此存储单元数据放到数据总线上，供其它部件读取。&lt;/p&gt;
+&lt;p&gt;写主存的过程类似，系统将要写入单元地址和数据分别放在地址总线和数据总线上，主存读取两个总线的内容，做相应的写操作。&lt;/p&gt;
+&lt;p&gt;这里可以看出，主存存取的时间仅与存取次数呈线性关系，因为不存在机械操作，两次存取的数据的“距离”不会对时间有任何影响，例如，先取A0再取A1和先取A0再取D3的时间消耗是一样的。&lt;/p&gt;
+&lt;h3&gt;磁盘存取原理&lt;/h3&gt;
+&lt;p&gt;上文说过，索引一般以文件形式存储在磁盘上，索引检索需要磁盘I/O操作。与主存不同，磁盘I/O存在机械运动耗费，因此磁盘I/O的时间消耗是巨大的。&lt;/p&gt;
+&lt;p&gt;图6是磁盘的整体结构示意图。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/6.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图6&lt;/p&gt;
+&lt;p&gt;一个磁盘由大小相同且同轴的圆形盘片组成，磁盘可以转动（各个磁盘必须同步转动）。在磁盘的一侧有磁头支架，磁头支架固定了一组磁头，每个磁头负责存取一个磁盘的内容。磁头不能转动，但是可以沿磁盘半径方向运动（实际是斜切向运动），每个磁头同一时刻也必须是同轴的，即从正上方向下看，所有磁头任何时候都是重叠的（不过目前已经有多磁头独立技术，可不受此限制）。&lt;/p&gt;
+&lt;p&gt;图7是磁盘结构的示意图。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/7.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图7&lt;/p&gt;
+&lt;p&gt;盘片被划分成一系列同心环，圆心是盘片中心，每个同心环叫做一个磁道，所有半径相同的磁道组成一个柱面。磁道被沿半径线划分成一个个小的段，每个段叫做一个扇区，每个扇区是磁盘的最小存储单元。为了简单起见，我们下面假设磁盘只有一个盘片和一个磁头。&lt;/p&gt;
+&lt;p&gt;当需要从磁盘读取数据时，系统会将数据逻辑地址传给磁盘，磁盘的控制电路按照寻址逻辑将逻辑地址翻译成物理地址，即确定要读的数据在哪个磁道，哪个扇区。为了读取这个扇区的数据，需要将磁头放到这个扇区上方，为了实现这一点，磁头需要移动对准相应磁道，这个过程叫做寻道，所耗费时间叫做寻道时间，然后磁盘旋转将目标扇区旋转到磁头下，这个过程耗费的时间叫做旋转时间。&lt;/p&gt;
+&lt;h3&gt;局部性原理与磁盘预读&lt;/h3&gt;
+&lt;p&gt;由于存储介质的特性，磁盘本身存取就比主存慢很多，再加上机械运动耗费，磁盘的存取速度往往是主存的几百分分之一，因此为了提高效率，要尽量减少磁盘I/O。为了达到这个目的，磁盘往往不是严格按需读取，而是每次都会预读，即使只需要一个字节，磁盘也会从这个位置开始，顺序向后读取一定长度的数据放入内存。这样做的理论依据是计算机科学中著名的局部性原理：&lt;/p&gt;
+&lt;p&gt;当一个数据被用到时，其附近的数据也通常会马上被使用。&lt;/p&gt;
+&lt;p&gt;程序运行期间所需要的数据通常比较集中。&lt;/p&gt;
+&lt;p&gt;由于磁盘顺序读取的效率很高（不需要寻道时间，只需很少的旋转时间），因此对于具有局部性的程序来说，预读可以提高I/O效率。&lt;/p&gt;
+&lt;p&gt;预读的长度一般为页（page）的整倍数。页是计算机管理存储器的逻辑块，硬件及操作系统往往将主存和磁盘存储区分割为连续的大小相等的块，每个存储块称为一页（在许多操作系统中，页得大小通常为4k），主存和磁盘以页为单位交换数据。当程序要读取的数据不在主存中时，会触发一个缺页异常，此时系统会向磁盘发出读盘信号，磁盘会找到数据的起始位置并向后连续读取一页或几页载入内存中，然后异常返回，程序继续运行。&lt;/p&gt;
+&lt;h3&gt;B-/+Tree索引的性能分析&lt;/h3&gt;
+&lt;p&gt;到这里终于可以分析B-/+Tree索引的性能了。&lt;/p&gt;
+&lt;p&gt;上文说过一般使用磁盘I/O次数评价索引结构的优劣。先从B-Tree分析，根据B-Tree的定义，可知检索一次最多需要访问h个节点。数据库系统的设计者巧妙利用了磁盘预读原理，将一个节点的大小设为等于一个页，这样每个节点只需要一次I/O就可以完全载入。为了达到这个目的，在实际实现B-Tree还需要使用如下技巧：&lt;/p&gt;
+&lt;p&gt;每次新建节点时，直接申请一个页的空间，这样就保证一个节点物理上也存储在一个页里，加之计算机存储分配都是按页对齐的，就实现了一个node只需一次I/O。&lt;/p&gt;
+&lt;p&gt;B-Tree中一次检索最多需要h-1次I/O（根节点常驻内存），渐进复杂度为\(O(h)=O(log_dN)\)。一般实际应用中，出度d是非常大的数字，通常超过100，因此h非常小（通常不超过3）。&lt;/p&gt;
+&lt;p&gt;综上所述，用B-Tree作为索引结构效率是非常高的。&lt;/p&gt;
+&lt;p&gt;而红黑树这种结构，h明显要深的多。由于逻辑上很近的节点（父子）物理上可能很远，无法利用局部性，所以红黑树的I/O渐进复杂度也为O(h)，效率明显比B-Tree差很多。&lt;/p&gt;
+&lt;p&gt;上文还说过，B+Tree更适合外存索引，原因和内节点出度d有关。从上面分析可以看到，d越大索引的性能越好，而出度的上限取决于节点内key和data的大小：&lt;/p&gt;
+&lt;p&gt;\(d_{max}=floor(pagesize / (keysize + datasize + pointsize))\)&lt;/p&gt;
+&lt;p&gt;floor表示向下取整。由于B+Tree内节点去掉了data域，因此可以拥有更大的出度，拥有更好的性能。&lt;/p&gt;
+&lt;p&gt;这一章从理论角度讨论了与索引相关的数据结构与算法问题，下一章将讨论B+Tree是如何具体实现为MySQL中索引，同时将结合MyISAM和InnDB存储引擎介绍非聚集索引和聚集索引两种不同的索引实现形式。&lt;/p&gt;
+&lt;h1&gt;&lt;a name=&quot;nav-3&quot;&gt;&lt;/a&gt;MySQL索引实现&lt;/h1&gt;
+&lt;p&gt;在MySQL中，索引属于存储引擎级别的概念，不同存储引擎对索引的实现方式是不同的，本文主要讨论MyISAM和InnoDB两个存储引擎的索引实现方式。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-3-1&quot;&gt;&lt;/a&gt;MyISAM索引实现&lt;/h2&gt;
+&lt;p&gt;MyISAM引擎使用B+Tree作为索引结构，叶节点的data域存放的是数据记录的地址。下图是MyISAM索引的原理图：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/8.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图8&lt;/p&gt;
+&lt;p&gt;这里设表一共有三列，假设我们以Col1为主键，则图8是一个MyISAM表的主索引（Primary key）示意。可以看出MyISAM的索引文件仅仅保存数据记录的地址。在MyISAM中，主索引和辅助索引（Secondary key）在结构上没有任何区别，只是主索引要求key是唯一的，而辅助索引的key可以重复。如果我们在Col2上建立一个辅助索引，则此索引的结构如下图所示：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/9.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图9&lt;/p&gt;
+&lt;p&gt;同样也是一颗B+Tree，data域保存数据记录的地址。因此，MyISAM中索引检索的算法为首先按照B+Tree搜索算法搜索索引，如果指定的Key存在，则取出其data域的值，然后以data域的值为地址，读取相应数据记录。&lt;/p&gt;
+&lt;p&gt;MyISAM的索引方式也叫做“非聚集”的，之所以这么称呼是为了与InnoDB的聚集索引区分。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-3-2&quot;&gt;&lt;/a&gt;InnoDB索引实现&lt;/h2&gt;
+&lt;p&gt;虽然InnoDB也使用B+Tree作为索引结构，但具体实现方式却与MyISAM截然不同。&lt;/p&gt;
+&lt;p&gt;第一个重大区别是InnoDB的数据文件本身就是索引文件。从上文知道，MyISAM索引文件和数据文件是分离的，索引文件仅保存数据记录的地址。而在InnoDB中，表数据文件本身就是按B+Tree组织的一个索引结构，这棵树的叶节点data域保存了完整的数据记录。这个索引的key是数据表的主键，因此InnoDB表数据文件本身就是主索引。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/10.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图10&lt;/p&gt;
+&lt;p&gt;图10是InnoDB主索引（同时也是数据文件）的示意图，可以看到叶节点包含了完整的数据记录。这种索引叫做聚集索引。因为InnoDB的数据文件本身要按主键聚集，所以InnoDB要求表必须有主键（MyISAM可以没有），如果没有显式指定，则MySQL系统会自动选择一个可以唯一标识数据记录的列作为主键，如果不存在这种列，则MySQL自动为InnoDB表生成一个隐含字段作为主键，这个字段长度为6个字节，类型为长整形。&lt;/p&gt;
+&lt;p&gt;第二个与MyISAM索引的不同是InnoDB的辅助索引data域存储相应记录主键的值而不是地址。换句话说，InnoDB的所有辅助索引都引用主键作为data域。例如，图11为定义在Col3上的一个辅助索引：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/11.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图11&lt;/p&gt;
+&lt;p&gt;这里以英文字符的ASCII码作为比较准则。聚集索引这种实现方式使得按主键的搜索十分高效，但是辅助索引搜索需要检索两遍索引：首先检索辅助索引获得主键，然后用主键到主索引中检索获得记录。&lt;/p&gt;
+&lt;p&gt;了解不同存储引擎的索引实现方式对于正确使用和优化索引都非常有帮助，例如知道了InnoDB的索引实现后，就很容易明白为什么不建议使用过长的字段作为主键，因为所有辅助索引都引用主索引，过长的主索引会令辅助索引变得过大。再例如，用非单调的字段作为主键在InnoDB中不是个好主意，因为InnoDB数据文件本身是一颗B+Tree，非单调的主键会造成在插入新记录时数据文件为了维持B+Tree的特性而频繁的分裂调整，十分低效，而使用自增字段作为主键则是一个很好的选择。&lt;/p&gt;
+&lt;p&gt;下一章将具体讨论这些与索引有关的优化策略。&lt;/p&gt;
+&lt;h1&gt;&lt;a name=&quot;nav-4&quot;&gt;&lt;/a&gt;索引使用策略及优化&lt;/h1&gt;
+&lt;p&gt;MySQL的优化主要分为结构优化（Scheme optimization）和查询优化（Query optimization）。本章讨论的高性能索引策略主要属于结构优化范畴。本章的内容完全基于上文的理论基础，实际上一旦理解了索引背后的机制，那么选择高性能的策略就变成了纯粹的推理，并且可以理解这些策略背后的逻辑。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-4-1&quot;&gt;&lt;/a&gt;示例数据库&lt;/h2&gt;
+&lt;p&gt;为了讨论索引策略，需要一个数据量不算小的数据库作为示例。本文选用MySQL官方文档中提供的示例数据库之一：employees。这个数据库关系复杂度适中，且数据量较大。下图是这个数据库的E-R关系图（引用自MySQL官方手册）：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/12.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图12&lt;/p&gt;
+&lt;p&gt;MySQL官方文档中关于此数据库的页面为&lt;a title=&quot;http://dev.mysql.com/doc/employee/en/employee.html&quot; href=&quot;http://dev.mysql.com/doc/employee/en/employee.html&quot;&gt;http://dev.mysql.com/doc/employee/en/employee.html&lt;/a&gt;。里面详细介绍了此数据库，并提供了下载地址和导入方法，如果有兴趣导入此数据库到自己的MySQL可以参考文中内容。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-4-2&quot;&gt;&lt;/a&gt;最左前缀原理与相关优化&lt;/h2&gt;
+&lt;p&gt;高效使用索引的首要条件是知道什么样的查询会使用到索引，这个问题和B+Tree中的“最左前缀原理”有关，下面通过例子说明最左前缀原理。&lt;/p&gt;
+&lt;p&gt;这里先说一下联合索引的概念。在上文中，我们都是假设索引只引用了单个的列，实际上，MySQL中的索引可以以一定顺序引用多个列，这种索引叫做联合索引，一般的，一个联合索引是一个有序元组&lt;a1, a2, …, an&gt;，其中各个元素均为数据表的一列，实际上要严格定义索引需要用到关系代数，但是这里我不想讨论太多关系代数的话题，因为那样会显得很枯燥，所以这里就不再做严格定义。另外，单列索引可以看成联合索引元素数为1的特例。&lt;/p&gt;
+&lt;p&gt;以employees.titles表为例，下面先查看其上都有哪些索引：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SHOW INDEX FROM employees.titles;
++--------+------------+----------+--------------+-------------+-----------+-------------+------+------------+
+| Table  | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Null | Index_type |
++--------+------------+----------+--------------+-------------+-----------+-------------+------+------------+
+| titles |          0 | PRIMARY  |            1 | emp_no      | A         |        NULL |      | BTREE      |
+| titles |          0 | PRIMARY  |            2 | title       | A         |        NULL |      | BTREE      |
+| titles |          0 | PRIMARY  |            3 | from_date   | A         |      443308 |      | BTREE      |
+| titles |          1 | emp_no   |            1 | emp_no      | A         |      443308 |      | BTREE      |
++--------+------------+----------+--------------+-------------+-----------+-------------+------+------------+&lt;/pre&gt;
+&lt;p&gt;从结果中可以到titles表的主索引为&lt;emp_no, title, from_date&gt;，还有一个辅助索引&lt;emp_no&gt;。为了避免多个索引使事情变复杂（MySQL的SQL优化器在多索引时行为比较复杂），这里我们将辅助索引drop掉：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;ALTER TABLE employees.titles DROP INDEX emp_no;&lt;/pre&gt;
+&lt;p&gt;这样就可以专心分析索引PRIMARY的行为了。&lt;/p&gt;
+&lt;h3&gt;情况一：全列匹配。&lt;/h3&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND title='Senior Engineer' AND from_date='1986-06-26';
++----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
+| id | select_type | table  | type  | possible_keys | key     | key_len | ref               | rows | Extra |
++----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
+|  1 | SIMPLE      | titles | const | PRIMARY       | PRIMARY | 59      | const,const,const |    1 |       |
++----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+&lt;/pre&gt;
+&lt;p&gt;很明显，当按照索引中所有列进行精确匹配（这里精确匹配指“=”或“IN”匹配）时，索引可以被用到。这里有一点需要注意，理论上索引对顺序是敏感的，但是由于MySQL的查询优化器会自动调整where子句的条件顺序以使用适合的索引，例如我们将where中的条件顺序颠倒：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE from_date='1986-06-26' AND emp_no='10001' AND title='Senior Engineer';
++----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
+| id | select_type | table  | type  | possible_keys | key     | key_len | ref               | rows | Extra |
++----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
+|  1 | SIMPLE      | titles | const | PRIMARY       | PRIMARY | 59      | const,const,const |    1 |       |
++----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+&lt;/pre&gt;
+&lt;p&gt;效果是一样的。&lt;/p&gt;
+&lt;h3&gt;情况二：最左前缀匹配。&lt;/h3&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001';
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------+
+| id | select_type | table  | type | possible_keys | key     | key_len | ref   | rows | Extra |
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------+
+|  1 | SIMPLE      | titles | ref  | PRIMARY       | PRIMARY | 4       | const |    1 |       |
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------+&lt;/pre&gt;
+&lt;p&gt;当查询条件精确匹配索引的左边连续一个或几个列时，如&lt;emp_no&gt;或&lt;emp_no, title&gt;，所以可以被用到，但是只能用到一部分，即条件所组成的最左前缀。上面的查询从分析结果看用到了PRIMARY索引，但是key_len为4，说明只用到了索引的第一列前缀。&lt;/p&gt;
+&lt;h3&gt;情况三：查询条件用到了索引中列的精确匹配，但是中间某个条件未提供。&lt;/h3&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND from_date='1986-06-26';
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
+| id | select_type | table  | type | possible_keys | key     | key_len | ref   | rows | Extra       |
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
+|  1 | SIMPLE      | titles | ref  | PRIMARY       | PRIMARY | 4       | const |    1 | Using where |
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+&lt;/pre&gt;
+&lt;p&gt;此时索引使用情况和情况二相同，因为title未提供，所以查询只用到了索引的第一列，而后面的from_date虽然也在索引中，但是由于title不存在而无法和左前缀连接，因此需要对结果进行扫描过滤from_date（这里由于emp_no唯一，所以不存在扫描）。如果想让from_date也使用索引而不是where过滤，可以增加一个辅助索引&lt;emp_no, from_date&gt;，此时上面的查询会使用这个索引。除此之外，还可以使用一种称之为“隔离列”的优化方法，将emp_no与from_date之间的“坑”填上。&lt;/p&gt;
+&lt;p&gt;首先我们看下title一共有几种不同的值：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SELECT DISTINCT(title) FROM employees.titles;
++--------------------+
+| title              |
++--------------------+
+| Senior Engineer    |
+| Staff              |
+| Engineer           |
+| Senior Staff       |
+| Assistant Engineer |
+| Technique Leader   |
+| Manager            |
++--------------------+&lt;/pre&gt;
+&lt;p&gt;只有7种。在这种成为“坑”的列值比较少的情况下，可以考虑用“IN”来填补这个“坑”从而形成最左前缀：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles
+WHERE emp_no='10001'
+AND title IN ('Senior Engineer', 'Staff', 'Engineer', 'Senior Staff', 'Assistant Engineer', 'Technique Leader', 'Manager')
+AND from_date='1986-06-26';
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+| id | select_type | table  | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+|  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 59      | NULL |    7 | Using where |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
+&lt;p&gt;这次key_len为59，说明索引被用全了，但是从type和rows看出IN实际上执行了一个range查询，这里检查了7个key。看下两种查询的性能比较：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SHOW PROFILES;
++----------+------------+-------------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                         |
++----------+------------+-------------------------------------------------------------------------------+
+|       10 | 0.00058000 | SELECT * FROM employees.titles WHERE emp_no='10001' AND from_date='1986-06-26'|
+|       11 | 0.00052500 | SELECT * FROM employees.titles WHERE emp_no='10001' AND title IN ...          |
++----------+------------+-------------------------------------------------------------------------------+&lt;/pre&gt;
+&lt;p&gt;“填坑”后性能提升了一点。如果经过emp_no筛选后余下很多数据，则后者性能优势会更加明显。当然，如果title的值很多，用填坑就不合适了，必须建立辅助索引。&lt;/p&gt;
+&lt;h3&gt;情况四：查询条件没有指定索引第一列。&lt;/h3&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE from_date='1986-06-26';
++----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
+| id | select_type | table  | type | possible_keys | key  | key_len | ref  | rows   | Extra       |
++----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
+|  1 | SIMPLE      | titles | ALL  | NULL          | NULL | NULL    | NULL | 443308 | Using where |
++----+-------------+--------+------+---------------+------+---------+------+--------+-------------+&lt;/pre&gt;
+&lt;p&gt;由于不是最左前缀，索引这样的查询显然用不到索引。&lt;/p&gt;
+&lt;h3&gt;情况五：匹配某列的前缀字符串。&lt;/h3&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND title LIKE 'Senior%';
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+| id | select_type | table  | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+|  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 56      | NULL |    1 | Using where |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
+&lt;p&gt;此时可以用到索引，&lt;strike&gt;但是如果通配符不是只出现在末尾，则无法使用索引。&lt;/strike&gt;（原文表述有误，如果通配符%不出现在开头，则可以用到索引，但根据具体情况不同可能只会用其中一个前缀）&lt;/p&gt;
+&lt;h3&gt;情况六：范围查询。&lt;/h3&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no &lt; '10010' and title='Senior Engineer';
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+| id | select_type | table  | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+|  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 4       | NULL |   16 | Using where |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
+&lt;p&gt;范围列可以用到索引（必须是最左前缀），但是范围列后面的列无法用到索引。同时，索引最多用于一个范围列，因此如果查询条件中有两个范围列则无法全用到索引。&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles
+WHERE emp_no &lt; '10010'
+AND title='Senior Engineer'
+AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+| id | select_type | table  | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+|  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 4       | NULL |   16 | Using where |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
+&lt;p&gt;可以看到索引对第二个范围索引无能为力。这里特别要说明MySQL一个有意思的地方，那就是仅用explain可能无法区分范围索引和多值匹配，因为在type中这两者都显示为range。同时，用了“between”并不意味着就是范围查询，例如下面的查询：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles
+WHERE emp_no BETWEEN '10001' AND '10010'
+AND title='Senior Engineer'
+AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+| id | select_type | table  | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
+|  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 59      | NULL |   16 | Using where |
++----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
+&lt;p&gt;看起来是用了两个范围查询，但作用于emp_no上的“BETWEEN”实际上相当于“IN”，也就是说emp_no实际是多值精确匹配。可以看到这个查询用到了索引全部三个列。因此在MySQL中要谨慎地区分多值匹配和范围匹配，否则会对MySQL的行为产生困惑。&lt;/p&gt;
+&lt;h3&gt;情况七：查询条件中含有函数或表达式。&lt;/h3&gt;
+&lt;p&gt;很不幸，如果查询条件中含有函数或表达式，则MySQL不会为这列使用索引（虽然某些在数学意义上可以使用）。例如：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND left(title, 6)='Senior';
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
+| id | select_type | table  | type | possible_keys | key     | key_len | ref   | rows | Extra       |
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
+|  1 | SIMPLE      | titles | ref  | PRIMARY       | PRIMARY | 4       | const |    1 | Using where |
++----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+&lt;/pre&gt;
+&lt;p&gt;虽然这个查询和情况五中功能相同，但是由于使用了函数left，则无法为title列应用索引，而情况五中用LIKE则可以。再如：&lt;p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no - 1='10000';
++----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
+| id | select_type | table  | type | possible_keys | key  | key_len | ref  | rows   | Extra       |
++----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
+|  1 | SIMPLE      | titles | ALL  | NULL          | NULL | NULL    | NULL | 443308 | Using where |
++----+-------------+--------+------+---------------+------+---------+------+--------+-------------+&lt;/pre&gt;
+&lt;p&gt;显然这个查询等价于查询emp_no为10001的函数，但是由于查询条件是一个表达式，MySQL无法为其使用索引。看来MySQL还没有智能到自动优化常量表达式的程度，因此在写查询语句时尽量避免表达式出现在查询中，而是先手工私下代数运算，转换为无表达式的查询语句。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-4-3&quot;&gt;&lt;/a&gt;索引选择性与前缀索引&lt;/h2&gt;
+&lt;p&gt;既然索引可以加快查询速度，那么是不是只要是查询语句需要，就建上索引？答案是否定的。因为索引虽然加快了查询速度，但索引也是有代价的：索引文件本身要消耗存储空间，同时索引会加重插入、删除和修改记录时的负担，另外，MySQL在运行时也要消耗资源维护索引，因此索引并不是越多越好。一般两种情况下不建议建索引。&lt;/p&gt;
+&lt;p&gt;第一种情况是表记录比较少，例如一两千条甚至只有几百条记录的表，没必要建索引，让查询做全表扫描就好了。至于多少条记录才算多，这个个人有个人的看法，我个人的经验是以2000作为分界线，记录数不超过 2000可以考虑不建索引，超过2000条可以酌情考虑索引。&lt;/p&gt;
+&lt;p&gt;另一种不建议建索引的情况是索引的选择性较低。所谓索引的选择性（Selectivity），是指不重复的索引值（也叫基数，Cardinality）与表记录数（#T）的比值：&lt;/p&gt;
+&lt;p&gt;Index Selectivity = Cardinality / #T&lt;/p&gt;
+&lt;p&gt;显然选择性的取值范围为(0, 1]，选择性越高的索引价值越大，这是由B+Tree的性质决定的。例如，上文用到的employees.titles表，如果title字段经常被单独查询，是否需要建索引，我们看一下它的选择性：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SELECT count(DISTINCT(title))/count(*) AS Selectivity FROM employees.titles;
++-------------+
+| Selectivity |
++-------------+
+|      0.0000 |
++-------------+&lt;/pre&gt;
+&lt;p&gt;title的选择性不足0.0001（精确值为0.00001579），所以实在没有什么必要为其单独建索引。&lt;/p&gt;
+&lt;p&gt;有一种与索引选择性有关的索引优化策略叫做前缀索引，就是用列的前缀代替整个列作为索引key，当前缀长度合适时，可以做到既使得前缀索引的选择性接近全列索引，同时因为索引key变短而减少了索引文件的大小和维护开销。下面以employees.employees表为例介绍前缀索引的选择和使用。&lt;/p&gt;
+&lt;p&gt;从图12可以看到employees表只有一个索引&lt;emp_no&gt;，那么如果我们想按名字搜索一个人，就只能全表扫描了：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;EXPLAIN SELECT * FROM employees.employees WHERE first_name='Eric' AND last_name='Anido';
++----+-------------+-----------+------+---------------+------+---------+------+--------+-------------+
+| id | select_type | table     | type | possible_keys | key  | key_len | ref  | rows   | Extra       |
++----+-------------+-----------+------+---------------+------+---------+------+--------+-------------+
+|  1 | SIMPLE      | employees | ALL  | NULL          | NULL | NULL    | NULL | 300024 | Using where |
++----+-------------+-----------+------+---------------+------+---------+------+--------+-------------+&lt;/pre&gt;
+&lt;p&gt;如果频繁按名字搜索员工，这样显然效率很低，因此我们可以考虑建索引。有两种选择，建&lt;first_name&gt;或&lt;first_name, last_name&gt;，看下两个索引的选择性：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SELECT count(DISTINCT(first_name))/count(*) AS Selectivity FROM employees.employees;
++-------------+
+| Selectivity |
++-------------+
+|      0.0042 |
++-------------+
+SELECT count(DISTINCT(concat(first_name, last_name)))/count(*) AS Selectivity FROM employees.employees;
++-------------+
+| Selectivity |
++-------------+
+|      0.9313 |
++-------------+&lt;/pre&gt;
+&lt;p&gt;&lt;first_name&gt;显然选择性太低，&lt;first_name, last_name&gt;选择性很好，但是first_name和last_name加起来长度为30，有没有兼顾长度和选择性的办法？可以考虑用first_name和last_name的前几个字符建立索引，例如&lt;first_name, left(last_name, 3)&gt;，看看其选择性：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SELECT count(DISTINCT(concat(first_name, left(last_name, 3))))/count(*) AS Selectivity FROM employees.employees;
++-------------+
+| Selectivity |
++-------------+
+|      0.7879 |
++-------------+&lt;/pre&gt;
+&lt;p&gt;选择性还不错，但离0.9313还是有点距离，那么把last_name前缀加到4：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SELECT count(DISTINCT(concat(first_name, left(last_name, 4))))/count(*) AS Selectivity FROM employees.employees;
++-------------+
+| Selectivity |
++-------------+
+|      0.9007 |
++-------------+&lt;/pre&gt;
+&lt;p&gt;这时选择性已经很理想了，而这个索引的长度只有18，比&lt;first_name, last_name&gt;短了接近一半，我们把这个前缀索引 建上：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;ALTER TABLE employees.employees
+ADD INDEX `first_name_last_name4` (first_name, last_name(4));&lt;/pre&gt;
+&lt;p&gt;此时再执行一遍按名字查询，比较分析一下与建索引前的结果：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint languague-sql&quot;&gt;SHOW PROFILES;
++----------+------------+---------------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                           |
++----------+------------+---------------------------------------------------------------------------------+
+|       87 | 0.11941700 | SELECT * FROM employees.employees WHERE first_name='Eric' AND last_name='Anido' |
+|       90 | 0.00092400 | SELECT * FROM employees.employees WHERE first_name='Eric' AND last_name='Anido' |
++----------+------------+---------------------------------------------------------------------------------+&lt;/pre&gt;
+&lt;p&gt;性能的提升是显著的，查询速度提高了120多倍。&lt;/p&gt;
+&lt;p&gt;前缀索引兼顾索引大小和查询速度，但是其缺点是不能用于ORDER BY和GROUP BY操作，也不能用于Covering index（即当索引本身包含查询所需全部数据时，不再访问数据文件本身）。&lt;/p&gt;
+&lt;h2&gt;&lt;a name=&quot;nav-4-4&quot;&gt;&lt;/a&gt;InnoDB的主键选择与插入优化&lt;/h2&gt;
+&lt;p&gt;在使用InnoDB存储引擎时，如果没有特别的需要，请永远使用一个与业务无关的自增字段作为主键。&lt;/p&gt;
+&lt;p&gt;经常看到有帖子或博客讨论主键选择问题，有人建议使用业务无关的自增主键，有人觉得没有必要，完全可以使用如学号或身份证号这种唯一字段作为主键。不论支持哪种论点，大多数论据都是业务层面的。如果从数据库索引优化角度看，使用InnoDB引擎而不使用自增主键绝对是一个糟糕的主意。&lt;/p&gt;
+&lt;p&gt;上文讨论过InnoDB的索引实现，InnoDB使用聚集索引，数据记录本身被存于主索引（一颗B+Tree）的叶子节点上。这就要求同一个叶子节点内（大小为一个内存页或磁盘页）的各条数据记录按主键顺序存放，因此每当有一条新的记录插入时，MySQL会根据其主键将其插入适当的节点和位置，如果页面达到装载因子（InnoDB默认为15/16），则开辟一个新的页（节点）。&lt;/p&gt;
+&lt;p&gt;如果表使用自增主键，那么每次插入新的记录，记录就会顺序添加到当前索引节点的后续位置，当一页写满，就会自动开辟一个新的页。如下图所示：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/13.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图13&lt;/p&gt;
+&lt;p&gt;这样就会形成一个紧凑的索引结构，近似顺序填满。由于每次插入时也不需要移动已有数据，因此效率很高，也不会增加很多开销在维护索引上。&lt;/p&gt;
+&lt;p&gt;如果使用非自增主键（如果身份证号或学号等），由于每次插入主键的值近似于随机，因此每次新纪录都要被插到现有索引页得中间某个位置：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/14.png&quot; /&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot;&gt;图14&lt;/p&gt;
+&lt;p&gt;此时MySQL不得不为了将新记录插到合适位置而移动数据，甚至目标页面可能已经被回写到磁盘上而从缓存中清掉，此时又要从磁盘上读回来，这增加了很多开销，同时频繁的移动、分页操作造成了大量的碎片，得到了不够紧凑的索引结构，后续不得不通过OPTIMIZE TABLE来重建表并优化填充页面。&lt;/p&gt;
+&lt;p&gt;因此，只要可以，请尽量在InnoDB上采用自增字段做主键。&lt;/p&gt;
+&lt;h1&gt;&lt;a name=&quot;nav-5&quot;&gt;&lt;/a&gt;后记&lt;/h1&gt;
+&lt;p&gt;这篇文章断断续续写了半个月，主要内容就是上面这些了。不可否认，这篇文章在一定程度上有纸上谈兵之嫌，因为我本人对MySQL的使用属于菜鸟级别，更没有太多数据库调优的经验，在这里大谈数据库索引调优有点大言不惭。就当是我个人的一篇学习笔记了。&lt;/p&gt;
+&lt;p&gt;其实数据库索引调优是一项技术活，不能仅仅靠理论，因为实际情况千变万化，而且MySQL本身存在很复杂的机制，如查询优化策略和各种引擎的实现差异等都会使情况变得更加复杂。但同时这些理论是索引调优的基础，只有在明白理论的基础上，才能对调优策略进行合理推断并了解其背后的机制，然后结合实践中不断的实验和摸索，从而真正达到高效使用MySQL索引的目的。&lt;/p&gt;
+&lt;p&gt;另外，MySQL索引及其优化涵盖范围非常广，本文只是涉及到其中一部分。如与排序（ORDER BY）相关的索引优化及覆盖索引（Covering index）的话题本文并未涉及，同时除B-Tree索引外MySQL还根据不同引擎支持的哈希索引、全文索引等等本文也并未涉及。如果有机会，希望再对本文未涉及的部分进行补充吧。&lt;/p&gt;
+&lt;h1&gt;&lt;a name=&quot;nav-6&quot;&gt;&lt;/a&gt;参考文献&lt;/h1&gt;
+&lt;p&gt;[1] Baron Scbwartz等 著，王小东等 译；高性能MySQL（High Performance MySQL）；电子工业出版社，2010&lt;/p&gt;
+&lt;p&gt;[2] Michael Kofler 著，杨晓云等 译；MySQL5权威指南（The Definitive Guide to MySQL5）；人民邮电出版社，2006&lt;/p&gt;
+&lt;p&gt;[3] 姜承尧 著；MySQL技术内幕-InnoDB存储引擎；机械工业出版社，2011&lt;/p&gt;
+&lt;p&gt;[4] D Comer, Ubiquitous B-tree; ACM Computing Surveys (CSUR), 1979&lt;/p&gt;
+&lt;p&gt;[5] Codd, E. F. (1970). &quot;A relational model of data for large shared data banks&quot;. Communications of the ACM, , Vol. 13, No. 6, pp. 377-387&lt;/p&gt;
+&lt;p&gt;[6] MySQL5.1参考手册 - &lt;a title=&quot;http://dev.mysql.com/doc/refman/5.1/zh/index.html&quot; href=&quot;http://dev.mysql.com/doc/refman/5.1/zh/index.html&quot;&gt;http://dev.mysql.com/doc/refman/5.1/zh/index.html&lt;/a&gt;&lt;/p&gt;
+</description>
+</item>
+
     </channel>
 </rss>
