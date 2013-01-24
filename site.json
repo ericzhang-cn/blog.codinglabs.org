@@ -24,5 +24,8 @@
         "beginYear": "2011",
         "endYear": "2013",
         "ICP": "京ICP备12043064-1号"
+    },
+    "duoshuo": {
+        "shortName": "coding-labs"
     }
 }

@@ -26,7 +26,7 @@
                     <a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2013-01-03 | 最后更新 2013-01-22
+                    作者 张洋 | 发布于 2013-01-03 | 最后更新 2013-01-24
                 </div>
                 <div id="article-content">
                     <p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html" target="_blank">上一篇文章</a>介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。</p>
@@ -105,6 +105,20 @@
 <p>本文主要介绍了LogLog Counting算法，相比LC其最大的优势就是内存使用极少。不过LLC也有自己的问题，就是当n不是特别大时，其估计误差过大，因此目前实际使用的基数估计算法都是基于LLC改进的算法，这些改进算法通过一定手段抑制原始LLC在n较小时偏差过大的问题。后面要介绍的HyperLogLog Counting和Adaptive Counting就是这类改进算法。</p>
 
                 </div>
+<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+    var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- Duoshuo Comment END -->
             </div>
         </div>
         <div id="footer">

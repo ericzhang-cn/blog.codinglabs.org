@@ -26,7 +26,7 @@
                     <a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2013-01-09 | 最后更新 2013-01-22
+                    作者 张洋 | 发布于 2013-01-09 | 最后更新 2013-01-24
                 </div>
                 <div id="article-content">
                     <p>在<a href="http://www.codinglabs.org/html/algorithms-for-cardinality-estimation-part-iii.html" target="_blank">前一篇文章</a>中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。</p>
@@ -98,6 +98,20 @@
 <p>本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。在本系列最后一篇文章中，我会介绍一淘数据部的基数估计实现<a href="https://github.com/chaoslawful/ccard-lib" target="_blank">ccard-lib</a>的一些实现细节和使用方式。并做一些实验。</p>
 
                 </div>
+<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+    var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- Duoshuo Comment END -->
             </div>
         </div>
         <div id="footer">
