@@ -109,13 +109,13 @@
             "abstract": "本文以MySQL数据库为研究对象，讨论与数据库索引相关的一些话题。特别需要说明的是，MySQL支持诸多存储引擎，而各种存储引擎对索引的支持也各不相同，因此MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。为了避免混乱，本文将只关注于BTree索引，因为这是平常使用MySQL时主要打交道的索引，至于哈希索引和全文索引本文暂不讨论。"
         },
         {
-            "id": "/intro-of-nginx-module-development",
+            "id": "intro-of-nginx-module-development",
             "title": "Nginx模块开发入门",
             "postedOn": "2011-10-18",
             "author": "张洋",
             "tags": [""],
             "category": "",
-            "abstract": "Nginx是当前最流行的HTTP Server之一，根据W3Techs的统计，目前世界排名（根据Alexa）前100万的网站中，Nginx的占有率为6.8%。与Apache相比，Nginx在高并发情况下具有巨大的性能优势。Nginx属于典型的微内核设计，其内核非常简洁和优雅，同时具有非常高的可扩展性。Nginx最初仅仅主要被用于做反向代理，后来随着HTTP核心的成熟和各种HTTP扩展模块的丰富，Nginx越来越多被用来取代Apache而单独承担HTTP Server的责任，例如目前淘宝内各个部门正越来越多使用Nginx取代Apache，据笔者了解，在腾讯和新浪等公司也存在类似情况。同时，大量的第三方扩展模块也令Nginx越来越强大。例如，由淘宝的工程师清无（王晓哲）和春来（章亦春）所开发的nginx_lua_module可以将Lua语言嵌入到Nginx配置中，从而利用Lua极大增强了Nginx本身的编程能力，甚至可以不用配合其它脚本语言（如PHP或Python等），只靠Nginx本身就可以实现复杂业务的处理。而春来所开发的ngx_openresty更是通过集成LuaJIT等组件，将Nginx本身变成了一个完全的应用开发平台。目前淘宝数据平台与产品部量子统计的产品都是基于ngx_openresty所开发。对ngxin_lua_module或ngx_openresty感兴趣的朋友可以参考我在关键词上给出的链接，后续我也可能会写一些与其有关的文章。本文将会重点关注Nginx模块开发入门及基础。目前Nginx的学习资料非常少，而扩展模块开发相关的资料几乎只有《Emiller's Guide To Nginx Module Development》一文，此文十分经典，但是由于Nginx版本的演进，其中少许内容可能有点过时。本文是笔者在研读这篇文章和Nginx源代码的基础上，对自己学习Nginx模块开发的一个总结。本文将通过一个完整的模块开发实例讲解Nginx模块开发的入门内容。"
+            "abstract": "Nginx是当前最流行的HTTP Server之一，根据W3Techs的统计，目前世界排名（根据Alexa）前100万的网站中，Nginx的占有率为6.8%。与Apache相比，Nginx在高并发情况下具有巨大的性能优势。<p>Nginx属于典型的微内核设计，其内核非常简洁和优雅，同时具有非常高的可扩展性。Nginx最初仅仅主要被用于做反向代理，后来随着HTTP核心的成熟和各种HTTP扩展模块的丰富，Nginx越来越多被用来取代Apache而单独承担HTTP Server的责任，例如目前淘宝内各个部门正越来越多使用Nginx取代Apache，据笔者了解，在腾讯和新浪等公司也存在类似情况。</p><p>同时，大量的第三方扩展模块也令Nginx越来越强大。例如，由淘宝的工程师清无（王晓哲）和春来（章亦春）所开发的nginx_lua_module可以将Lua语言嵌入到Nginx配置中，从而利用Lua极大增强了Nginx本身的编程能力，甚至可以不用配合其它脚本语言（如PHP或Python等），只靠Nginx本身就可以实现复杂业务的处理。而春来所开发的ngx_openresty更是通过集成LuaJIT等组件，将Nginx本身变成了一个完全的应用开发平台。目前淘宝数据平台与产品部量子统计的产品都是基于ngx_openresty所开发。对ngxin_lua_module或ngx_openresty感兴趣的朋友可以参考我在关键词上给出的链接，后续我也可能会写一些与其有关的文章。</p><p>本文将会重点关注Nginx模块开发入门及基础。目前Nginx的学习资料非常少，而扩展模块开发相关的资料几乎只有《Emiller's Guide To Nginx Module Development》一文，此文十分经典，但是由于Nginx版本的演进，其中少许内容可能有点过时。本文是笔者在研读这篇文章和Nginx源代码的基础上，对自己学习Nginx模块开发的一个总结。本文将通过一个完整的模块开发实例讲解Nginx模块开发的入门内容。</p>"
         }
     ]
 }

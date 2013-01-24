@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Thu, 24 Jan 2013 07:05:12 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 24 Jan 2013 07:14:19 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
@@ -1776,8 +1776,8 @@ ADD INDEX `first_name_last_name4` (first_name, last_name(4));&lt;/pre&gt;
 </item>
 <item>
 <title>Nginx模块开发入门</title>
-<link>http://blog.codinglabs.org/articles//intro-of-nginx-module-development.html</link>
-<guid>http://blog.codinglabs.org/articles//intro-of-nginx-module-development.html</guid>
+<link>http://blog.codinglabs.org/articles/intro-of-nginx-module-development.html</link>
+<guid>http://blog.codinglabs.org/articles/intro-of-nginx-module-development.html</guid>
 <pubDate>Mon, 17 Oct 2011 16:00:00 GMT</pubDate>
 <description>&lt;h1&gt;&lt;a name=&quot;section0&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;
 &lt;p&gt;Nginx是当前最流行的HTTP Server之一，根据W3Techs的统计，目前世界排名（根据Alexa）前100万的网站中，&lt;a href=&quot;http://w3techs.com/technologies/overview/web_server/all&quot; target=&quot;_blank&quot;&gt;Nginx的占有率为6.8%&lt;/a&gt;。与Apache相比，&lt;a href=&quot;http://www.joeandmotorboat.com/2008/02/28/apache-vs-nginx-web-server-performance-deathmatch/&quot; target=&quot;_blank&quot;&gt;Nginx在高并发情况下具有巨大的性能优势&lt;/a&gt;。&lt;/p&gt;
