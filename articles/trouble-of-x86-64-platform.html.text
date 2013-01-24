@@ -15,10 +15,9 @@ main() {
 <p>不妨以目前最普遍的x86-64体系（64位，小端序）考虑此问题。在64位机器上，double是符合<a href="http://zh.wikipedia.org/wiki/IEEE_754" target="_blank">IEEE754标准</a>的双精度浮点数。根据IEEE标准，双精度浮点数由8个字节共64位组成，其中最高位为符号位，次高的11位为指数位，余下的52位为尾数位。示意见下图：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/trouble-of-x86-64-platform/1.png"/></p>
 <p>各位段意义如下：</p>
-<ul>
-<li>S = 0表示正数，S = 1表示负数。 
-<li>E可以看成一个无符号整数，当其二进制位为全0或全1时，表示非规约浮点数或特殊值，此处不讨论，仅讨论其不全为0或全为1的情况。当E不全为零或全为1时，浮点数是规约的，此时E表示以2为底的指数加上一个固定的偏移量。偏移量被定义为\(2^{(E) - 1} - 1\)，其中(E)表示E所占的比特数，此处为11，所以偏移量为\(2^{(11) - 1} - 1=1023\)。因此实际的指数值要在E的基础上减1023，例如E的位表示是10000000000（十进制1024），则表示实际指数值为\(1024-1023=1\)。 
-<li>M在规约形式下，表示一个二进制小数，实际值是这个小数加1。例如，M=101000…0表示\(2^{-1} + 2^{-3} + 1 = 1.625\)。 </li></ul>
+<p>S = 0表示正数，S = 1表示负数。</p> 
+<p>E可以看成一个无符号整数，当其二进制位为全0或全1时，表示非规约浮点数或特殊值，此处不讨论，仅讨论其不全为0或全为1的情况。当E不全为零或全为1时，浮点数是规约的，此时E表示以2为底的指数加上一个固定的偏移量。偏移量被定义为\(2^{(E) - 1} - 1\)，其中(E)表示E所占的比特数，此处为11，所以偏移量为\(2^{(11) - 1} - 1=1023\)。因此实际的指数值要在E的基础上减1023，例如E的位表示是10000000000（十进制1024），则表示实际指数值为\(1024-1023=1\)。</p>
+<p>M在规约形式下，表示一个二进制小数，实际值是这个小数加1。例如，M=101000…0表示\(2^{-1} + 2^{-3} + 1 = 1.625\)。</p> 
 <p>一个规约的IEEE双精度浮点数的实际值为：</p>
 <p>\(V = (-1)^S \times 2^{E - 1023} \times (1 + M)\)</p>
 <p>根据以上分析，10可以表示为\(1.25 \times 8\)，因此取S = 0，E = 10000000010，M = 0100…0，则整个浮点数的二进制表示为：</p>
@@ -61,13 +60,13 @@ ret
 .long   1076101120
 .ident  "GCC: (GNU) 4.4.6 20120305 (Red Hat 4.4.6-4)"
 .section    .note.GNU-stack,"",@progbits</pre>
-<p><br>为了方便对比，我重新写了下面的C代码：<br></p><pre class="prettyprint linenums languague-c">#include &lt;stdio.h&gt;
+<p>为了方便对比，我重新写了下面的C代码：</p><pre class="prettyprint linenums languague-c">#include &lt;stdio.h&gt;
 
 main() {
     int a = 10; 
     printf("a = %d\n", a); 
 }</pre>
-<p><br>其汇编为：<br></p><pre class="prettyprint linenums languague-asm">.file   "int_as_int.c"
+<p>其汇编为：</p><pre class="prettyprint linenums languague-asm">.file   "int_as_int.c"
 .section    .rodata.str1.1,"aMS",@progbits,1
 .LC0:
 .string "a = %d\n"
