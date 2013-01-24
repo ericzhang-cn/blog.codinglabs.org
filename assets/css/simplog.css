@@ -96,8 +96,3 @@ div#rss {
     border-bottom: 1px dashed #CCCCCC;
     text-align: right;
 }
-div#rss a {
-    font-size: 20px;
-    font-weight: bold;
-    color: #FF9900;
-}
