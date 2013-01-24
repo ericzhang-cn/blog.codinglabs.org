@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>{%= TITLE %}</title>
+        <link>{%= LINK %}</link>
+        <description>{%= DESC %}</description>
+        <lastBuildDate>{%= LAST_BUILD_DATE %}</lastBuildDate>
+        <language>{%= LANG %}</language>
+        {%= ITEMS %}
+    </channel>
+</rss>
