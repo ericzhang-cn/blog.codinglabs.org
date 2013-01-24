@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Thu, 24 Jan 2013 07:42:54 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 24 Jan 2013 13:57:51 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
@@ -1968,15 +1968,15 @@ ngx_http_echo_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 &lt;p&gt;create_loc_conf新建一个ngx_http_echo_loc_conf_t，分配内存，并初始化其中的数据，然后返回这个结构的指针；merge_loc_conf将父block域的配置信息合并到create_loc_conf新建的配置结构体中。&lt;/p&gt;
 &lt;p&gt;其中ngx_conf_merge_str_value不是一个函数，而是一个宏，其定义在core/ngx_conf_file.h中：&lt;/p&gt;
 &lt;pre class=&quot;prettyprint linenums languague-c&quot;&gt;#define ngx_conf_merge_str_value(conf, prev, default)                        \
-if (conf.data == NULL) {                                                 \
-    if (prev.data) {                                                     \
-        conf.len = prev.len;                                             \
-        conf.data = prev.data;                                           \
-    } else {                                                             \
-        conf.len = sizeof(default) - 1;                                  \
-        conf.data = (u_char *) default;                                  \
-    }                                                                    \
-}&lt;/pre&gt;
+    if (conf.data == NULL) {                                                 \
+        if (prev.data) {                                                     \
+            conf.len = prev.len;                                             \
+            conf.data = prev.data;                                           \
+        } else {                                                             \
+            conf.len = sizeof(default) - 1;                                  \
+            conf.data = (u_char *) default;                                  \
+        }                                                                    \
+    }&lt;/pre&gt;
 &lt;p&gt;同时可以看到，core/ngx_conf_file.h还定义了很多merge value的宏用于merge各种数据。它们的行为比较相似：使用prev填充conf，如果prev的数据为空则使用default填充。&lt;/p&gt;
 &lt;h2&gt;&lt;a name=&quot;section2-4&quot;&gt;&lt;/a&gt;编写Handler&lt;/h2&gt;
 &lt;p&gt;下面的工作是编写handler。handler可以说是模块中真正干活的代码，它主要有以下四项职责：&lt;/p&gt;
@@ -2038,7 +2038,7 @@ ngx_http_echo_handler(ngx_http_request_t *r)
     void                            **loc_conf;
     ngx_http_event_handler_pt         read_event_handler;
     ngx_http_event_handler_pt         write_event_handler;
-    #if (NGX_HTTP_CACHE)
+#if (NGX_HTTP_CACHE)
     ngx_http_cache_t                 *cache;
 #endif
     ngx_http_upstream_t              *upstream;
