@@ -100,6 +100,15 @@
             "abstract": "最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。"
         },
         {
+            "id": "write-daemon-with-php",
+            "title": "如何使用PHP编写daemon process",
+            "postedOn": "2011-10-24",
+            "author": "张洋",
+            "tags": [""],
+            "category": "",
+            "abstract": "从php的架构体系来说，php分为三个层次：sapi、php core和zend engine。php core本身和web没有任何耦合，php通过sapi与其它应用程序通信，例如mod_php就是为apache编写的sapi实现，同样，fpm是一个基于fastcgi协议的sapi实现，这些sapi都是与web server配合用于处理web请求的。但是也有许多sapi与web无关，例如cli sapi可以使得在命令行环境下直接执行php，embed sapi可以将php嵌入其它语言（如Lua）那样。这里我并不打算详细讨论php的架构体系和sapi的话题，只是说明从架构体系角度目前的php早已被设计为支持各种环境，而非为web独有。<p>除了架构体系的支持外，php丰富的扩展模块也为php在不同环境发挥作用提供了后盾，例如本文要提到的pcntl模块和posix模块配合可以实现基本的进程管理、信号处理等操作系统级别的功能，而sockets模块可以使php具有socket通信的能力。因此php完全可以用于编写类似于shell或perl常做的工具性脚本，甚至是具有server性质的daemon process。</p><p>为了展示php如何编写daemon server，我用php编写了一个简单的http server，这个server以daemon process的形式运行。当然，为了把重点放在如何使用php编写daemon，我没有为这个http server实现具体业务逻辑，但它可以监听指定端口，接受http请求并返回给客户端一条固定的文本，整个过程通过socket实现，全部由php编写而成。</p>"
+        },
+        {
             "id": "theory-of-mysql-index",
             "title": "MySQL索引背后的数据结构及算法原理",
             "postedOn": "2011-10-18",

@@ -1,0 +1,101 @@
+<p>今天下午在<a href="http://segmentfault.com">segmentfault.com</a>看到一个<a href="http://segmentfault.com/question/585/php%E6%80%8E%E4%B9%88%E5%81%9A%E6%9C%8D%E5%8A%A1%E5%8C%96" target="_blank">提问</a>，提问标题是“PHP怎么做服务化”，其中问道php是不是只能以web方式调用。其实很多人对PHP的使用场景都有误解，认为php只能用于编写web脚本，实际上，从PHP4开始，php的使用场景早已不限于处理web请求。</p>
+<p>从php的架构体系来说，php分为三个层次：sapi、php core和zend engine。php core本身和web没有任何耦合，php通过sapi与其它应用程序通信，例如mod_php就是为apache编写的sapi实现，同样，fpm是一个基于fastcgi协议的sapi实现，这些sapi都是与web server配合用于处理web请求的。但是也有许多sapi与web无关，例如cli sapi可以使得在命令行环境下直接执行php，embed sapi可以将php嵌入其它语言（如Lua）那样。这里我并不打算详细讨论php的架构体系和sapi的话题，只是说明从架构体系角度目前的php早已被设计为支持各种环境，而非为web独有。</p>
+<p>除了架构体系的支持外，php丰富的扩展模块也为php在不同环境发挥作用提供了后盾，例如本文要提到的<a href="http://cn.php.net/manual/en/book.pcntl.php" target="_blank">pcntl模块</a>和<a href="http://cn.php.net/manual/en/book.posix.php" target="_blank">posix模块</a>配合可以实现基本的进程管理、信号处理等操作系统级别的功能，而<a href="http://cn.php.net/manual/en/book.sockets.php" target="_blank">sockets模块</a>可以使php具有socket通信的能力。因此php完全可以用于编写类似于shell或perl常做的工具性脚本，甚至是具有server性质的daemon process。</p>
+<p>为了展示php如何编写daemon server，我用php编写了一个简单的http server，这个server以daemon process的形式运行。当然，为了把重点放在如何使用php编写daemon，我没有为这个http server实现具体业务逻辑，但它可以监听指定端口，接受http请求并返回给客户端一条固定的文本，整个过程通过socket实现，全部由php编写而成。</p>
+<!--more-->
+<h1>代码实例</h1>
+<p>下面是这个程序的完整代码：</p>
+<pre class="prettyprint linenums languague-php">&lt;?php
+
+//Accpet the http client request and generate response content.
+//As a demo, this function just send "PHP HTTP Server" to client.
+function handle_http_request($address, $port)
+{
+    $max_backlog = 16;
+    $res_content = "HTTP/1.1 200 OK
+        Content-Length: 15
+        Content-Type: text/plain; charset=UTF-8
+
+        PHP HTTP Server";
+    $res_len = strlen($res_content);
+
+    //Create, bind and listen to socket
+    if(($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === FALSE)
+    {
+        echo "Create socket failed!\n";
+        exit;
+    }   
+
+    if((socket_bind($socket, $address, $port)) === FALSE)
+    {
+        echo "Bind socket failed!\n";
+        exit;
+    }
+
+    if((socket_listen($socket, $max_backlog)) === FALSE)
+    {
+        echo "Listen to socket failed!\n";
+        exit;
+    }
+
+    //Loop
+    while(TRUE)
+    {
+        if(($accept_socket = socket_accept($socket)) === FALSE)
+        {
+            continue;
+        }
+        else
+        {
+            socket_write($accept_socket, $res_content, $res_len);   
+            socket_close($accept_socket);
+        }
+    }
+}
+
+//Run as daemon process.
+function run()
+{
+    if(($pid1 = pcntl_fork()) === 0)
+        //First child process
+    {
+        posix_setsid(); //Set first child process as the session leader.
+
+        if(($pid2 = pcntl_fork()) === 0)
+            //Second child process, which run as daemon.
+        {
+            //Replaced with your own domain or address.
+            handle_http_request('www.codinglabs.org', 9999); 
+        }
+        else
+        {
+            //First child process exit;
+            exit;
+        }
+    }
+    else
+    {
+        //Wait for first child process exit;
+        pcntl_wait($status);
+    }
+}
+
+//Entry point.
+run();
+
+?&gt;</pre>
+<p>这里我假设各位对Unix环境编程都比较了解，所以不做太多细节的解释，只梳理一下。简单来看，这个程序主要由两个部分组成，handle_http_request函数负责处理http请求，其编写方法与用C编写的tcp server类似：创建socket、绑定、监听，然后通过一个循环处理每个connect过来的客户端，一旦accept到一个连接，则输出固定的文本“PHP HTTP Server”（当然http头需要首先构建好），这里没有考虑多路复用和非阻塞等情况，而只是一个简单的同步阻塞tcp server。</p>
+<p>run函数负责将整个程序变为daemon process，方法和Unix环境下C的方法很类似，通过两次fork，第一次fork后调用setsid将子进程1变为session leader，这样就可以让子进程2与其祖先detach，即使祖先进程结束了它也会继续运行（托孤给init进程）。相关细节我不再赘述，对Unix进程相关不熟悉的朋友可以参考《<a href="http://www.kohala.com/start/apue.html" target="_blank">Advanced Programming in the UNIX Environment</a>》一书。</p>
+<p>注意，在这里<a href="http://cn.php.net/manual/en/function.pcntl-fork.php" target="_blank">pcntl_fork</a>对应Unix中的fork，<a href="http://cn.php.net/manual/en/function.pcntl-wait.php" target="_blank">pcntl_wait</a>对应wait，而<a href="http://cn.php.net/manual/en/function.posix-setsid.php" target="_blank">posix_setsid</a>对应setsid，更多函数可以参考PHP Manual中的pcntl和fork模块相关内容。</p>
+<h1>检验</h1>
+<p>下面在命令行下启动这个脚本：</p><pre class="prettyprint linenums languague-bash">php httpserver.php</pre>
+<p>用ps命令可以看到我们已经启动了一个daemon进程：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/write-daemon-with-php/1.png"/></p>
+<p>这里我绑定的是我博客的域名www.codinglabs.org，端口是9999，可以按需要进行修改。</p>
+<p>下面我先用curl命令看下这个http server是否正常运行：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/write-daemon-with-php/2.png"/></p>
+<p>看来是没问题，再到浏览器中看一下：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/write-daemon-with-php/3.png"/></p>
+<h1>结语</h1>
+<p>当然，这个程序算不上真正的http server，即使作为一个daemon process，也是不完善的，很多必要的事情如修改执行目录（php中可以通过chroot实现）、信号绑定、日志功能等等都没有去做，不过作为一个demo，它已经足够说明php不只是可以编写动态网页处理脚本。如果有的朋友有兴趣，可以使用php将我上面说的功能为这个的http server加上。</p>
+<p>还有一点要说明的是，pcntl和sockets模块默认是不安装的，如果在安装php时没有通过参数指定安装，则需要单独安装这两个扩展模块。</p>
