@@ -41,7 +41,7 @@
 <!--more-->
 <h1>代码实例</h1>
 <p>下面是这个程序的完整代码：</p>
-<pre class="prettyprint linenums languague-php">&lt;?php
+<pre class="prettyprint linenums language-php">&lt;?php
 
 //Accpet the http client request and generate response content.
 //As a demo, this function just send "PHP HTTP Server" to client.
@@ -124,7 +124,7 @@ run();
 <p>run函数负责将整个程序变为daemon process，方法和Unix环境下C的方法很类似，通过两次fork，第一次fork后调用setsid将子进程1变为session leader，这样就可以让子进程2与其祖先detach，即使祖先进程结束了它也会继续运行（托孤给init进程）。相关细节我不再赘述，对Unix进程相关不熟悉的朋友可以参考《<a href="http://www.kohala.com/start/apue.html" target="_blank">Advanced Programming in the UNIX Environment</a>》一书。</p>
 <p>注意，在这里<a href="http://cn.php.net/manual/en/function.pcntl-fork.php" target="_blank">pcntl_fork</a>对应Unix中的fork，<a href="http://cn.php.net/manual/en/function.pcntl-wait.php" target="_blank">pcntl_wait</a>对应wait，而<a href="http://cn.php.net/manual/en/function.posix-setsid.php" target="_blank">posix_setsid</a>对应setsid，更多函数可以参考PHP Manual中的pcntl和fork模块相关内容。</p>
 <h1>检验</h1>
-<p>下面在命令行下启动这个脚本：</p><pre class="prettyprint linenums languague-bash">php httpserver.php</pre>
+<p>下面在命令行下启动这个脚本：</p><pre class="prettyprint linenums language-bash">php httpserver.php</pre>
 <p>用ps命令可以看到我们已经启动了一个daemon进程：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/write-daemon-with-php/1.png"/></p>
 <p>这里我绑定的是我博客的域名www.codinglabs.org，端口是9999，可以按需要进行修改。</p>
