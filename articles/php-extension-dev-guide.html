@@ -41,22 +41,22 @@ PHP扩展组件的开发过程在Unix和Windows环境下有所不同，但基本
 <h1>下载PHP源代码</h1>
 <p>要开发PHP扩展，第一步要下载PHP源代码，因为里面有开发扩展需要的工具。我下载的是PHP最新版本5.3.3，格式为tar.bz2压缩包。下载地址为：<a href="http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror">http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror</a>。</p>
 <p>下载后，将源代码移动到合适的目录并解压。解压命令为：</p>
-<p>[bash]tar -jxvf 源码包名称[/bash]</p>
+<pre class="prettyprint linenums language-bash">tar -jxvf 源码包名称</pre>
 <p>若下载的是tar.gz压缩包，解压命令为</p>
-<p>[bash]tar -zxvf 源码包名称[/bash]</p>
+<pre class="prettyprint linenums language-bash">tar -zxvf 源码包名称</pre>
 <p>解压后，在源代码目录中有个ext目录，这里便是和PHP扩展有关的目录。进入目录后用ls查看，可以看到许多已经存在的扩展。下图是在我的环境下查看的结果：</p>
-<p><a href="http://www.codinglabs.org/wp-content/uploads/2011/10/1.png"><img class="aligncenter size-full wp-image-187" title="1" alt="" src="http://www.codinglabs.org/wp-content/uploads/2011/10/1.png" width="639" height="257"></a></p>
+<p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/1.png"/></p>
 <p>其中蓝色的均是扩展包目录，其中可以看到我们很熟悉的mysql、iconv和gd等等。而ext_skel是Unix环境下用于自动生成PHP扩展框架的脚本工具，后面我们马上会用到，ext_skel_win32.php是windows下对应的脚本。</p>
 <h1>开发自己的PHP扩展——say_hello</h1>
 <p>下面我们开发一个PHP扩展：say_hello。这个扩展很简单，只是接受一个字符串参数，然后输出“Hello xxx!”。这个例子只是为了介绍PHP扩展组件的开发流程，不承担实际功能。</p>
 <h2>生成扩展组件框架</h2>
 <p>PHP的扩展组件开发目录和文件是有固定组织结构的，你可以随便进入一个已有扩展组件目录，查看其所有文件，我想你一定眼花缭乱了。当然你可以选择手工完成框架的搭建，不过我相信你更希望有什么东西来帮你完成。上文提到的ext_skel脚本就是用来自动构建扩展包框架的工具。ext_skel的完整命令为：</p>
-<p>[bash]ext_skel --extname=module [--proto=file] [--stubs=file] [--xml[=file]] [--skel=dir] [--full-xml] [--no-help][/bash]</p>
+<pre class="prettyprint linenums language-bash">ext_skel --extname=module [--proto=file] [--stubs=file] [--xml[=file]] [--skel=dir] [--full-xml] [--no-help]</pre>
 <p>作为初学者，我们不必了解所有命令参数，实际上，大多数情况下只需要提供第一个参数就可以了，也就是扩展模块的名字。因此，我们在ext目录中键入如下命令：</p>
-<p>[bash]./ext_skel --extname=say_hello[/bash]</p>
+<pre class="prettyprint linenums language-bash">./ext_skel --extname=say_hello</pre>
 <p>（如果你希望详细了解ext_skel的各项命令参数，请<a href="http://www.php.net/manual/en/internals2.buildsys.skeleton.php" target="_blank">参考这里</a>）</p>
 <p>这时再用ls查看，会发现多了一个“say_hello”目录，进入这个目录，会发现ext_skel已经为我们建立好了say_hello的基本框架，如下图：</p>
-<p><a href="http://www.codinglabs.org/wp-content/uploads/2011/10/2.png"><img class="aligncenter size-full wp-image-189" title="2" alt="" src="http://www.codinglabs.org/wp-content/uploads/2011/10/2.png" width="462" height="54"></a></p>
+<p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/2.png"/></p>
 <p>如果你懒得弄清楚PHP扩展包目录结构的全部内容，那么里面有三个文件你必须注意：</p>
 <p>config.m4：这是Unix环境下的Build System配置文件，后面将会通过它生成配置和安装。</p>
 <p>php_say_hello.h：这个文件是扩展模块的头文件。遵循C语言一贯的作风，这个里面可以放置一些自定义的结构体、全局变量等等。</p>
@@ -66,101 +66,327 @@ PHP扩展组件的开发过程在Unix和Windows环境下有所不同，但基本
 <p>开发PHP扩展组件的第一步不是写实现代码，而是要先配置好Build System选项。由于我们是在Linux下开发，所以这里的配置主要与config.m4有关。</p>
 <p>关于Build System配置这一块，要是写起来能写一大堆，而且与Unix系统很多东西相关，就算我有兴趣写估计大家也没兴趣看，所以这里我们从略，只拣关键地方说一下，关于config.m4更多细节可以<a href="http://www.php.net/manual/en/internals2.buildsys.configunix.php" target="_blank">参考这里</a>。</p>
 <p>打开生成的config.m4文件，内容大致如下：</p>
-<p>[bash]dnl $Id$<br>dnl config.m4 for extension say_hello<br>dnl Comments in this file start with the string 'dnl'.<br>dnl Remove where necessary. This file will not work<br>dnl without editing.</p>
-<p>dnl If your extension references something external, use with:<br>dnl PHP_ARG_WITH(say_hello, for say_hello support,<br>dnl Make sure that the comment is aligned:<br>dnl [ --with-say_hello Include say_hello support])</p>
-<p>dnl Otherwise use enable:<br>dnl PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,<br>dnl Make sure that the comment is aligned:<br>dnl [ --enable-say_hello Enable say_hello support])</p>
-<p>if test "$PHP_SAY_HELLO" != "no"; then<br>dnl Write more examples of tests here...<br>dnl # --with-say_hello -&gt; check with-path<br>dnl SEARCH_PATH="/usr/local /usr" # you might want to change this<br>dnl SEARCH_FOR="/include/say_hello.h" # you most likely want to change this<br>dnl if test -r $PHP_SAY_HELLO/$SEARCH_FOR; then # path given as parameter<br>dnl SAY_HELLO_DIR=$PHP_SAY_HELLO<br>dnl else # search default path list<br>dnl AC_MSG_CHECKING([for say_hello files in default path])<br>dnl for i in $SEARCH_PATH ; do<br>dnl if test -r $i/$SEARCH_FOR; then<br>dnl SAY_HELLO_DIR=$i<br>dnl AC_MSG_RESULT(found in $i)<br>dnl fi<br>dnl done<br>dnl fi<br>dnl<br>dnl if test -z "$SAY_HELLO_DIR"; then<br>dnl AC_MSG_RESULT([not found])<br>dnl AC_MSG_ERROR([Please reinstall the say_hello distribution])<br>dnl fi<br>dnl # --with-say_hello -&gt; add include path<br>dnl PHP_ADD_INCLUDE($SAY_HELLO_DIR/include)<br>dnl # --with-say_hello -&gt; check for lib and symbol presence<br>dnl LIBNAME=say_hello # you may want to change this<br>dnl LIBSYMBOL=say_hello # you most likely want to change this<br>dnl PHP_CHECK_LIBRARY($LIBNAME,$LIBSYMBOL,<br>dnl [<br>dnl PHP_ADD_LIBRARY_WITH_PATH($LIBNAME, $SAY_HELLO_DIR/lib, SAY_HELLO_SHARED_LIBADD)<br>dnl AC_DEFINE(HAVE_SAY_HELLOLIB,1,[ ])<br>dnl ],[<br>dnl AC_MSG_ERROR([wrong say_hello lib version or lib not found])<br>dnl ],[<br>dnl -L$SAY_HELLO_DIR/lib -lm<br>dnl ])<br>dnl<br>dnl PHP_SUBST(SAY_HELLO_SHARED_LIBADD)<br>PHP_NEW_EXTENSION(say_hello, say_hello.c, $ext_shared)<br>fi[/bash]</p>
+<pre class="prettyprint linenums language-bash">dnl $Id$
+dnl config.m4 for extension say_hello
+dnl Comments in this file start with the string 'dnl'.
+dnl Remove where necessary. This file will not work
+dnl without editing.
+
+dnl If your extension references something external, use with:
+dnl PHP_ARG_WITH(say_hello, for say_hello support,
+dnl Make sure that the comment is aligned:
+dnl [ --with-say_hello Include say_hello support])
+
+dnl Otherwise use enable:
+dnl PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,
+dnl Make sure that the comment is aligned:
+dnl [ --enable-say_hello Enable say_hello support])
+
+if test "$PHP_SAY_HELLO" != "no"; then
+dnl Write more examples of tests here...
+dnl # --with-say_hello -&gt; check with-path
+dnl SEARCH_PATH="/usr/local /usr" # you might want to change this
+dnl SEARCH_FOR="/include/say_hello.h" # you most likely want to change this
+dnl if test -r $PHP_SAY_HELLO/$SEARCH_FOR; then # path given as parameter
+dnl SAY_HELLO_DIR=$PHP_SAY_HELLO
+dnl else # search default path list
+dnl AC_MSG_CHECKING([for say_hello files in default path])
+dnl for i in $SEARCH_PATH ; do
+dnl if test -r $i/$SEARCH_FOR; then
+dnl SAY_HELLO_DIR=$i
+dnl AC_MSG_RESULT(found in $i)
+dnl fi
+dnl done
+dnl fi
+dnl
+dnl if test -z "$SAY_HELLO_DIR"; then
+dnl AC_MSG_RESULT([not found])
+dnl AC_MSG_ERROR([Please reinstall the say_hello distribution])
+dnl fi
+dnl # --with-say_hello -&gt; add include path
+dnl PHP_ADD_INCLUDE($SAY_HELLO_DIR/include)
+dnl # --with-say_hello -&gt; check for lib and symbol presence
+dnl LIBNAME=say_hello # you may want to change this
+dnl LIBSYMBOL=say_hello # you most likely want to change this
+dnl PHP_CHECK_LIBRARY($LIBNAME,$LIBSYMBOL,
+dnl [
+dnl PHP_ADD_LIBRARY_WITH_PATH($LIBNAME, $SAY_HELLO_DIR/lib, SAY_HELLO_SHARED_LIBADD)
+dnl AC_DEFINE(HAVE_SAY_HELLOLIB,1,[ ])
+dnl ],[
+dnl AC_MSG_ERROR([wrong say_hello lib version or lib not found])
+dnl ],[
+dnl -L$SAY_HELLO_DIR/lib -lm
+dnl ])
+dnl
+dnl PHP_SUBST(SAY_HELLO_SHARED_LIBADD)
+PHP_NEW_EXTENSION(say_hello, say_hello.c, $ext_shared)
+fi
+</pre>
 <p>不要看这么多，因为所有以“dnl”开头的全是注释，所以真正起作用没几行。这里需要配置的只有下面几行：</p>
-<p>[bash]dnl If your extension references something external, use with:<br>dnl PHP_ARG_WITH(say_hello, for say_hello support,<br>dnl Make sure that the comment is aligned:<br>dnl [ --with-say_hello Include say_hello support])</p>
-<p>dnl Otherwise use enable:<br>dnl PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,<br>dnl Make sure that the comment is aligned:<br>dnl [ --enable-say_hello Enable say_hello support])[/bash]</p>
+<pre class="prettyprint linenums language-bash">dnl If your extension references something external, use with:
+dnl PHP_ARG_WITH(say_hello, for say_hello support,
+dnl Make sure that the comment is aligned:
+dnl [ --with-say_hello Include say_hello support])
+
+dnl Otherwise use enable:
+dnl PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,
+dnl Make sure that the comment is aligned:
+dnl [ --enable-say_hello Enable say_hello support])</pre>
 <p>我想大家也都能看明白，意思就是“如果你的扩展引用了外部组件，使用…，否则使用…”。我们的say_hello扩展并没有引用外部组件，所以将“Otherwise use enable”下面三行的“dnl”去掉，改为：</p>
-<p>[bash]dnl Otherwise use enable:<br>PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,<br>Make sure that the comment is aligned:<br>[ --enable-say_hello Enable say_hello support])[/bash]</p>
+<pre class="prettyprint linenums language-bash">dnl Otherwise use enable:
+PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,
+Make sure that the comment is aligned:
+[ --enable-say_hello Enable say_hello support])</pre>
 <p>保存，这样关于Build System配置就大功告成了。</p>
 <h2>PHP Extension及Zend_Module结构分析</h2>
 <p>以上可以看成是为开发PHP扩展而做的准备工作，下面就要编写核心代码了。上文说过，编写PHP扩展是基于Zend API和一些宏的，所以如果要编写核心代码，我们首先要弄清楚PHP Extension的结构。因为一个PHP Extension在C语言层面实际上就是一个zend_module_entry结构体，这点可以从“php_say_hello.h”中得到证实。打开“php_say_hello.h”，会看到里面有怎么一行：</p>
-<p>[c]extern zend_module_entry say_hello_module_entry;[/c]</p>
+<pre class="prettyprint linenums language-c">extern zend_module_entry say_hello_module_entry;</pre>
 <p>say_hello_module_entry就是say_hello扩展的C语言对应元素，而关于其类型zend_module_entry的定义可以在PHP源代码的“Zend/zend_modules.h”文件里找到，下面代码是zend_module_entry的定义：</p>
-<p>[c]typedef struct _zend_module_entry zend_module_entry;</p>
-<p>struct _zend_module_entry {<br>unsigned short size;<br>unsigned int zend_api;<br>unsigned char zend_debug;<br>unsigned char zts;<br>const struct _zend_ini_entry *ini_entry;<br>const struct _zend_module_dep *deps;<br>const char *name;<br>const struct _zend_function_entry *functions;<br>int (*module_startup_func)(INIT_FUNC_ARGS);<br>int (*module_shutdown_func)(SHUTDOWN_FUNC_ARGS);<br>int (*request_startup_func)(INIT_FUNC_ARGS);<br>int (*request_shutdown_func)(SHUTDOWN_FUNC_ARGS);<br>void (*info_func)(ZEND_MODULE_INFO_FUNC_ARGS);<br>const char *version;<br>size_t globals_size;</p>
-    <p>#ifdef ZTS<br>ts_rsrc_id* globals_id_ptr;<br>#else<br>void* globals_ptr;<br>#endif</p>
-        <p>void (*globals_ctor)(void *global TSRMLS_DC);<br>void (*globals_dtor)(void *global TSRMLS_DC);<br>int (*post_deactivate_func)(void);<br>int module_started;<br>unsigned char type;<br>void *handle;<br>int module_number;<br>char *build_id;<br>};[/c]</p>
-        <p>这个结构体可能看起来会让人有点头疼，不过我还是要解释一下里面的内容。因为这就是PHP Extension的原型，如果不搞清楚，就没法开发PHP Extension了。当然，我就不一一对每个字段进行解释了，只拣关键的、这篇文章会用到的字段说，因为许多字段并不需要我们手工填写，而是可以使用某些预定义的宏填充。</p>
-        <p>第7个字段“name”，这个字段是此PHP Extension的名字，在本例中就是“say_hello”。</p>
-        <p>第8个字段“functions”，这个将存放我们在此扩展中定义的函数的引用，具体结构不再分析，有兴趣的朋友可以阅读_zend_function_entry的源代码。具体编写代码时这里会有相应的宏。</p>
-        <p>第9-12个字段分别是四个函数指针，这四个函数会在相应时机被调用，分别是“扩展模块加载时”、“扩展模块卸载时”、“每个请求开始时”和“每个请求结束时”。这四个函数可以看成是一种拦截机制，主要用于相应时机的资源分配、释放等相关操作。</p>
-        <p>第13个字段“info_func”也是一个函数指针，这个指针指向的函数会在执行phpinfo()时被调用，用于显示自定义模块信息。</p>
-        <p>第14个字段“version”是模块的版本。</p>
-        <p>（关于zend_module_entry更详尽的介绍请<a href="http://www.php.net/manual/en/internals2.structure.modstruct.php" target="_blank">参考这里</a>）</p>
-        <p>介绍完以上字段，我们可以看看“say_hello.c”中自动生成的“say_hello_module_entry”框架代码了。</p>
-        <p>[c]/* {{{ say_hello_module_entry<br>*/<br>zend_module_entry say_hello_module_entry = {<br>#if ZEND_MODULE_API_NO &gt;= 20010901<br>STANDARD_MODULE_HEADER,<br>#endif<br>"say_hello",<br>say_hello_functions,<br>PHP_MINIT(say_hello),<br>PHP_MSHUTDOWN(say_hello),<br>PHP_RINIT(say_hello), /* Replace with NULL if there's nothing to do at request start */<br>PHP_RSHUTDOWN(say_hello), /* Replace with NULL if there's nothing to do at request end */<br>PHP_MINFO(say_hello),<br>#if ZEND_MODULE_API_NO &gt;= 20010901<br>"0.1", /* Replace with version number for your extension */<br>#endif<br>STANDARD_MODULE_PROPERTIES<br>};<br>/* }}} */[/c]</p>
-        <p>首先，宏“STANDARD_MODULE_HEADER”会生成前6个字段，“STANDARD_MODULE_PROPERTIES ”会生成“version”后的字段，所以现在我们还不用操心。而我们关心的几个字段，也都填写好或由宏生成好了，并且在“say_hello.c”的相应位置也生成了几个函数的框架。这里要注意，几个宏的参数均为“say_hello”，但这并不表示几个函数的名字全为“say_hello”，C语言中也不可能存在函数名重载机制。实际上，在开发PHP Extension的过程中，几乎处处都要用到Zend里预定义的各种宏，从全局变量到函数的定义甚至返回值，都不能按照“裸写”的方式来编写C语言，这是因为PHP的运行机制可能会导致命名冲突等问题，而这些宏会将函数等元素变换成一个内部名称，但这些对程序员都是透明的（除非你去阅读那些宏的代码），我们通过各种宏进行编程，而宏则为我们处理很多内部的东西。</p>
-        <p>写到这里，我们的任务就明了了：第一，如果需要在相应时机处理一些东西，那么需要填充各个拦截函数内容；第二，编写say_hello的功能函数，并将引用添加到say_hello_functions中。</p>
-        <h2>编写phpinfo()回调函数</h2>
-        <p>因为say_hello扩展在各个生命周期阶段并不需要做操作，所以我们只编写info_func的内容，上文说过，这个函数将在phpinfo()执行时被自动调用，用于显示扩展的信息。编写这个函数会用到四个函数：</p>
-        <p>php_info_print_table_start()——开始phpinfo表格。无参数。</p>
-        <p>php_info_print_table_header()——输出表格头。第一个参数是整形，指明头的列数，然后后面的参数是与列数等量的(char*)类型参数用于指定显示的文字。</p>
-        <p>php_info_print_table_row()——输出表格内容。第一个参数是整形，指明这一行的列数，然后后面的参数是与列数等量的(char*)类型参数用于指定显示的文字。</p>
-        <p>php_info_print_table_end()——结束phpinfo表格。无参数。</p>
-        <p>下面是“say_hello.c”中需要编写的info_func的具体代码：</p>
-        <p>[c]/* {{{ PHP_MINFO_FUNCTION<br>*/<br>PHP_MINFO_FUNCTION(say_hello)<br>{<br>php_info_print_table_start();<br>php_info_print_table_header(2, "say_hello support", "enabled");<br>php_info_print_table_row(2, "author", "Zhang Yang"); /* Replace with your name */<br>php_info_print_table_end();<br>/* Remove comments if you have entries in php.ini<br>DISPLAY_INI_ENTRIES();<br>*/<br>}<br>/* }}} */[/c]</p>
-        <p>可以看到我们编写了两行内容、组件是否可用以及作者信息。</p>
-        <h2>编写核心函数</h2>
-        <p>编写核心函数，总共分为三步：1、使用宏PHP_FUNCTION定义函数体；2、使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息；3、使用宏PHP_FE将函数加入到say_hello_functions中。下面分步说明。</p>
-        <h3>使用宏PHP_FUNCTION定义函数体</h3>
-        <p>[c]PHP_FUNCTION(say_hello_func)</p>
-        <p>{<br>char *name;<br>int name_len;<br>if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &amp;name, &amp;name_len) == FAILURE)<br>{<br>return;<br>}<br>php_printf("Hello %s!", name);</p>
-            <p>RETURN_TRUE;<br>}[/c]</p>
-            <p>上文说过，编写PHP扩展时几乎所有东西都不能裸写，而是必须使用相应的宏。从上面代码可以清楚看到这一点。总体来说，核心函数代码一般由如下几部分构成：</p>
-            <p>定义函数，这一步通过宏PHP_FUNCTION实现，函数的外部名称就是宏后面括号里面的名称。</p>
-            <p>声明并定义局部变量。</p>
-            <p>解析参数，这一步通过zend_parse_parameters函数实现，这个函数的作用是从函数用户的输入栈中读取数据，然后转换成相应的函数参数填入变量以供后面核心功能代码使用。zend_parse_parameters的第一个参数是用户传入参数的个数，可以由宏“ZEND_NUM_ARGS() TSRMLS_CC”生成；第二个参数是一个字符串，其中每个字母代表一个变量类型，我们只有一个字符串型变量，所以第二个参数是“s”；最后各个参数需要一些必要的局部变量指针用于存储数据，下表给出了不同变量类型的字母代表及其所需要的局部变量指针。</p>
-            <p><a href="http://www.codinglabs.org/wp-content/uploads/2011/10/3.png"><img class="aligncenter size-full wp-image-190" title="3" alt="" src="http://www.codinglabs.org/wp-content/uploads/2011/10/3.png" width="472" height="211"></a></p>
-            <p>参数解析完成后就是核心功能代码，我们这里只是输出一行字符，php_printf是Zend版本的printf。</p>
-            <p>最后的返回值也是通过宏实现的。RETURN_TRUE宏是返回布尔值“true”。</p>
-            <h3>使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息</h3>
-            <p>参数信息是函数所必要部分，这里不做深究，直接给出相应代码：</p>
-            <p>[c]ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0) ZEND_END_ARG_INFO()[/c]</p>
-            <p>如需了解具体信息请阅读相关宏定义。</p>
-            <h3>使用宏PHP_FE将函数加入到say_hello_functions中</h3>
-            <p>最后，我们需要将刚才定义的函数和参数信息加入到say_hello_functions数组里，代码如下：</p>
-            <p>[c]const zend_function_entry say_hello_functions[] = {<br>PHP_FE(say_hello_func, arginfo_say_hello_func)<br>{NULL, NULL, NULL}<br>};[/c]</p>
-            <p>这一步就是通过PHP_EF宏实现，注意这个数组最后一行必须是{NULL, NULL, NULL} ，请不要删除。</p>
-            <p>下面是编写完成后的say_hello.c全部代码：</p>
-            <p>[c]/*<br>+----------------------------------------------------------------------+<br>| PHP Version 5 |<br>+----------------------------------------------------------------------+<br>| Copyright (c) 1997-2010 The PHP Group |<br>+----------------------------------------------------------------------+<br>| This source file is subject to version 3.01 of the PHP license, |<br>| that is bundled with this package in the file LICENSE, and is |<br>| available through the world-wide-web at the following url: |<br>| http://www.php.net/license/3_01.txt |<br>| If you did not receive a copy of the PHP license and are unable to |<br>| obtain it through the world-wide-web, please send a note to |<br>| license@php.net so we can mail you a copy immediately. |<br>+----------------------------------------------------------------------+<br>| Author: ZhangYang &lt;ericzhang.buaa@gmail.com&gt; |<br>+----------------------------------------------------------------------+<br>*/</p>
-            <p>/* $Id: header 297205 2010-03-30 21:09:07Z johannes $ */</p>
-            <p>#ifdef HAVE_CONFIG_H<br>#include "config.h"<br>#endif</p>
-            <p>#include "php.h"<br>#include "php_ini.h"<br>#include "ext/standard/info.h"</p>
-            <p>#include "php_say_hello.h"</p>
-            <p>/* If you declare any globals in php_say_hello.h uncomment this:<br>ZEND_DECLARE_MODULE_GLOBALS(say_hello)<br>*/</p>
-            <p>/* True global resources - no need for thread safety here */<br>static int le_say_hello;</p>
-            <p>/* {{{ PHP_FUNCTION<br>*/<br>PHP_FUNCTION(say_hello_func)<br>{<br>char *name;<br>int name_len;</p>
-                <p>if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &amp;name, &amp;name_len) == FAILURE)<br>{<br>return;<br>}</p>
-                    <p>php_printf("Hello %s!", name);<br>RETURN_TRUE;<br>}</p>
-                    <p>ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0)<br>ZEND_END_ARG_INFO()<br>/* }}} */</p>
-                    <p>/* {{{ say_hello_functions[]<br>*<br>* Every user visible function must have an entry in say_hello_functions[].<br>*/<br>const zend_function_entry say_hello_functions[] = {<br>PHP_FE(say_hello_func, arginfo_say_hello_func)<br>{NULL, NULL, NULL} /* Must be the last line in say_hello_functions[] */<br>};<br>/* }}} */</p>
-                    <p>/* {{{ say_hello_module_entry<br>*/<br>zend_module_entry say_hello_module_entry = {<br>#if ZEND_MODULE_API_NO &gt;= 20010901<br>STANDARD_MODULE_HEADER,<br>#endif<br>"say_hello",<br>say_hello_functions,<br>NULL,<br>NULL,<br>NULL,<br>NULL,<br>PHP_MINFO(say_hello),</p>
-                        <p>#if ZEND_MODULE_API_NO &gt;= 20010901<br>"0.1", /* Replace with version number for your extension */<br>#endif</p>
-                            <p>STANDARD_MODULE_PROPERTIES<br>};<br>/* }}} */</p>
-                            <p>#ifdef COMPILE_DL_SAY_HELLO<br>ZEND_GET_MODULE(say_hello)<br>#endif</p>
-                            <p>/* {{{ PHP_MINFO_FUNCTION<br>*/<br>PHP_MINFO_FUNCTION(say_hello)<br>{<br>php_info_print_table_start();<br>php_info_print_table_header(2, "say_hello support", "enabled");<br>php_info_print_table_row(2, "author", "Zhang Yang"); /* Replace with your name */<br>php_info_print_table_end();</p>
-                                <p>/* Remove comments if you have entries in php.ini<br>DISPLAY_INI_ENTRIES();<br>*/<br>}<br>/* }}} */[/c]</p>
-                                <h2>编译并安装扩展</h2>
-                                <p>在say_hello目录下输入下面命令：</p>
-                                <p>[bash]/usr/bin/phpize<br>./configure<br>make<br>make install[/bash]</p>
-                                <p>这样就完成了say_hello扩展的安装（如果没有报错的话）。</p>
-                                <p>这时如果你去放置php扩展的目录下，会发现多了一个say_hello.so的文件。如下图所示：</p>
-                                <p><a href="http://www.codinglabs.org/wp-content/uploads/2011/10/4.png"><img class="aligncenter size-full wp-image-192" title="4" alt="" src="http://www.codinglabs.org/wp-content/uploads/2011/10/4.png" width="533" height="340"></a></p>
-                                <p>下面就是将其加入到php.ini配置中，然后重启Apache（如果需要的话）。这些都是PHP基本配置的内容，我就不详述了。</p>
-                                <h2>扩展测试</h2>
-                                <p>如果上面顺利完成，这时运行phpinfo()，应该能看到如下信息：</p>
-                                <p><a href="http://www.codinglabs.org/wp-content/uploads/2011/10/51.png"><img class="aligncenter size-full wp-image-193" title="5" alt="" src="http://www.codinglabs.org/wp-content/uploads/2011/10/51.png" width="617" height="98"></a></p>
-                                <p>这说明扩展已经安装成功了。然后我们编写一个测试用PHP脚本：</p>
-                                <p>[php]&lt;?php say_hello_func('Zhang Yang'); ?&gt;;[/php]</p>
-                                <p>执行这个脚本，结果如下：</p>
-                                <p><a href="http://www.codinglabs.org/wp-content/uploads/2011/10/6.png"><img class="aligncenter size-full wp-image-194" title="6" alt="" src="http://www.codinglabs.org/wp-content/uploads/2011/10/6.png" width="240" height="146"></a></p>
-                                <p>说明扩展已经正常工作了。</p>
-                                <h1>总结</h1>
-                                <p>这篇文章主要用示例方法介绍PHP Extension的开发基础。在PHP的使用中，也许是因为需要支持新的组件（如新的数据库），又或是业务需要或性能需要，几乎都会遇到需要开发PHP扩展的地方。后续如果有机会，我会写文章介绍一些关于扩展开发较为深入的东西，如扩展模块生命周期、INI使用以及编写面向对象的扩展模块等等。</p>
+<pre class="prettyprint linenums language-c">typedef struct _zend_module_entry zend_module_entry;
+
+struct _zend_module_entry {
+    unsigned short size;
+    unsigned int zend_api;
+    unsigned char zend_debug;
+    unsigned char zts;
+    const struct _zend_ini_entry *ini_entry;
+    const struct _zend_module_dep *deps;
+    const char *name;
+    const struct _zend_function_entry *functions;
+    int (*module_startup_func)(INIT_FUNC_ARGS);
+    int (*module_shutdown_func)(SHUTDOWN_FUNC_ARGS);
+    int (*request_startup_func)(INIT_FUNC_ARGS);
+    int (*request_shutdown_func)(SHUTDOWN_FUNC_ARGS);
+    void (*info_func)(ZEND_MODULE_INFO_FUNC_ARGS);
+    const char *version;
+    size_t globals_size;
+
+    #ifdef ZTS
+    ts_rsrc_id* globals_id_ptr;
+    #else
+    void* globals_ptr;
+    #endif
+
+    void (*globals_ctor)(void *global TSRMLS_DC);
+    void (*globals_dtor)(void *global TSRMLS_DC);
+    int (*post_deactivate_func)(void);
+    int module_started;
+    unsigned char type;
+    void *handle;
+    int module_number;
+    char *build_id;
+};</pre>
+<p>这个结构体可能看起来会让人有点头疼，不过我还是要解释一下里面的内容。因为这就是PHP Extension的原型，如果不搞清楚，就没法开发PHP Extension了。当然，我就不一一对每个字段进行解释了，只拣关键的、这篇文章会用到的字段说，因为许多字段并不需要我们手工填写，而是可以使用某些预定义的宏填充。</p>
+<p>第7个字段“name”，这个字段是此PHP Extension的名字，在本例中就是“say_hello”。</p>
+<p>第8个字段“functions”，这个将存放我们在此扩展中定义的函数的引用，具体结构不再分析，有兴趣的朋友可以阅读_zend_function_entry的源代码。具体编写代码时这里会有相应的宏。</p>
+<p>第9-12个字段分别是四个函数指针，这四个函数会在相应时机被调用，分别是“扩展模块加载时”、“扩展模块卸载时”、“每个请求开始时”和“每个请求结束时”。这四个函数可以看成是一种拦截机制，主要用于相应时机的资源分配、释放等相关操作。</p>
+<p>第13个字段“info_func”也是一个函数指针，这个指针指向的函数会在执行phpinfo()时被调用，用于显示自定义模块信息。</p>
+<p>第14个字段“version”是模块的版本。</p>
+<p>（关于zend_module_entry更详尽的介绍请<a href="http://www.php.net/manual/en/internals2.structure.modstruct.php" target="_blank">参考这里</a>）</p>
+<p>介绍完以上字段，我们可以看看“say_hello.c”中自动生成的“say_hello_module_entry”框架代码了。</p>
+<pre class="prettyprint linenums language-c">/* {{{ say_hello_module_entry
+*/
+zend_module_entry say_hello_module_entry = {
+    #if ZEND_MODULE_API_NO &gt;= 20010901
+    STANDARD_MODULE_HEADER,
+    #endif
+    "say_hello",
+    say_hello_functions,
+    PHP_MINIT(say_hello),
+    PHP_MSHUTDOWN(say_hello),
+    PHP_RINIT(say_hello), /* Replace with NULL if there's nothing to do at request start */
+    PHP_RSHUTDOWN(say_hello), /* Replace with NULL if there's nothing to do at request end */
+    PHP_MINFO(say_hello),
+    #if ZEND_MODULE_API_NO &gt;= 20010901
+    "0.1", /* Replace with version number for your extension */
+    #endif
+    STANDARD_MODULE_PROPERTIES
+};
+/* }}} */</pre>
+<p>首先，宏“STANDARD_MODULE_HEADER”会生成前6个字段，“STANDARD_MODULE_PROPERTIES ”会生成“version”后的字段，所以现在我们还不用操心。而我们关心的几个字段，也都填写好或由宏生成好了，并且在“say_hello.c”的相应位置也生成了几个函数的框架。这里要注意，几个宏的参数均为“say_hello”，但这并不表示几个函数的名字全为“say_hello”，C语言中也不可能存在函数名重载机制。实际上，在开发PHP Extension的过程中，几乎处处都要用到Zend里预定义的各种宏，从全局变量到函数的定义甚至返回值，都不能按照“裸写”的方式来编写C语言，这是因为PHP的运行机制可能会导致命名冲突等问题，而这些宏会将函数等元素变换成一个内部名称，但这些对程序员都是透明的（除非你去阅读那些宏的代码），我们通过各种宏进行编程，而宏则为我们处理很多内部的东西。</p>
+<p>写到这里，我们的任务就明了了：第一，如果需要在相应时机处理一些东西，那么需要填充各个拦截函数内容；第二，编写say_hello的功能函数，并将引用添加到say_hello_functions中。</p>
+<h2>编写phpinfo()回调函数</h2>
+<p>因为say_hello扩展在各个生命周期阶段并不需要做操作，所以我们只编写info_func的内容，上文说过，这个函数将在phpinfo()执行时被自动调用，用于显示扩展的信息。编写这个函数会用到四个函数：</p>
+<p>php_info_print_table_start()——开始phpinfo表格。无参数。</p>
+<p>php_info_print_table_header()——输出表格头。第一个参数是整形，指明头的列数，然后后面的参数是与列数等量的(char*)类型参数用于指定显示的文字。</p>
+<p>php_info_print_table_row()——输出表格内容。第一个参数是整形，指明这一行的列数，然后后面的参数是与列数等量的(char*)类型参数用于指定显示的文字。</p>
+<p>php_info_print_table_end()——结束phpinfo表格。无参数。</p>
+<p>下面是“say_hello.c”中需要编写的info_func的具体代码：</p>
+<pre class="prettyprint linenums language-c">/* {{{ PHP_MINFO_FUNCTION
+*/
+PHP_MINFO_FUNCTION(say_hello)
+{
+    php_info_print_table_start();
+    php_info_print_table_header(2, "say_hello support", "enabled");
+    php_info_print_table_row(2, "author", "Zhang Yang"); /* Replace with your name */
+    php_info_print_table_end();
+    /* Remove comments if you have entries in php.ini
+    DISPLAY_INI_ENTRIES();
+    */
+}
+/* }}} */</pre>
+<p>可以看到我们编写了两行内容、组件是否可用以及作者信息。</p>
+<h2>编写核心函数</h2>
+<p>编写核心函数，总共分为三步：1、使用宏PHP_FUNCTION定义函数体；2、使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息；3、使用宏PHP_FE将函数加入到say_hello_functions中。下面分步说明。</p>
+<h3>使用宏PHP_FUNCTION定义函数体</h3>
+<pre class="prettyprint linenums language-c">PHP_FUNCTION(say_hello_func)
+{
+    char *name;
+    int name_len;
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &amp;name, &amp;name_len) == FAILURE)
+    {
+        return;
+    }
+    php_printf("Hello %s!", name);
+
+    RETURN_TRUE;
+}</pre>
+<p>上文说过，编写PHP扩展时几乎所有东西都不能裸写，而是必须使用相应的宏。从上面代码可以清楚看到这一点。总体来说，核心函数代码一般由如下几部分构成：</p>
+<p>定义函数，这一步通过宏PHP_FUNCTION实现，函数的外部名称就是宏后面括号里面的名称。</p>
+<p>声明并定义局部变量。</p>
+<p>解析参数，这一步通过zend_parse_parameters函数实现，这个函数的作用是从函数用户的输入栈中读取数据，然后转换成相应的函数参数填入变量以供后面核心功能代码使用。zend_parse_parameters的第一个参数是用户传入参数的个数，可以由宏“ZEND_NUM_ARGS() TSRMLS_CC”生成；第二个参数是一个字符串，其中每个字母代表一个变量类型，我们只有一个字符串型变量，所以第二个参数是“s”；最后各个参数需要一些必要的局部变量指针用于存储数据，下表给出了不同变量类型的字母代表及其所需要的局部变量指针。</p>
+<p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/3.png"/></p>
+<p>参数解析完成后就是核心功能代码，我们这里只是输出一行字符，php_printf是Zend版本的printf。</p>
+<p>最后的返回值也是通过宏实现的。RETURN_TRUE宏是返回布尔值“true”。</p>
+<h3>使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息</h3>
+<p>参数信息是函数所必要部分，这里不做深究，直接给出相应代码：</p>
+<pre class="prettyprint linenums language-c">ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0) ZEND_END_ARG_INFO()</pre>
+<p>如需了解具体信息请阅读相关宏定义。</p>
+<h3>使用宏PHP_FE将函数加入到say_hello_functions中</h3>
+<p>最后，我们需要将刚才定义的函数和参数信息加入到say_hello_functions数组里，代码如下：</p>
+<pre class="prettyprint linenums language-c">const zend_function_entry say_hello_functions[] = {
+PHP_FE(say_hello_func, arginfo_say_hello_func)
+    {NULL, NULL, NULL}
+};</pre>
+<p>这一步就是通过PHP_EF宏实现，注意这个数组最后一行必须是{NULL, NULL, NULL} ，请不要删除。</p>
+<p>下面是编写完成后的say_hello.c全部代码：</p>
+<pre class="prettyprint linenums language-c">/*
++----------------------------------------------------------------------+
+| PHP Version 5                                                        |
++----------------------------------------------------------------------+
+| Copyright (c) 1997-2010 The PHP Group                                |
++----------------------------------------------------------------------+
+| This source file is subject to version 3.01 of the PHP license,      |
+| that is bundled with this package in the file LICENSE, and is        |
+| available through the world-wide-web at the following url:           |
+| http://www.php.net/license/3_01.txt                                  |
+| If you did not receive a copy of the PHP license and are unable to   |
+| obtain it through the world-wide-web, please send a note to          |
+| license@php.net so we can mail you a copy immediately.               |
++----------------------------------------------------------------------+
+| Author: ZhangYang <ericzhang.buaa@gmail.com>                         |
++----------------------------------------------------------------------+
+*/
+
+/* $Id: header 297205 2010-03-30 21:09:07Z johannes $ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include "php.h"
+#include "php_ini.h"
+#include "ext/standard/info.h"
+
+#include "php_say_hello.h"
+
+/* If you declare any globals in php_say_hello.h uncomment this:
+ZEND_DECLARE_MODULE_GLOBALS(say_hello)
+*/
+
+/* True global resources - no need for thread safety here */
+static int le_say_hello;
+
+/* {{{ PHP_FUNCTION
+*/
+PHP_FUNCTION(say_hello_func)
+{
+    char *name;
+    int name_len;
+
+    if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &amp;name, &amp;name_len) == FAILURE)
+    {
+        return;
+    }
+
+    php_printf("Hello %s!", name);
+    RETURN_TRUE;
+}
+
+ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0)
+ZEND_END_ARG_INFO()
+/* }}} */
+
+/* {{{ say_hello_functions[]
+*
+* Every user visible function must have an entry in say_hello_functions[].
+*/
+const zend_function_entry say_hello_functions[] = {
+    PHP_FE(say_hello_func, arginfo_say_hello_func)
+    {NULL, NULL, NULL} /* Must be the last line in say_hello_functions[] */
+};
+/* }}} */
+
+/* {{{ say_hello_module_entry
+*/
+zend_module_entry say_hello_module_entry = {
+    #if ZEND_MODULE_API_NO &gt;= 20010901
+    STANDARD_MODULE_HEADER,
+    #endif
+    "say_hello",
+    say_hello_functions,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    PHP_MINFO(say_hello),
+
+    #if ZEND_MODULE_API_NO &gt;= 20010901
+    "0.1", /* Replace with version number for your extension */
+    #endif
+
+    STANDARD_MODULE_PROPERTIES
+};
+/* }}} */
+
+#ifdef COMPILE_DL_SAY_HELLO
+ZEND_GET_MODULE(say_hello)
+#endif
+
+/* {{{ PHP_MINFO_FUNCTION
+*/
+PHP_MINFO_FUNCTION(say_hello)
+{
+    php_info_print_table_start();
+    php_info_print_table_header(2, "say_hello support", "enabled");
+    php_info_print_table_row(2, "author", "Zhang Yang"); /* Replace with your name */
+    php_info_print_table_end();
+
+    /* Remove comments if you have entries in php.ini
+    DISPLAY_INI_ENTRIES();
+    */
+}
+/* }}} */</pre>
+<h2>编译并安装扩展</h2>
+<p>在say_hello目录下输入下面命令：</p>
+<pre class="prettyprint linenums language-bash">/usr/bin/phpize
+./configure
+make
+make install</pre>
+<p>这样就完成了say_hello扩展的安装（如果没有报错的话）。</p>
+<p>这时如果你去放置php扩展的目录下，会发现多了一个say_hello.so的文件。如下图所示：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/4.png"/></p>
+<p>下面就是将其加入到php.ini配置中，然后重启Apache（如果需要的话）。这些都是PHP基本配置的内容，我就不详述了。</p>
+<h2>扩展测试</h2>
+<p>如果上面顺利完成，这时运行phpinfo()，应该能看到如下信息：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/5.png"/></p>
+<p>这说明扩展已经安装成功了。然后我们编写一个测试用PHP脚本：</p>
+<pre class="prettyprint linenums language-php">&lt;?php say_hello_func('Zhang Yang'); ?&gt;;</pre>
+<p>执行这个脚本，结果如下：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/6.png"/></p>
+<p>说明扩展已经正常工作了。</p>
+<h1>总结</h1>
+<p>这篇文章主要用示例方法介绍PHP Extension的开发基础。在PHP的使用中，也许是因为需要支持新的组件（如新的数据库），又或是业务需要或性能需要，几乎都会遇到需要开发PHP扩展的地方。后续如果有机会，我会写文章介绍一些关于扩展开发较为深入的东西，如扩展模块生命周期、INI使用以及编写面向对象的扩展模块等等。</p>
 
                 </div>
 
