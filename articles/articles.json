@@ -109,6 +109,24 @@
             "abstract": "从php的架构体系来说，php分为三个层次：sapi、php core和zend engine。php core本身和web没有任何耦合，php通过sapi与其它应用程序通信，例如mod_php就是为apache编写的sapi实现，同样，fpm是一个基于fastcgi协议的sapi实现，这些sapi都是与web server配合用于处理web请求的。但是也有许多sapi与web无关，例如cli sapi可以使得在命令行环境下直接执行php，embed sapi可以将php嵌入其它语言（如Lua）那样。这里我并不打算详细讨论php的架构体系和sapi的话题，只是说明从架构体系角度目前的php早已被设计为支持各种环境，而非为web独有。<p>除了架构体系的支持外，php丰富的扩展模块也为php在不同环境发挥作用提供了后盾，例如本文要提到的pcntl模块和posix模块配合可以实现基本的进程管理、信号处理等操作系统级别的功能，而sockets模块可以使php具有socket通信的能力。因此php完全可以用于编写类似于shell或perl常做的工具性脚本，甚至是具有server性质的daemon process。</p><p>为了展示php如何编写daemon server，我用php编写了一个简单的http server，这个server以daemon process的形式运行。当然，为了把重点放在如何使用php编写daemon，我没有为这个http server实现具体业务逻辑，但它可以监听指定端口，接受http请求并返回给客户端一条固定的文本，整个过程通过socket实现，全部由php编写而成。</p>"
         },
         {
+            "id": "php-extension-dev-guide",
+            "title": "PHP Extension开发基础",
+            "postedOn": "2011-10-21",
+            "author": "张洋",
+            "tags": [""],
+            "category": "",
+            "abstract": "PHP是当前应用非常广泛的一门语言，从国外的Facebook、Twitter到国内的淘宝、腾讯、百度再到互联网上林林总总的各种大中小型网站都能见到它的身影。PHP的成功，应该说很大程度上依赖于其开放的扩展API机制和丰富的扩展组件（PHP Extension），正是这些扩展组件使得PHP从各种数据库操作到XML、JSON、加密、文件处理、图形处理、Socket等领域无所不能。有时候开发人员可能需要开发自己的PHP扩展，当前PHP5的扩展机制是基于Zend API的，Zend API提供了丰富的接口和宏定义，加上一些实用工具，使得PHP扩展开发起来难度并不算特别大。本文将介绍关于PHP扩展组件开发的基本知识，并通过一个实例展示开发PHP扩展的基本过程。"
+        },
+        {
+            "id": "nginx-memc-and-srcache",
+            "title": "使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制",
+            "postedOn": "2011-10-18",
+            "author": "张洋",
+            "tags": [""],
+            "category": "",
+            "abstract": "为了提高性能，几乎所有互联网应用都有缓存机制，其中Memcache是使用非常广泛的一个分布式缓存系统。众所周知，LAMP是非常经典的Web架构方式，但是随着Nginx的成熟，越来越多的系统开始转型为LNMP（Linux+Nginx+MySQL+PHP with fpm），这是因为Nginx采用基于事件机制的I/O多路复用思想设计，在高并发情况下其性能远远优于默认采用prefork模式的Apache，另外，相对于Apache，Nginx更轻量，同时拥有大量优秀的扩展模块，使得在Nginx上可以实现一些美妙的功能。<p>传统上，PHP中使用memcache的方法是使用php-memcache或php-memached扩展操作memcache，然而在Nginx上有构建更高效缓存机制的方法，本文将首先介绍这种机制，然后介绍具体的操作步骤方法，最后将对这种机制和传统的PHP操作memcache的性能进行一个benchmark。</p>"
+        },
+        {
             "id": "theory-of-mysql-index",
             "title": "MySQL索引背后的数据结构及算法原理",
             "postedOn": "2011-10-18",
