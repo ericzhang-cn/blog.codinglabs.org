@@ -53,7 +53,7 @@
 <p>将模块下载并解压到合适的目录，这里我Nginx使用的版本是1.0.4，与相关模块一起解压到了/home/zhangyang/downloads，如下图所示。</p>
 <p class="picture"><img alt="" src="/uploads/pictures/nginx-memc-and-srcache/3.png"/></p>
 <p>其中红框框起来的是我们需要用到的模块。进入nginx目录，执行下列命令：</p>
-<pre class="prettyprint linenums language-bash">./configure --prefix=/usr/local/nginx \
+<pre class="prettyprint language-bash">./configure --prefix=/usr/local/nginx \
 --add-module=../memc-nginx-module \
 --add-module=../srcache-nginx-module \
 --add-module=../ngx_http_upstream_keepalive
@@ -62,7 +62,7 @@ make install</pre>
 <p>这里我将nginx安装到/usr/local/nginx下，你可以根据自己的需要更改安装路径，另外，我只列出了本文必要的configure命令，你也可以增加需要的configure选项。</p>
 <p>然后需要对nginx进行配置，nginx默认主配置文件放在安装目录的conf下，例如我的主配置文件为/usr/local/nginx/conf/nginx.conf。</p>
 <p>这里我只贴出相关的配置：</p>
-<pre class="prettyprint linenums language-bash">#Memcache服务upstream
+<pre class="prettyprint language-bash">#Memcache服务upstream
 upstream memcache {
     server localhost:11211;
     keepalive 512 single;
@@ -108,7 +108,7 @@ server {
 <p>经过上述配置后，相当于对Nginx增加了如下逻辑：当所请求的uri以“.php”结尾时，首先到memcache中查询有没有以$uri$args为key的数据，如果有则直接返回；否则，执行location的逻辑，如果返回的http状态码为200，则在输出前以$uri$args为key，将输入结果存入memcache。</p>
 <h2>更多配置</h2>
 <p>上一节给出了使用memc和srcache构建缓存层的最基本方法，实际应用中可能需要更多灵活的配置，例如为不同的location配置不同的缓存参数，根据返回内容而不是返回的http状态码确定是否缓存等等。可以有很多的方法实现这些需求，例如，srcache还支持两个指令：srcache_fetch_skip和srcache_fetch_skip，这两个指令接受一个参数，当参数已定义且非0时，则进行相应操作，否则不进行。例如，如果配置了srcache_fetch_skip $skip，这条指令，那么只有当$skip的值为非0时，才将结果缓存，如果配合<a href="http://wiki.nginx.org/HttpLuaModule" target="_blank">ngx_lua</a>模块的<a href="http://wiki.nginx.org/HttpLuaModule#set_by_lua" target="_blank">set_by_lua</a>指令，则可以实现复杂的缓存控制。如：</p>
-<pre class="prettyprint linenums language-bash">location /xxxx {
+<pre class="prettyprint language-bash">location /xxxx {
     set $key ...;
     set_by_lua $skip '
         if ngx.var.cookie_foo == &quot;bar&quot; then
@@ -130,14 +130,14 @@ server {
 <p>这里的测试环境是我的一个虚拟机，操作系统为Ubuntu10，内存512M。Nginx采用epoll，单worker进程，memcache最大并发数为1024，最大使用内存64m。</p>
 <h2>不开启缓存</h2>
 <p>这一组我们不开启缓存，PHP程序非常简单：</p>
-<pre class="prettyprint linenums language-php">&lt;?php
+<pre class="prettyprint language-php">&lt;?php
 phpinfo();
 ?&gt;</pre>
 <p>测试结果如下：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/nginx-memc-and-srcache/4.png"/></p>
 <h2>PHP memcache缓存策略</h2>
 <p>第二组我们用PHP操作缓存，测试脚本为：</p>
-<pre class="prettyprint linenums language-php">&lt;?php
+<pre class="prettyprint language-php">&lt;?php
 $memc = new Memcached;
 $memc-&gt;addServer('localhost', 11211) or die('Connect to memcache server failed!');
 $output = $memc-&gt;get('my_key');

@@ -1,5 +1,4 @@
 body {
-    background-color: #FEFEFE;
     font-family: 'lucida grande',Tahoma,Helvetica,Arial,sans-serif; 
 }
 a {
@@ -95,4 +94,8 @@ div#rss {
     margin: 20px auto;
     border-bottom: 1px dashed #CCCCCC;
     text-align: right;
+}
+pre.prettyprint {
+    padding: 10px 20px;
+    font-family: Monaco,Consolas,'Lucida Console','Liberation Mono','DejaVu Sans Mono','Bitstream Vera Sans Mono','Courier New','宋体';
 }

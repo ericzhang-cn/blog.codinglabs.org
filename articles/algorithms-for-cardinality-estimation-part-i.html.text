@@ -30,7 +30,7 @@
 <p>这一步可以通过javascript埋点及记录accesslog完成，具体原理和实现方案可以参考我之前的一篇文章：<a href="http://www.codinglabs.org/html/how-web-analytics-data-collection-system-work.html" target="_blank">网站统计中的数据收集原理及实现</a>。</p>
 <h2>实时UV计算</h2>
 <p>可以看到，如果将每个链接被点击的日志中访客标识字段看成一个集合，那么此链接当前的UV也就是这个集合的基数，因此UV计算本质上就是一个基数计数问题。</p>
-<p>在实时计算流中，我们可以认为任何一次链接点击均触发如下逻辑（伪代码描述）：</p><pre class="prettyprint linenums language-c">cand_counting(item_no, user_id) {
+<p>在实时计算流中，我们可以认为任何一次链接点击均触发如下逻辑（伪代码描述）：</p><pre class="prettyprint language-c">cand_counting(item_no, user_id) {
     if (user_id is not in the item_no visitor set) {
         add user_id to item_no visitor set;
         cand[item_no]++;
