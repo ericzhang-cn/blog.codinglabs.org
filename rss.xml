@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Fri, 25 Jan 2013 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sat, 26 Jan 2013 00:00:00 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
@@ -1223,6 +1223,118 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 &lt;p&gt;[3] A. Broder, R. Kumar, F. Maghoul, P. Raghavan, S. Rajagopalan, R. Stata, A. Tomkins, and J. Weiner, “Graph structure in the web,” Computer Networks 33:1–6, pp. 309–320, 2000.&lt;/p&gt;
 &lt;p&gt;[4] T.H. Haveliwala, “Topic-sensitive PageRank,” Proc. 11th Intl. World-Wide-Web Conference, pp. 517–526, 2002&lt;/p&gt;
 &lt;p&gt;[5] Z. Gy¨ongi, H. Garcia-Molina, and J. Pedersen, “Combating link spam with trustrank,” Proc. 30th Intl. Conf. on Very Large Databases, pp. 576–587, 2004.&lt;/p&gt;
+</description>
+</item>
+<item>
+<title>发布一个查看PHP opcode的扩展模块及Web服务</title>
+<link>http://blog.codinglabs.org/articles/opdumper-and-web-opcode-dumper.html</link>
+<guid>http://blog.codinglabs.org/articles/opdumper-and-web-opcode-dumper.html</guid>
+<pubDate>Tue, 15 May 2012 16:00:00 GMT</pubDate>
+<description>&lt;p&gt;最近花了大约一星期的时间写了一个PHP扩展模块&lt;a href=&quot;https://github.com/ericzhang-cn/opdumper&quot; target=&quot;_blank&quot;&gt;Opdumer&lt;/a&gt;，并封装成了Web服务（&lt;a href=&quot;http://supercompiler.com/app/opcode_dumper&quot; target=&quot;_blank&quot;&gt;点击这里访问&lt;/a&gt;）。这个模块的主要内容是输出PHP代码对应的opcode。其实之前已经有一些用于查看opcode的扩展模块，如比较有名的&lt;a href=&quot;http://pecl.php.net/package/vld&quot; target=&quot;_blank&quot;&gt;vld&lt;/a&gt;。之所以重新实现一个这样的模块，主要是因为vld不支持PHP_FUNCTION API，也就是说vld只能用于CLI形式，而Opdumer同时拥有CLI API和PHP_FUNCTION API，另外，也想借助编写这个模块的机会学习Zend Engine中opcode的编译和执行机制。个人打算后面专门针对opcode的编译执行机制写一篇文章，而本文主要描述Opcode的使用方法及对应Web服务的使用。&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;h1&gt;Opdumper&lt;/h1&gt;
+&lt;h2&gt;安装&lt;/h2&gt;
+&lt;p&gt;Opdumper的源码已经托管在github上，其地址为：&lt;a href=&quot;https://github.com/ericzhang-cn/opdumper&quot; target=&quot;_blank&quot;&gt;https://github.com/ericzhang-cn/opdumper&lt;/a&gt;。可以通过以下命令克隆源代码：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint language-bash&quot;&gt;git clone https://github.com/ericzhang-cn/opdumper.git&lt;/pre&gt;
+&lt;p&gt;Opdumper是一个标准的PHP Extension，安装方法如下：&lt;/p&gt;
+&lt;p&gt;首先将Opdumper源码放到PHP源码包的ext/opdumper目录下，进入此目录执行如下命令：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint language-bash&quot;&gt;phpize
+./configure
+make
+make install&lt;/pre&gt;
+&lt;p&gt;然后在php.ini中添加一行配置：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint language-bash&quot;&gt;extension=opdumper.so&lt;/pre&gt;
+&lt;p&gt;目前opdumper支持PHP&gt;=5.3，在Linux和MacOS下测试通过，Windows下未做测试。&lt;/p&gt;
+&lt;h2&gt;CLI API&lt;/h2&gt;
+&lt;p&gt;Opdumper支持类似vld的命令行方式输出opcode，只需在执行php命令时通过-d参数将opdumper.active=1传入。例如我们有一个foo.php：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+$a = 'hello';
+echo $a;
+?&gt;&lt;/pre&gt;
+&lt;p&gt;执行如下命令：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint language-bash&quot;&gt;php -d opdumper.active=1 foo.php&lt;/pre&gt;
+&lt;p&gt;结果如下：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/opdumper-and-web-opcode-dumper/1.png&quot;/&gt;&lt;/p&gt;
+&lt;h2&gt;PHP_FUNCTION API&lt;/h2&gt;
+&lt;p&gt;Opdumper还支持vld不支持的PHP_FUNCTION API，Opdumper提供了两个PHP函数：od_dump_opcodes_string和od_dump_opcodes_file。前者接受一个字符串作为产生，字符串是一段PHP代码；后者接受一个PHP文件作为参数，返回值均是一个存有opcode结果的PHP数组。以od_dump_opcodes_file为例，我们在foo.php同一目录下再写一个bar.php：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+$opcodes = od_dump_opcodes_file('./foo.php');
+var_dump($opcodes);
+?&gt;&lt;/pre&gt;
+&lt;p&gt;执行结果如下：&lt;/p&gt;
+&lt;pre class=&quot;prettyprint language-php&quot;&gt;array(3) {
+    [0]=&gt;
+    array(8) {
+        [&quot;lineno&quot;]=&gt;
+        int(2)
+            [&quot;opcode&quot;]=&gt;
+        string(11) &quot;ZEND_ASSIGN&quot;
+            [&quot;op1_type&quot;]=&gt;
+        string(2) &quot;CV&quot;
+            [&quot;op2_type&quot;]=&gt;
+        string(5) &quot;CONST&quot;
+            [&quot;result_type&quot;]=&gt;
+        string(0) &quot;&quot;
+            [&quot;op1&quot;]=&gt;
+        string(2) &quot;~0&quot;
+            [&quot;op2&quot;]=&gt;
+        string(5) &quot;hello&quot;
+            [&quot;result&quot;]=&gt;
+        string(0) &quot;&quot;
+    }
+    [1]=&gt;
+    array(8) {
+        [&quot;lineno&quot;]=&gt;
+        int(3)
+            [&quot;opcode&quot;]=&gt;
+        string(9) &quot;ZEND_ECHO&quot;
+            [&quot;op1_type&quot;]=&gt;
+        string(2) &quot;CV&quot;
+            [&quot;op2_type&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+            [&quot;result_type&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+            [&quot;op1&quot;]=&gt;
+        string(2) &quot;~0&quot;
+            [&quot;op2&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+            [&quot;result&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+    }
+    [2]=&gt;
+    array(8) {
+        [&quot;lineno&quot;]=&gt;
+        int(5)
+            [&quot;opcode&quot;]=&gt;
+        string(11) &quot;ZEND_RETURN&quot;
+            [&quot;op1_type&quot;]=&gt;
+        string(5) &quot;CONST&quot;
+            [&quot;op2_type&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+            [&quot;result_type&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+            [&quot;op1&quot;]=&gt;
+        string(1) &quot;1&quot;
+            [&quot;op2&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+            [&quot;result&quot;]=&gt;
+        string(6) &quot;UNUSED&quot;
+    }
+}&lt;/pre&gt;
+&lt;h1&gt;Opdumper的Web服务：Opcode Dumper&lt;/h1&gt;
+&lt;p&gt;坦白说，安装PHP模块还是挺麻烦的。所以为了方便朋友们查看opcode，我为Opdumper搭建了一个在线Web服务：&lt;a href=&quot;http://supercompiler.com/app/opcode_dumper&quot; target=&quot;_blank&quot;&gt;http://supercompiler.com/app/opcode_dumper&lt;/a&gt;。&lt;/p&gt;
+&lt;h2&gt;Web页面访问&lt;/h2&gt;
+&lt;p&gt;只要访问这个页面，在编辑框中输入或粘贴进PHP代码，就可以快速看到相应的opcode：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/opdumper-and-web-opcode-dumper/2.png&quot;/&gt;&lt;/p&gt;
+&lt;h2&gt;HTTP API方式访问&lt;/h2&gt;
+&lt;p&gt;您可以通过访问如下API获取PHP代码的opcode：&lt;/p&gt;
+&lt;p&gt;URI: &lt;b&gt;http://supercompiler.com/api/dump_opcodes&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Method: &lt;b&gt;POST&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Params: &lt;b&gt;php_script=[您的PHP代码]&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;返回值为JSON格式，成功时success字段为&quot;true&quot;，data字段存储opcodes；失败时success字段为&quot;false&quot;，msg字段存放失败原因。&lt;/p&gt;
+&lt;p&gt;由于跨越的关系，目前只能使用Curl而不能使用Ajax方式调用这个API，后续会为其增加JSONP接口。&lt;/p&gt;
+&lt;h1&gt;结语&lt;/h1&gt;
+&lt;p&gt;目前这个模块还比较初级，有很多需要完善的地方。也欢迎有兴趣的朋友通过github贡献代码。&lt;/p&gt;
 </description>
 </item>
 <item>
