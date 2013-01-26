@@ -71,8 +71,7 @@
         </div>
         <div id="footer">
             <div id="footer-inner">
-                <p id="copyright">Copyright (c) {%= COPYRIGHT_BEGINYEAR %}-{%= COPYRIGHT_ENDYEAR %} {%= COPYRIGHT_OWNER %}. Powered by <a href="https://github.com/ericzhang-cn/simplog" target="_blank">Simplog</a>.</p>
-                <p id="madeonmymac" style="color:#999999;">Made on my Mac </p>
+                <p id="copyright">Copyright (c) {%= COPYRIGHT_BEGINYEAR %}-{%= COPYRIGHT_ENDYEAR %} {%= COPYRIGHT_OWNER %}. <span id="madeonmymac" style="color:#999999;">Made on my Mac </span></p>
                 <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">{%= COPYRIGHT_ICP %}</a></p>
             </div>
         </div>

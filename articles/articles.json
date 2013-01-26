@@ -109,6 +109,15 @@
             "abstract": "最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。"
         },
         {
+            "id": "closure-perspective-of-abstract-mathematic-and-functional-language",
+            "title": "闭包漫谈（从抽象代数及函数式编程角度）",
+            "postedOn": "2011-12-05",
+            "author": "张洋",
+            "tags": [""],
+            "category": "",
+            "abstract": "如果Google一下“闭包”这个词，会发现网上关于闭包的文章已经不计其数，甚至很多人将闭包看做面试JavaScript程序员的必考题（虽然闭包和JavaScript没有什么必然联系）。既然如此，我为什么还要写一篇关于闭包的文章呢？<p>首先，虽然网上关于闭包的文章甚多，但是很少以较为形式化的角度阐述闭包，而我认为理解闭包的关键之一就是从形式化角度理解其涵义；其次，大多数文章将闭包的概念与JavaScript语言绑定太死，这样容易局限对闭包概念的理解，而难以窥探到其本质。从JavaScript去理解闭包，个人认为这是本末倒置的，应该先理解纯粹意义上的闭包，然后再理解JavaScript中的闭包机制。</p><p>基于以上情况，本文将从较为形式化的角度阐述闭包概念，当做对现有网络的资料的一个补充。</p>"
+        },
+        {
             "id": "write-daemon-with-php",
             "title": "如何使用PHP编写daemon process",
             "postedOn": "2011-10-24",
