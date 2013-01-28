@@ -46,7 +46,7 @@
 <p>可以看到，进行哈希碰撞攻击的前提是哈希算法特别容易找出碰撞，如果是MD5或者SHA1那基本就没戏了，幸运的是（也可以说不幸的是）大多数编程语言使用的哈希算法都十分简单（这是为了效率考虑），因此可以不费吹灰之力之力构造出攻击数据。下一节将通过分析Zend相关内核代码，找出攻击哈希表碰撞攻击PHP的方法。</p>
 <h1>Zend哈希表的内部实现</h1>
 <h2>数据结构</h2>
-<p>PHP中使用一个叫Backet的结构体表示桶，同一哈希值的所有桶被组织为一个单链表。哈希表使用HashTable结构体表示。相关源码在zend/Zend_hash.h下：</p><pre class="prettyprint language-c">typedef struct bucket {
+<p>PHP中使用一个叫Backet的结构体表示桶，同一哈希值的所有桶被组织为一个单链表。哈希表使用HashTable结构体表示。相关源码在zend/Zend_hash.h下：</p><pre class="prettyprint">typedef struct bucket {
     ulong h;                        /* Used for numeric indexing */
     uint nKeyLength;
     void *pData;
@@ -77,7 +77,7 @@ typedef struct _hashtable {
 } HashTable;</pre>
 <p>字段名很清楚的表明其用途，因此不做过多解释。重点明确下面几个字段：Bucket中的“h”用于存储原始key；HashTable中的nTableMask是一个掩码，一般被设为nTableSize - 1，与哈希算法有密切关系，后面讨论哈希算法时会详述；arBuckets指向一个指针数组，其中每个元素是一个指向Bucket链表的头指针。</p>
 <h2>哈希算法</h2>
-<p>PHP哈希表最小容量是8（2^3），最大容量是0x80000000（2^31），并向2的整数次幂圆整（即长度会自动扩展为2的整数次幂，如13个元素的哈希表长度为16；100个元素的哈希表长度为128）。nTableMask被初始化为哈希表长度（圆整后）减1。具体代码在zend/Zend_hash.c的_zend_hash_init函数中，这里截取与本文相关的部分并加上少量注释。</p><pre class="prettyprint language-c">ZEND_API int _zend_hash_init(HashTable *ht, uint nSize, hash_func_t pHashFunction, dtor_func_t pDestructor, zend_bool persistent ZEND_FILE_LINE_DC)
+<p>PHP哈希表最小容量是8（2^3），最大容量是0x80000000（2^31），并向2的整数次幂圆整（即长度会自动扩展为2的整数次幂，如13个元素的哈希表长度为16；100个元素的哈希表长度为128）。nTableMask被初始化为哈希表长度（圆整后）减1。具体代码在zend/Zend_hash.c的_zend_hash_init函数中，这里截取与本文相关的部分并加上少量注释。</p><pre class="prettyprint">ZEND_API int _zend_hash_init(HashTable *ht, uint nSize, hash_func_t pHashFunction, dtor_func_t pDestructor, zend_bool persistent ZEND_FILE_LINE_DC)
 {
     uint i = 3;
     Bucket **tmp;
@@ -107,7 +107,7 @@ typedef struct _hashtable {
 <p>即简单将数据的原始key与HashTable的nTableMask进行按位与即可。</p>
 <p>如果原始key为字符串，则首先使用<a href="http://blog.csdn.net/chen_alvin/article/details/5846714" target="_blank">Times33</a>算法将字符串转为整形再与nTableMask按位与。</p>
 <p>hash(strkey)=time33(strkey) &amp; nTableMask</p>
-<p>下面是Zend源码中查找哈希表的代码：</p><pre  class="prettyprint language-c">ZEND_API int zend_hash_index_find(const HashTable *ht, ulong h, void **pData)
+<p>下面是Zend源码中查找哈希表的代码：</p><pre  class="prettyprint">ZEND_API int zend_hash_index_find(const HashTable *ht, ulong h, void **pData)
 {
     uint nIndex;
     Bucket *p;
@@ -161,7 +161,7 @@ ZEND_API int zend_hash_find(const HashTable *ht, const char *arKey, uint nKeyLen
 <p>0100 0000 0000 0000 0000 &amp; 0 1111 1111 1111 1111 = 0</p>
 <p>……</p>
 <p>概况来说只要保证后16位均为0，则与掩码位于后得到的哈希值全部碰撞在位置0。</p>
-<p>下面是利用这个原理写的一段攻击代码：</p><pre  class="prettyprint language-php">&lt;?php
+<p>下面是利用这个原理写的一段攻击代码：</p><pre  class="prettyprint">&lt;?php
 
 $size = pow(2, 16);
 
@@ -178,7 +178,7 @@ echo $endTime - $startTime, ' seconds', "\n";</pre>
 <p>这段代码在我的VPS上（单CPU，512M内存）上用了近88秒才完成，并且在此期间CPU资源几乎被用尽：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/hash-collisions-attack-on-php/2.png"/></p>
 <p class="picture"><img alt="" src="/uploads/pictures/hash-collisions-attack-on-php/3.png"/></p>
-<p>而普通的同样大小的哈希表插入仅用时0.036秒：</p><pre  class="prettyprint language-php">&lt;?php
+<p>而普通的同样大小的哈希表插入仅用时0.036秒：</p><pre  class="prettyprint">&lt;?php
 
 $size = pow(2, 16);
 

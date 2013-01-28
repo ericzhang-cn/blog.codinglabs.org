@@ -1,7 +1,7 @@
 <p>问题来源于一个朋友在百度的笔试题。上周六我一个朋友参加了百度举行的专场招聘会，其中第一道笔试题是这样的：</p>
 <p>
 <hr>
-<p>给出下面一段代码</p><pre class="prettyprint language-c">#include &lt;stdio.h&gt;
+<p>给出下面一段代码</p><pre class="prettyprint">#include &lt;stdio.h&gt;
 main() {
     double a = 10; 
     printf("a = %d\n", a); 
@@ -31,7 +31,7 @@ main() {
 <p>分析完了，下一步当然是通过实践验证，我在我的VPS上（CentOS 64位）用gcc编译。结果非常出乎意料，不但不是0，而且每次运行的结果都不一样！（见下图）</p>
 <p class="picture"><img alt="" src="/uploads/pictures/trouble-of-x86-64-platform/3.png"/></p>
 <h1>定位问题</h1>
-<p>在试图解释这个奇怪现象时，我最初从C的层面上进行了诸多分析，结果都无法分析出问题所在，所以我怀疑出现这个问题的原因在机器代码层面。于是我将其汇编代码打出来：</p><pre class="prettyprint language-asm">.file   "double_as_int.c"
+<p>在试图解释这个奇怪现象时，我最初从C的层面上进行了诸多分析，结果都无法分析出问题所在，所以我怀疑出现这个问题的原因在机器代码层面。于是我将其汇编代码打出来：</p><pre class="prettyprint">.file   "double_as_int.c"
 .section    .rodata.str1.1,"aMS",@progbits,1
 .LC1:
 .string "a = %d\n"
@@ -60,13 +60,13 @@ ret
 .long   1076101120
 .ident  "GCC: (GNU) 4.4.6 20120305 (Red Hat 4.4.6-4)"
 .section    .note.GNU-stack,"",@progbits</pre>
-<p>为了方便对比，我重新写了下面的C代码：</p><pre class="prettyprint language-c">#include &lt;stdio.h&gt;
+<p>为了方便对比，我重新写了下面的C代码：</p><pre class="prettyprint">#include &lt;stdio.h&gt;
 
 main() {
     int a = 10; 
     printf("a = %d\n", a); 
 }</pre>
-<p>其汇编为：</p><pre class="prettyprint language-asm">.file   "int_as_int.c"
+<p>其汇编为：</p><pre class="prettyprint">.file   "int_as_int.c"
 .section    .rodata.str1.1,"aMS",@progbits,1
 .LC0:
 .string "a = %d\n"
@@ -96,7 +96,7 @@ ret
 <blockquote>
 <p><strong>INTEGER</strong> This class consists of integral types that ﬁt into one of the general purpose registers.</p>
 <p><strong>SSE</strong> The class consists of types that ﬁt into a vector register.</p></blockquote>
-<p>这段话和相关汇编代码基本印证了我的猜测。为了进一步验证，我考虑手工改一下汇编代码，将movsd .LC0(%rip), %xmm0改为将数据送入rsi（其低32位就是esi），修改后代码如下，注意第13行代码是我修改过的：</p><pre class="prettyprint language-asm">.file   "double_as_int.c"
+<p>这段话和相关汇编代码基本印证了我的猜测。为了进一步验证，我考虑手工改一下汇编代码，将movsd .LC0(%rip), %xmm0改为将数据送入rsi（其低32位就是esi），修改后代码如下，注意第13行代码是我修改过的：</p><pre class="prettyprint">.file   "double_as_int.c"
 .section    .rodata.str1.1,"aMS",@progbits,1
 .LC1:
 .string "a = %d\n"
