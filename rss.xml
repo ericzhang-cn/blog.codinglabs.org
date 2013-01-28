@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Sat, 26 Jan 2013 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 28 Jan 2013 00:00:00 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
@@ -268,7 +268,7 @@
 &lt;p&gt;这一步可以通过javascript埋点及记录accesslog完成，具体原理和实现方案可以参考我之前的一篇文章：&lt;a href=&quot;http://www.codinglabs.org/html/how-web-analytics-data-collection-system-work.html&quot; target=&quot;_blank&quot;&gt;网站统计中的数据收集原理及实现&lt;/a&gt;。&lt;/p&gt;
 &lt;h2&gt;实时UV计算&lt;/h2&gt;
 &lt;p&gt;可以看到，如果将每个链接被点击的日志中访客标识字段看成一个集合，那么此链接当前的UV也就是这个集合的基数，因此UV计算本质上就是一个基数计数问题。&lt;/p&gt;
-&lt;p&gt;在实时计算流中，我们可以认为任何一次链接点击均触发如下逻辑（伪代码描述）：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-c&quot;&gt;cand_counting(item_no, user_id) {
+&lt;p&gt;在实时计算流中，我们可以认为任何一次链接点击均触发如下逻辑（伪代码描述）：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;cand_counting(item_no, user_id) {
     if (user_id is not in the item_no visitor set) {
         add user_id to item_no visitor set;
         cand[item_no]++;
@@ -319,7 +319,7 @@
 &lt;p&gt;值得一提的是，Flajolet-Martin在最初的论文里通过一种基于bitmap的过程去提高估计算法的准确度。关于这点我就不再详述了，因为这种方法已经被后续论文中更好的方法所取代；对这个细节有兴趣的读者可以去阅读原始论文。&lt;/p&gt;
 &lt;p&gt;到目前为止，我们这种基于位模式的估计算法给出的结果仍然不够理想。如何进行改进呢？一个直观的改进方法就是使用多个相互独立的哈希函数：通过计算每个哈希函数所产生的最长0前缀，然后取其平均值可以提高算法的精度。&lt;/p&gt;
 &lt;p&gt;实践表明从统计意义来说这种方法确实可以提高估计的准确度，但是计算哈希值的消耗比较大。另一个更高效的方法就是随机平均（stochastic averaging）。这种方法不是使用多个哈希函数，而是使用一个哈希函数，但是将哈希值的区间按位切分成多个桶（bucket）。例如我们希望取1024个数进行平均，那么我们可以取哈希值的前10比特作为桶编号，然后计算剩下部分的0前缀长度。这种方法的准确度和多哈希函数方法相当，但是比计算多个哈希效率高很多。&lt;/p&gt;
-&lt;p&gt;根据上述分析，我们可以给出一个简单的算法实现。这个实现等价于Durand-Flajolet的论文中提出的LogLog算法；不过为了方便，这个实现中统计的是0尾缀而不是0前缀；其效果是等价的。&lt;/p&gt;&lt;pre class=&quot;prettyprint language-python&quot;&gt;def trailing_zeroes(num):
+&lt;p&gt;根据上述分析，我们可以给出一个简单的算法实现。这个实现等价于Durand-Flajolet的论文中提出的LogLog算法；不过为了方便，这个实现中统计的是0尾缀而不是0前缀；其效果是等价的。&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;def trailing_zeroes(num):
     &quot;&quot;&quot;Counts the number of trailing 0 bits in num.&quot;&quot;&quot;
     if num == 0:
         return 32 # Assumes 32 bit integer inputs!
@@ -345,7 +345,7 @@ def estimate_cardinality(values, k):
     return 2 ** (float(sum(max_zeroes)) / num_buckets) * num_buckets * 0.79402&lt;/pre&gt;
     &lt;p&gt;这段代码实现了我们上面讨论的估计算法：我们计算每个桶的0前缀（或尾缀）的最长长度；然后计算这些长度的平均数；假设平均数是x，桶数量是m，则最终的估计值是\(2^x \times m\)。其中一个没提过的地方是魔法数字0.79402。统计分析显示这种预测方法存在一个可预测的偏差；这个魔法数字是对这个偏差的修正。实际经验表明计算值随着桶数量的不同而变化，不过当桶数量不太小时（大于64），计算值会收敛于估计值。原论文中描述了这个结论的推导过程。&lt;/p&gt;
     &lt;p&gt;这个方法给出的估计值比较精确 —— 在分桶数为m的情况下，平均误差为\(1.3/\sqrt{m}\)。因此对于分桶数为1024的情况（所需内存1024*5 = 5120位，或640字节），大约会有4%的平均误差；每桶5比特的存储已经足以估计\(2^{27}\)的数据集，而我们只用的不到1k的内存！&lt;/p&gt;
-    &lt;p&gt;让我们看一下试验结果：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-python&quot;&gt;&gt;&gt;&gt; [100000/estimate_cardinality([random.random() for i in range(100000)], 10) for j in range(10)]
+    &lt;p&gt;让我们看一下试验结果：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;&gt;&gt;&gt; [100000/estimate_cardinality([random.random() for i in range(100000)], 10) for j in range(10)]
 [0.9825616152548807, 0.9905752876839672, 0.979241749110407, 1.050662616357679, 0.937090578752079, 0.9878968276629505, 0.9812323203117748, 1.0456960262467019, 0.9415413413873975, 0.9608567203911741]&lt;/pre&gt;
     &lt;p&gt;不错！虽然有些估计误差大于4%的平均误差，但总体来说效果良好。如果你准备自己做一下这个试验，有一点需要注意：Python内置的 hash() 方法将整数哈希为它自己。因此诸如 estimate_cardinality(range(10000), 10) 这种方式得到的结果不会很理想，因为内置 hash() 对于这种情况并不能生成很好的散列。但是像上面例子中使用随机数会好很多。&lt;/p&gt;
     &lt;h1&gt;提升准确度：SuperLogLog和HyperLogLog&lt;/h1&gt;
@@ -492,7 +492,7 @@ def estimate_cardinality(values, k):
 <description>&lt;p&gt;问题来源于一个朋友在百度的笔试题。上周六我一个朋友参加了百度举行的专场招聘会，其中第一道笔试题是这样的：&lt;/p&gt;
 &lt;p&gt;
 &lt;hr&gt;
-&lt;p&gt;给出下面一段代码&lt;/p&gt;&lt;pre class=&quot;prettyprint language-c&quot;&gt;#include &lt;stdio.h&gt;
+&lt;p&gt;给出下面一段代码&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;#include &lt;stdio.h&gt;
 main() {
     double a = 10; 
     printf(&quot;a = %d\n&quot;, a); 
@@ -522,7 +522,7 @@ main() {
 &lt;p&gt;分析完了，下一步当然是通过实践验证，我在我的VPS上（CentOS 64位）用gcc编译。结果非常出乎意料，不但不是0，而且每次运行的结果都不一样！（见下图）&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/trouble-of-x86-64-platform/3.png&quot;/&gt;&lt;/p&gt;
 &lt;h1&gt;定位问题&lt;/h1&gt;
-&lt;p&gt;在试图解释这个奇怪现象时，我最初从C的层面上进行了诸多分析，结果都无法分析出问题所在，所以我怀疑出现这个问题的原因在机器代码层面。于是我将其汇编代码打出来：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-asm&quot;&gt;.file   &quot;double_as_int.c&quot;
+&lt;p&gt;在试图解释这个奇怪现象时，我最初从C的层面上进行了诸多分析，结果都无法分析出问题所在，所以我怀疑出现这个问题的原因在机器代码层面。于是我将其汇编代码打出来：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;.file   &quot;double_as_int.c&quot;
 .section    .rodata.str1.1,&quot;aMS&quot;,@progbits,1
 .LC1:
 .string &quot;a = %d\n&quot;
@@ -551,13 +551,13 @@ ret
 .long   1076101120
 .ident  &quot;GCC: (GNU) 4.4.6 20120305 (Red Hat 4.4.6-4)&quot;
 .section    .note.GNU-stack,&quot;&quot;,@progbits&lt;/pre&gt;
-&lt;p&gt;为了方便对比，我重新写了下面的C代码：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-c&quot;&gt;#include &lt;stdio.h&gt;
+&lt;p&gt;为了方便对比，我重新写了下面的C代码：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;#include &lt;stdio.h&gt;
 
 main() {
     int a = 10; 
     printf(&quot;a = %d\n&quot;, a); 
 }&lt;/pre&gt;
-&lt;p&gt;其汇编为：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-asm&quot;&gt;.file   &quot;int_as_int.c&quot;
+&lt;p&gt;其汇编为：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;.file   &quot;int_as_int.c&quot;
 .section    .rodata.str1.1,&quot;aMS&quot;,@progbits,1
 .LC0:
 .string &quot;a = %d\n&quot;
@@ -587,7 +587,7 @@ ret
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;INTEGER&lt;/strong&gt; This class consists of integral types that ﬁt into one of the general purpose registers.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;SSE&lt;/strong&gt; The class consists of types that ﬁt into a vector register.&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p&gt;这段话和相关汇编代码基本印证了我的猜测。为了进一步验证，我考虑手工改一下汇编代码，将movsd .LC0(%rip), %xmm0改为将数据送入rsi（其低32位就是esi），修改后代码如下，注意第13行代码是我修改过的：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-asm&quot;&gt;.file   &quot;double_as_int.c&quot;
+&lt;p&gt;这段话和相关汇编代码基本印证了我的猜测。为了进一步验证，我考虑手工改一下汇编代码，将movsd .LC0(%rip), %xmm0改为将数据送入rsi（其低32位就是esi），修改后代码如下，注意第13行代码是我修改过的：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;.file   &quot;double_as_int.c&quot;
 .section    .rodata.str1.1,&quot;aMS&quot;,@progbits,1
 .LC1:
 .string &quot;a = %d\n&quot;
@@ -653,7 +653,7 @@ ret
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图2. 谷歌分析埋点代码&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;其中_gaq是GA的的全局数组，用于放置各种配置，其中每一条配置的格式为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-js&quot;&gt;_gaq.push(['Action', 'param1', 'param2', ...]);&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;_gaq.push(['Action', 'param1', 'param2', ...]);&lt;/pre&gt;
 &lt;p&gt;Action指定配置动作，后面是相关的参数列表。GA给的默认埋点代码会给出两条预置配置，_setAccount用于设置网站标识ID，这个标识ID是在注册GA时分配的。_trackPageview告诉GA跟踪一次页面访问。更多配置请参考：&lt;a title=&quot;https://developers.google.com/analytics/devguides/collection/gajs/&quot; href=&quot;https://developers.google.com/analytics/devguides/collection/gajs/&quot; target=&quot;_blank&quot;&gt;https://developers.google.com/analytics/devguides/collection/gajs/&lt;/a&gt;。实际上，这个_gaq是被当做一个FIFO队列来用的，配置代码不必出现在埋点代码之前，具体请参考上述链接的说明。&lt;/p&gt;
 &lt;p&gt;就本文来说，_gaq的机制不是重点，重点是后面匿名函数的代码，这才是埋点代码真正要做的。这段代码的主要目的就是引入一个外部的js文件（ga.js），方式是通过document.createElement方法创建一个script并根据协议（http或https）将src指向对应的ga.js，最后将这个element插入页面的dom树上。&lt;/p&gt;
 &lt;p&gt;注意ga.async = true的意思是异步调用外部js文件，即不阻塞浏览器的解析，待外部js下载完成后异步执行。这个属性是HTML5新引入的。&lt;/p&gt;
@@ -758,7 +758,7 @@ ret
 &lt;/table&gt;
 &lt;h2&gt;埋点代码&lt;/h2&gt;
 &lt;p&gt;埋点代码我将借鉴GA的模式，但是目前不会将配置对象作为一个FIFO队列用。一个埋点代码的模板如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-js&quot;&gt;&lt;script type=&quot;text/javascript&quot;&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;&lt;script type=&quot;text/javascript&quot;&gt;
 var _maq = _maq || [];
 _maq.push(['_setAccount', '网站标识']);
 
@@ -771,7 +771,7 @@ _maq.push(['_setAccount', '网站标识']);
 &lt;p&gt;这里我启用了二级域名analytics.codinglabs.org，统计脚本的名称为ma.js。当然这里有一点小问题，因为我并没有https的服务器，所以如果一个https站点部署了代码会有问题，不过这里我们先忽略吧。&lt;/p&gt;
 &lt;h2&gt;前端统计脚本&lt;/h2&gt;
 &lt;p&gt;我写了一个不是很完善但能完成基本工作的统计脚本ma.js：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-js&quot;&gt;(function () {
+&lt;pre class=&quot;prettyprint&quot;&gt;(function () {
         var params = {};
         //Document对象数据
         if(document) {
@@ -822,10 +822,10 @@ _maq.push(['_setAccount', '网站标识']);
 &lt;h2&gt;后端脚本&lt;/h2&gt;
 &lt;p&gt;为了简单和效率考虑，我打算直接使用nginx的access_log做日志收集，不过有个问题就是nginx配置本身的逻辑表达能力有限，所以我选用了&lt;a href=&quot;http://openresty.org/&quot; target=&quot;_blank&quot;&gt;OpenResty&lt;/a&gt;做这个事情。OpenResty是一个基于Nginx扩展出的高性能应用开发平台，内部集成了诸多有用的模块，其中的核心是通过ngx_lua模块集成了Lua，从而在nginx配置文件中可以通过Lua来表述业务。关于这个平台我这里不做过多介绍，感兴趣的同学可以参考其官方网站&lt;a title=&quot;http://openresty.org/&quot; href=&quot;http://openresty.org/&quot; target=&quot;_blank&quot;&gt;http://openresty.org/&lt;/a&gt;，或者这里有其作者章亦春（agentzh）做的一个非常有爱的介绍OpenResty的slide：&lt;a href=&quot;http://agentzh.org/misc/slides/ngx-openresty-ecosystem/&quot; target=&quot;_blank&quot;&gt;http://agentzh.org/misc/slides/ngx-openresty-ecosystem/&lt;/a&gt;，关于ngx_lua可以参考：&lt;a title=&quot;https://github.com/chaoslawful/lua-nginx-module&quot; href=&quot;https://github.com/chaoslawful/lua-nginx-module&quot; target=&quot;_blank&quot;&gt;https://github.com/chaoslawful/lua-nginx-module&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;首先，需要在nginx的配置文件中定义日志格式：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;log_format tick &quot;$msec^A$remote_addr^A$u_domain^A$u_url^A$u_title^A$u_referrer^A$u_sh^A$u_sw^A$u_cd^A$u_lang^A$http_user_agent^A$u_utrace^A$u_account&quot;;&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;log_format tick &quot;$msec^A$remote_addr^A$u_domain^A$u_url^A$u_title^A$u_referrer^A$u_sh^A$u_sw^A$u_cd^A$u_lang^A$http_user_agent^A$u_utrace^A$u_account&quot;;&lt;/pre&gt;
 &lt;p&gt;注意这里以u_开头的是我们待会会自己定义的变量，其它的是nginx内置变量。&lt;/p&gt;
 &lt;p&gt;然后是核心的两个location：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;location /1.gif {
+&lt;pre class=&quot;prettyprint&quot;&gt;location /1.gif {
 #伪装成gif文件
     default_type image/gif;    
 #本身关闭access_log，通过subrequest记录log
@@ -881,7 +881,7 @@ location /i-log {
 &lt;p&gt;要完全解释这段脚本的每一个细节有点超出本文的范围，而且用到了诸多第三方ngxin模块（全都包含在OpenResty中了），重点的地方我都用注释标出来了，可以不用完全理解每一行的意义，只要大约知道这个配置完成了我们在原理一节提到的后端逻辑就可以了。&lt;/p&gt;
 &lt;h2&gt;日志轮转&lt;/h2&gt;
 &lt;p&gt;真正的日志收集系统访问日志会非常多，时间一长文件变得很大，而且日志放在一个文件不便于管理。所以通常要按时间段将日志切分，例如每天或每小时切分一个日志。我这里为了效果明显，每一小时切分一个日志。我是通过crontab定时调用一个shell脚本实现的，shell脚本如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;_prefix=&quot;/path/to/nginx&quot;
+&lt;pre class=&quot;prettyprint&quot;&gt;_prefix=&quot;/path/to/nginx&quot;
 time=`date +%Y%m%d%H`
 
 mv ${_prefix}/logs/ma.log ${_prefix}/logs/ma/ma-${time}.log
@@ -899,7 +899,7 @@ kill -USR1 `cat ${_prefix}/logs/nginx.pid`&lt;/pre&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图7. 1.gif的请求参数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;相关信息确实也放在了请求参数中。&lt;/p&gt;
 &lt;p&gt;然后我tail打开日志文件，然后刷新一下页面，因为没有设access log buffer， 我立即得到了一条新日志：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;1351060731.360^A0.0.0.0^Awww.codinglabs.org^Ahttp://www.codinglabs.org/^ACodingLabs^A^A1024^A1280^A24^Azh-CN^AMozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4^A4d612be64366768d32e623d594e82678^AU-1-1&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;1351060731.360^A0.0.0.0^Awww.codinglabs.org^Ahttp://www.codinglabs.org/^ACodingLabs^A^A1024^A1280^A24^Azh-CN^AMozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4^A4d612be64366768d32e623d594e82678^AU-1-1&lt;/pre&gt;
 &lt;p&gt;注意实际上原日志中的^A是不可见的，这里我用可见的^A替换为方便阅读，另外IP由于涉及隐私我替换为了0.0.0.0。&lt;/p&gt;
 &lt;p&gt;看一眼日志轮转目录，由于我之前已经埋了点，所以已经生成了很多轮转文件：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/8.png&quot;/&gt;&lt;/p&gt;
@@ -908,7 +908,7 @@ kill -USR1 `cat ${_prefix}/logs/nginx.pid`&lt;/pre&gt;
 &lt;p&gt;通过上面的分析和开发可以大致理解一个网站统计的日志收集系统是如何工作的。有了这些日志，就可以进行后续的分析了。本文只注重日志收集，所以不会写太多关于分析的东西。&lt;/p&gt;
 &lt;p&gt;注意，原始日志最好尽量多的保留信息而不要做过多过滤和处理。例如上面的MyAnalytics保留了毫秒级时间戳而不是格式化后的时间，时间的格式化是后面的系统做的事而不是日志收集系统的责任。后面的系统根据原始日志可以分析出很多东西，例如通过IP库可以定位访问者的地域、user agent中可以得到访问者的操作系统、浏览器等信息，再结合复杂的分析模型，就可以做流量、来源、访客、地域、路径等分析了。当然，一般不会直接对原始日志分析，而是会将其清洗格式化后转存到其它地方，如MySQL或HBase中再做分析。&lt;/p&gt;
 &lt;p&gt;分析部分的工作有很多开源的基础设施可以使用，例如实时分析可以使用&lt;a href=&quot;https://github.com/nathanmarz/storm&quot; target=&quot;_blank&quot;&gt;Storm&lt;/a&gt;，而离线分析可以使用&lt;a href=&quot;http://hadoop.apache.org/&quot; target=&quot;_blank&quot;&gt;Hadoop&lt;/a&gt;。当然，在日志比较小的情况下，也可以通过shell命令做一些简单的分析，例如，下面三条命令可以分别得出我的博客在今天上午8点到9点的访问量（PV），访客数（UV）和独立IP数（IP）：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;awk -F^A '{print $1}' ma-2012102409.log | wc -l
+&lt;pre class=&quot;prettyprint&quot;&gt;awk -F^A '{print $1}' ma-2012102409.log | wc -l
 awk -F^A '{print $12}' ma-2012102409.log | uniq | wc -l
 awk -F^A '{print $2}' ma-2012102409.log | uniq | wc -l&lt;/pre&gt;
 &lt;p&gt;其它好玩的东西朋友们可以慢慢挖掘。&lt;/p&gt;
@@ -952,7 +952,7 @@ awk -F^A '{print $2}' ma-2012102409.log | uniq | wc -l&lt;/pre&gt;
 &lt;h2&gt;因子检测法&lt;/h2&gt;
 &lt;p&gt;最直观的素数检测算法就是因子检测法。说白了，就是从2到n-1一个个拿来试，看能否整除n，如果有能整除的（找到一个因子），则输出不是质数，否则则认为n为质数。当然，实际上不需要试探到n-1，只要到\(\sqrt{n}\)就好了，原因如下：&lt;/p&gt;
 &lt;p&gt;设\(n=a\times b\)，且a、b均为n的非平凡约数，显然\(a&gt;\sqrt{n}\)和\(b&gt;\sqrt{n}\)不可能同时成立，因为同时成立时a*b就会大于n，所以，如果n存在非平凡约数，则至少有一个小于等于\(\sqrt{n}\)，因此只要遍历到\(\sqrt{n}\)就可以了。&lt;/p&gt;
-&lt;p&gt;因子检测法的实现代码如下（python）：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-python&quot;&gt;def prime_test_factor(n):
+&lt;p&gt;因子检测法的实现代码如下（python）：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;def prime_test_factor(n):
     if n == 1:
         return False
     for i in range(2, 1 + int(floor(sqrt(n)))):
@@ -960,7 +960,7 @@ awk -F^A '{print $2}' ma-2012102409.log | uniq | wc -l&lt;/pre&gt;
             return False
     return True&lt;/pre&gt;
 &lt;p&gt;做几个测试：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-python&quot;&gt;print prime_test_factor(2) #True
+&lt;pre class=&quot;prettyprint&quot;&gt;print prime_test_factor(2) #True
 print prime_test_factor(11) #True
 print prime_test_factor(15) #False
 print prime_test_factor(2147483647) #True&lt;/pre&gt;
@@ -976,7 +976,14 @@ print prime_test_factor(2147483647) #True&lt;/pre&gt;
 &lt;p&gt;\(a^{p-1}\equiv 1(mod\ p)\)&lt;/p&gt;
 &lt;p&gt;根据基本数理逻辑，一个命题正确，当且仅当其逆否命题正确。所以费马定理蕴含了这样一个事实：如果某个小于p的正整数不符合上述公式，则p一定不是素数；令人惊讶的是，费马定理的逆命题也“几乎正确”，也就是说如果所有小于p的正整数都符合上述公式，则p“几乎就是一个素数”。当然，“几乎正确”就意味着有出错的可能，这个话题我们后续再来讨论。至少从目前来看，费马定理给我们提供了一条检测素数的方法。&lt;/p&gt;
 &lt;p&gt;下面再通过例子说明一下费马定理表达的意义，例如我们知道7是一个素数，则：&lt;/p&gt;
-&lt;p&gt;\(\\ 1^6=1\equiv 1(mod\ 7) \\ 2^6=64\equiv 1(mod\ 7) \\ 3^6=729\equiv 1(mod\ 7) \\ 4^6=4096\equiv 1(mod\ 7) \\ 5^6=15625\equiv 1(mod\ 7) \\ 6^6=46656\equiv 1(mod\ 7)\)&lt;/p&gt;
+&lt;p&gt;\(\begin{align} 
+1^6 &amp;= 1     &amp;\equiv 1(mod\ 7) \\ 
+2^6 &amp;= 64    &amp;\equiv 1(mod\ 7) \\ 
+3^6 &amp;= 729   &amp;\equiv 1(mod\ 7) \\ 
+4^6 &amp;= 4096  &amp;\equiv 1(mod\ 7) \\ 
+5^6 &amp;= 15625 &amp;\equiv 1(mod\ 7) \\ 
+6^6 &amp;= 46656 &amp;\equiv 1(mod\ 7)
+\end{align}\)&lt;/p&gt;
 &lt;p&gt;其它素数可以可以用类似方法验证，关于这个定理的严格证明本文不再给出。&lt;/p&gt;
 &lt;p&gt;所以可以使用如下方法进行大素数探测：选择一个底数（例如2），对于大整数p，如果2^(p-1)与1不是模p同余数，则p&lt;strong&gt;一定&lt;/strong&gt;不是素数；否则，则p&lt;strong&gt;很可能&lt;/strong&gt;是一个素数。&lt;/p&gt;
 &lt;p&gt;至于出现假阳性（即合数被判定为素数）的概率，已有研究表明，随着整数趋向于无穷，这个概率趋向于零，在以2为底的情况下，512位整数碰到假阳性的概率为1/10^20，而在1024位整数中，碰到假阳性的概率为1/10^41。因此如果使用此法检测充分大的数，碰到错误的可能性微乎其微。&lt;/p&gt;
@@ -986,9 +993,15 @@ print prime_test_factor(2147483647) #True&lt;/pre&gt;
 &lt;p&gt;10的二进制表示是1010，因此：&lt;/p&gt;
 &lt;p&gt;\(2^{10}=2^{[1010]_2}\)&lt;/p&gt;
 &lt;p&gt;现初始化结果d=2^0=1，我们希望通过乘上某些数变换到2^10，变换序列如下：&lt;/p&gt;
-&lt;p&gt;\(\\ 2^{[0]_2} \\ 2^{[0]_2}\times 2^{[0]_2}\times 2=2^{[1]_2} \\ 2^{[1]_2}\times 2^{[1]_2}=2^{[10]_2} \\ 2^{[10]_2}\times 2^{[10]_2}\times 2=2^{[101]_2} \\ 2^{[101]_2}\times 2^{[101]_2}=2^{[1010]_2}\)&lt;/p&gt;
+&lt;p&gt;\(\begin{align} 
+2^{[0]_2}   &amp;                   &amp;         &amp; \\ 
+2^{[0]_2}   &amp;\times 2^{[0]_2}   &amp;\times 2 &amp;= 2^{[1]_2} \\ 
+2^{[1]_2}   &amp;\times 2^{[1]_2}   &amp;         &amp;= 2^{[10]_2} \\ 
+2^{[10]_2}  &amp;\times 2^{[10]_2}  &amp;\times 2 &amp;= 2^{[101]_2} \\ 
+2^{[101]_2} &amp;\times 2^{[101]_2} &amp;         &amp;= 2^{[1010]_2}
+\end{align}\)&lt;/p&gt;
 &lt;p&gt;可以看到这样一个规律：对中间结果d自身进行平方，等于在二进制指数的尾部“生出”一个0；对中间结果d自身进行平方再乘以底数，等于在二进制指数尾部“生出”一个1。靠这样不断让指数“生长”，就可以构造出幂。如果在每次运算时取模，就可以得到模幂了，下面是这个算法的python实现：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-python&quot;&gt;def compute_power(a, p, m):
+&lt;pre class=&quot;prettyprint&quot;&gt;def compute_power(a, p, m):
     result = 1
     p_bin = bin(p)[2:]
     length = len(p_bin)
@@ -999,11 +1012,11 @@ print prime_test_factor(2147483647) #True&lt;/pre&gt;
 
     return result&lt;/pre&gt;
 &lt;p&gt;这个算法的复杂度正比于a、p和m中位数最多的数的二进制位数，要远远低于朴素的模幂求解法。&lt;/p&gt;
-&lt;p&gt;例如，下面的代码在我的机器上瞬间可以完成：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-python&quot;&gt;compute_power(2, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057150, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151)&lt;/pre&gt;
+&lt;p&gt;例如，下面的代码在我的机器上瞬间可以完成：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;compute_power(2, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057150, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151)&lt;/pre&gt;
 &lt;p&gt;而用直观方法计算如此大指数的幂基本是不可能的。&lt;/p&gt;
 &lt;h3&gt;费马检测的实现&lt;/h3&gt;
 &lt;p&gt;有了上的铺垫，下面可以实现费马检测了：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-python&quot;&gt;def prime_test_fermat(p):
+&lt;pre class=&quot;prettyprint&quot;&gt;def prime_test_fermat(p):
     if p == 1:
         return False
     if p == 2:
@@ -1013,7 +1026,7 @@ print prime_test_factor(2147483647) #True&lt;/pre&gt;
         return True
     return False&lt;/pre&gt;
 &lt;p&gt;以下是一些测试：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-python&quot;&gt;print prime_test_fermat(7) #True
+&lt;pre class=&quot;prettyprint&quot;&gt;print prime_test_fermat(7) #True
 print prime_test_fermat(11) #True
 print prime_test_fermat(15) #False
 print prime_test_fermat(121) #False
@@ -1032,10 +1045,15 @@ print prime_test_fermat(68647976601306097149819007990813932172694353001433054093
 &lt;p&gt;\(a^{p-1}=a^{u2^t}=(a^u)^{2^t}\)&lt;/p&gt;
 &lt;p&gt;也就是可以通过先算出a^u，然后经过连续t次平方计算出a^(p-1)，并且，在任意一次平方时发现了非平凡平方根，则断定p是合数。&lt;/p&gt;
 &lt;p&gt;例如，560 = 35 * 2^4，所以可设u=35，t=4：&lt;/p&gt;
-&lt;p&gt;\(\\ 2^{35} \mod 561=263 \\ 263^2 \mod 561=166 \\ 166^2 \mod 561=67 \\ 67^2 \mod 561=1\)&lt;/p&gt;
+&lt;p&gt;\(\begin{align} 
+2^{35} &amp;\mod 561 = 263 \\ 
+263^2  &amp;\mod 561 = 166 \\ 
+166^2  &amp;\mod 561 = 67 \\ 
+67^2   &amp;\mod 561 = 1
+\end{align}\)&lt;/p&gt;
 &lt;p&gt;由于找到了一个非平凡平方根67，所以可以断言561是合数。因此2就成为了561是合数的一个证据。&lt;/p&gt;
 &lt;p&gt;一般的，Miller-Rabin算法的python实现如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-python&quot;&gt;def miller_rabin_witness(a, p):
+&lt;pre class=&quot;prettyprint&quot;&gt;def miller_rabin_witness(a, p):
     if p == 1:
         return False
     if p == 2:
@@ -1069,7 +1087,7 @@ def prime_test_miller_rabin(p, k):
         k = k - 1
     return True&lt;/pre&gt;
 &lt;p&gt;其中miller_rabin_witness用于确认a是否为p为合数的证据，prime_test_miller_rabin共探测k次，每次随机产生一个1至p-1间的整数。只要有一次发现p为合数的证据就认为p为合数，否则认为p为素数。一些测试：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-python&quot;&gt;print prime_test_miller_rabin(7, 5) #True
+&lt;pre class=&quot;prettyprint&quot;&gt;print prime_test_miller_rabin(7, 5) #True
 print prime_test_miller_rabin(21, 5) #False
 print prime_test_miller_rabin(561, 50) #False
 print prime_test_miller_rabin(6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151, 50) #True&lt;/pre&gt;
@@ -1235,34 +1253,34 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 &lt;h1&gt;Opdumper&lt;/h1&gt;
 &lt;h2&gt;安装&lt;/h2&gt;
 &lt;p&gt;Opdumper的源码已经托管在github上，其地址为：&lt;a href=&quot;https://github.com/ericzhang-cn/opdumper&quot; target=&quot;_blank&quot;&gt;https://github.com/ericzhang-cn/opdumper&lt;/a&gt;。可以通过以下命令克隆源代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;git clone https://github.com/ericzhang-cn/opdumper.git&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;git clone https://github.com/ericzhang-cn/opdumper.git&lt;/pre&gt;
 &lt;p&gt;Opdumper是一个标准的PHP Extension，安装方法如下：&lt;/p&gt;
 &lt;p&gt;首先将Opdumper源码放到PHP源码包的ext/opdumper目录下，进入此目录执行如下命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;phpize
+&lt;pre class=&quot;prettyprint&quot;&gt;phpize
 ./configure
 make
 make install&lt;/pre&gt;
 &lt;p&gt;然后在php.ini中添加一行配置：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;extension=opdumper.so&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;extension=opdumper.so&lt;/pre&gt;
 &lt;p&gt;目前opdumper支持PHP&gt;=5.3，在Linux和MacOS下测试通过，Windows下未做测试。&lt;/p&gt;
 &lt;h2&gt;CLI API&lt;/h2&gt;
 &lt;p&gt;Opdumper支持类似vld的命令行方式输出opcode，只需在执行php命令时通过-d参数将opdumper.active=1传入。例如我们有一个foo.php：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
 $a = 'hello';
 echo $a;
 ?&gt;&lt;/pre&gt;
 &lt;p&gt;执行如下命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;php -d opdumper.active=1 foo.php&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;php -d opdumper.active=1 foo.php&lt;/pre&gt;
 &lt;p&gt;结果如下：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/opdumper-and-web-opcode-dumper/1.png&quot;/&gt;&lt;/p&gt;
 &lt;h2&gt;PHP_FUNCTION API&lt;/h2&gt;
 &lt;p&gt;Opdumper还支持vld不支持的PHP_FUNCTION API，Opdumper提供了两个PHP函数：od_dump_opcodes_string和od_dump_opcodes_file。前者接受一个字符串作为产生，字符串是一段PHP代码；后者接受一个PHP文件作为参数，返回值均是一个存有opcode结果的PHP数组。以od_dump_opcodes_file为例，我们在foo.php同一目录下再写一个bar.php：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
 $opcodes = od_dump_opcodes_file('./foo.php');
 var_dump($opcodes);
 ?&gt;&lt;/pre&gt;
 &lt;p&gt;执行结果如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-php&quot;&gt;array(3) {
+&lt;pre class=&quot;prettyprint&quot;&gt;array(3) {
     [0]=&gt;
     array(8) {
         [&quot;lineno&quot;]=&gt;
@@ -1354,7 +1372,7 @@ var_dump($opcodes);
 &lt;p&gt;可以看到，进行哈希碰撞攻击的前提是哈希算法特别容易找出碰撞，如果是MD5或者SHA1那基本就没戏了，幸运的是（也可以说不幸的是）大多数编程语言使用的哈希算法都十分简单（这是为了效率考虑），因此可以不费吹灰之力之力构造出攻击数据。下一节将通过分析Zend相关内核代码，找出攻击哈希表碰撞攻击PHP的方法。&lt;/p&gt;
 &lt;h1&gt;Zend哈希表的内部实现&lt;/h1&gt;
 &lt;h2&gt;数据结构&lt;/h2&gt;
-&lt;p&gt;PHP中使用一个叫Backet的结构体表示桶，同一哈希值的所有桶被组织为一个单链表。哈希表使用HashTable结构体表示。相关源码在zend/Zend_hash.h下：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef struct bucket {
+&lt;p&gt;PHP中使用一个叫Backet的结构体表示桶，同一哈希值的所有桶被组织为一个单链表。哈希表使用HashTable结构体表示。相关源码在zend/Zend_hash.h下：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;typedef struct bucket {
     ulong h;                        /* Used for numeric indexing */
     uint nKeyLength;
     void *pData;
@@ -1385,7 +1403,7 @@ typedef struct _hashtable {
 } HashTable;&lt;/pre&gt;
 &lt;p&gt;字段名很清楚的表明其用途，因此不做过多解释。重点明确下面几个字段：Bucket中的“h”用于存储原始key；HashTable中的nTableMask是一个掩码，一般被设为nTableSize - 1，与哈希算法有密切关系，后面讨论哈希算法时会详述；arBuckets指向一个指针数组，其中每个元素是一个指向Bucket链表的头指针。&lt;/p&gt;
 &lt;h2&gt;哈希算法&lt;/h2&gt;
-&lt;p&gt;PHP哈希表最小容量是8（2^3），最大容量是0x80000000（2^31），并向2的整数次幂圆整（即长度会自动扩展为2的整数次幂，如13个元素的哈希表长度为16；100个元素的哈希表长度为128）。nTableMask被初始化为哈希表长度（圆整后）减1。具体代码在zend/Zend_hash.c的_zend_hash_init函数中，这里截取与本文相关的部分并加上少量注释。&lt;/p&gt;&lt;pre class=&quot;prettyprint language-c&quot;&gt;ZEND_API int _zend_hash_init(HashTable *ht, uint nSize, hash_func_t pHashFunction, dtor_func_t pDestructor, zend_bool persistent ZEND_FILE_LINE_DC)
+&lt;p&gt;PHP哈希表最小容量是8（2^3），最大容量是0x80000000（2^31），并向2的整数次幂圆整（即长度会自动扩展为2的整数次幂，如13个元素的哈希表长度为16；100个元素的哈希表长度为128）。nTableMask被初始化为哈希表长度（圆整后）减1。具体代码在zend/Zend_hash.c的_zend_hash_init函数中，这里截取与本文相关的部分并加上少量注释。&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;ZEND_API int _zend_hash_init(HashTable *ht, uint nSize, hash_func_t pHashFunction, dtor_func_t pDestructor, zend_bool persistent ZEND_FILE_LINE_DC)
 {
     uint i = 3;
     Bucket **tmp;
@@ -1415,7 +1433,7 @@ typedef struct _hashtable {
 &lt;p&gt;即简单将数据的原始key与HashTable的nTableMask进行按位与即可。&lt;/p&gt;
 &lt;p&gt;如果原始key为字符串，则首先使用&lt;a href=&quot;http://blog.csdn.net/chen_alvin/article/details/5846714&quot; target=&quot;_blank&quot;&gt;Times33&lt;/a&gt;算法将字符串转为整形再与nTableMask按位与。&lt;/p&gt;
 &lt;p&gt;hash(strkey)=time33(strkey) &amp; nTableMask&lt;/p&gt;
-&lt;p&gt;下面是Zend源码中查找哈希表的代码：&lt;/p&gt;&lt;pre  class=&quot;prettyprint language-c&quot;&gt;ZEND_API int zend_hash_index_find(const HashTable *ht, ulong h, void **pData)
+&lt;p&gt;下面是Zend源码中查找哈希表的代码：&lt;/p&gt;&lt;pre  class=&quot;prettyprint&quot;&gt;ZEND_API int zend_hash_index_find(const HashTable *ht, ulong h, void **pData)
 {
     uint nIndex;
     Bucket *p;
@@ -1469,7 +1487,7 @@ ZEND_API int zend_hash_find(const HashTable *ht, const char *arKey, uint nKeyLen
 &lt;p&gt;0100 0000 0000 0000 0000 &amp; 0 1111 1111 1111 1111 = 0&lt;/p&gt;
 &lt;p&gt;……&lt;/p&gt;
 &lt;p&gt;概况来说只要保证后16位均为0，则与掩码位于后得到的哈希值全部碰撞在位置0。&lt;/p&gt;
-&lt;p&gt;下面是利用这个原理写的一段攻击代码：&lt;/p&gt;&lt;pre  class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+&lt;p&gt;下面是利用这个原理写的一段攻击代码：&lt;/p&gt;&lt;pre  class=&quot;prettyprint&quot;&gt;&lt;?php
 
 $size = pow(2, 16);
 
@@ -1486,7 +1504,7 @@ echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
 &lt;p&gt;这段代码在我的VPS上（单CPU，512M内存）上用了近88秒才完成，并且在此期间CPU资源几乎被用尽：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/3.png&quot;/&gt;&lt;/p&gt;
-&lt;p&gt;而普通的同样大小的哈希表插入仅用时0.036秒：&lt;/p&gt;&lt;pre  class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+&lt;p&gt;而普通的同样大小的哈希表插入仅用时0.036秒：&lt;/p&gt;&lt;pre  class=&quot;prettyprint&quot;&gt;&lt;?php
 
 $size = pow(2, 16);
 
@@ -1567,27 +1585,27 @@ echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
 &lt;p&gt;首先用第一个参数（7）代替最外层函数的参数（x），然后用第二个参数（2）代替第二层函数的参数（y），最终得到计算结果。&lt;/p&gt;
 &lt;p&gt;鉴于如果下面大量使用lambda演算描述问题大家可能会崩溃（我也会崩溃），我将改用函数式语言&lt;a href=&quot;http://en.wikipedia.org/wiki/Scheme_%28programming_language%29&quot; target=&quot;_blank&quot;&gt;scheme&lt;/a&gt;（&lt;a href=&quot;http://en.wikipedia.org/wiki/Lisp_%28programming_language%29&quot; target=&quot;_blank&quot;&gt;Lisp&lt;/a&gt;的一个方言）来进行问题描述。注意其实scheme在本质上与lambda演算是等价的，只是看起来更好懂，例如不需要遵循lambda演算一个变态的规定：每个函数只允许有一个参数（虽然任何多参数函数式程序都可以通过&lt;a href=&quot;http://en.wikipedia.org/wiki/Currying&quot; target=&quot;_blank&quot;&gt;Currying&lt;/a&gt;过程化归为等价的lambda演算）。&lt;/p&gt;
 &lt;p&gt;下面是用scheme程序对上述lambda演算的等价表示：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;(define (f x y) (+ x y))&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;(define (f x y) (+ x y))&lt;/pre&gt;
 &lt;p&gt;可以这样计算7+2：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;(f 7 2)
+&lt;pre class=&quot;prettyprint&quot;&gt;(f 7 2)
 ;Value: 9&lt;/pre&gt;
 &lt;p&gt;下面看一个稍微复杂点的例子：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;(define (f x) (lambda (y) (+ x y)))&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;(define (f x) (lambda (y) (+ x y)))&lt;/pre&gt;
 &lt;p&gt;这里定义了函数f，接受一个参数x，特别要注意它的返回值：不是一个值而是一个匿名函数。如果我们把这个函数单独拿出来：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;(lambda (y) (+ x y))&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;(lambda (y) (+ x y))&lt;/pre&gt;
 &lt;p&gt;可以看到，这个匿名函数接收一个参数y，但是却没有参数x！也就是说，如果脱离上下文执行这个函数，则x处于未指定状态，我们说对于这个函数，y是绑定的，而x是自由的。&lt;/p&gt;
 &lt;p&gt;一般地：x是一个函数的函数体中的变量，如果x被这个函数的参数指定，则x是绑定于这个函数的，否则说x对于此函数是自由的。&lt;/p&gt;
 &lt;p&gt;下面可以看到，变量的绑定和自由概念是理解闭包本质的一把钥匙。&lt;/p&gt;
 &lt;h2&gt;程序语言的闭包性质&lt;/h2&gt;
 &lt;p&gt;继续上面的scheme程序，我们已经定义了函数f：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;(define (f x) (lambda (y) (+ x y)))&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;(define (f x) (lambda (y) (+ x y)))&lt;/pre&gt;
 &lt;p&gt;如果我们运行下面程序：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;(f 7)
+&lt;pre class=&quot;prettyprint&quot;&gt;(f 7)
 ;Value 13: #[compound-procedure 13]&lt;/pre&gt;
 &lt;p&gt;可以看到，f返回了一个过程（匿名函数），按照函数演算规则，这个函数应该是：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;(lambda (y) (+ 7 y))&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;(lambda (y) (+ 7 y))&lt;/pre&gt;
 &lt;p&gt;那么下面的运算就很直观了：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-scheme&quot;&gt;((f 7) 2)
+&lt;pre class=&quot;prettyprint&quot;&gt;((f 7) 2)
 ;Value: 9&lt;/pre&gt;
 &lt;p&gt;注意这里有一个非常重要的地方（也是闭包性质的关键），那就是这个运算执行了两个函数：f和匿名函数。而f的作用域为(f 7)，这就是说，其实在(f 7)之后，f这个函数就结束了，而x（这里被赋值为7）是f的私有变量（绑定于f），那么程序设计语言的设计者就有两种选择：第一，在函数超出其作用域后立即销毁其绑定变量，如果是这样的话，((f 7) 2) 是无法得出结果的，因为在外层的f运算结束后，存放数值“7”的变量就被释放了，所以匿名函数无法得到其自由变量x的值；显然scheme的设计者做了第二种选择：如果一个函数返回另一个函数，而被返回函数又需要外层函数的变量时，不会立即释放这个变量，而是允许被返回的函数引用这些变量。支持这种机制的语言称为支持闭包机制，而这个内部函数连同其自由变量就形成了一个闭包。&lt;/p&gt;
 &lt;p&gt;上面的这段话不太好理解，但是请务必多读几遍，因为，这就是闭包的全部。&lt;/p&gt;
@@ -1600,13 +1618,13 @@ echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
 &lt;p&gt;结合上面关于闭包性质的定义，就很清楚为什么只有支持函数编程泛型的语言才可以谈闭包性质。&lt;/p&gt;
 &lt;p&gt;很显然，JavaScript是具有上述三条性质的，所以可以说JavaScript拥有函数式编程泛型。当然，一般我们还是习惯于用命令式的写JavaScript，但是其闭包本质是一样的。为了说明这一点，我将会首先用JavaScript按照函数式泛型重写上面的scheme程序，然后转为命令式。&lt;/p&gt;
 &lt;p&gt;上文用scheme所写的函数f，可以用JavaScript等价实现如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-js&quot;&gt;function f(x){ return function(y) { return x + y; }; }&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;function f(x){ return function(y) { return x + y; }; }&lt;/pre&gt;
 &lt;p&gt;可以执行与上述scheme类似的计算（因为脱离了浏览器，我是用nodejs执行这段JavaScript）：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-js&quot;&gt;console.log( (f(7)) (2) );
+&lt;pre class=&quot;prettyprint&quot;&gt;console.log( (f(7)) (2) );
 //9&lt;/pre&gt;
 &lt;p&gt;其中f返回的匿名函数与其自由变量x组成了一个闭包系统。&lt;/p&gt;
 &lt;p&gt;如果用命令式重写上面的程序，就得到了我们熟悉的闭包：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-js&quot;&gt;function f(x{
+&lt;pre class=&quot;prettyprint&quot;&gt;function f(x{
     return function(y) {
         return x + y;
     };
@@ -1641,7 +1659,7 @@ console.log(lam(2));&lt;/pre&gt;
 &lt;h2&gt;数据结构&lt;/h2&gt;
 &lt;p&gt;TSRM中比较重要的数据结构有两个：tsrm_tls_entry和tsrm_resource_type。下面先看tsrm_tls_entry。&lt;/p&gt;
 &lt;p&gt;tsrm_tls_entry定义在TSRM/TSRM.c中：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef struct _tsrm_tls_entry tsrm_tls_entry;
+&lt;pre class=&quot;prettyprint&quot;&gt;typedef struct _tsrm_tls_entry tsrm_tls_entry;
 
 struct _tsrm_tls_entry {
     void **storage;
@@ -1652,7 +1670,7 @@ struct _tsrm_tls_entry {
 &lt;p&gt;每个tsrm_tls_entry结构负责表示一个线程的所有全局变量资源，其中thread_id存储线程ID，count记录全局变量数，next指向下一个节点。storage可以看做指针数组，其中每个元素是一个指向本节点代表线程的一个全局变量。最终各个线程的tsrm_tls_entry被组成一个链表结构，并将链表头指针赋值给一个全局静态变量tsrm_tls_table。注意，因为tsrm_tls_table是一个货真价实的全局变量，所以所有线程会共享这个变量，这就实现了线程间的内存管理一致性。tsrm_tls_entry和tsrm_tls_table结构的示意图如下：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/zend-thread-safety/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;tsrm_resource_type的内部结构相对简单一些：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef struct {
+&lt;pre class=&quot;prettyprint&quot;&gt;typedef struct {
     size_t size;
     ts_allocate_ctor ctor;
     ts_allocate_dtor dtor;
@@ -1662,7 +1680,7 @@ struct _tsrm_tls_entry {
 &lt;h2&gt;实现细节&lt;/h2&gt;
 &lt;p&gt;这一小节分析TSRM一些算法的实现细节。因为整个TSRM涉及代码比较多，这里拣其中具有代表性的两个函数分析。&lt;/p&gt;
 &lt;p&gt;第一个值得注意的是tsrm_startup函数，这个函数在进程起始阶段被sapi调用，用于初始化TSRM的环境。由于tsrm_startup略长，这里摘录出我认为应该注意的地方：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/* Startup TSRM (call once for the entire process) */
+&lt;pre class=&quot;prettyprint&quot;&gt;/* Startup TSRM (call once for the entire process) */
 TSRM_API int tsrm_startup(int expected_threads, int expected_resources, int debug_level, char *debug_filename)
 {
     /* code... */
@@ -1694,7 +1712,7 @@ TSRM_API int tsrm_startup(int expected_threads, int expected_resources, int debu
 &lt;p&gt;可以看到比较常用的sapi如mod_php5、php-fpm和cgi都是预分配一个线程和一个资源，这样是因为不愿浪费内存空间，而且多数情况下PHP还是运行于单线程环境。&lt;/p&gt;
 &lt;p&gt;这里还可以看到一个id_count变量，这个变量是一个全局静态变量，其作用就是通过自增产生资源ID，这个变量在这里被初始化为0。所以TSRM产生资源ID的方式非常简单：就是一个整形变量的自增。&lt;/p&gt;
 &lt;p&gt;第二个需要仔细分析的就是ts_allocate_id，编写过PHP扩展的朋友对这个函数肯定不陌生，这个函数用于在多线程环境下申请一个全局变量并返回资源ID。&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/* allocates a new thread-safe-resource id */
+&lt;pre class=&quot;prettyprint&quot;&gt;/* allocates a new thread-safe-resource id */
 TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate_ctor ctor, ts_allocate_dtor dtor)
 {
     int i;
@@ -1749,9 +1767,9 @@ TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate
     return *rsrc_id;
 }&lt;/pre&gt;
 &lt;p&gt;rsrc_id最终存放的就是新资源的ID。其实这个函数的一些实现方式让我比较费解，首先是返回ID的方式。因为rsrc_id是按引入传入的，所以最终也就应该包含资源ID，那么最后完全不必在return *rsrc_id，可以返回一个预订整数表示成功或失败（例如1成功，0失败），这里有点费两遍事的意思，而且多了一次寻址。另外“*rsrc_id = TSRM_SHUFFLE_RSRC_ID(id_count++); ”让我感觉很奇怪，因为TSRM_SHUFFLE_RSRC_ID被定义为“((rsrc_id)+1)”，那么这里展开就是：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;*rsrc_id = ((id_count++)+1)&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;*rsrc_id = ((id_count++)+1)&lt;/pre&gt;
 &lt;p&gt;为什么不写成这样呢：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;*rsrc_id = ++id_count&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;*rsrc_id = ++id_count&lt;/pre&gt;
 &lt;p&gt;真是怪哉。&lt;/p&gt;
 &lt;p&gt;好的，且不管实现是否合理，我们先继续研究这个函数吧。&lt;/p&gt;
 &lt;p&gt;首先要将id_count自增，生成一个新的资源ID，然后为这个新资源创建一个tsrm_resource_type并放入resource_type_table，接着遍历所有线程（注意是所有）为每一个线程的tsrm_tls_entry分配这个线程全局变量需要的内存空间（p-&gt;storage[j] = (void *) malloc(resource_types_table[j].size); ）。&lt;/p&gt;
@@ -1773,7 +1791,7 @@ TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate
 &lt;p&gt;为了看看模块是如何实现选择性编译代码的，我们建立一个空的PHP扩展模块。到PHP源码的ext目录下执行如下命令：&lt;/p&gt;
 &lt;pre class=&quot;brush:bash&quot;&gt;./ext_skel --extname=zts_research&lt;/pre&gt;
 &lt;p&gt;ext_skel是一个脚手架程序，用于创建PHP扩展模块。此时会看到ext目录下多了个zts_research目录。ext_skel为为什么生成了一个模块的架子，并附带了很多提示性注释。在这个目录下找到php_zts_research.h并打开，比较有趣的是一下一段代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/* 
+&lt;pre class=&quot;prettyprint&quot;&gt;/* 
     Declare any global variables you may need between the BEGIN
     and END macros here:     
 
@@ -1783,26 +1801,26 @@ TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate
     ZEND_END_MODULE_GLOBALS(zts_research)
 */&lt;/pre&gt;
 &lt;p&gt;很明显这里提示了定义全局变量的方法：用ZEND_BEGIN_MODULE_GLOBALS和ZEND_END_MODULE_GLOBALS两个宏包住所有全局变量。下面看一下这两个宏，这两个宏定义在Zend/zend_API.h文件里：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;#define ZEND_BEGIN_MODULE_GLOBALS(module_name)     \
+&lt;pre class=&quot;prettyprint&quot;&gt;#define ZEND_BEGIN_MODULE_GLOBALS(module_name)     \
 typedef struct _zend_##module_name##_globals {
 #define ZEND_END_MODULE_GLOBALS(module_name)        \
 } zend_##module_name##_globals;&lt;/pre&gt;
 &lt;p&gt;原来这两个宏只是将一个模块的所有全局变量封装为一个结构体定义，名称为zend_module_name_globals。关于为什么要封装成结构体，上文有提到。&lt;/p&gt;
 &lt;p&gt;php_zts_research.h另外比较有意思的一处就是：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;#ifdef ZTS
+&lt;pre class=&quot;prettyprint&quot;&gt;#ifdef ZTS
 #define ZTS_RESEARCH_G(v) TSRMG(zts_research_globals_id, zend_zts_research_globals *, v)
 #else
 #define ZTS_RESEARCH_G(v) (zts_research_globals.v)
 #endif&lt;/pre&gt;
 &lt;p&gt;zts_research_globals是zts_research模块全局变量结构的变量名称，类型为zend_module_name_globals，在哪定义的稍后会研究。这里ZTS_RESEARCH_G就是这个模块获取全局变量的宏，如果ZTS没有定义（非线程安全时），就直接从这个结构中获取相应字段，如果线程安全开启时，则使用TSRMG这个宏。&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;#define TSRMG(id, type, element)   (((type) (*((void ***) tsrm_ls))[TSRM_UNSHUFFLE_RSRC_ID(id)])-&gt;element)&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;#define TSRMG(id, type, element)   (((type) (*((void ***) tsrm_ls))[TSRM_UNSHUFFLE_RSRC_ID(id)])-&gt;element)&lt;/pre&gt;
 &lt;p&gt;这个宏就不具体细究了，因为实在太难懂了，基本思想就是使用上文提到的TSRM机制从线程全局变量池中获取对应的数据，其中tsrm_ls可以看作是线程全局变量池的指针，获取变量的凭证就是资源ID。&lt;/p&gt;
 &lt;p&gt;看到这里可能还有点晕，例如zts_research_globals这个变量哪来的？zts_research_globals_id又是哪来的？为了弄清这个问题，需要打开ext/zts_research/zts_research.c这个文件，其中有这样的代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/* If you declare any globals in php_zts_research.h uncomment this:
+&lt;pre class=&quot;prettyprint&quot;&gt;/* If you declare any globals in php_zts_research.h uncomment this:
 ZEND_DECLARE_MODULE_GLOBALS(zts_research)
 */&lt;/pre&gt;
 &lt;p&gt;提示很清楚，如果在php_zts_research.h中定义了任何全局变量则将这段代码的注释消除，看来这个ZEND_DECLARE_MODULE_GLOBALS宏就是关键了。然后在Zend/zend_API中有这样的代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;#ifdef ZTS
+&lt;pre class=&quot;prettyprint&quot;&gt;#ifdef ZTS
 
 #define ZEND_DECLARE_MODULE_GLOBALS(module_name)                            \
 ts_rsrc_id module_name##_globals_id;
@@ -1820,7 +1838,7 @@ zend_##module_name##_globals module_name##_globals;
 &lt;p&gt;当线程安全开启时，这里实际定义了一个整形的资源ID（ts_rsrc_id 被typedef定义为int），而当线程安全不开启时，则直接定义一个结构体。在这个模块中分别对应zts_research_globals_id和zts_research_globals。&lt;/p&gt;
 &lt;p&gt;到这里思路基本理顺了：如果ZTS没有被启用，则直接声明一个全局变量结构体，并直接通过存取其字段实现全局变量存取；如果ZTS开启，则定义一个整形变量作为资源ID，然后通过ts_allocate_id函数向TSRM申请一块内存放置结构体（需要程序员手工在MINIT函数中实现，脚手架生成的程序中没有），并通过TSRM存取数据。&lt;/p&gt;
 &lt;p&gt;最后一个疑问：tsrm_ls在哪里？如果通过上述方法从TSRM中取数据，那么一定要知道线程全局变量内存池的指针tsrm_ls。这就是我说过的最污染PHP的地方，如果你阅读过PHP源码或编写过模块，对以下四个宏肯定眼熟：TSRMLS_D，TSRMLS_DC，TSRMLS_DTSRMLS_C，TSRMLS_CC。实际在PHP内部每次定义方法或调用方法时都要在参数列表最后加上其中的一个宏，其实就是为了将tsrm_ls传给函数以便存取全局变量，这四个宏的定义如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;#ifdef ZTS
+&lt;pre class=&quot;prettyprint&quot;&gt;#ifdef ZTS
 
 #define TSRMLS_D    void ***tsrm_ls
 #define TSRMLS_DC   , TSRMLS_D
@@ -1852,7 +1870,7 @@ zend_##module_name##_globals module_name##_globals;
 &lt;!--more--&gt;
 &lt;h1&gt;代码实例&lt;/h1&gt;
 &lt;p&gt;下面是这个程序的完整代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
 
 //Accpet the http client request and generate response content.
 //As a demo, this function just send &quot;PHP HTTP Server&quot; to client.
@@ -1935,7 +1953,7 @@ run();
 &lt;p&gt;run函数负责将整个程序变为daemon process，方法和Unix环境下C的方法很类似，通过两次fork，第一次fork后调用setsid将子进程1变为session leader，这样就可以让子进程2与其祖先detach，即使祖先进程结束了它也会继续运行（托孤给init进程）。相关细节我不再赘述，对Unix进程相关不熟悉的朋友可以参考《&lt;a href=&quot;http://www.kohala.com/start/apue.html&quot; target=&quot;_blank&quot;&gt;Advanced Programming in the UNIX Environment&lt;/a&gt;》一书。&lt;/p&gt;
 &lt;p&gt;注意，在这里&lt;a href=&quot;http://cn.php.net/manual/en/function.pcntl-fork.php&quot; target=&quot;_blank&quot;&gt;pcntl_fork&lt;/a&gt;对应Unix中的fork，&lt;a href=&quot;http://cn.php.net/manual/en/function.pcntl-wait.php&quot; target=&quot;_blank&quot;&gt;pcntl_wait&lt;/a&gt;对应wait，而&lt;a href=&quot;http://cn.php.net/manual/en/function.posix-setsid.php&quot; target=&quot;_blank&quot;&gt;posix_setsid&lt;/a&gt;对应setsid，更多函数可以参考PHP Manual中的pcntl和fork模块相关内容。&lt;/p&gt;
 &lt;h1&gt;检验&lt;/h1&gt;
-&lt;p&gt;下面在命令行下启动这个脚本：&lt;/p&gt;&lt;pre class=&quot;prettyprint language-bash&quot;&gt;php httpserver.php&lt;/pre&gt;
+&lt;p&gt;下面在命令行下启动这个脚本：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;php httpserver.php&lt;/pre&gt;
 &lt;p&gt;用ps命令可以看到我们已经启动了一个daemon进程：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/write-daemon-with-php/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;这里我绑定的是我博客的域名www.codinglabs.org，端口是9999，可以按需要进行修改。&lt;/p&gt;
@@ -1960,9 +1978,9 @@ run();
 &lt;h1&gt;下载PHP源代码&lt;/h1&gt;
 &lt;p&gt;要开发PHP扩展，第一步要下载PHP源代码，因为里面有开发扩展需要的工具。我下载的是PHP最新版本5.3.3，格式为tar.bz2压缩包。下载地址为：&lt;a href=&quot;http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror&quot;&gt;http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;下载后，将源代码移动到合适的目录并解压。解压命令为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;tar -jxvf 源码包名称&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;tar -jxvf 源码包名称&lt;/pre&gt;
 &lt;p&gt;若下载的是tar.gz压缩包，解压命令为&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;tar -zxvf 源码包名称&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;tar -zxvf 源码包名称&lt;/pre&gt;
 &lt;p&gt;解压后，在源代码目录中有个ext目录，这里便是和PHP扩展有关的目录。进入目录后用ls查看，可以看到许多已经存在的扩展。下图是在我的环境下查看的结果：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/php-extension-dev-guide/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;其中蓝色的均是扩展包目录，其中可以看到我们很熟悉的mysql、iconv和gd等等。而ext_skel是Unix环境下用于自动生成PHP扩展框架的脚本工具，后面我们马上会用到，ext_skel_win32.php是windows下对应的脚本。&lt;/p&gt;
@@ -1970,9 +1988,9 @@ run();
 &lt;p&gt;下面我们开发一个PHP扩展：say_hello。这个扩展很简单，只是接受一个字符串参数，然后输出“Hello xxx!”。这个例子只是为了介绍PHP扩展组件的开发流程，不承担实际功能。&lt;/p&gt;
 &lt;h2&gt;生成扩展组件框架&lt;/h2&gt;
 &lt;p&gt;PHP的扩展组件开发目录和文件是有固定组织结构的，你可以随便进入一个已有扩展组件目录，查看其所有文件，我想你一定眼花缭乱了。当然你可以选择手工完成框架的搭建，不过我相信你更希望有什么东西来帮你完成。上文提到的ext_skel脚本就是用来自动构建扩展包框架的工具。ext_skel的完整命令为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;ext_skel --extname=module [--proto=file] [--stubs=file] [--xml[=file]] [--skel=dir] [--full-xml] [--no-help]&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;ext_skel --extname=module [--proto=file] [--stubs=file] [--xml[=file]] [--skel=dir] [--full-xml] [--no-help]&lt;/pre&gt;
 &lt;p&gt;作为初学者，我们不必了解所有命令参数，实际上，大多数情况下只需要提供第一个参数就可以了，也就是扩展模块的名字。因此，我们在ext目录中键入如下命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;./ext_skel --extname=say_hello&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;./ext_skel --extname=say_hello&lt;/pre&gt;
 &lt;p&gt;（如果你希望详细了解ext_skel的各项命令参数，请&lt;a href=&quot;http://www.php.net/manual/en/internals2.buildsys.skeleton.php&quot; target=&quot;_blank&quot;&gt;参考这里&lt;/a&gt;）&lt;/p&gt;
 &lt;p&gt;这时再用ls查看，会发现多了一个“say_hello”目录，进入这个目录，会发现ext_skel已经为我们建立好了say_hello的基本框架，如下图：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/php-extension-dev-guide/2.png&quot;/&gt;&lt;/p&gt;
@@ -1985,7 +2003,7 @@ run();
 &lt;p&gt;开发PHP扩展组件的第一步不是写实现代码，而是要先配置好Build System选项。由于我们是在Linux下开发，所以这里的配置主要与config.m4有关。&lt;/p&gt;
 &lt;p&gt;关于Build System配置这一块，要是写起来能写一大堆，而且与Unix系统很多东西相关，就算我有兴趣写估计大家也没兴趣看，所以这里我们从略，只拣关键地方说一下，关于config.m4更多细节可以&lt;a href=&quot;http://www.php.net/manual/en/internals2.buildsys.configunix.php&quot; target=&quot;_blank&quot;&gt;参考这里&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;打开生成的config.m4文件，内容大致如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;dnl $Id$
+&lt;pre class=&quot;prettyprint&quot;&gt;dnl $Id$
 dnl config.m4 for extension say_hello
 dnl Comments in this file start with the string 'dnl'.
 dnl Remove where necessary. This file will not work
@@ -2042,7 +2060,7 @@ PHP_NEW_EXTENSION(say_hello, say_hello.c, $ext_shared)
 fi
 &lt;/pre&gt;
 &lt;p&gt;不要看这么多，因为所有以“dnl”开头的全是注释，所以真正起作用没几行。这里需要配置的只有下面几行：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;dnl If your extension references something external, use with:
+&lt;pre class=&quot;prettyprint&quot;&gt;dnl If your extension references something external, use with:
 dnl PHP_ARG_WITH(say_hello, for say_hello support,
 dnl Make sure that the comment is aligned:
 dnl [ --with-say_hello Include say_hello support])
@@ -2052,16 +2070,16 @@ dnl PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,
 dnl Make sure that the comment is aligned:
 dnl [ --enable-say_hello Enable say_hello support])&lt;/pre&gt;
 &lt;p&gt;我想大家也都能看明白，意思就是“如果你的扩展引用了外部组件，使用…，否则使用…”。我们的say_hello扩展并没有引用外部组件，所以将“Otherwise use enable”下面三行的“dnl”去掉，改为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;dnl Otherwise use enable:
+&lt;pre class=&quot;prettyprint&quot;&gt;dnl Otherwise use enable:
 PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,
 Make sure that the comment is aligned:
 [ --enable-say_hello Enable say_hello support])&lt;/pre&gt;
 &lt;p&gt;保存，这样关于Build System配置就大功告成了。&lt;/p&gt;
 &lt;h2&gt;PHP Extension及Zend_Module结构分析&lt;/h2&gt;
 &lt;p&gt;以上可以看成是为开发PHP扩展而做的准备工作，下面就要编写核心代码了。上文说过，编写PHP扩展是基于Zend API和一些宏的，所以如果要编写核心代码，我们首先要弄清楚PHP Extension的结构。因为一个PHP Extension在C语言层面实际上就是一个zend_module_entry结构体，这点可以从“php_say_hello.h”中得到证实。打开“php_say_hello.h”，会看到里面有怎么一行：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;extern zend_module_entry say_hello_module_entry;&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;extern zend_module_entry say_hello_module_entry;&lt;/pre&gt;
 &lt;p&gt;say_hello_module_entry就是say_hello扩展的C语言对应元素，而关于其类型zend_module_entry的定义可以在PHP源代码的“Zend/zend_modules.h”文件里找到，下面代码是zend_module_entry的定义：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef struct _zend_module_entry zend_module_entry;
+&lt;pre class=&quot;prettyprint&quot;&gt;typedef struct _zend_module_entry zend_module_entry;
 
 struct _zend_module_entry {
     unsigned short size;
@@ -2103,7 +2121,7 @@ struct _zend_module_entry {
 &lt;p&gt;第14个字段“version”是模块的版本。&lt;/p&gt;
 &lt;p&gt;（关于zend_module_entry更详尽的介绍请&lt;a href=&quot;http://www.php.net/manual/en/internals2.structure.modstruct.php&quot; target=&quot;_blank&quot;&gt;参考这里&lt;/a&gt;）&lt;/p&gt;
 &lt;p&gt;介绍完以上字段，我们可以看看“say_hello.c”中自动生成的“say_hello_module_entry”框架代码了。&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/* {{{ say_hello_module_entry
+&lt;pre class=&quot;prettyprint&quot;&gt;/* {{{ say_hello_module_entry
 */
 zend_module_entry say_hello_module_entry = {
     #if ZEND_MODULE_API_NO &gt;= 20010901
@@ -2131,7 +2149,7 @@ zend_module_entry say_hello_module_entry = {
 &lt;p&gt;php_info_print_table_row()——输出表格内容。第一个参数是整形，指明这一行的列数，然后后面的参数是与列数等量的(char*)类型参数用于指定显示的文字。&lt;/p&gt;
 &lt;p&gt;php_info_print_table_end()——结束phpinfo表格。无参数。&lt;/p&gt;
 &lt;p&gt;下面是“say_hello.c”中需要编写的info_func的具体代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/* {{{ PHP_MINFO_FUNCTION
+&lt;pre class=&quot;prettyprint&quot;&gt;/* {{{ PHP_MINFO_FUNCTION
 */
 PHP_MINFO_FUNCTION(say_hello)
 {
@@ -2148,7 +2166,7 @@ PHP_MINFO_FUNCTION(say_hello)
 &lt;h2&gt;编写核心函数&lt;/h2&gt;
 &lt;p&gt;编写核心函数，总共分为三步：1、使用宏PHP_FUNCTION定义函数体；2、使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息；3、使用宏PHP_FE将函数加入到say_hello_functions中。下面分步说明。&lt;/p&gt;
 &lt;h3&gt;使用宏PHP_FUNCTION定义函数体&lt;/h3&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;PHP_FUNCTION(say_hello_func)
+&lt;pre class=&quot;prettyprint&quot;&gt;PHP_FUNCTION(say_hello_func)
 {
     char *name;
     int name_len;
@@ -2169,17 +2187,17 @@ PHP_MINFO_FUNCTION(say_hello)
 &lt;p&gt;最后的返回值也是通过宏实现的。RETURN_TRUE宏是返回布尔值“true”。&lt;/p&gt;
 &lt;h3&gt;使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息&lt;/h3&gt;
 &lt;p&gt;参数信息是函数所必要部分，这里不做深究，直接给出相应代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0) ZEND_END_ARG_INFO()&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0) ZEND_END_ARG_INFO()&lt;/pre&gt;
 &lt;p&gt;如需了解具体信息请阅读相关宏定义。&lt;/p&gt;
 &lt;h3&gt;使用宏PHP_FE将函数加入到say_hello_functions中&lt;/h3&gt;
 &lt;p&gt;最后，我们需要将刚才定义的函数和参数信息加入到say_hello_functions数组里，代码如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;const zend_function_entry say_hello_functions[] = {
+&lt;pre class=&quot;prettyprint&quot;&gt;const zend_function_entry say_hello_functions[] = {
 PHP_FE(say_hello_func, arginfo_say_hello_func)
     {NULL, NULL, NULL}
 };&lt;/pre&gt;
 &lt;p&gt;这一步就是通过PHP_EF宏实现，注意这个数组最后一行必须是{NULL, NULL, NULL} ，请不要删除。&lt;/p&gt;
 &lt;p&gt;下面是编写完成后的say_hello.c全部代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/*
+&lt;pre class=&quot;prettyprint&quot;&gt;/*
 +----------------------------------------------------------------------+
 | PHP Version 5                                                        |
 +----------------------------------------------------------------------+
@@ -2288,7 +2306,7 @@ PHP_MINFO_FUNCTION(say_hello)
 /* }}} */&lt;/pre&gt;
 &lt;h2&gt;编译并安装扩展&lt;/h2&gt;
 &lt;p&gt;在say_hello目录下输入下面命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;/usr/bin/phpize
+&lt;pre class=&quot;prettyprint&quot;&gt;/usr/bin/phpize
 ./configure
 make
 make install&lt;/pre&gt;
@@ -2300,7 +2318,7 @@ make install&lt;/pre&gt;
 &lt;p&gt;如果上面顺利完成，这时运行phpinfo()，应该能看到如下信息：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/php-extension-dev-guide/5.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;这说明扩展已经安装成功了。然后我们编写一个测试用PHP脚本：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php say_hello_func('Zhang Yang'); ?&gt;;&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php say_hello_func('Zhang Yang'); ?&gt;;&lt;/pre&gt;
 &lt;p&gt;执行这个脚本，结果如下：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/php-extension-dev-guide/6.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;说明扩展已经正常工作了。&lt;/p&gt;
@@ -2332,7 +2350,7 @@ make install&lt;/pre&gt;
 &lt;p&gt;将模块下载并解压到合适的目录，这里我Nginx使用的版本是1.0.4，与相关模块一起解压到了/home/zhangyang/downloads，如下图所示。&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/3.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;其中红框框起来的是我们需要用到的模块。进入nginx目录，执行下列命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;./configure --prefix=/usr/local/nginx \
+&lt;pre class=&quot;prettyprint&quot;&gt;./configure --prefix=/usr/local/nginx \
 --add-module=../memc-nginx-module \
 --add-module=../srcache-nginx-module \
 --add-module=../ngx_http_upstream_keepalive
@@ -2341,7 +2359,7 @@ make install&lt;/pre&gt;
 &lt;p&gt;这里我将nginx安装到/usr/local/nginx下，你可以根据自己的需要更改安装路径，另外，我只列出了本文必要的configure命令，你也可以增加需要的configure选项。&lt;/p&gt;
 &lt;p&gt;然后需要对nginx进行配置，nginx默认主配置文件放在安装目录的conf下，例如我的主配置文件为/usr/local/nginx/conf/nginx.conf。&lt;/p&gt;
 &lt;p&gt;这里我只贴出相关的配置：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;#Memcache服务upstream
+&lt;pre class=&quot;prettyprint&quot;&gt;#Memcache服务upstream
 upstream memcache {
     server localhost:11211;
     keepalive 512 single;
@@ -2387,7 +2405,7 @@ server {
 &lt;p&gt;经过上述配置后，相当于对Nginx增加了如下逻辑：当所请求的uri以“.php”结尾时，首先到memcache中查询有没有以$uri$args为key的数据，如果有则直接返回；否则，执行location的逻辑，如果返回的http状态码为200，则在输出前以$uri$args为key，将输入结果存入memcache。&lt;/p&gt;
 &lt;h2&gt;更多配置&lt;/h2&gt;
 &lt;p&gt;上一节给出了使用memc和srcache构建缓存层的最基本方法，实际应用中可能需要更多灵活的配置，例如为不同的location配置不同的缓存参数，根据返回内容而不是返回的http状态码确定是否缓存等等。可以有很多的方法实现这些需求，例如，srcache还支持两个指令：srcache_fetch_skip和srcache_fetch_skip，这两个指令接受一个参数，当参数已定义且非0时，则进行相应操作，否则不进行。例如，如果配置了srcache_fetch_skip $skip，这条指令，那么只有当$skip的值为非0时，才将结果缓存，如果配合&lt;a href=&quot;http://wiki.nginx.org/HttpLuaModule&quot; target=&quot;_blank&quot;&gt;ngx_lua&lt;/a&gt;模块的&lt;a href=&quot;http://wiki.nginx.org/HttpLuaModule#set_by_lua&quot; target=&quot;_blank&quot;&gt;set_by_lua&lt;/a&gt;指令，则可以实现复杂的缓存控制。如：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;location /xxxx {
+&lt;pre class=&quot;prettyprint&quot;&gt;location /xxxx {
     set $key ...;
     set_by_lua $skip '
         if ngx.var.cookie_foo == &quot;bar&quot; then
@@ -2409,14 +2427,14 @@ server {
 &lt;p&gt;这里的测试环境是我的一个虚拟机，操作系统为Ubuntu10，内存512M。Nginx采用epoll，单worker进程，memcache最大并发数为1024，最大使用内存64m。&lt;/p&gt;
 &lt;h2&gt;不开启缓存&lt;/h2&gt;
 &lt;p&gt;这一组我们不开启缓存，PHP程序非常简单：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
 phpinfo();
 ?&gt;&lt;/pre&gt;
 &lt;p&gt;测试结果如下：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/4.png&quot;/&gt;&lt;/p&gt;
 &lt;h2&gt;PHP memcache缓存策略&lt;/h2&gt;
 &lt;p&gt;第二组我们用PHP操作缓存，测试脚本为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-php&quot;&gt;&lt;?php
+&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
 $memc = new Memcached;
 $memc-&gt;addServer('localhost', 11211) or die('Connect to memcache server failed!');
 $output = $memc-&gt;get('my_key');
@@ -2485,7 +2503,7 @@ echo $output;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/theory-of-mysql-index/2.png&quot; /&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;图2&lt;/p&gt;
 &lt;p&gt;由于B-Tree的特性，在B-Tree中按key检索数据的算法非常直观：首先从根节点进行二分查找，如果找到则返回对应节点的data，否则对相应区间的指针指向的节点递归进行查找，直到找到节点或找到null指针，前者查找成功，后者查找失败。B-Tree上查找算法的伪代码如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;BTree_Search(node, key) {
+&lt;pre class=&quot;prettyprint&quot;&gt;BTree_Search(node, key) {
     if(node == null) return null;
     foreach(node.key)
     {
@@ -2587,7 +2605,7 @@ data = BTree_Search(root, my_key);&lt;/pre&gt;
 &lt;p&gt;高效使用索引的首要条件是知道什么样的查询会使用到索引，这个问题和B+Tree中的“最左前缀原理”有关，下面通过例子说明最左前缀原理。&lt;/p&gt;
 &lt;p&gt;这里先说一下联合索引的概念。在上文中，我们都是假设索引只引用了单个的列，实际上，MySQL中的索引可以以一定顺序引用多个列，这种索引叫做联合索引，一般的，一个联合索引是一个有序元组&lt;a1, a2, …, an&gt;，其中各个元素均为数据表的一列，实际上要严格定义索引需要用到关系代数，但是这里我不想讨论太多关系代数的话题，因为那样会显得很枯燥，所以这里就不再做严格定义。另外，单列索引可以看成联合索引元素数为1的特例。&lt;/p&gt;
 &lt;p&gt;以employees.titles表为例，下面先查看其上都有哪些索引：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SHOW INDEX FROM employees.titles;
+&lt;pre class=&quot;prettyprint&quot;&gt;SHOW INDEX FROM employees.titles;
 +--------+------------+----------+--------------+-------------+-----------+-------------+------+------------+
 | Table  | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Null | Index_type |
 +--------+------------+----------+--------------+-------------+-----------+-------------+------+------------+
@@ -2597,17 +2615,17 @@ data = BTree_Search(root, my_key);&lt;/pre&gt;
 | titles |          1 | emp_no   |            1 | emp_no      | A         |      443308 |      | BTREE      |
 +--------+------------+----------+--------------+-------------+-----------+-------------+------+------------+&lt;/pre&gt;
 &lt;p&gt;从结果中可以到titles表的主索引为&lt;emp_no, title, from_date&gt;，还有一个辅助索引&lt;emp_no&gt;。为了避免多个索引使事情变复杂（MySQL的SQL优化器在多索引时行为比较复杂），这里我们将辅助索引drop掉：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;ALTER TABLE employees.titles DROP INDEX emp_no;&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;ALTER TABLE employees.titles DROP INDEX emp_no;&lt;/pre&gt;
 &lt;p&gt;这样就可以专心分析索引PRIMARY的行为了。&lt;/p&gt;
 &lt;h3&gt;情况一：全列匹配。&lt;/h3&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND title='Senior Engineer' AND from_date='1986-06-26';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND title='Senior Engineer' AND from_date='1986-06-26';
 +----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
 | id | select_type | table  | type  | possible_keys | key     | key_len | ref               | rows | Extra |
 +----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
 |  1 | SIMPLE      | titles | const | PRIMARY       | PRIMARY | 59      | const,const,const |    1 |       |
 +----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+&lt;/pre&gt;
 &lt;p&gt;很明显，当按照索引中所有列进行精确匹配（这里精确匹配指“=”或“IN”匹配）时，索引可以被用到。这里有一点需要注意，理论上索引对顺序是敏感的，但是由于MySQL的查询优化器会自动调整where子句的条件顺序以使用适合的索引，例如我们将where中的条件顺序颠倒：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE from_date='1986-06-26' AND emp_no='10001' AND title='Senior Engineer';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE from_date='1986-06-26' AND emp_no='10001' AND title='Senior Engineer';
 +----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
 | id | select_type | table  | type  | possible_keys | key     | key_len | ref               | rows | Extra |
 +----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+
@@ -2615,7 +2633,7 @@ data = BTree_Search(root, my_key);&lt;/pre&gt;
 +----+-------------+--------+-------+---------------+---------+---------+-------------------+------+-------+&lt;/pre&gt;
 &lt;p&gt;效果是一样的。&lt;/p&gt;
 &lt;h3&gt;情况二：最左前缀匹配。&lt;/h3&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001';
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------+
 | id | select_type | table  | type | possible_keys | key     | key_len | ref   | rows | Extra |
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------+
@@ -2623,7 +2641,7 @@ data = BTree_Search(root, my_key);&lt;/pre&gt;
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------+&lt;/pre&gt;
 &lt;p&gt;当查询条件精确匹配索引的左边连续一个或几个列时，如&lt;emp_no&gt;或&lt;emp_no, title&gt;，所以可以被用到，但是只能用到一部分，即条件所组成的最左前缀。上面的查询从分析结果看用到了PRIMARY索引，但是key_len为4，说明只用到了索引的第一列前缀。&lt;/p&gt;
 &lt;h3&gt;情况三：查询条件用到了索引中列的精确匹配，但是中间某个条件未提供。&lt;/h3&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND from_date='1986-06-26';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND from_date='1986-06-26';
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
 | id | select_type | table  | type | possible_keys | key     | key_len | ref   | rows | Extra       |
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
@@ -2631,7 +2649,7 @@ data = BTree_Search(root, my_key);&lt;/pre&gt;
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+&lt;/pre&gt;
 &lt;p&gt;此时索引使用情况和情况二相同，因为title未提供，所以查询只用到了索引的第一列，而后面的from_date虽然也在索引中，但是由于title不存在而无法和左前缀连接，因此需要对结果进行扫描过滤from_date（这里由于emp_no唯一，所以不存在扫描）。如果想让from_date也使用索引而不是where过滤，可以增加一个辅助索引&lt;emp_no, from_date&gt;，此时上面的查询会使用这个索引。除此之外，还可以使用一种称之为“隔离列”的优化方法，将emp_no与from_date之间的“坑”填上。&lt;/p&gt;
 &lt;p&gt;首先我们看下title一共有几种不同的值：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SELECT DISTINCT(title) FROM employees.titles;
+&lt;pre class=&quot;prettyprint&quot;&gt;SELECT DISTINCT(title) FROM employees.titles;
 +--------------------+
 | title              |
 +--------------------+
@@ -2644,7 +2662,7 @@ data = BTree_Search(root, my_key);&lt;/pre&gt;
 | Manager            |
 +--------------------+&lt;/pre&gt;
 &lt;p&gt;只有7种。在这种成为“坑”的列值比较少的情况下，可以考虑用“IN”来填补这个“坑”从而形成最左前缀：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles
 WHERE emp_no='10001'
 AND title IN ('Senior Engineer', 'Staff', 'Engineer', 'Senior Staff', 'Assistant Engineer', 'Technique Leader', 'Manager')
 AND from_date='1986-06-26';
@@ -2654,7 +2672,7 @@ AND from_date='1986-06-26';
 |  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 59      | NULL |    7 | Using where |
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
 &lt;p&gt;这次key_len为59，说明索引被用全了，但是从type和rows看出IN实际上执行了一个range查询，这里检查了7个key。看下两种查询的性能比较：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SHOW PROFILES;
+&lt;pre class=&quot;prettyprint&quot;&gt;SHOW PROFILES;
 +----------+------------+-------------------------------------------------------------------------------+
 | Query_ID | Duration   | Query                                                                         |
 +----------+------------+-------------------------------------------------------------------------------+
@@ -2663,7 +2681,7 @@ AND from_date='1986-06-26';
 +----------+------------+-------------------------------------------------------------------------------+&lt;/pre&gt;
 &lt;p&gt;“填坑”后性能提升了一点。如果经过emp_no筛选后余下很多数据，则后者性能优势会更加明显。当然，如果title的值很多，用填坑就不合适了，必须建立辅助索引。&lt;/p&gt;
 &lt;h3&gt;情况四：查询条件没有指定索引第一列。&lt;/h3&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE from_date='1986-06-26';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE from_date='1986-06-26';
 +----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
 | id | select_type | table  | type | possible_keys | key  | key_len | ref  | rows   | Extra       |
 +----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
@@ -2671,7 +2689,7 @@ AND from_date='1986-06-26';
 +----+-------------+--------+------+---------------+------+---------+------+--------+-------------+&lt;/pre&gt;
 &lt;p&gt;由于不是最左前缀，索引这样的查询显然用不到索引。&lt;/p&gt;
 &lt;h3&gt;情况五：匹配某列的前缀字符串。&lt;/h3&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND title LIKE 'Senior%';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND title LIKE 'Senior%';
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
 | id | select_type | table  | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
@@ -2679,14 +2697,14 @@ AND from_date='1986-06-26';
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
 &lt;p&gt;此时可以用到索引，&lt;strike&gt;但是如果通配符不是只出现在末尾，则无法使用索引。&lt;/strike&gt;（原文表述有误，如果通配符%不出现在开头，则可以用到索引，但根据具体情况不同可能只会用其中一个前缀）&lt;/p&gt;
 &lt;h3&gt;情况六：范围查询。&lt;/h3&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no &lt; '10010' and title='Senior Engineer';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no &lt; '10010' and title='Senior Engineer';
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
 | id | select_type | table  | type  | possible_keys | key     | key_len | ref  | rows | Extra       |
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+
 |  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 4       | NULL |   16 | Using where |
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
 &lt;p&gt;范围列可以用到索引（必须是最左前缀），但是范围列后面的列无法用到索引。同时，索引最多用于一个范围列，因此如果查询条件中有两个范围列则无法全用到索引。&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles
 WHERE emp_no &lt; '10010'
 AND title='Senior Engineer'
 AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
@@ -2696,7 +2714,7 @@ AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
 |  1 | SIMPLE      | titles | range | PRIMARY       | PRIMARY | 4       | NULL |   16 | Using where |
 +----+-------------+--------+-------+---------------+---------+---------+------+------+-------------+&lt;/pre&gt;
 &lt;p&gt;可以看到索引对第二个范围索引无能为力。这里特别要说明MySQL一个有意思的地方，那就是仅用explain可能无法区分范围索引和多值匹配，因为在type中这两者都显示为range。同时，用了“between”并不意味着就是范围查询，例如下面的查询：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles
 WHERE emp_no BETWEEN '10001' AND '10010'
 AND title='Senior Engineer'
 AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
@@ -2708,14 +2726,14 @@ AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
 &lt;p&gt;看起来是用了两个范围查询，但作用于emp_no上的“BETWEEN”实际上相当于“IN”，也就是说emp_no实际是多值精确匹配。可以看到这个查询用到了索引全部三个列。因此在MySQL中要谨慎地区分多值匹配和范围匹配，否则会对MySQL的行为产生困惑。&lt;/p&gt;
 &lt;h3&gt;情况七：查询条件中含有函数或表达式。&lt;/h3&gt;
 &lt;p&gt;很不幸，如果查询条件中含有函数或表达式，则MySQL不会为这列使用索引（虽然某些在数学意义上可以使用）。例如：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND left(title, 6)='Senior';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no='10001' AND left(title, 6)='Senior';
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
 | id | select_type | table  | type | possible_keys | key     | key_len | ref   | rows | Extra       |
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+
 |  1 | SIMPLE      | titles | ref  | PRIMARY       | PRIMARY | 4       | const |    1 | Using where |
 +----+-------------+--------+------+---------------+---------+---------+-------+------+-------------+&lt;/pre&gt;
 &lt;p&gt;虽然这个查询和情况五中功能相同，但是由于使用了函数left，则无法为title列应用索引，而情况五中用LIKE则可以。再如：&lt;p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no - 1='10000';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.titles WHERE emp_no - 1='10000';
 +----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
 | id | select_type | table  | type | possible_keys | key  | key_len | ref  | rows   | Extra       |
 +----+-------------+--------+------+---------------+------+---------+------+--------+-------------+
@@ -2728,7 +2746,7 @@ AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
 &lt;p&gt;另一种不建议建索引的情况是索引的选择性较低。所谓索引的选择性（Selectivity），是指不重复的索引值（也叫基数，Cardinality）与表记录数（#T）的比值：&lt;/p&gt;
 &lt;p&gt;Index Selectivity = Cardinality / #T&lt;/p&gt;
 &lt;p&gt;显然选择性的取值范围为(0, 1]，选择性越高的索引价值越大，这是由B+Tree的性质决定的。例如，上文用到的employees.titles表，如果title字段经常被单独查询，是否需要建索引，我们看一下它的选择性：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SELECT count(DISTINCT(title))/count(*) AS Selectivity FROM employees.titles;
+&lt;pre class=&quot;prettyprint&quot;&gt;SELECT count(DISTINCT(title))/count(*) AS Selectivity FROM employees.titles;
 +-------------+
 | Selectivity |
 +-------------+
@@ -2737,14 +2755,14 @@ AND from_date BETWEEN '1986-01-01' AND '1986-12-31';
 &lt;p&gt;title的选择性不足0.0001（精确值为0.00001579），所以实在没有什么必要为其单独建索引。&lt;/p&gt;
 &lt;p&gt;有一种与索引选择性有关的索引优化策略叫做前缀索引，就是用列的前缀代替整个列作为索引key，当前缀长度合适时，可以做到既使得前缀索引的选择性接近全列索引，同时因为索引key变短而减少了索引文件的大小和维护开销。下面以employees.employees表为例介绍前缀索引的选择和使用。&lt;/p&gt;
 &lt;p&gt;从图12可以看到employees表只有一个索引&lt;emp_no&gt;，那么如果我们想按名字搜索一个人，就只能全表扫描了：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;EXPLAIN SELECT * FROM employees.employees WHERE first_name='Eric' AND last_name='Anido';
+&lt;pre class=&quot;prettyprint&quot;&gt;EXPLAIN SELECT * FROM employees.employees WHERE first_name='Eric' AND last_name='Anido';
 +----+-------------+-----------+------+---------------+------+---------+------+--------+-------------+
 | id | select_type | table     | type | possible_keys | key  | key_len | ref  | rows   | Extra       |
 +----+-------------+-----------+------+---------------+------+---------+------+--------+-------------+
 |  1 | SIMPLE      | employees | ALL  | NULL          | NULL | NULL    | NULL | 300024 | Using where |
 +----+-------------+-----------+------+---------------+------+---------+------+--------+-------------+&lt;/pre&gt;
 &lt;p&gt;如果频繁按名字搜索员工，这样显然效率很低，因此我们可以考虑建索引。有两种选择，建&lt;first_name&gt;或&lt;first_name, last_name&gt;，看下两个索引的选择性：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SELECT count(DISTINCT(first_name))/count(*) AS Selectivity FROM employees.employees;
+&lt;pre class=&quot;prettyprint&quot;&gt;SELECT count(DISTINCT(first_name))/count(*) AS Selectivity FROM employees.employees;
 +-------------+
 | Selectivity |
 +-------------+
@@ -2757,24 +2775,24 @@ SELECT count(DISTINCT(concat(first_name, last_name)))/count(*) AS Selectivity FR
 |      0.9313 |
 +-------------+&lt;/pre&gt;
 &lt;p&gt;&lt;first_name&gt;显然选择性太低，&lt;first_name, last_name&gt;选择性很好，但是first_name和last_name加起来长度为30，有没有兼顾长度和选择性的办法？可以考虑用first_name和last_name的前几个字符建立索引，例如&lt;first_name, left(last_name, 3)&gt;，看看其选择性：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SELECT count(DISTINCT(concat(first_name, left(last_name, 3))))/count(*) AS Selectivity FROM employees.employees;
+&lt;pre class=&quot;prettyprint&quot;&gt;SELECT count(DISTINCT(concat(first_name, left(last_name, 3))))/count(*) AS Selectivity FROM employees.employees;
 +-------------+
 | Selectivity |
 +-------------+
 |      0.7879 |
 +-------------+&lt;/pre&gt;
 &lt;p&gt;选择性还不错，但离0.9313还是有点距离，那么把last_name前缀加到4：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SELECT count(DISTINCT(concat(first_name, left(last_name, 4))))/count(*) AS Selectivity FROM employees.employees;
+&lt;pre class=&quot;prettyprint&quot;&gt;SELECT count(DISTINCT(concat(first_name, left(last_name, 4))))/count(*) AS Selectivity FROM employees.employees;
 +-------------+
 | Selectivity |
 +-------------+
 |      0.9007 |
 +-------------+&lt;/pre&gt;
 &lt;p&gt;这时选择性已经很理想了，而这个索引的长度只有18，比&lt;first_name, last_name&gt;短了接近一半，我们把这个前缀索引 建上：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;ALTER TABLE employees.employees
+&lt;pre class=&quot;prettyprint&quot;&gt;ALTER TABLE employees.employees
 ADD INDEX `first_name_last_name4` (first_name, last_name(4));&lt;/pre&gt;
 &lt;p&gt;此时再执行一遍按名字查询，比较分析一下与建索引前的结果：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-sql&quot;&gt;SHOW PROFILES;
+&lt;pre class=&quot;prettyprint&quot;&gt;SHOW PROFILES;
 +----------+------------+---------------------------------------------------------------------------------+
 | Query_ID | Duration   | Query                                                                           |
 +----------+------------+---------------------------------------------------------------------------------+
@@ -2876,19 +2894,19 @@ ADD INDEX `first_name_last_name4` (first_name, last_name(4));&lt;/pre&gt;
 &lt;p&gt;开发Nginx扩展当然首要前提是对Nginx有一定的了解，然而本文并不打算详细阐述Nginx的方方面面，诸如Nginx的安装和各种详细配置等内容都可以在Nginx官网的Document中找到，本文在这里只会概括性描述一些后面可能会用到的原理和概念。&lt;/p&gt;
 &lt;h2&gt;&lt;a name=&quot;section1-1&quot;&gt;&lt;/a&gt;Nginx在Linux下的安装与运行&lt;/h2&gt;
 &lt;p&gt;使用Nginx的第一步是下载Nginx源码包，例如1.0.0的下载地址为&lt;a title=&quot;http://nginx.org/download/nginx-1.0.0.tar.gz&quot; href=&quot;http://nginx.org/download/nginx-1.0.0.tar.gz&quot;&gt;http://nginx.org/download/nginx-1.0.0.tar.gz&lt;/a&gt;。下载完后用tar命令解压缩，进入目录后安装过程与Linux下通常步骤无异，例如我想将Nginx安装到/usr/local/nginx下，则执行如下命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;./configure --prefix=/usr/local/nginx
+&lt;pre class=&quot;prettyprint&quot;&gt;./configure --prefix=/usr/local/nginx
 make
 make install&lt;/pre&gt;
 &lt;p&gt;安装完成后可以直接使用下面命令启动Nginx：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;/usr/local/nginx/sbin/nginx&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;/usr/local/nginx/sbin/nginx&lt;/pre&gt;
 &lt;p&gt;Nginx默认以Deamon进程启动，输入下列命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;curl -i http://localhost/&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;curl -i http://localhost/&lt;/pre&gt;
 &lt;p&gt;就可以检测Nginx是否已经成功运行。或者也可以在浏览器中输入&lt;a href=&quot;http://localhost/&quot;&gt;http://localhost/&lt;/a&gt;，应该可以看到Nginx的欢迎页面了。启动后如果想停止Nginx可以使用：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;/usr/local/nginx/sbin/nginx -s stop&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;/usr/local/nginx/sbin/nginx -s stop&lt;/pre&gt;
 &lt;h2&gt;&lt;a name=&quot;section1-2&quot;&gt;&lt;/a&gt;Nginx配置文件基本结构&lt;/h2&gt;
 &lt;p&gt;配置文件可以看做是Nginx的灵魂，Nginx服务在启动时会读入配置文件，而后续几乎一切动作行为都是按照配置文件中的指令进行的，因此如果将Nginx本身看做一个计算机，那么Nginx的配置文件可以看成是全部的程序指令。&lt;/p&gt;
 &lt;p&gt;下面是一个Nginx配置文件的实例：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;#user  nobody;
+&lt;pre class=&quot;prettyprint&quot;&gt;#user  nobody;
 worker_processes  8;
 error_log  logs/error.log;
 pid        logs/nginx.pid;
@@ -2936,29 +2954,29 @@ http {
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/intro-of-nginx-module-development/2.png&quot;/&gt;&lt;/p&gt;
 &lt;h1&gt;&lt;a name=&quot;section2&quot;&gt;&lt;/a&gt;Nginx模块开发实战&lt;/h1&gt;
 &lt;p&gt;下面本文展示一个简单的Nginx模块开发全过程，我们开发一个叫echo的handler模块，这个模块功能非常简单，它接收“echo”指令，指令可指定一个字符串参数，模块会输出这个字符串作为HTTP响应。例如，做如下配置：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;location /echo {
+&lt;pre class=&quot;prettyprint&quot;&gt;location /echo {
     echo &quot;hello nginx&quot;;
 }&lt;/pre&gt;
 &lt;p&gt;则访问&lt;a href=&quot;http://hostname/echo&quot;&gt;http://hostname/echo&lt;/a&gt;时会输出hello nginx。&lt;/p&gt;
 &lt;p&gt;直观来看，要实现这个功能需要三步：1、读入配置文件中echo指令及其参数；2、进行HTTP包装（添加HTTP头等工作）；3、将结果返回给客户端。下面本文将分部介绍整个模块的开发过程。&lt;/p&gt;
 &lt;h2&gt;&lt;a name=&quot;section2-1&quot;&gt;&lt;/a&gt;定义模块配置结构&lt;/h2&gt;
 &lt;p&gt;首先我们需要一个结构用于存储从配置文件中读进来的相关指令参数，即模块配置信息结构。根据Nginx模块开发规则，这个结构的命名规则为ngx_http_[module-name]_[main|srv|loc]_conf_t。其中main、srv和loc分别用于表示同一模块在三层block中的配置信息。这里我们的echo模块只需要运行在loc层级下，需要存储一个字符串参数，因此我们可以定义如下的模块配置：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef struct {
+&lt;pre class=&quot;prettyprint&quot;&gt;typedef struct {
     ngx_str_t  ed;
 } ngx_http_echo_loc_conf_t;&lt;/pre&gt;
 &lt;p&gt;其中字段ed用于存储echo指令指定的需要输出的字符串。注意这里ed的类型，在Nginx模块开发中使用ngx_str_t类型表示字符串，这个类型定义在core/ngx_string中：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef struct {
+&lt;pre class=&quot;prettyprint&quot;&gt;typedef struct {
     size_t      len;
     u_char     *data;
 } ngx_str_t;&lt;/pre&gt;
 &lt;p&gt;其中两个字段分别表示字符串的长度和数据起始地址。注意在Nginx源代码中对数据类型进行了别称定义，如ngx_int_t为intptr_t的别称，为了保持一致，在开发Nginx模块时也应该使用这些Nginx源码定义的类型而不要使用C原生类型。除了ngx_str_t外，其它三个常用的nginx type分别为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef intptr_t        ngx_int_t;
+&lt;pre class=&quot;prettyprint&quot;&gt;typedef intptr_t        ngx_int_t;
 typedef uintptr_t       ngx_uint_t;
 typedef intptr_t        ngx_flag_t;&lt;/pre&gt;
 &lt;p&gt;具体定义请参看core/ngx_config.h。关于intptr_t和uintptr_t请参考C99中的&lt;a href=&quot;http://linux.die.net/include/stdint.h&quot; target=&quot;_blank&quot;&gt;stdint.h&lt;/a&gt;或&lt;a title=&quot;http://linux.die.net/man/3/intptr_t&quot; href=&quot;http://linux.die.net/man/3/intptr_t&quot;&gt;http://linux.die.net/man/3/intptr_t&lt;/a&gt;。&lt;/p&gt;
 &lt;h2&gt;&lt;a name=&quot;section2-2&quot;&gt;&lt;/a&gt;定义指令&lt;/h2&gt;
 &lt;p&gt;一个Nginx模块往往接收一至多个指令，echo模块接收一个指令“echo”。Nginx模块使用一个ngx_command_t数组表示模块所能接收的所有模块，其中每一个元素表示一个条指令。ngx_command_t是ngx_command_s的一个别称（Nginx习惯于使用“_s”后缀命名结构体，然后typedef一个同名“_t”后缀名称作为此结构体的类型名），ngx_command_s定义在core/ngx_config_file.h中：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;struct ngx_command_s {
+&lt;pre class=&quot;prettyprint&quot;&gt;struct ngx_command_s {
     ngx_str_t             name;
     ngx_uint_t            type;
     char               *(*set)(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
@@ -2967,7 +2985,7 @@ typedef intptr_t        ngx_flag_t;&lt;/pre&gt;
     void                 *post;
 };&lt;/pre&gt;
 &lt;p&gt;其中name是词条指令的名称，type使用掩码标志位方式配置指令参数，相关可用type定义在core/ngx_config_file.h中：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;#define NGX_CONF_NOARGS      0x00000001
+&lt;pre class=&quot;prettyprint&quot;&gt;#define NGX_CONF_NOARGS      0x00000001
 #define NGX_CONF_TAKE1       0x00000002
 #define NGX_CONF_TAKE2       0x00000004
 #define NGX_CONF_TAKE3       0x00000008
@@ -2993,7 +3011,7 @@ typedef intptr_t        ngx_flag_t;&lt;/pre&gt;
 &lt;p&gt;set是一个函数指针，用于指定一个参数转化函数，这个函数一般是将配置文件中相关指令的参数转化成需要的格式并存入配置结构体。Nginx预定义了一些转换函数，可以方便我们调用，这些函数定义在core/ngx_conf_file.h中，一般以“_slot”结尾，例如ngx_conf_set_flag_slot将“on或off”转换为“1或0”，再如ngx_conf_set_str_slot将裸字符串转化为ngx_str_t。&lt;/p&gt;
 &lt;p&gt;conf用于指定Nginx相应配置文件内存其实地址，一般可以通过内置常量指定，如NGX_HTTP_LOC_CONF_OFFSET，offset指定此条指令的参数的偏移量。&lt;/p&gt;
 &lt;p&gt;下面是echo模块的指令定义：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;static ngx_command_t  ngx_http_echo_commands[] = {
+&lt;pre class=&quot;prettyprint&quot;&gt;static ngx_command_t  ngx_http_echo_commands[] = {
     { ngx_string(&quot;echo&quot;),
         NGX_HTTP_LOC_CONF|NGX_CONF_TAKE1,
         ngx_http_echo,
@@ -3004,7 +3022,7 @@ typedef intptr_t        ngx_flag_t;&lt;/pre&gt;
 };&lt;/pre&gt;
 &lt;p&gt;指令数组的命名规则为ngx_http_[module-name]_commands，注意数组最后一个元素要是ngx_null_command结束。&lt;/p&gt;
 &lt;p&gt;参数转化函数的代码为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;static char *
+&lt;pre class=&quot;prettyprint&quot;&gt;static char *
 ngx_http_echo(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
     ngx_http_core_loc_conf_t  *clcf;
@@ -3017,7 +3035,7 @@ ngx_http_echo(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 &lt;h2&gt;&lt;a name=&quot;section2-3&quot;&gt;&lt;/a&gt;创建合并配置信息&lt;/h2&gt;
 &lt;p&gt;下一步是定义模块Context。&lt;/p&gt;
 &lt;p&gt;这里首先需要定义一个ngx_http_module_t类型的结构体变量，命名规则为ngx_http_[module-name]_module_ctx，这个结构主要用于定义各个Hook函数。下面是echo模块的context结构：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;static ngx_http_module_t  ngx_http_echo_module_ctx = {
+&lt;pre class=&quot;prettyprint&quot;&gt;static ngx_http_module_t  ngx_http_echo_module_ctx = {
     NULL,                                  /* preconfiguration */
     NULL,                                  /* postconfiguration */
     NULL,                                  /* create main configuration */
@@ -3029,7 +3047,7 @@ ngx_http_echo(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 };&lt;/pre&gt;
 &lt;p&gt;可以看到一共有8个Hook注入点，分别会在不同时刻被Nginx调用，由于我们的模块仅仅用于location域，这里将不需要的注入点设为NULL即可。其中create_loc_conf用于初始化一个配置结构体，如为配置结构体分配内存等工作；merge_loc_conf用于将其父block的配置信息合并到此结构体中，也就是实现配置的继承。这两个函数会被Nginx自动调用。注意这里的命名规则：ngx_http_[module-name]_[create|merge]_[main|srv|loc]_conf。&lt;/p&gt;
 &lt;p&gt;下面是echo模块这个两个函数的代码：
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;static void *
+&lt;pre class=&quot;prettyprint&quot;&gt;static void *
 ngx_http_echo_create_loc_conf(ngx_conf_t *cf)
 {
     ngx_http_echo_loc_conf_t  *conf;
@@ -3052,7 +3070,7 @@ ngx_http_echo_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 &lt;p&gt;其中ngx_pcalloc用于在Nginx内存池中分配一块空间，是pcalloc的一个包装。使用ngx_pcalloc分配的内存空间不必手工free，Nginx会自行管理，在适当是否释放。&lt;/p&gt;
 &lt;p&gt;create_loc_conf新建一个ngx_http_echo_loc_conf_t，分配内存，并初始化其中的数据，然后返回这个结构的指针；merge_loc_conf将父block域的配置信息合并到create_loc_conf新建的配置结构体中。&lt;/p&gt;
 &lt;p&gt;其中ngx_conf_merge_str_value不是一个函数，而是一个宏，其定义在core/ngx_conf_file.h中：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;#define ngx_conf_merge_str_value(conf, prev, default)                        \
+&lt;pre class=&quot;prettyprint&quot;&gt;#define ngx_conf_merge_str_value(conf, prev, default)                        \
     if (conf.data == NULL) {                                                 \
         if (prev.data) {                                                     \
             conf.len = prev.len;                                             \
@@ -3070,7 +3088,7 @@ ngx_http_echo_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 &lt;p&gt;产生HTTP header。&lt;/p&gt;
 &lt;p&gt;产生HTTP body。&lt;/p&gt;
 &lt;p&gt;下面先贴出echo模块的代码，然后通过分析代码的方式介绍如何实现这四步。这一块的代码比较复杂：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;static ngx_int_t
+&lt;pre class=&quot;prettyprint&quot;&gt;static ngx_int_t
 ngx_http_echo_handler(ngx_http_request_t *r)
 {
     ngx_int_t rc;
@@ -3114,7 +3132,7 @@ ngx_http_echo_handler(ngx_http_request_t *r)
     return ngx_http_output_filter(r, &amp;out);
 }&lt;/pre&gt;
 &lt;p&gt;handler会接收一个ngx_http_request_t指针类型的参数，这个参数指向一个ngx_http_request_t结构体，此结构体存储了这次HTTP请求的一些信息，这个结构定义在http/ngx_http_request.h中：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;struct ngx_http_request_s {
+&lt;pre class=&quot;prettyprint&quot;&gt;struct ngx_http_request_s {
     uint32_t                          signature;         /* &quot;HTTP&quot; */
     ngx_connection_t                 *connection;
     void                            **ctx;
@@ -3163,7 +3181,7 @@ ngx_http_echo_handler(ngx_http_request_t *r)
 &lt;p&gt;第一步是获取模块配置信息，这一块只要简单使用ngx_http_get_module_loc_conf就可以了。&lt;/p&gt;
 &lt;p&gt;第二步是功能逻辑，因为echo模块非常简单，只是简单输出一个字符串，所以这里没有功能逻辑代码。&lt;/p&gt;
 &lt;p&gt;第三步是设置response header。Header内容可以通过填充headers_out实现，我们这里只设置了Content-type和Content-length等基本内容，ngx_http_headers_out_t定义了所有可以设置的HTTP Response Header信息：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;typedef struct {
+&lt;pre class=&quot;prettyprint&quot;&gt;typedef struct {
     ngx_list_t                        headers;
     ngx_uint_t                        status;
     ngx_str_t                         status_line;
@@ -3193,7 +3211,7 @@ ngx_http_echo_handler(ngx_http_request_t *r)
 &lt;p&gt;这里并不包含所有HTTP头信息，如果需要可以使用agentzh（春来）开发的Nginx模块&lt;a href=&quot;http://wiki.nginx.org/HttpHeadersMoreModule&quot; target=&quot;_blank&quot;&gt;HttpHeadersMore&lt;/a&gt;在指令中指定更多的Header头信息。&lt;/p&gt;
 &lt;p&gt;设置好头信息后使用ngx_http_send_header就可以将头信息输出，ngx_http_send_header接受一个ngx_http_request_t类型的参数。&lt;/p&gt;
 &lt;p&gt;第四步也是最重要的一步是输出Response body。这里首先要了解Nginx的I/O机制，Nginx允许handler一次产生一组输出，可以产生多次，Nginx将输出组织成一个单链表结构，链表中的每个节点是一个chain_t，定义在core/ngx_buf.h：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;struct ngx_chain_s {
+&lt;pre class=&quot;prettyprint&quot;&gt;struct ngx_chain_s {
     ngx_buf_t    *buf;
     ngx_chain_t  *next;
 };&lt;/pre&gt;
@@ -3203,7 +3221,7 @@ ngx_http_echo_handler(ngx_http_request_t *r)
 &lt;p&gt;以上就是handler的所有工作，请对照描述理解上面贴出的handler代码。&lt;/p&gt;
 &lt;h2&gt;组合Nginx Module&lt;/h2&gt;
 &lt;p&gt;上面完成了Nginx模块各种组件的开发下面就是将这些组合起来了。一个Nginx模块被定义为一个ngx_module_t结构，这个结构的字段很多，不过开头和结尾若干字段一般可以通过Nginx内置的宏去填充，下面是我们echo模块的模块主体定义：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;ngx_module_t  ngx_http_echo_module = {
+&lt;pre class=&quot;prettyprint&quot;&gt;ngx_module_t  ngx_http_echo_module = {
     NGX_MODULE_V1,
     &amp;ngx_http_echo_module_ctx,             /* module context */
     ngx_http_echo_commands,                /* module directives */
@@ -3219,7 +3237,7 @@ ngx_http_echo_handler(ngx_http_request_t *r)
 };&lt;/pre&gt;
 &lt;p&gt;开头和结尾分别用NGX_MODULE_V1和NGX_MODULE_V1_PADDING 填充了若干字段，就不去深究了。这里主要需要填入的信息从上到下以依次为context、指令数组、模块类型以及若干特定事件的回调处理函数（不需要可以置为NULL），其中内容还是比较好理解的，注意我们的echo是一个HTTP模块，所以这里类型是NGX_HTTP_MODULE，其它可用类型还有NGX_EVENT_MODULE（事件处理模块）和NGX_MAIL_MODULE（邮件模块）。&lt;/p&gt;
 &lt;p&gt;这样，整个echo模块就写好了，下面给出echo模块的完整代码：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-c&quot;&gt;/*
+&lt;pre class=&quot;prettyprint&quot;&gt;/*
 * Copyright (C) Eric Zhang
 */
 #include &lt;ngx_config.h&gt;
@@ -3344,27 +3362,27 @@ ngx_http_echo_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
 &lt;h1&gt;&lt;a name=&quot;section3&quot;&gt;&lt;/a&gt;Nginx模块的安装&lt;/h1&gt;
 &lt;p&gt;Nginx不支持动态链接模块，所以安装模块需要将模块代码与Nginx源代码进行重新编译。安装模块的步骤如下：&lt;/p&gt;
 &lt;p&gt;1、编写模块config文件，这个文件需要放在和模块源代码文件放在同一目录下。文件内容如下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;ngx_addon_name=模块完整名称
+&lt;pre class=&quot;prettyprint&quot;&gt;ngx_addon_name=模块完整名称
 HTTP_MODULES=&quot;$HTTP_MODULES 模块完整名称&quot;
 NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/源代码文件名&quot;&lt;/pre&gt;
 &lt;p&gt;2、进入Nginx源代码，使用下面命令编译安装&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;./configure --prefix=安装目录 --add-module=模块源代码文件目录
+&lt;pre class=&quot;prettyprint&quot;&gt;./configure --prefix=安装目录 --add-module=模块源代码文件目录
 make
 make install&lt;/pre&gt;
 &lt;p&gt;这样就完成安装了，例如，我的源代码文件放在/home/yefeng/ngxdev/ngx_http_echo下，我的config文件为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;ngx_addon_name=ngx_http_echo_module
+&lt;pre class=&quot;prettyprint&quot;&gt;ngx_addon_name=ngx_http_echo_module
 HTTP_MODULES=&quot;$HTTP_MODULES ngx_http_echo_module&quot;
 NGX_ADDON_SRCS=&quot;$NGX_ADDON_SRCS $ngx_addon_dir/ngx_http_echo_module.c&quot;&lt;/pre&gt;
 &lt;p&gt;编译安装命令为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;./configure --prefix=/usr/local/nginx --add-module=/home/yefeng/ngxdev/ngx_http_echo
+&lt;pre class=&quot;prettyprint&quot;&gt;./configure --prefix=/usr/local/nginx --add-module=/home/yefeng/ngxdev/ngx_http_echo
 make
 sudo make install&lt;/pre&gt;
 &lt;p&gt;这样echo模块就被安装在我的Nginx上了，下面测试一下，修改配置文件，增加以下一项配置：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;location /echo {
+&lt;pre class=&quot;prettyprint&quot;&gt;location /echo {
     echo &quot;This is my first nginx module!!!&quot;;
 }&lt;/pre&gt;
 &lt;p&gt;然后用curl测试一下：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint language-bash&quot;&gt;curl -i http://localhost/echo&lt;/pre&gt;
+&lt;pre class=&quot;prettyprint&quot;&gt;curl -i http://localhost/echo&lt;/pre&gt;
 &lt;p&gt;结果如下：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/intro-of-nginx-module-development/4.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;可以看到模块已经正常工作了，也可以在浏览器中打开网址，就可以看到结果：&lt;/p&gt;
