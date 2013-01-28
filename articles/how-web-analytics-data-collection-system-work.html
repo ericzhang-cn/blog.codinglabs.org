@@ -162,57 +162,57 @@ var _maq = _maq || [];
 _maq.push(['_setAccount', '网站标识']);
 
 (function() {
- var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
- ma.src = ('https:' == document.location.protocol ? 'https://analytics' : 'http://analytics') + '.codinglabs.org/ma.js';
- var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
- })();
+    var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
+    ma.src = ('https:' == document.location.protocol ? 'https://analytics' : 'http://analytics') + '.codinglabs.org/ma.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
+    })();
 &lt;/script&gt;</pre>
 <p>这里我启用了二级域名analytics.codinglabs.org，统计脚本的名称为ma.js。当然这里有一点小问题，因为我并没有https的服务器，所以如果一个https站点部署了代码会有问题，不过这里我们先忽略吧。</p>
 <h2>前端统计脚本</h2>
 <p>我写了一个不是很完善但能完成基本工作的统计脚本ma.js：</p>
 <pre class="prettyprint">(function () {
-        var params = {};
-        //Document对象数据
-        if(document) {
+    var params = {};
+    //Document对象数据
+    if(document) {
         params.domain = document.domain || ''; 
         params.url = document.URL || ''; 
         params.title = document.title || ''; 
         params.referrer = document.referrer || ''; 
-        }   
-        //Window对象数据
-        if(window &amp;&amp; window.screen) {
+    }   
+    //Window对象数据
+    if(window &amp;&amp; window.screen) {
         params.sh = window.screen.height || 0;
         params.sw = window.screen.width || 0;
         params.cd = window.screen.colorDepth || 0;
-        }   
-        //navigator对象数据
-        if(navigator) {
+    }   
+    //navigator对象数据
+    if(navigator) {
         params.lang = navigator.language || ''; 
-        }   
-        //解析_maq配置
-        if(_maq) {
-            for(var i in _maq) {
-                switch(_maq[i][0]) {
-                    case '_setAccount':
-                        params.account = _maq[i][1];
-                        break;
-                    default:
-                        break;
-                }   
+    }   
+    //解析_maq配置
+    if(_maq) {
+        for(var i in _maq) {
+            switch(_maq[i][0]) {
+                case '_setAccount':
+                    params.account = _maq[i][1];
+                    break;
+                default:
+                    break;
             }   
         }   
-        //拼接参数串
-        var args = ''; 
-        for(var i in params) {
-            if(args != '') {
-                args += '&amp;';
-            }   
-            args += i + '=' + encodeURIComponent(params[i]);
+    }   
+    //拼接参数串
+    var args = ''; 
+    for(var i in params) {
+        if(args != '') {
+            args += '&amp;';
         }   
+        args += i + '=' + encodeURIComponent(params[i]);
+    }   
 
-        //通过Image对象请求后端脚本
-        var img = new Image(1, 1); 
-        img.src = 'http://analytics.codinglabs.org/1.gif?' + args;
+    //通过Image对象请求后端脚本
+    var img = new Image(1, 1); 
+    img.src = 'http://analytics.codinglabs.org/1.gif?' + args;
 })();</pre>
 <p>整个脚本放在匿名函数里，确保不会污染全局环境。功能在原理一节已经说明，不再赘述。其中1.gif是后端脚本。</p>
 <h2>日志格式</h2>
@@ -234,30 +234,30 @@ _maq.push(['_setAccount', '网站标识']);
         -- 用户跟踪cookie名为__utrace
         local uid = ngx.var.cookie___utrace        
         if not uid then
-            -- 如果没有则生成一个跟踪cookie，算法为md5(时间戳+IP+客户端信息)
-                uid = ngx.md5(ngx.now() .. ngx.var.remote_addr .. ngx.var.http_user_agent)
-                end 
-                ngx.header['Set-Cookie'] = {'__utrace=' .. uid .. '; path=/'}
-    if ngx.var.arg_domain then
+        -- 如果没有则生成一个跟踪cookie，算法为md5(时间戳+IP+客户端信息)
+            uid = ngx.md5(ngx.now() .. ngx.var.remote_addr .. ngx.var.http_user_agent)
+        end 
+        ngx.header['Set-Cookie'] = {'__utrace=' .. uid .. '; path=/'}
+        if ngx.var.arg_domain then
         -- 通过subrequest到/i-log记录日志，将参数和用户跟踪cookie带过去
             ngx.location.capture('/i-log?' .. ngx.var.args .. '&amp;utrace=' .. uid)
-            end 
-            ";  
+        end 
+    ";  
 
-#此请求不缓存
-            add_header Expires "Fri, 01 Jan 1980 00:00:00 GMT";
+    #此请求不缓存
+    add_header Expires "Fri, 01 Jan 1980 00:00:00 GMT";
     add_header Pragma "no-cache";
     add_header Cache-Control "no-cache, max-age=0, must-revalidate";
 
-#返回一个1×1的空gif图片
+    #返回一个1×1的空gif图片
     empty_gif;
 }   
 
 location /i-log {
-#内部location，不允许外部直接访问
+    #内部location，不允许外部直接访问
     internal;
 
-#设置变量，注意需要unescape
+    #设置变量，注意需要unescape
     set_unescape_uri $u_domain $arg_domain;
     set_unescape_uri $u_url $arg_url;
     set_unescape_uri $u_title $arg_title;
@@ -269,12 +269,12 @@ location /i-log {
     set_unescape_uri $u_utrace $arg_utrace;
     set_unescape_uri $u_account $arg_account;
 
-#打开日志
+    #打开日志
     log_subrequest on;
-#记录日志到ma.log，实际应用中最好加buffer，格式为tick
+    #记录日志到ma.log，实际应用中最好加buffer，格式为tick
     access_log /path/to/logs/directory/ma.log tick;
 
-#输出空字符串
+    #输出空字符串
     echo '';
 }</pre>
 <p>要完全解释这段脚本的每一个细节有点超出本文的范围，而且用到了诸多第三方ngxin模块（全都包含在OpenResty中了），重点的地方我都用注释标出来了，可以不用完全理解每一行的意义，只要大约知道这个配置完成了我们在原理一节提到的后端逻辑就可以了。</p>
