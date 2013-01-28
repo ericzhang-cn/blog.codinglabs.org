@@ -86,72 +86,72 @@
 <p>下面详述每一步的实现。我将这个系统叫做MyAnalytics。</p>
 <h2>确定收集的信息</h2>
 <p>为了简单起见，我不打算实现GA的完整数据收集模型，而是收集以下信息。</p>
-<table width="588" border="1" cellspacing="0" cellpadding="2">
+<table border="1" cellspacing="0" cellpadding="2">
 <tbody>
 <tr>
-<td valign="top" width="133">名称</td>
-<td valign="top" width="133">途径</td>
-<td valign="top" width="320">备注</td>
+<td>名称</td>
+<td>途径</td>
+<td>备注</td>
 </tr>
 <tr>
-<td valign="top" width="133">访问时间</td>
-<td valign="top" width="133">web server</td>
-<td valign="top" width="320">Nginx $msec</td>
+<td>访问时间</td>
+<td>web server</td>
+<td>Nginx $msec</td>
 </tr>
 <tr>
-<td valign="top" width="133">IP</td>
-<td valign="top" width="133">web server</td>
-<td valign="top" width="320">Nginx $remote_addr</td>
+<td>IP</td>
+<td>web server</td>
+<td>Nginx $remote_addr</td>
 </tr>
 <tr>
-<td valign="top" width="133">域名</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">document.domain</td>
+<td>域名</td>
+<td>javascript</td>
+<td>document.domain</td>
 </tr>
 <tr>
-<td valign="top" width="133">URL</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">document.URL</td>
+<td>URL</td>
+<td>javascript</td>
+<td>document.URL</td>
 </tr>
 <tr>
-<td valign="top" width="133">页面标题</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">document.title</td>
+<td>页面标题</td>
+<td>javascript</td>
+<td>document.title</td>
 </tr>
 <tr>
-<td valign="top" width="133">分辨率</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">window.screen.height &amp; width</td>
+<td>分辨率</td>
+<td>javascript</td>
+<td>window.screen.height &amp; width</td>
 </tr>
 <tr>
-<td valign="top" width="133">颜色深度</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">window.screen.colorDepth</td>
+<td>颜色深度</td>
+<td>javascript</td>
+<td>window.screen.colorDepth</td>
 </tr>
 <tr>
-<td valign="top" width="133">Referrer</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">document.referrer</td>
+<td>Referrer</td>
+<td>javascript</td>
+<td>document.referrer</td>
 </tr>
 <tr>
-<td valign="top" width="133">浏览客户端</td>
-<td valign="top" width="133">web server</td>
-<td valign="top" width="320">Nginx $http_user_agent</td>
+<td>浏览客户端</td>
+<td>web server</td>
+<td>Nginx $http_user_agent</td>
 </tr>
 <tr>
-<td valign="top" width="133">客户端语言</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">navigator.language</td>
+<td>客户端语言</td>
+<td>javascript</td>
+<td>navigator.language</td>
 </tr>
 <tr>
-<td valign="top" width="133">访客标识</td>
-<td valign="top" width="133">cookie</td>
-<td valign="top" width="320"></td>
+<td>访客标识</td>
+<td>cookie</td>
+<td></td>
 </tr>
 <tr>
-<td valign="top" width="133">网站标识</td>
-<td valign="top" width="133">javascript</td>
-<td valign="top" width="320">自定义对象</td>
+<td>网站标识</td>
+<td>javascript</td>
+<td>自定义对象</td>
 </tr>
 </tbody>
 </table>
@@ -165,7 +165,7 @@ _maq.push(['_setAccount', '网站标识']);
     var ma = document.createElement('script'); ma.type = 'text/javascript'; ma.async = true;
     ma.src = ('https:' == document.location.protocol ? 'https://analytics' : 'http://analytics') + '.codinglabs.org/ma.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
-    })();
+})();
 &lt;/script&gt;</pre>
 <p>这里我启用了二级域名analytics.codinglabs.org，统计脚本的名称为ma.js。当然这里有一点小问题，因为我并没有https的服务器，所以如果一个https站点部署了代码会有问题，不过这里我们先忽略吧。</p>
 <h2>前端统计脚本</h2>
