@@ -234,7 +234,7 @@ _maq.push(['_setAccount', '网站标识']);
         -- 用户跟踪cookie名为__utrace
         local uid = ngx.var.cookie___utrace        
         if not uid then
-        -- 如果没有则生成一个跟踪cookie，算法为md5(时间戳+IP+客户端信息)
+            -- 如果没有则生成一个跟踪cookie，算法为md5(时间戳+IP+客户端信息)
             uid = ngx.md5(ngx.now() .. ngx.var.remote_addr .. ngx.var.http_user_agent)
         end 
         ngx.header['Set-Cookie'] = {'__utrace=' .. uid .. '; path=/'}
@@ -287,7 +287,7 @@ mv ${_prefix}/logs/ma.log ${_prefix}/logs/ma/ma-${time}.log
 kill -USR1 `cat ${_prefix}/logs/nginx.pid`</pre>
 <p>这个脚本将ma.log移动到指定文件夹并重命名为ma-{yyyymmddhh}.log，然后向nginx发送USR1信号令其重新打开日志文件。</p>
 <p>然后再/etc/crontab里加入一行：</p>
-<pre class="brush:bash">59  *  *  *  * root /path/to/directory/rotatelog.sh</pre>
+<pre class="prettyprint">59  *  *  *  * root /path/to/directory/rotatelog.sh</pre>
 <p>在每个小时的59分启动这个脚本进行日志轮转操作。</p>
 <h2>测试</h2>
 <p>下面可以测试这个系统是否能正常运行了。我昨天就在我的博客中埋了相关的点，通过http抓包可以看到ma.js和1.gif已经被正确请求：</p>
