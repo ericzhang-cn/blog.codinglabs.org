@@ -31,7 +31,7 @@
                     <a href="/articles/opdumper-and-web-opcode-dumper.html">发布一个查看PHP opcode的扩展模块及Web服务</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2012-05-16 | 最后更新 2013-01-28
+                    作者 张洋 | 发布于 2012-05-16 | 最后更新 2013-01-29
                 </div>
                 <div id="article-content">
                     <p>最近花了大约一星期的时间写了一个PHP扩展模块<a href="https://github.com/ericzhang-cn/opdumper" target="_blank">Opdumer</a>，并封装成了Web服务（<a href="http://supercompiler.com/app/opcode_dumper" target="_blank">点击这里访问</a>）。这个模块的主要内容是输出PHP代码对应的opcode。其实之前已经有一些用于查看opcode的扩展模块，如比较有名的<a href="http://pecl.php.net/package/vld" target="_blank">vld</a>。之所以重新实现一个这样的模块，主要是因为vld不支持PHP_FUNCTION API，也就是说vld只能用于CLI形式，而Opdumer同时拥有CLI API和PHP_FUNCTION API，另外，也想借助编写这个模块的机会学习Zend Engine中opcode的编译和执行机制。个人打算后面专门针对opcode的编译执行机制写一篇文章，而本文主要描述Opcode的使用方法及对应Web服务的使用。</p>
@@ -157,7 +157,12 @@ var_dump($opcodes);
 </script>
 <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=894207" charset="utf-8"></script>
 <!-- JiaThis Button END -->
-
+<!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {lkrc:0};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
 <!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>
 <script type="text/javascript">
