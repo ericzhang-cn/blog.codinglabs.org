@@ -1,6 +1,15 @@
 {
     "articles": [
         {
+            "id": "why-logarithm-base-of-asymptotic-time-complexity-always-two",
+            "title": "为什么算法渐进复杂度中对数的底数总为2",
+            "postedOn": "2013-01-29",
+            "author": "张洋",
+            "tags": [""],
+            "category": "",
+            "abstract": "各种算法时，经常看到\\(O(\\log_2n)\\)或\\(O(n\\log_2n)\\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\\(O(n\\log_3n)\\)这样的渐进复杂度？本文解释这个问题。"
+        },
+        {
             "id": "algorithms-for-cardinality-estimation-part-iv",
             "title": "解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）",
             "postedOn": "2013-01-09",

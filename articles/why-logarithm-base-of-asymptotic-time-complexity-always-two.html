@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。"/>
+        <meta name="keywords" content="编程,代码,计算机,数学,PHP,Nginx,数据挖掘,机器学习,算法,编译器,分布式"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 为什么算法渐进复杂度中对数的底数总为2</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify.css"/>
+        <link rel="stylesheet" href="/assets/css/simplog.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        <script type="text/javascript">
+            var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+    </head>
+    <body onload="prettyPrint()">
+        <div id="header">
+            <div id="header-inner">
+                <div id="title"><a href="/"><small>{</small> CodingLabs <small>}</small></a></div>
+                <div id="subtitle">/&gt; keep coding, keep foolish</div>
+            </div>
+        </div>
+        <div id="main">
+            <div id="main-inner">
+                <div id="article-title">
+                    <a href="/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html">为什么算法渐进复杂度中对数的底数总为2</a>
+                </div>
+                <div id="article-meta">
+                    作者 张洋 | 发布于 2013-01-29 | 最后更新 2013-01-29
+                </div>
+                <div id="article-content">
+                    <p>在分析各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。</p>
+
+<h1>三分式归并排序的时间复杂度</h1>
+
+<p>先看一个小例子。</p>
+
+<p>大多数人应该对归并排序（merge sort）很熟悉，它的渐进复杂度为\(O(n\log_2n)\)。那么如果我们将归并排序改为均分成三份而不是两份，其算法时间复杂度是否有变化呢？</p>
+
+<h1>递归分析</h1>
+
+<p>下面通过递归分析对三分式归并排序的时间复杂度进行分析。因为不管是三分还是二分，对于总共n个数据来说，一遍合并的复杂度为\(O(n)\)，所以三分式归并排序的递归式为：</p>
+
+<p>\(T(n)=3T(n/3)+O(n)\)</p>
+
+<p>如果把这个递归式的递归树画出来，很容易得到\(T(n)=O(n\log_3n)\)。如下图所示：</p>
+
+<p class="picture"><img alt="" src="/uploads/pictures/why-logarithm-base-of-asymptotic-time-complexity-always-two/1.png"/></p>
+
+<h1>对数的陷阱</h1>
+
+<p>那么这是否意味着三分式归并排序在时间复杂度上要优于二分式的归并排序呢？因为直觉上\(n\log_3n\)比\(n\log_2n\)要优一些。</p>
+
+<p>实际上三分式归并排序的时间复杂度确实是\(T(n)=O(n\log_3n)\)，而且同时也是\(T(n)=O(n\log_2n)\)。</p>
+
+<p>这看起来似乎是矛盾的，\(n\log_3n\)和\(n\log_2n\)当然在绝大多数情况下是不相等的，但是在渐进复杂度情况下就不同了，因为渐进复杂度是忽略常系数的，但是似乎也看不出来\(n\log_3n\)和\(n\log_2n\)是差一个常系数。关键就在于我们应该在中学学过的一个东西：对数换底公式。</p>
+
+<p>\(\log_ab = \frac{\log_cb}{\log_ca}\)</p>
+
+<p>其中a和c均大于0且不等于1。</p>
+
+<p>根据换底公式可以得出：</p>
+
+<p>\(\log_3n = \frac{\log_2n}{\log_23}\)</p>
+
+<p>所以\(n\log_3n\)比\(n\log_2n\)只差一个常系数\(\frac{1}{\log_23}\)。因此，从渐进时间复杂度看，三分式归并并不比二分式归并更优，当然还是有个常系数的差别的。</p>
+
+<p>更一般的：</p>
+
+<p>\(\log_an = \frac{\log_2n}{\log_2a}\)</p>
+
+<p>因此对于大于1的a来说，都与\(O(\log_2n)\)差一个常系数而已，因此为了简便，一般都用\(O(\log_2n)\)表示对数的渐进复杂度，这就解决了本文初始的疑问。当然，以任何大于1的a为底数都是没有问题的。</p>
+
+                </div>
+
+<!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {lkrc:0};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_renren">人人网</a>
+    <a href="http://www.jiathis.com/share?uid=894207" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+    var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=894207" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+    var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- Duoshuo Comment END -->
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2013 CodingLabs. <span id="madeonmymac" style="color:#999999;">Made on my Mac </span></p>
+                <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
