@@ -57,12 +57,12 @@ function handle_http_request($address, $port)
 function run()
 {
     if(($pid1 = pcntl_fork()) === 0)
-        //First child process
+    //First child process
     {
         posix_setsid(); //Set first child process as the session leader.
 
         if(($pid2 = pcntl_fork()) === 0)
-            //Second child process, which run as daemon.
+        //Second child process, which run as daemon.
         {
             //Replaced with your own domain or address.
             handle_http_request('www.codinglabs.org', 9999); 

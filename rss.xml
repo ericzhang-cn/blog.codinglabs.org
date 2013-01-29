@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Mon, 28 Jan 2013 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 29 Jan 2013 00:00:00 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
@@ -1922,12 +1922,12 @@ function handle_http_request($address, $port)
 function run()
 {
     if(($pid1 = pcntl_fork()) === 0)
-        //First child process
+    //First child process
     {
         posix_setsid(); //Set first child process as the session leader.
 
         if(($pid2 = pcntl_fork()) === 0)
-            //Second child process, which run as daemon.
+        //Second child process, which run as daemon.
         {
             //Replaced with your own domain or address.
             handle_http_request('www.codinglabs.org', 9999); 
