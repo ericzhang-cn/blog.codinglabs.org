@@ -31,7 +31,10 @@
                     <a href="/articles/zend-thread-safety.html">深入研究PHP及Zend Engine的线程安全模型</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2011-11-04 | 最后更新 2013-01-29
+                    作者 张洋 | 发布于 2011-11-04 | 最后更新 2013-01-31
+                </div>
+                <div id="article-tags">
+                    <a class="tag" href="/tag.html#PHP">PHP</a><a class="tag" href="/tag.html#线程安全">线程安全</a><a class="tag" href="/tag.html#ZendEngine">ZendEngine</a>
                 </div>
                 <div id="article-content">
                     <p>在阅读PHP源码和学习PHP扩展开发的过程中，我接触到大量含有“TSRM”字眼的宏。通过查阅资料，知道这些宏与Zend的线程安全机制有关，而绝大多数资料中都建议按照既定规则使用这些宏就可以，而没有说明这些宏的具体作用。不知道怎么回事总是令人不舒服的，因此我通过阅读源码和查阅有限的资料简要了解一下相关机制，本文是我对研究内容的总结。</p>

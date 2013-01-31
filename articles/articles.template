@@ -33,6 +33,9 @@
                 <div id="article-meta">
                     作者 {%= ARTICLE_AUTHOR %} | 发布于 {%= ARTICLE_POSTED_ON %} | 最后更新 {%= ARTICLE_UPDATED_ON %}
                 </div>
+                <div id="article-tags">
+                    {%= ARTICLE_TAGS %}
+                </div>
                 <div id="article-content">
                     {%= ARTICLE_CONTENT %}
                 </div>

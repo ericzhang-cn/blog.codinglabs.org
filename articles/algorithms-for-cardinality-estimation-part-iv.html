@@ -31,7 +31,10 @@
                     <a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2013-01-09 | 最后更新 2013-01-29
+                    作者 张洋 | 发布于 2013-01-09 | 最后更新 2013-01-31
+                </div>
+                <div id="article-tags">
+                    <a class="tag" href="/tag.html#基数估计">基数估计</a><a class="tag" href="/tag.html#大数据">大数据</a><a class="tag" href="/tag.html#HyperLogLogCounting">HyperLogLogCounting</a><a class="tag" href="/tag.html#AdaptiveCounting">AdaptiveCounting</a>
                 </div>
                 <div id="article-content">
                     <p>在<a href="http://www.codinglabs.org/html/algorithms-for-cardinality-estimation-part-iii.html" target="_blank">前一篇文章</a>中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。</p>

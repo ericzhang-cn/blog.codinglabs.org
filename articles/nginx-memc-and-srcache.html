@@ -31,7 +31,10 @@
                     <a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2011-10-18 | 最后更新 2013-01-29
+                    作者 张洋 | 发布于 2011-10-18 | 最后更新 2013-01-31
+                </div>
+                <div id="article-tags">
+                    <a class="tag" href="/tag.html#Nginx">Nginx</a><a class="tag" href="/tag.html#Memcache">Memcache</a><a class="tag" href="/tag.html#缓存">缓存</a><a class="tag" href="/tag.html#高性能">高性能</a><a class="tag" href="/tag.html#Openresty">Openresty</a>
                 </div>
                 <div id="article-content">
                     <p>为了提高性能，几乎所有互联网应用都有缓存机制，其中<a href="http://memcached.org" target="_blank">Memcache</a>是使用非常广泛的一个分布式缓存系统。众所周知，LAMP是非常经典的Web架构方式，但是随着<a href="http://wiki.nginx.org/" target="_blank">Nginx</a>的成熟，越来越多的系统开始转型为LNMP（Linux+Nginx+MySQL+PHP with fpm），这是因为Nginx采用基于事件机制的I/O多路复用思想设计，在高并发情况下其性能远远优于默认采用prefork模式的Apache，另外，相对于Apache，Nginx更轻量，同时拥有大量优秀的扩展模块，使得在Nginx上可以实现一些美妙的功能。</p>
