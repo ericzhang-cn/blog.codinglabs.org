@@ -98,8 +98,8 @@ div#aboutme p {
     color: #666666;
 }
 div#rss {
-    margin: 20px auto;
     border-bottom: 1px dashed #CCCCCC;
+    margin: 20px auto;
     text-align: right;
 }
 pre.prettyprint {
