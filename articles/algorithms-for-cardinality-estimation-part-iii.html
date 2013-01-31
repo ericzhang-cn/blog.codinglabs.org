@@ -34,7 +34,7 @@
                     作者 张洋 | 发布于 2013-01-03 | 最后更新 2013-01-31
                 </div>
                 <div id="article-tags">
-                    <a class="tag" href="/tag.html#基数估计">基数估计</a><a class="tag" href="/tag.html#大数据">大数据</a><a class="tag" href="/tag.html#LogLogCounting">LogLogCounting</a>
+                    <a class="tag" href="/tag.html#算法">算法</a><a class="tag" href="/tag.html#基数估计">基数估计</a><a class="tag" href="/tag.html#大数据">大数据</a><a class="tag" href="/tag.html#LogLogCounting">LogLogCounting</a>
                 </div>
                 <div id="article-content">
                     <p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html" target="_blank">上一篇文章</a>介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。</p>

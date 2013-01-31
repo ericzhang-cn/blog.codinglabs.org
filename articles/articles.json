@@ -14,7 +14,7 @@
             "title": "解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）",
             "postedOn": "2013-01-09",
             "author": "张洋",
-            "tags": ["基数估计","大数据","HyperLogLogCounting","AdaptiveCounting"],
+            "tags": ["算法","基数估计","大数据","HyperLogLogCounting","AdaptiveCounting"],
             "category": "",
             "abstract": "在前一篇文章中，我们了解了LogLog Counting。LLC算法的空间复杂度为\\(O(log_2(log_2(N_{max})))\\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\\(\\rho_{max}\\)为0。由于LLC的估计值依赖于各桶\\(\\rho_{max}\\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。"
         },
@@ -23,7 +23,7 @@
             "title": "解读Cardinality Estimation算法（第三部分：LogLog Counting）",
             "postedOn": "2013-01-03",
             "author": "张洋",
-            "tags": ["基数估计","大数据","LogLogCounting"],
+            "tags": ["算法","基数估计","大数据","LogLogCounting"],
             "category": "",
             "abstract": "上一篇文章介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\\(O(N_{max})\\)。而本文要介绍的LogLog Counting却只有\\(O(log_2(log_2(N_{max})))\\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。"
         },
@@ -32,7 +32,7 @@
             "title": "解读Cardinality Estimation算法（第二部分：Linear Counting）",
             "postedOn": "2012-12-31",
             "author": "张洋",
-            "tags": ["基数估计","大数据","LogLogCounting"],
+            "tags": ["算法","基数估计","大数据","LogLogCounting"],
             "category": "",
             "abstract": "在上一篇文章中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。"
         },
@@ -41,7 +41,7 @@
             "title": "解读Cardinality Estimation算法（第一部分：基本概念）",
             "postedOn": "2012-12-30",
             "author": "张洋",
-            "tags": ["基数估计","大数据"],
+            "tags": ["算法","基数估计","大数据"],
             "category": "",
             "abstract": "作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。最后在第五部分会介绍一淘数据部的开源基数估计算法库ccard-lib，这个算法库由一淘数据部工程师清无（王晓哲）、民瞻（张维）及我开发，并已用于一淘数据部多个业务线，ccard-lib实现了上述四种算法，整个库使用C写成，并附带PHP扩展模块，我会在这一部分介绍ccard-lib的实现重点及使用方法。"
         },
@@ -59,7 +59,7 @@
             "title": "从抛硬币试验看概率论的基本内容及统计方法",
             "postedOn": "2012-11-20",
             "author": "张洋",
-            "tags": ["概率","数理统计"],
+            "tags": ["概率","数理统计","数学"],
             "category": "",
             "abstract": "一般说到概率，就喜欢拿抛硬币做例子。大多数时候，会简单认为硬币正背面的概率各为二分之一，其实事情远没有这么简单。这篇文章会以抛硬币试验为例子并贯穿全文，引出一系列概率论和数理统计的基本内容。这篇文章会涉及的有古典概型、公理化概率、二项分布、正态分布、最大似然估计和假设检验等一系列内容。主要目的是以抛硬币试验为例说明现代数学观点下的概率是什么样子以及以概率论为基础的一些基本数理统计方法。"
         },
@@ -77,7 +77,7 @@
             "title": "网站统计中的数据收集原理及实现",
             "postedOn": "2012-10-24",
             "author": "张洋",
-            "tags": ["网站统计","埋点"],
+            "tags": ["网站统计","埋点","Web","Openresty"],
             "category": "",
             "abstract": "网站数据统计分析工具是网站站长和运营人员经常使用的一种工具，比较常用的有谷歌分析、百度统计和腾讯分析等等。所有这些统计分析工具的第一步都是网站访问数据的收集。目前主流的数据收集方式基本都是基于javascript的。本文将简要分析这种数据收集的原理，并一步一步实际搭建一个实际的数据收集系统。"
         },
@@ -86,7 +86,7 @@
             "title": "聊聊如何检测素数",
             "postedOn": "2012-08-28",
             "author": "张洋",
-            "tags": ["素数","概率"],
+            "tags": ["素数","概率","数学"],
             "category": "",
             "abstract": "最近看到一则颇为有趣的新闻，说北大一名大一新生，以素数为标准选手机号，受到广大网友膜拜。其实素数的检测算法是很有趣的，并且会涉及到数论、概率算法等诸多内容，一直觉得素数探测算法是了解概率算法很好的入口。本文和大家简单聊聊如何确定一个数是素数。"
         },
@@ -95,7 +95,7 @@
             "title": "浅析PageRank算法",
             "postedOn": "2012-07-02",
             "author": "张洋",
-            "tags": ["Google","PageRank","搜索引擎"],
+            "tags": ["Google","PageRank","搜索引擎","算法"],
             "category": "",
             "abstract": "直觉得素数探测算法是了解概率算法很好的入口。本文和大家简单聊聊如何确定一个数是素数。geRank产生的背景。第二部分会详细讨论PageRank的思想来源、基础框架，并结合互联网页面拓扑结构讨论PageRank处理Dead Ends及平滑化的方法。第三部分讨论Topic-Sensitive PageRank算法。最后将讨论对PageRank的Spam攻击方法：Spam Farm以及搜索引擎对Spam Farm的防御。"
         },
@@ -113,7 +113,7 @@
             "title": "PHP哈希表碰撞攻击原理",
             "postedOn": "2012-01-04",
             "author": "张洋",
-            "tags": ["PHP","哈希碰撞","ZendEngine"],
+            "tags": ["PHP","哈希碰撞","ZendEngine","数据结构"],
             "category": "",
             "abstract": "最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。"
         },
