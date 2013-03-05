@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如[汉诺塔问题](http://en.wikipedia.org/wiki/Tower_of_Hanoi)的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \qquad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。因为递推式求解的重要性，许多算法书籍对其有专门介绍。[Donald Knuth](http://en.wikipedia.org/wiki/Donald_Knuth)在[Concrete Mathematics](http://en.wikipedia.org/wiki/Concrete_Mathematics)一书中多个章节都涉及递推式求解方法。[算法导论](http://book.douban.com/subject/1885170/)也在第四章中专门论述的这个主题。在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。本文首先会给出两个例子：如何使用纯代数方法求解菲波那契数列和汉诺塔递推式；然后会一般化讨论，将例子中的方法推广到求解一类递推式中；最后会借助线性代数论述这种方法背后的数学意义，既线性递推式与线性方程的内在联系。"/>
+        <meta name="keywords" content="编程,代码,计算机,数学,PHP,Nginx,数据挖掘,机器学习,算法,编译器,分布式"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 算法分析中递推式的一般代数解法</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify.css"/>
+        <link rel="stylesheet" href="/assets/css/simplog.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        <script type="text/javascript">
+            var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+    </head>
+    <body onload="prettyPrint()">
+        <div id="header">
+            <div id="header-inner">
+                <div id="title"><a href="/"><small>{</small> CodingLabs <small>}</small></a></div>
+                <div id="subtitle">/&gt; keep coding, keep foolish</div>
+            </div>
+        </div>
+        <div id="main">
+            <div id="main-inner">
+                <div id="article-title">
+                    <a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a>
+                </div>
+                <div id="article-meta">
+                    作者 张洋 | 发布于 2013-03-05 | 最后更新 2013-03-05
+                </div>
+                <div id="article-tags">
+                    <a class="tag" href="/tag.html#算法">算法</a><a class="tag" href="/tag.html#数学">数学</a><a class="tag" href="/tag.html#线性代数">线性代数</a><a class="tag" href="/tag.html#递推式">递推式</a>
+                </div>
+                <div id="article-content">
+                    <p>算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。
+例如<a href="http://en.wikipedia.org/wiki/Tower_of_Hanoi">汉诺塔问题</a>的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \qquad (n \geq 1)\)，
+可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。</p>
+
+<p>因为递推式求解的重要性，许多算法书籍对其有专门介绍。
+<a href="http://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>在<a href="http://en.wikipedia.org/wiki/Concrete_Mathematics">Concrete Mathematics</a>一书中多个章节都涉及递推式求解方法。
+<a href="http://book.douban.com/subject/1885170/">算法导论</a>也在第四章中专门论述的这个主题。</p>
+
+<p>在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。</p>
+
+<p>而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，
+这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。</p>
+
+<p>本文首先会给出两个例子：如何使用纯代数方法求解菲波那契数列和汉诺塔递推式；
+然后会一般化讨论，将例子中的方法推广到求解一类递推式中；最后会借助线性代数论述这种方法背后的数学意义，
+既线性递推式与线性方程的内在联系。</p>
+
+<h1>示例</h1>
+
+<h2>菲波那契数列</h2>
+
+<h3>问题</h3>
+
+<p>设菲波那契数列为由如下递推式定义的数列：</p>
+
+<p>\[T(0)=0\]
+\[T(1)=1\]
+\[T(n)=T(n-2)+T(n-1) \qquad (n \geq 2)\]</p>
+
+<p>求解\(T(n)\)的封闭形式。</p>
+                </div>
+
+<!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {lkrc:0};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_renren">人人网</a>
+    <a href="http://www.jiathis.com/share?uid=894207" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+    var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=894207" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+    var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- Duoshuo Comment END -->
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2013 CodingLabs. <span id="madeonmymac" style="color:#999999;">Made on my Mac </span></p>
+                <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
