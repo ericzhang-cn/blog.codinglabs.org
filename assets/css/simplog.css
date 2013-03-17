@@ -11,9 +11,9 @@ a:hover {
 p {
     font-size: 18px;
     line-height: 30px;
-}
-p, h1, h2, h3, h4 {
     color: #333333;
+}
+h1, h2, h3, h4 {
 }
 pre.prettyprint {
 	font-size: 14px;
@@ -66,6 +66,22 @@ div#article-title a {
 }
 div#article-content p.picture {
     text-align: center;
+}
+div#article-content h1 {
+	background-color: #999999;
+	color: #FFFFFF;
+	padding: 2px;
+}
+div#article-content h2 {
+	border-bottom: 1px dashed #666666;
+}
+div#article-content h3 {
+}
+div#article-content blockquote {
+    margin-left: 5px;
+    padding-left: 30px;
+	border-left: 5px solid #0099CC;
+	font-size: 16px;
 }
 div#article-meta {
     color: #999999;
