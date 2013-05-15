@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Mon, 18 Mar 2013 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 15 May 2013 00:00:00 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>算法分析中递推式的一般代数解法</title>
@@ -578,10 +578,6 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Fri, 23 Nov 2012 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;翻译自《&lt;a href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;Damn Cool Algorithms: Cardinality Estimation&lt;/a&gt;》，原文链接：&lt;a title=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;译注：给定一个数据集，求解数据集的基数（Cardinality，也译作“势”，表示一个数据集中不同数据项的数量）是非常普遍的一个需求。许多业务需求最终可以归结为基数求解，如网站访问分析中的UV（访客数，指一段时间内访问网站的不同用户的数量）。由于数据集基数是不可聚集指标（两个数据集总的基数无法通过分别的基数简单计算），因此如果要得到N个数据集任意组合的基数，需要\(2^N\)次数据集去重计算，是一个复杂度非常高的计算过程。当数据量较小时，可以采取bitmap“按位或”方法获得较高的计算速度；而当数据量很大时，一般会采取概率算法对基数进行估计。这篇文章是对基数估计算法的一个非常好的概览。&lt;/p&gt;
-&lt;!--more--&gt;
-以下为译文
-&lt;p&gt;--------------------&lt;/p&gt;
 &lt;p&gt;假如你有一个巨大的含有重复数据项数据集，这个数据集过于庞大以至于无法全部放到内存中处理。现在你想知道这个数据集里有多少不同的元素，但是数据集没有排好序，而且对如此大的一个数据集进行排序和计数几乎是不可行的。你要如何估计数据集中有多少不同的数据项？很多应用场景都涉及这个问题，例如设计数据库的查询策略：一个良好的数据库查询策略不但和总的数据量有关，同时也依赖于数据中不同数据项的数量。&lt;/p&gt;
 &lt;p&gt;我建议在继续阅读本文前你可以稍微是思考一下这个问题，因为接下来我们要谈的算法相当有创意，而且实在是不怎么直观。&lt;/p&gt;
 &lt;h1&gt;一个简单直观的基数估计方法&lt;/h1&gt;
