@@ -102,6 +102,15 @@ for (i in 2:length(Y)) {
 plot(Y, family="simhei", main="随机游走", type="b", col="red");
 abline(h=0)</pre>
 
+<p>可以看到随机游走比白噪声平滑很多，并且呈现出一些“趋势性”的感觉。下面分析其相关统计特征。</p>
+<p>均值：\(\mu_t=E(e_1 + \cdots + e_t)=E(e_1) + \cdots + E(e_t)=0\)</p>
+<p>方差：\(\sigma^2_t=Var(e_1 + \cdots + e_t)=Var(e_1) + \cdots + Var(e_t)=t\)</p>
+<p>对协方差的计算需要用到一个协方差性质：</p>
+<p>\[Cov(\sum_{i=1}^m{c_iY_i}, \sum_{j=1}^n{d_jY_j})=\sum_{i=1}^m{\sum_{j=1}^n{c_i d_j Cov(Y_i, Y_j)}}\]</p>
+<p>设t小于s，由于只有i=j时\(Cov(Y_i, Y_j)=1\)，所以：</p>
+<p>自协方差：\(\gamma_{t,s}=t\)</p>
+<p>自相关系数：\(\rho_{t,s}=\frac{t}{\sqrt{ts}}=\sqrt{farc{t}{s}}\)</p>
+
                 </div>
 
 <!-- UJian Button BEGIN -->
