@@ -80,9 +80,9 @@ abline(h=0)</pre>
 \\[\begin{array}{l l l}
 Y\_1 & = & e\_1 \\\\
 Y\_2 & = & e\_1+e\_2 \\\\
-\\vdots & &
+& \\vdots & \\\\
 Y\_t & = & e\_1+e\_2+\\cdots +e\_t \\\\
-\\vdots & &
+& \\vdots &
 \end{array}\\]
 
 下面是用R模拟的随机游走。
