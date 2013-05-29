@@ -159,10 +159,10 @@ abline(h=0)</pre>
 例如：
 
 \\[\\begin{array}{l l l}
-ARIMA(0,0,1))(t) & = & e\_t-\\theta e\_{t-1} \\\\
-ARIMA(0,0,2))(t) & = & e\_t-\\theta\_1 e\_{t-1}-\\theta\_2 e\_{t-2} \\\\
-ARIMA(1,0,0))(t) & = & e\_t+\\phi (ARIMA(1,0,0))(t-1) \\\\
-ARIMA(1,0,2))(t) & = & e\_t+\\phi (ARIMA(1,0,2))(t-1)-\\theta\_1 e\_{t-1}-\\theta\_2 e\_{t-2} 
+(ARIMA(0,0,1))(t) & = & e\_t-\\theta e\_{t-1} \\\\
+(ARIMA(0,0,2))(t) & = & e\_t-\\theta\_1 e\_{t-1}-\\theta\_2 e\_{t-2} \\\\
+(ARIMA(1,0,0))(t) & = & e\_t+\\phi (ARIMA(1,0,0))(t-1) \\\\
+(ARIMA(1,0,2))(t) & = & e\_t+\\phi (ARIMA(1,0,2))(t-1)-\\theta\_1 e\_{t-1}-\\theta\_2 e\_{t-2} 
 \\end{array}\\]
 
 当不同参数取0时ARIMA可以退化为更简单的形式，例如d=0时，模型变为ARMA，如果d和q都等于0，就变为AR模型，而如果d和p为0，则是MA模型，如果d、p和q都为0，那就是白噪声了。所以\\(ARIMA(0,0,0)\\)就是白噪声序列函数，因此白噪声也只是ARIMA模型的一个特例。
