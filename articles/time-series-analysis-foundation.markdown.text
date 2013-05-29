@@ -110,4 +110,4 @@ abline(h=0)</pre>
 
 自协方差：\\(\\gamma\_{t,s}=t\\)
 
-自相关系数：\\(\\rho\_{t,s}=\\frac{t}{\\sqrt{ts}}=\\sqrt{\\farc{t}{s}}\\)
+自相关系数：\\(\\rho\_{t,s}=\\frac{t}{\\sqrt{ts}}=\\sqrt{\\frac{t}{s}}\\)
