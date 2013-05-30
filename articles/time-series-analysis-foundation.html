@@ -174,8 +174,10 @@ plot(Y, family="simhei", main="MA(1)", type="b", col="red");
 abline(h=0)</pre>
 
 <p>这个模拟数据构造自服从标准正态分布的白噪声，其中一阶滑动参数为-0.8。从图上看，这个序列比白噪声平滑，并且比随机游走平稳一些。下面定量分析其各统计量。</p>
-<p>均值：\(\mu_t=E(Y_t)=E(e_t)-\theta E(e_{t-1})=0\)</p>
-<p>自协方差：\(\gamma_{t,s}=Cov(e_t-\theta e_{t-1},e_s-\theta e_{s-1})=\Cov(e_t,e_s)-\theta Cov(e_t,e_{s-1})-\theta Cov(e_{t-1},e_s)+\theta^2 Cov(e_{t-1},e_{s-1})\)</p>
+<p>均值：</p>
+<p>\[\mu_t=E(Y_t)=E(e_t)-\theta E(e_{t-1})=0\]</p>
+<p>自协方差：</p>
+<p>\[\gamma_{t,s}=Cov(e_t-\theta e_{t-1},e_s-\theta e_{s-1})=Cov(e_t,e_s)-\theta Cov(e_t,e_{s-1})-\theta Cov(e_{t-1},e_s)+\theta^2 Cov(e_{t-1},e_{s-1})\]</p>
 <p>显然，在t小于s时，只有s-t=1时，有\(Cov(e_t,e_{s-1})=Var(e_t)=\sigma^2\)。所以自协方差函数只与时滞s-t有关，我们将自协方差表示为时滞k的函数\(\gamma_k\)，我们有：</p>
 <p>\[\gamma_k=\left\{
 \begin{array}{l l}
@@ -183,13 +185,14 @@ abline(h=0)</pre>
 0                  &amp; (k&gt;1)
 \end{array}
 \right.\]</p>
-<p>自相关函数：</p>
+<p>自相关系数：</p>
 <p>\[\rho_k=\left\{
 \begin{array}{l l}
 (-\theta) / (1+\theta^2) &amp; (k=1) \\
 0                          &amp; (k&gt;1)
 \end{array}
 \right.\]</p>
+<p>从上面分析得出，MA(1)模型是一个平稳序列，因为其均值为常数，自协方差只与时滞相关。以后任何平稳模型，我们都将自协方差和自相关系数表示为时滞k的函数，而不再表示为t和s的函数。另外还可以发现，MA(1)模型每一个序列值只与其前一个值有相关性，而时滞超过1则无相关性，后面可以看到这个特性是识别MA模型的重要特征。另外不难证明，一阶自相关系数在\(\theta\)为正负1时分别达到最强负相关-0.5和最强正相关0.5，在\(\theta\)为0时，MA(1)退化为白噪声，因此自相关系数为0。</p>
 <h3>AR模型</h3>
 <h3>ARMA模型</h3>
 <h3>ARIMA模型</h3>
