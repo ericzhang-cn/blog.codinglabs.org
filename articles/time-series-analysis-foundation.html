@@ -31,7 +31,7 @@
                     <a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2013-05-27 | 最后更新 2013-05-29
+                    作者 张洋 | 发布于 2013-05-27 | 最后更新 2013-05-30
                 </div>
                 <div id="article-tags">
                     <a class="tag" href="/tag.html#数据挖掘">数据挖掘</a><a class="tag" href="/tag.html#数据分析">数据分析</a><a class="tag" href="/tag.html#时间序列">时间序列</a><a class="tag" href="/tag.html#ARIMA">ARIMA</a><a class="tag" href="/tag.html#R">R</a>
@@ -83,6 +83,8 @@ abline(h=0)</pre>
 
 <p>其中共100个元素，每个元素都独立服从标准正态分布\(N(0,1)\)。可以从图中看出白噪声基本是在均值附近较为平均的随机震荡。</p>
 <p>由于每个元素服从\(N(0,1)\)，所以均值\(\mu_t=0\)，方差\(\sigma^2_t=1\)。又因为每个元素独立，所以对于任何\(t \neq s\)，\(\gamma_{t,s}=0\)，\(\rho_{t,s}=0\)。这些统计特征与对图像的直观观察基本一致。</p>
+<p>白噪声的重要之处在于很多其它的重要时间序列都可以通过它构造出来，这一点下文会看到。我们一般用e表示白噪声，将白噪声序列写作：</p>
+<p>\[{e_1,e_2,\ldots,e_t,\ldots}\]</p>
 <h3>随机游走</h3>
 <p>下面考虑这样一个时间序列，其在t时刻的值是前面白噪声序列的前t个值之和，设\(\{e_1, e_2, \ldots, e_t, \ldots \}\)为标准正态分布产生的白噪声，则：</p>
 <p>\[\begin{array}{l l l}
@@ -144,8 +146,18 @@ abline(h=0)</pre>
 (ARIMA(1,0,2))(t) &amp; = &amp; e_t+\phi (ARIMA(1,0,2))(t-1)-\theta_1 e_{t-1}-\theta_2 e_{t-2} 
 \end{array}\]</p>
 <p>当不同参数取0时ARIMA可以退化为更简单的形式，例如d=0时，模型变为ARMA，如果d和q都等于0，就变为AR模型，而如果d和p为0，则是MA模型，如果d、p和q都为0，那就是白噪声了。所以\(ARIMA(0,0,0)\)就是白噪声序列函数，因此白噪声也只是ARIMA模型的一个特例。</p>
-<p>这一节我们从较为简单的退化ARIMA模型开始讲述，由简入难，一步一步描述各种模型。后面的几节会讲述如何对ARIMA模型进行训练和估计以及如何应用ARIMA模型进行预测。</p>
+<p>下图说明了各个模型间的关系：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/arima-models.png"/></p>
+
+<p>图中自顶向下越来越特化，而自底向上则越来越泛化。</p>
+<p>这一节我们从较为简单的特化ARIMA模型开始讲述，由简入难，一步一步描述各种模型。后面的几节会讲述如何对ARIMA模型进行训练和估计以及如何应用ARIMA模型进行预测。</p>
 <h3>MA模型</h3>
+<p>ARIMA中的p、d和q分布表示自相关、差分和滑动平均。当p和d均为0时，就变成了简单的滑动平均模型\(MA(q)\)。</p>
+<p>一般的滑动平均模型被定义为：</p>
+<p>\[Y_t=e_t-\theta_{1}e_{t-1}-\theta_{2}e_{t-2}-\cdots-\theta_{q}e_{t-q}\]</p>
+<p>其中e是均值为\(\mu\)，方差为\(\sigma^2\)的白噪声。</p>
+<p>可以看出，MA(q)在t时刻的值就是白噪声序列t到t-q共q+1个点的线性组合，系数是\((1,\theta_{1},\ldots,\theta_{q})\)。</p>
+<p>下面分析MA模型的统计性质。</p>
 <h3>AR模型</h3>
 <h3>ARMA模型</h3>
 <h3>ARIMA模型</h3>
