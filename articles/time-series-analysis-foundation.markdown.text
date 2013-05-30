@@ -182,15 +182,15 @@ abline(h=0)</pre>
 这一节我们从较为简单的特化ARIMA模型开始讲述，由简入难，一步一步描述各种模型。后面的几节会讲述如何对ARIMA模型进行训练和估计以及如何应用ARIMA模型进行预测。
 
 ### MA模型
-ARIMA中的p、d和q分布表示自相关、差分和滑动平均。当p和d均为0时，就变成了简单的滑动平均模型\\(MA(q)\\)。
+ARIMA中的p、d和q分别表示自相关、差分和滑动平均。当p和d均为0时，就变成了简单的滑动平均模型\\(MA(q)\\)。
 
 一般的滑动平均模型被定义为：
 
 \\[Y\_t=e\_t-\\theta\_{1}e\_{t-1}-\\theta\_{2}e\_{t-2}-\\cdots-\\theta\_{q}e\_{t-q}\\]
 
-其中e是方差为\\(\\sigma^2\\)的白噪声。并且要求各参数\\(\\theta\\)是定义在-1到1的闭区间上。
+其中e是方差为\\(\\sigma^2\\)的白噪声。并且要求各参数\\(-\\theta\\)是定义在-1到1的闭区间上。
 
-可以看出，MA(q)在t时刻的值就是白噪声序列t到t-q共q+1个点的线性组合，系数是\\((1,\\theta\_{1},\\ldots,\\theta\_{q})\\)。
+可以看出，MA(q)在t时刻的值就是白噪声序列t到t-q共q+1个点的线性组合，系数是\\((1,-\\theta\_{1},\\ldots,-\\theta\_{q})\\)。
 
 简单起见，我们分析一下最简单的MA(1)和MA(2)模型及其统计性质。
 
@@ -216,6 +216,10 @@ abline(h=0)</pre>
 
 \\[\\mu\_t=E(Y\_t)=E(e\_t)-\\theta E(e\_{t-1})=0\\]
 
+方差：
+
+\\[\\sigma^2\_t=Var(Y\_t)=Var(e\_t)+\\theta^2 Var(e\_{t-1})=(1+\\theta^2)\\sigma^2\\]
+
 自协方差：
 
 \\[\\gamma\_{t,s}=Cov(e\_t-\\theta e\_{t-1},e\_s-\\theta e\_{s-1})=Cov(e\_t,e\_s)-\\theta Cov(e\_t,e\_{s-1})-\\theta Cov(e\_{t-1},e\_s)+\\theta^2 Cov(e\_{t-1},e\_{s-1})\\]
@@ -224,8 +228,9 @@ abline(h=0)</pre>
 
 \\[\\gamma\_k=\\left\\{
 \\begin{array}{l l}
--\\theta \\sigma^2 & (k=1) \\\\
-0                  & (k>1)
+(1+\\theta^2)\\sigma^2 & (k=0) \\\\
+-\\theta \\sigma^2     & (k=1) \\\\
+0                      & (k>1)
 \\end{array}
 \\right.\\]
 
@@ -233,6 +238,7 @@ abline(h=0)</pre>
 
 \\[\\rho\_k=\\left\\{
 \\begin{array}{l l}
+1                          & (k=0) \\\\
 (-\\theta) / (1+\\theta^2) & (k=1) \\\\
 0                          & (k>1)
 \\end{array}
