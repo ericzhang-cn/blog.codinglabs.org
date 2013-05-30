@@ -193,6 +193,23 @@ abline(h=0)</pre>
 \end{array}
 \right.\]</p>
 <p>从上面分析得出，MA(1)模型是一个平稳序列，因为其均值为常数，自协方差只与时滞相关。以后任何平稳模型，我们都将自协方差和自相关系数表示为时滞k的函数，而不再表示为t和s的函数。另外还可以发现，MA(1)模型每一个序列值只与其前一个值有相关性，而时滞超过1则无相关性，后面可以看到这个特性是识别MA模型的重要特征。另外不难证明，一阶自相关系数在\(\theta\)为正负1时分别达到最强负相关-0.5和最强正相关0.5，在\(\theta\)为0时，MA(1)退化为白噪声，因此自相关系数为0。</p>
+<p>类似的，MA(2)模型可以表述为：</p>
+<p>\[Y_t=e_t-\theta_1 e_{t-1}-\theta_2 e_{t-2}\]</p>
+<p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/ma2.png"/></p>
+
+<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+Y[2] = Ye[2] - (-0.8) * Ye[1];
+for (i in 3:length(Ye)) {
+    Y[i] = Ye[i] - (-0.8) * Ye[i-1] - (-0.9) * Ye[i-2];
+}
+Y = ts(Y);
+plot(Y, family="simhei", main="MA(2)", type="b", col="red");
+abline(h=0)</pre>
+
+<p>如果做统计分析，会发现MA(2)模型也是一个平稳模型，并且在时滞大于2后没有相关性。</p>
+<p>一般的，MA(q)模型是一个平稳模型，并且在时滞大于q后没有相关性。此处不再给出一般MA模型的统计分析，有兴趣的朋友可以自行推导。</p>
 <h3>AR模型</h3>
 <h3>ARMA模型</h3>
 <h3>ARIMA模型</h3>
