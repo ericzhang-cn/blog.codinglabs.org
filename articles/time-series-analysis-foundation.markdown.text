@@ -293,8 +293,8 @@ AR(1)的序列公式如下：
 \\[\\begin{array}{l l l}
 \\gamma\_k & = & E((Y\_{t-k}-\\mu\_{t-k})(Y\_t-\\mu\_t)) \\\\
            & = & E(Y\_{t-k}Y\_t) \\\\
-           & = & E(Y\_{t-k}\\e\_t + \\phi Y\_{t-k}Y\_{t-1}) \\\\
-           & = & E(Y\_{t-k})E(\\e\_t) + \\phi \\gamma\_{k-1} \\\\
+           & = & E(Y\_{t-k}e\_t + \\phi Y\_{t-k}Y\_{t-1}) \\\\
+           & = & E(Y\_{t-k})E(e\_t) + \\phi E(Y\_{t-k}Y\_{t-1}) \\\\
            & = & \\phi \\gamma\_{k-1}
 \\end{array}\\]
 
