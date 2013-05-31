@@ -31,7 +31,7 @@
                     <a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2013-05-27 | 最后更新 2013-05-30
+                    作者 张洋 | 发布于 2013-05-27 | 最后更新 2013-05-31
                 </div>
                 <div id="article-tags">
                     <a class="tag" href="/tag.html#数据挖掘">数据挖掘</a><a class="tag" href="/tag.html#数据分析">数据分析</a><a class="tag" href="/tag.html#时间序列">时间序列</a><a class="tag" href="/tag.html#ARIMA">ARIMA</a><a class="tag" href="/tag.html#R">R</a>
@@ -215,6 +215,30 @@ abline(h=0)</pre>
 <p>如果做统计分析，会发现MA(2)模型也是一个平稳模型，并且在时滞大于2后没有相关性。</p>
 <p>一般的，MA(q)模型是一个平稳模型，并且在时滞大于q后没有相关性。此处不再给出一般MA模型的统计分析，有兴趣的朋友可以自行推导。</p>
 <h3>AR模型</h3>
+<p>现在考虑另一种模型：t时刻的序列值与其滞后p的p个时间序列呈多元线性相关：</p>
+<p>\[Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}\]</p>
+<p>从公式上看，AR应该比MA具有更强的自相关性，因为MA仅与滞后的白噪声因素相关，而AR是时间序列前后直接相关。由于AR模型的统计特性推导比MA复杂很多，所以我们先分析最简单的AR(1)，借此了解AR模型的特性。</p>
+<p>AR(1)的序列公式如下：</p>
+<p>\[Y_t=e_t+\phi Y_{t-1}\]</p>
+<p>与MA(1)不同，这是一个递推公式，并且是一个线性递推公式，我们可以把它展开：</p>
+<p>\[Y_t=e_t+\phi e_{t-1}+\phi^2 e_{t-2}+\cdots+\phi^k e_{t-k}+\cdots\]</p>
+<p>我们会得到一个无穷级数表达式（假设原始白噪声序列有无穷多滞后项）。显然其均值为0。方差的计算如下：</p>
+<p>\[\sigma^2_t=Var(Y_t)=(1+\phi^2+\phi^4+\cdots+\phi^{2k}+\cdots)\sigma^2=(\lim_{n \to \infty}{\frac{1-\phi^{2n}}{1-\phi^2})\sigma^2}\]</p>
+<p>显然只有当\(|\phi| &lt; 1\)时级数收敛到\(\frac{\sigma^2}{1-\phi^2})\)</p>
+<p>关于自协方差及自相关系数的推导比较复杂，这里仅给出结论：AR(1)模型的自相关系数不会具有MA(1)模型的截断特性，较长的时滞仍然会对当前时序有影响。另外一个重要的结论是AR(1)是平稳的当且仅当\(|\phi| &lt; 1\)。</p>
+<p>下面是一个R模拟的AR(1)时间序列。</p>
+<p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/ar1.png"/></p>
+
+<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+for (i in 2:length(Ye)) {
+    Y[i] = Ye[i] + 0.8 * Y[i-1];
+}
+Y = ts(Y);
+plot(Y, family="simhei", main="AR(1)", type="b", col="red");
+abline(h=0)</pre>
+
 <h3>ARMA模型</h3>
 <h3>ARIMA模型</h3>
 <h2>模型识别</h2>

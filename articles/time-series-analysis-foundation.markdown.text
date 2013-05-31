@@ -268,6 +268,42 @@ abline(h=0)</pre>
 一般的，MA(q)模型是一个平稳模型，并且在时滞大于q后没有相关性。此处不再给出一般MA模型的统计分析，有兴趣的朋友可以自行推导。
 
 ### AR模型
+现在考虑另一种模型：t时刻的序列值与其滞后p的p个时间序列呈多元线性相关：
+
+\\[Y\_t=e\_t+\\phi\_{1}Y\_{t-1}+\\phi\_{2}Y\_{t-2}+\\cdots+\\phi\_{p}Y\_{t-p}\\]
+
+从公式上看，AR应该比MA具有更强的自相关性，因为MA仅与滞后的白噪声因素相关，而AR是时间序列前后直接相关。由于AR模型的统计特性推导比MA复杂很多，所以我们先分析最简单的AR(1)，借此了解AR模型的特性。
+
+AR(1)的序列公式如下：
+
+\\[Y\_t=e\_t+\\phi Y\_{t-1}\\]
+
+与MA(1)不同，这是一个递推公式，并且是一个线性递推公式，我们可以把它展开：
+
+\\[Y\_t=e\_t+\\phi e\_{t-1}+\\phi^2 e\_{t-2}+\\cdots+\\phi^k e\_{t-k}+\\cdots\\]
+
+我们会得到一个无穷级数表达式（假设原始白噪声序列有无穷多滞后项）。显然其均值为0。方差的计算如下：
+
+\\[\\sigma^2\_t=Var(Y\_t)=(1+\\phi^2+\\phi^4+\\cdots+\\phi^{2k}+\\cdots)\\sigma^2=(\\lim\_{n \\to \\infty}{\\frac{1-\\phi^{2n}}{1-\\phi^2})\\sigma^2}\\]
+
+显然只有当\\(|\\phi| < 1\\)时级数收敛到\\(\\frac{\\sigma^2}{1-\\phi^2})\\)
+
+关于自协方差及自相关系数的推导比较复杂，这里仅给出结论：AR(1)模型的自相关系数不会具有MA(1)模型的截断特性，较长的时滞仍然会对当前时序有影响。另外一个重要的结论是AR(1)是平稳的当且仅当\\(|\\phi| < 1\\)。
+
+下面是一个R模拟的AR(1)时间序列。
+
+<p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/ar1.png"/></p>
+
+<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+for (i in 2:length(Ye)) {
+    Y[i] = Ye[i] + 0.8 * Y[i-1];
+}
+Y = ts(Y);
+plot(Y, family="simhei", main="AR(1)", type="b", col="red");
+abline(h=0)</pre>
+
 ### ARMA模型
 ### ARIMA模型
 ## 模型识别
