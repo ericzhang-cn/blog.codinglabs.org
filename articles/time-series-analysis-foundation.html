@@ -224,8 +224,19 @@ abline(h=0)</pre>
 <p>\[Y_t=e_t+\phi e_{t-1}+\phi^2 e_{t-2}+\cdots+\phi^k e_{t-k}+\cdots\]</p>
 <p>我们会得到一个无穷级数表达式（假设原始白噪声序列有无穷多滞后项）。显然其均值为0。方差的计算如下：</p>
 <p>\[\sigma^2_t=Var(Y_t)=(1+\phi^2+\phi^4+\cdots+\phi^{2k}+\cdots)\sigma^2=(\lim_{n \to \infty}{\frac{1-\phi^{2n}}{1-\phi^2})\sigma^2}\]</p>
-<p>显然只有当\(|\phi| &lt; 1\)时级数收敛到\(\frac{\sigma^2}{1-\phi^2})\)</p>
-<p>关于自协方差及自相关系数的推导比较复杂，这里仅给出结论：AR(1)模型的自相关系数不会具有MA(1)模型的截断特性，较长的时滞仍然会对当前时序有影响。另外一个重要的结论是AR(1)是平稳的当且仅当\(|\phi| &lt; 1\)。</p>
+<p>显然只有当\(|\phi| &lt; 1\)时级数收敛到\(\frac{\sigma^2}{1-\phi^2}\)</p>
+<p>这里不加证明给出一个重要的结论：AR(1)是平稳的当且仅当\(|\phi| &lt; 1\)。下面我们假设序列满足平稳条件，推导其自协方差和自相关系数。</p>
+<p>\[\begin{array}{l l l}
+\gamma_k &amp; = &amp; E((Y_{t-k}-\mu_{t-k})(Y_t-\mu_t)) \\
+           &amp; = &amp; E(Y_{t-k}Y_t) \\
+           &amp; = &amp; E(Y_{t-k}\e_t + \phi Y_{t-k}Y_{t-1}) \\
+           &amp; = &amp; E(Y_{t-k})E(\e_t) + \phi \gamma_{k-1} \\
+           &amp; = &amp; \phi \gamma_{k-1}
+\end{array}\]</p>
+<p>由上面的递推式得：</p>
+<p>\[\gamma_k = \phi^k\gamma_0 = \phi^k\frac{\sigma^2}{1-\phi^2}\]</p>
+<p>\[\rho_k=\gamma_k / \gamma_0=\phi^k\]</p>
+<p>从统计特性可以知道，AR(1)模型相近的时序点倾向于一起“运动”，因此可能呈现假趋势。前置节点的影响随着时滞的增大而呈指数衰减。这种特性对于模型识别非常重要。</p>
 <p>下面是一个R模拟的AR(1)时间序列。</p>
 <p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/ar1.png"/></p>
 
