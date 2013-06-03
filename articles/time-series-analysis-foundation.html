@@ -277,6 +277,17 @@ abline(h=0)</pre>
 <p>其平稳的条件等于AR(1)的平稳条件，也就是\(|\phi| &lt; 1\)。在这个前提下，我们分析其统计特性。由于推导过程比较复杂，这里直接把我之前在纸上推导的草稿贴出来，详见下图（点击图片可放大）。</p>
 <p class="picture"><a href="/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg" target="_blank"><img width="600" alt="" src="/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg"/></a></p>
 
+<p>其中结论性部分我用红笔标出了。根据上面的推导结果，ARMA(1,1)的统计特性如下：</p>
+<p>\[\mu=0\]</p>
+<p>\[\gamma_k=\left\{
+\begin{array}{l l}
+\frac{1+\theta^2-2\phi\theta}{1-\phi^2}\sigma^2 &amp; (k = 0) \\
+\phi\gamma_0-\theta\sigma^2 &amp; (k = 1) \\
+\phi\gamma_{k-1} &amp; (k \ge 2)
+\end{array}
+\right.\]</p>
+<p>\[\rho_k=\phi^{k-1}\frac{(\phi-\theta)(1-\phi\theta)}{1+\theta^2-2\phi\theta}\]</p>
+<p>大约可以看到相关系数也是随时滞呈指数递减，当然不同的参数会有不同的情况，具体我们留待模型识别一节讨论。</p>
 <h3>ARIMA模型</h3>
 <h2>模型识别</h2>
 <h2>参数估计</h2>

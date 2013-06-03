@@ -371,6 +371,22 @@ abline(h=0)</pre>
 
 <p class="picture"><a href="/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg" target="_blank"><img width="600" alt="" src="/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg"/></a></p>
 
+其中结论性部分我用红笔标出了。根据上面的推导结果，ARMA(1,1)的统计特性如下：
+
+\\[\\mu=0\\]
+
+\\[\\gamma\_k=\\left\\{
+\\begin{array}{l l}
+\\frac{1+\\theta^2-2\\phi\\theta}{1-\\phi^2}\\sigma^2 & (k = 0) \\\\
+\\phi\\gamma\_0-\\theta\\sigma^2 & (k = 1) \\\\
+\\phi\\gamma\_{k-1} & (k \\ge 2)
+\\end{array}
+\\right.\\]
+
+\\[\\rho\_k=\\phi^{k-1}\\frac{(\\phi-\\theta)(1-\\phi\\theta)}{1+\\theta^2-2\\phi\\theta}\\]
+
+大约可以看到相关系数也是随时滞呈指数递减，当然不同的参数会有不同的情况，具体我们留待模型识别一节讨论。
+
 ### ARIMA模型
 ## 模型识别
 ## 参数估计
