@@ -357,6 +357,20 @@ abline(h=0)</pre>
 而且现实建模时一般很少使用高于AR(2)的模型，因为过高的阶会导致复杂的模型和提高过拟合风险。因此在实际使用中了解AR(1)和AR(2)的特性一般就足够了，后面在模型识别中会结合图形描述AR(2)的自相关函数特性。
 
 ### ARMA模型
+如果一个时间序列兼有AR和MA部分，并且是平稳的，则构成ARMA模型。一般\\(ARMA(p,q)\\)的表达式为：
+
+\\[Y\_t=e\_t+\\phi\_{1}Y\_{t-1}+\\phi\_{2}Y\_{t-2}+\\cdots+\\phi\_{p}Y\_{t-p}-\\theta\_{1}e\_{t-1}-\\theta\_{2}e\_{t-2}-\\cdots-\\theta\_{q}e\_{t-q}\\]
+
+已经证明，ARMA序列是平稳的当且仅当其AR特征方程的根的模大于1。因此求解ARMA平稳条件与AR平稳条件无异，只需忽略MA部分直接套用AR平稳条件求解即可。换句话说，ARMA(p,q)平稳当且仅当AR(p)平稳。
+
+下面研究最简单的ARMA(1,1)模型。这是一个带有一阶自回归和一阶滑动平均的序列：
+
+\\[Y\_t=e\_t+\\phi Y\_{t-1}-\\theta e\_{t-1}\\]
+
+其平稳的条件等于AR(1)的平稳条件，也就是\\(|\\phi| < 1\\)。在这个前提下，我们分析其统计特性。由于推导过程比较复杂，这里直接把我之前在纸上推导的草稿贴出来，详见下图（点击图片可放大）。
+
+<p class="picture"><a href="/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg" target="_blank"><img width="600" alt="" src="/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg"/></a></p>
+
 ### ARIMA模型
 ## 模型识别
 ## 参数估计
