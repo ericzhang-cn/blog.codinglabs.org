@@ -387,6 +387,20 @@ abline(h=0)</pre>
 
 大约可以看到相关系数也是随时滞呈指数递减，当然不同的参数会有不同的情况，具体我们留待模型识别一节讨论。
 
+下面给出一个模拟的ARMA(1,1)时间序列：
+
+<p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/arma11.png"/></p>
+
+<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+for (i in 2:length(Ye)) {
+    Y[i] = Ye[i] + 0.8 * Y[i-1] - (-0.9) * Ye[i-1];
+}
+Y = ts(Y);
+plot(Y, family="simhei", main="ARMA(1,1)", type="b", col="red");
+abline(h=0)</pre>
+
 ### ARIMA模型
 ## 模型识别
 ## 参数估计
