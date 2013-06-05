@@ -4,23 +4,371 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Mon, 27 May 2013 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Wed, 05 Jun 2013 00:00:00 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
+<title>期望、方差、协方差及相关系数的基本运算</title>
+<link>http://blog.codinglabs.org/articles/basic-statistics-calculate.html</link>
+<guid>http://blog.codinglabs.org/articles/basic-statistics-calculate.html</guid>
+<author>ericzhang.buaa@gmail.com 张洋</author>
+<pubDate>Wed, 05 Jun 2013 00:00:00 GMT</pubDate>
+<description>&lt;p&gt;这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。&lt;/p&gt;
+&lt;h1&gt;期望&lt;/h1&gt;
+&lt;h2&gt;定义&lt;/h2&gt;
+&lt;p&gt;设\(P(x)\)是一个离散概率分布函数，自变量的取值范围为\(\{x_1, x_2, \cdots, x_n\}\)。其期望被定义为：&lt;/p&gt;
+&lt;p&gt;\[E(x)=\sum_{k=1}^n{x_kP(x_k)}\]&lt;/p&gt;
+&lt;p&gt;设\(p(x)\)是一个连续概率密度函数。其期望为：&lt;/p&gt;
+&lt;p&gt;\[E(x)=\int_{-\infty}^{+\infty}{xp(x)dx}\]&lt;/p&gt;
+&lt;h2&gt;性质&lt;/h2&gt;
+&lt;p&gt;1、线性运算规则&lt;/p&gt;
+&lt;p&gt;期望服从线性性质（可以很容易从期望的定义公式中导出）。因此线性运算的期望等于期望的线性运算：&lt;/p&gt;
+&lt;p&gt;\[E(ax+by+c)=aE(x)+bE(y)+c\]&lt;/p&gt;
+&lt;p&gt;这个性质可以推广到任意一般情况：&lt;/p&gt;
+&lt;p&gt;\[E(\sum_{k=1}^{n}{a_ix_i}+c)=\sum_{k=1}^{n}{a_iE(x_i)}+c\]&lt;/p&gt;
+&lt;p&gt;2、函数的期望&lt;/p&gt;
+&lt;p&gt;设\(f(x)\)为x的函数，则\(f(x)\)的期望为：&lt;/p&gt;
+&lt;p&gt;离散：&lt;/p&gt;
+&lt;p&gt;\[E(f(x))=\sum_{k=1}^n{f(x_k)P(x_k)}\]&lt;/p&gt;
+&lt;p&gt;连续：&lt;/p&gt;
+&lt;p&gt;\[E(f(x))=\int_{-\infty}^{+\infty}{f(x)p(x)dx}\]&lt;/p&gt;
+&lt;p&gt;一定要注意，&lt;strong&gt;函数的期望不等于期望的函数&lt;/strong&gt;，即\(E(f(x)) \ne f(E(x))\)！。&lt;/p&gt;
+&lt;p&gt;3、乘积的期望&lt;/p&gt;
+&lt;p&gt;一般来说，&lt;strong&gt;乘积的期望不等于期望的乘积&lt;/strong&gt;，除非变量相互独立。因此，如果x和y相互独立，则\(E(xy)=E(x)E(x)\)。&lt;/p&gt;
+&lt;p&gt;期望的运算构成了统计量的运算基础，因为&lt;strong&gt;方差、协方差等统计量本质上是一种特殊的期望&lt;/strong&gt;。&lt;/p&gt;
+&lt;h1&gt;方差&lt;/h1&gt;
+&lt;h2&gt;定义&lt;/h2&gt;
+&lt;p&gt;方差是一种特殊的期望，被定义为：&lt;/p&gt;
+&lt;p&gt;\[Var(x)=E((x-E(x))^2)\]&lt;/p&gt;
+&lt;h2&gt;性质&lt;/h2&gt;
+&lt;p&gt;1、展开表示&lt;/p&gt;
+&lt;p&gt;反复利用期望的线性性质，可以算出方差的另一种表示形式：&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+Var(x) &amp; = &amp; E((x-E(x))^2) \\
+       &amp; = &amp; E(x^2-2xE(x)+(E(x))^2) \\
+       &amp; = &amp; E(x^2)-2E(x)E(x)+(E(x))^2 \\
+       &amp; = &amp; E(x^2)-2(E(x))^2+(E(x))^2 \\
+       &amp; = &amp; E(x^2)-(E(x))^2
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;2、常数的方差&lt;/p&gt;
+&lt;p&gt;常数的方差为0，由方差的展开表示很容易推得。&lt;/p&gt;
+&lt;p&gt;3、线性组合的方差&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;方差不满足线性性质&lt;/strong&gt;，两个变量的线性组合方差计算方法如下：&lt;/p&gt;
+&lt;p&gt;\[Var(ax+by)=a^2Var(x)+b^2Var(y)+2Cov(x,y)\]&lt;/p&gt;
+&lt;p&gt;其中\(Cov(x,y)\)为x和y的协方差，下一节讨论。&lt;/p&gt;
+&lt;p&gt;4、独立变量的方差&lt;/p&gt;
+&lt;p&gt;如果两个变量相互独立，则：&lt;/p&gt;
+&lt;p&gt;\[Var(ax+by)=a^2Var(x)+b^2Var(y)\]&lt;/p&gt;
+&lt;p&gt;作为推论，如果x和y相互独立：\(Var(x+y)=Var(x)+Var(y)\)。&lt;/p&gt;
+&lt;h1&gt;协方差&lt;/h1&gt;
+&lt;h2&gt;定义&lt;/h2&gt;
+&lt;p&gt;两个随机变量的协方差被定义为：&lt;/p&gt;
+&lt;p&gt;\[Cov(x,y)=E((x-E(x))(y-E(y)))\]&lt;/p&gt;
+&lt;p&gt;因此&lt;strong&gt;方差是一种特殊的协方差&lt;/strong&gt;。当x=y时，\(Cov(x,y)=Var(x)=Var(y)\)。&lt;/p&gt;
+&lt;h2&gt;性质&lt;/h2&gt;
+&lt;p&gt;1、独立变量的协方差&lt;/p&gt;
+&lt;p&gt;独立变量的协方差为0，可以由协方差公式推导出。&lt;/p&gt;
+&lt;p&gt;2、线性组合的协方差&lt;/p&gt;
+&lt;p&gt;协方差最重要的性质如下：&lt;/p&gt;
+&lt;p&gt;\[Cov(\sum_{i=1}^m{a_ix_i}, \sum_{j=1}^n{b_jy_j})=\sum_{i=1}^m{\sum_{j=1}^n{a_i b_j Cov(x_i, y_j)}}\]&lt;/p&gt;
+&lt;p&gt;很多协方差的计算都是反复利用这个性质，而且可以导出一些列重要结论。&lt;/p&gt;
+&lt;p&gt;作为一种特殊情况：&lt;/p&gt;
+&lt;p&gt;\[Cov(a+bx,c+dy)=bdCov(x,y)\]&lt;/p&gt;
+&lt;p&gt;另外当x=y时，可以导出方差的一般线性组合求解公式：&lt;/p&gt;
+&lt;p&gt;\[Var(\sum_{k=1}^n{a_ix_i})=\sum_{i=1}^n{\sum_{j=1}^n{a_ia_jCov(x_i,x_j)}}\]&lt;/p&gt;
+&lt;h1&gt;相关系数&lt;/h1&gt;
+&lt;h2&gt;定义&lt;/h2&gt;
+&lt;p&gt;相关系数通过方差和协方差定义。两个随机变量的相关系数被定义为：&lt;/p&gt;
+&lt;p&gt;\[Corr(x,y)=\frac{Cov(x,y)}{\sqrt{Var(x)Var(x)}}\]&lt;/p&gt;
+&lt;h2&gt;性质&lt;/h2&gt;
+&lt;p&gt;1、有界性&lt;/p&gt;
+&lt;p&gt;相关系数的取值范围为-1到1，其可以看成是无量纲的协方差。&lt;/p&gt;
+&lt;p&gt;2、统计意义&lt;/p&gt;
+&lt;p&gt;值约接近1，说明两个变量正相关性（线性）越强，越接近-1，说明负相关性越强，当为0时表示两个变量没有相关性。&lt;/p&gt;
+</description>
+</item>
+<item>
 <title>时间序列分析基础</title>
 <link>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html</link>
 <guid>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Mon, 27 May 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;时间序列是现实生活中经常会碰到的数据形式。例如北京市连续一年的日平均气温、某股票的股票价格、淘宝上某件商品的日销售件数等等。时间序列分析的的目的是挖掘时间序列中隐含的信息与模式，并借此对此序列数据进行评估以及对系列的后续走势进行预测。&lt;/p&gt;
-
 &lt;p&gt;由于工作需要，我最近简单学习了时间序列分析相关的基础理论和应用方法，这篇文章可以看做是我的学习笔记。&lt;/p&gt;
-
 &lt;p&gt;文章主要内容会首先描述时间序列分析的基本概念和相关的统计学基础理论，然后着重讲述十分经典和常用的ARIMA模型，在这之后会讲述季节ARIMA模型、干预分析和存在协变量时间序列的分析，最后讲述用于发现隐藏周期性的谱分析基础。&lt;/p&gt;
-
 &lt;p&gt;由于打算以学习笔记的形式写这篇文章，所以我不会一下子写完整篇文章才发布，而是持续更新这篇文章，写的过程中也可能会对前面的内容进行修订。&lt;/p&gt;
+&lt;p&gt;文章中会穿插许多实例，分析过程中将使用&lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt;为分析工具。&lt;/p&gt;
+&lt;h1&gt;基本概念&lt;/h1&gt;
+&lt;h2&gt;时间序列&lt;/h2&gt;
+&lt;p&gt;简单来说，时间序列是一个变量在不同时间点的值所组成的有序序列。例如北京市2013年4月每日的平均气温就构成了一个30个元素的时间序列，为了方便，我们一般认为序列中相邻元素具有相同的时间间隔。&lt;/p&gt;
+&lt;p&gt;时间序列可以分为确定的和随机的。例如一个1990年出生的人，从1990年到1999年年龄可以表述为\(\{0, 1, 2, \ldots , 9\}\)，这个序列并没有任何随机因素。不过现实生活中我们面对的更多的是掺杂了随机因素的时间序列，例如气温、销售量等等。&lt;/p&gt;
+&lt;h2&gt;时间序列分析&lt;/h2&gt;
+&lt;p&gt;时间序列分析说白了就是寻找时间序列中的模式。如果是在确定性时间序列中，这就基本等价于寻找序列的通项公式，例如上面年龄的时间序列，用差为1的等差数列公式就可以很好的描述其模式。&lt;/p&gt;
+&lt;p&gt;当然实际的时间序列分析基本都是针对随机时间序列。对于随机时间序列，情况会复杂一些，但本质上还是可以看做寻找通项公式（可以是封闭形式或递推形式），只不过我们面对的序列存在随机扰动，所以分析过程中除了确定性序列分析的技术外，还需要一些概率统计方面的知识和方法，下面一节会介绍一些相关的基础知识。&lt;/p&gt;
+&lt;h2&gt;主要统计量&lt;/h2&gt;
+&lt;p&gt;注意时间序列中的每一个元素都是一个普通的随机变量，如果忽略序列的时间性，那么我们面对的实际上是一个随机变量集合，所以从这个角度来说时间序列的统计分析与普通统计分析没有太大不同，相关的理论也是通用的。&lt;/p&gt;
+&lt;p&gt;对于随机变量集合来说，要完整描述其统计特性需要处理其多元联合分布，这是非常复杂的。所以实际我们往往做一些必要的简化假设，避免处理复杂的多元联合分布。&lt;/p&gt;
+&lt;p&gt;现假设我们有随机时间序列&lt;/p&gt;
+&lt;p&gt;\[\{Y_t|t=0, \pm 1, \pm 2, \cdots \}\]&lt;/p&gt;
+&lt;p&gt;下面先给出一些常用的统计量。后面会接着通过一些常见序列来举例说明各统计量如何计算。&lt;/p&gt;
+&lt;h3&gt;均值&lt;/h3&gt;
+&lt;p&gt;均值函数被定义为关于自变量t的函数：&lt;/p&gt;
+&lt;p&gt;\[\mu_t=E(Y_t)\]&lt;/p&gt;
+&lt;p&gt;t的均值函数值表示在t时刻随机变量\(Y_t\)的期望。&lt;/p&gt;
+&lt;h3&gt;方差&lt;/h3&gt;
+&lt;p&gt;与均值类似，方差是t时刻序列元素的方差：&lt;/p&gt;
+&lt;p&gt;\[\sigma^2_t=E((Y_t-\mu_t)^2)\]&lt;/p&gt;
+&lt;h3&gt;自协方差&lt;/h3&gt;
+&lt;p&gt;自协方差是一个二元函数，其自变量为两个时间点，值是两个时间点上序列值的协方差：&lt;/p&gt;
+&lt;p&gt;\[\gamma_{t,s}=Cov(Y_t,Y_s)=E((Y_t-\mu_t)(Y_s-\mu_s))\]&lt;/p&gt;
+&lt;p&gt;当t=s时，自协方差就是t时刻的方差。&lt;/p&gt;
+&lt;h3&gt;自相关系数&lt;/h3&gt;
+&lt;p&gt;自相关系数是两个时刻的值的相关系数：&lt;/p&gt;
+&lt;p&gt;\[\rho_{t,s}=\frac{\gamma_{t,s}}{\sqrt{\gamma_{t,t}\gamma_{s,s}}}\]&lt;/p&gt;
+&lt;p&gt;如果忽略元素来自时间序列这一事实，各统计量的意义实际上与普通的统计学中无异。因此这些统计量的一些性质也可以无缝推广到时间序列分析。例如期望的线性性质等等。如果有需要可以自行复习一下这些统计量的相关计算性质。后面的推导会主要集中于这几个统计量的计算。&lt;/p&gt;
+&lt;h2&gt;时间序列示例&lt;/h2&gt;
+&lt;p&gt;下面看几个简单的随机时间序列示例。&lt;/p&gt;
+&lt;h3&gt;白噪声&lt;/h3&gt;
+&lt;p&gt;考虑一个时间序列，其中每一个元素为独立同分布变量，且均值为0。这种时间序列叫做白噪声。之所以叫这个名字，是因为对这种序列的频域分析表明其中平等的包含了各个频率，和物理中的白光类似。&lt;/p&gt;
+&lt;p&gt;下面是用R模拟生成的白噪声时序图。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/whitenoise.png&quot;/&gt;&lt;/p&gt;
 
-&lt;p&gt;文章中会穿插许多实例（兼有模拟数据和数据分析），分析过程中将使用&lt;a href=&quot;http://www.r-project.org/&quot;&gt;R&lt;/a&gt;为分析工具。&lt;/p&gt;</description>
+&lt;pre class=&quot;prettyprint&quot;&gt;Y = ts(rnorm(100, mean=0, sd=1));
+plot(Y, family=&quot;simhei&quot;, main=&quot;白噪声&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
+abline(h=0)&lt;/pre&gt;
+
+&lt;p&gt;其中共100个元素，每个元素都独立服从标准正态分布\(N(0,1)\)。可以从图中看出白噪声基本是在均值附近较为平均的随机震荡。&lt;/p&gt;
+&lt;p&gt;由于每个元素服从\(N(0,1)\)，所以均值\(\mu_t=0\)，方差\(\sigma^2_t=1\)。又因为每个元素独立，所以对于任何\(t \neq s\)，\(\gamma_{t,s}=0\)，\(\rho_{t,s}=0\)。这些统计特征与对图像的直观观察基本一致。&lt;/p&gt;
+&lt;p&gt;白噪声的重要之处在于很多其它的重要时间序列都可以通过它构造出来，这一点下文会看到。我们一般用e表示白噪声，将白噪声序列写作：&lt;/p&gt;
+&lt;p&gt;\[\{e_1,e_2,\ldots,e_t,\ldots\}\]&lt;/p&gt;
+&lt;h3&gt;随机游走&lt;/h3&gt;
+&lt;p&gt;下面考虑这样一个时间序列，其在t时刻的值是前面白噪声序列的前t个值之和，设\(\{e_1, e_2, \ldots, e_t, \ldots \}\)为标准正态分布产生的白噪声，则：&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+Y_1 &amp; = &amp; e_1 \\
+Y_2 &amp; = &amp; e_1+e_2 \\
+&amp; \vdots &amp; \\
+Y_t &amp; = &amp; e_1+e_2+\cdots +e_t \\
+&amp; \vdots &amp;
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;下面是用R模拟的随机游走。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/randwalk.png&quot;/&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;Y = ts(rnorm(100, mean=0, sd=1));
+for (i in 2:length(Y)) {
+    Y[i] = Y[i] + Y[i-1];
+}
+plot(Y, family=&quot;simhei&quot;, main=&quot;随机游走&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
+abline(h=0)&lt;/pre&gt;
+
+&lt;p&gt;可以看到随机游走比白噪声平滑很多，并且呈现出一些“趋势性”的感觉。下面分析其相关统计特征。&lt;/p&gt;
+&lt;p&gt;均值：\(\mu_t=E(e_1 + \cdots + e_t)=E(e_1) + \cdots + E(e_t)=0\)&lt;/p&gt;
+&lt;p&gt;方差：\(\sigma^2_t=Var(e_1 + \cdots + e_t)=Var(e_1) + \cdots + Var(e_t)=t\sigma^2\)&lt;/p&gt;
+&lt;p&gt;对协方差的计算需要用到一个协方差性质：&lt;/p&gt;
+&lt;p&gt;\[Cov(\sum_{i=1}^m{c_iY_i}, \sum_{j=1}^n{d_jY_j})=\sum_{i=1}^m{\sum_{j=1}^n{c_i d_j Cov(Y_i, Y_j)}}\]&lt;/p&gt;
+&lt;p&gt;设t小于s，由于只有i=j时\(Cov(Y_i, Y_j)=\sigma^2\)，所以：&lt;/p&gt;
+&lt;p&gt;自协方差：\(\gamma_{t,s}=t\sigma^2\)&lt;/p&gt;
+&lt;p&gt;自相关系数：\(\rho_{t,s}=\frac{t\sigma^2}{\sqrt{ts\sigma^4}}=\sqrt{\frac{t}{s}}\)&lt;/p&gt;
+&lt;p&gt;从统计性质可以看到，随机游走的“趋势性”实际是个假象，因为其均值函数一直是白噪声的均值，不存在偏离的期望。但是方差与时间呈线性增长并且趋向于无穷大，这意味着只要时间够长，随机游走的序列值可以偏离均值任意远，但期望永远在均值处。&lt;/p&gt;
+&lt;p&gt;物理与经济学中的很多现象都被看做是随机游走，例如分子的布朗运动，股票的价格走势等等。&lt;/p&gt;
+&lt;p&gt;从协方差和相关系数看，如果起点t固定，则越接近的点相关性越大，例如\(\rho_{1,2}=0.707\)，\(\rho_{1,3}=0.577\)，\(\rho_{1,4}=0.500\)。同时，起点不同，时滞相同自相关系数也不同，越往后同时滞自相关系数越大，例如\(\rho_{2,3}=0.816\)，\(\rho_{3,4}=0.866\)。&lt;/p&gt;
+&lt;p&gt;实际上从纯数学角度可以将自相关系数看成一个二元函数，自变量是时间点t和时滞s-t。认识到这点很重要，因为它与时间序列分析中一个重要的概念——平稳性有着密切的关系。&lt;/p&gt;
+&lt;h2&gt;平稳性&lt;/h2&gt;
+&lt;p&gt;平稳性是时间序列分析中很重要的一个概念。一般的，我们认为一个时间序列是平稳的，如果它同时满足一下两个条件：&lt;/p&gt;
+&lt;p&gt;1）均值函数是一个常数函数&lt;/p&gt;
+&lt;p&gt;2）自协方差函数只与时滞有关，与时间点无关&lt;/p&gt;
+&lt;p&gt;以上面两个时间序列为例。两个序列均满足条件1），因为标准正态分布白噪声和其形成的随机游走的均值函数都是值恒为0的常数函数。再来看条件2）。白噪声的自协方差函数可以表述为：&lt;/p&gt;
+&lt;p&gt;\[\gamma_{t,s}=\left\{
+\begin{array}{l l}
+1 &amp; (t=s) \\
+0 &amp; (t \neq s)
+\end{array}
+\right.\]&lt;/p&gt;
+&lt;p&gt;可以看到只有在时滞为0时值为1，其它均为0，所以白噪声是一个平稳序列。&lt;/p&gt;
+&lt;p&gt;而随机游走我们上面分析过，其自协方差为：&lt;/p&gt;
+&lt;p&gt;\[\gamma_{t,s}=t\sigma^2\]&lt;/p&gt;
+&lt;p&gt;很明显其自协方差依赖于时间点，所以是一个非平稳序列。&lt;/p&gt;
+&lt;p&gt;后面可以看到，一般的时间序列分析往往针对平稳序列，对于非平稳序列会通过某些变换将其变为平稳的，例如，对于随机游走来说，其一阶差分序列是平稳的（显然其一阶差分是白噪声）。&lt;/p&gt;
+&lt;p&gt;下一章节会介绍ARIMA模型，其中将对上面提到的平稳性和差分的概念给出更具体的说明的示例。&lt;/p&gt;
+&lt;p&gt;注意我们下面说到平稳序列时都默认其均值为0，因为具有均值\(\mu\)的平稳时间序列只要将其做一个变换\(Y_t-\mu\)就可以得到一个均值为0的序列，假设均值为0可以使得问题分析得到简化。&lt;/p&gt;
+&lt;h1&gt;ARIMA模型&lt;/h1&gt;
+&lt;h2&gt;基本模型&lt;/h2&gt;
+&lt;p&gt;上文说过，时间序列分析实际上是寻找随机时间序列中的模式，所以首先要对时间序列做一个假设，假设其符合某个模式。具体一点，就是时间序列可以用一个函数（可以包含随机变量）来描述。函数的自变量是时刻，值是这个时刻序列的值。例如上例中的白噪声可以用\(f(t)=e\)描述，其中e是一个服从标准正态分布的随机变量。&lt;/p&gt;
+&lt;p&gt;时间序列分析的核心工作之一就是根据观察到的序列值来估计这个函数。&lt;/p&gt;
+&lt;p&gt;其中ARIMA模型是一个常用的函数模型。实际上ARIMA模型本身并不是一个具体描述时间序列的函数，而是一类函数的总称。ARIMA模型可以表述为\(ARIMA(p,d,q)\)，其中p、d和q定义域均为自然数。从这个角度看，ARIMA可以看成函数的函数，或者叫做高阶函数。这个高阶函数将一个定义在自然数上的三元空间映射到一个具体函数，具体函数可以描述一个时间序列。&lt;/p&gt;
+&lt;p&gt;例如：&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+(ARIMA(0,0,1))(t) &amp; = &amp; e_t-\theta e_{t-1} \\
+(ARIMA(0,0,2))(t) &amp; = &amp; e_t-\theta_1 e_{t-1}-\theta_2 e_{t-2} \\
+(ARIMA(1,0,0))(t) &amp; = &amp; e_t+\phi (ARIMA(1,0,0))(t-1) \\
+(ARIMA(1,0,2))(t) &amp; = &amp; e_t+\phi (ARIMA(1,0,2))(t-1)-\theta_1 e_{t-1}-\theta_2 e_{t-2} 
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;当不同参数取0时ARIMA可以退化为更简单的形式，例如d=0时，模型变为ARMA，如果d和q都等于0，就变为AR模型，而如果d和p为0，则是MA模型，如果d、p和q都为0，那就是白噪声了。所以\(ARIMA(0,0,0)\)就是白噪声序列函数，因此白噪声也只是ARIMA模型的一个特例。&lt;/p&gt;
+&lt;p&gt;下图说明了各个模型间的关系：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/arima-models.png&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;图中自顶向下越来越特化，而自底向上则越来越泛化。&lt;/p&gt;
+&lt;p&gt;这一节我们从较为简单的特化ARIMA模型开始讲述，由简入难，一步一步描述各种模型。后面的几节会讲述如何对ARIMA模型进行训练和估计以及如何应用ARIMA模型进行预测。&lt;/p&gt;
+&lt;h3&gt;MA模型&lt;/h3&gt;
+&lt;p&gt;ARIMA中的p、d和q分别表示自相关、差分和滑动平均。当p和d均为0时，就变成了简单的滑动平均模型\(MA(q)\)。&lt;/p&gt;
+&lt;p&gt;一般的滑动平均模型被定义为：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t-\theta_{1}e_{t-1}-\theta_{2}e_{t-2}-\cdots-\theta_{q}e_{t-q}\]&lt;/p&gt;
+&lt;p&gt;其中e是方差为\(\sigma^2\)的白噪声。并且要求各参数\(-\theta\)是定义在-1到1的闭区间上。&lt;/p&gt;
+&lt;p&gt;可以看出，MA(q)在t时刻的值就是白噪声序列t到t-q共q+1个点的线性组合，系数是\((1,-\theta_{1},\ldots,-\theta_{q})\)。&lt;/p&gt;
+&lt;p&gt;简单起见，我们分析一下最简单的MA(1)和MA(2)模型及其统计性质。&lt;/p&gt;
+&lt;p&gt;下面是MA(1)模型的序列函数以及用R产生的模拟数据：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t-\theta e_{t-1}\]&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/ma1.png&quot;/&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+for (i in 2:length(Ye)) {
+    Y[i] = Ye[i] - (-0.8) * Ye[i-1];
+}
+Y = ts(Y);
+plot(Y, family=&quot;simhei&quot;, main=&quot;MA(1)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
+abline(h=0)&lt;/pre&gt;
+
+&lt;p&gt;这个模拟数据构造自服从标准正态分布的白噪声，其中一阶滑动参数为-0.8。从图上看，这个序列比白噪声平滑，并且比随机游走平稳一些。下面定量分析其各统计量。&lt;/p&gt;
+&lt;p&gt;均值：&lt;/p&gt;
+&lt;p&gt;\[\mu_t=E(Y_t)=E(e_t)-\theta E(e_{t-1})=0\]&lt;/p&gt;
+&lt;p&gt;方差：&lt;/p&gt;
+&lt;p&gt;\[\sigma^2_t=Var(Y_t)=Var(e_t)+\theta^2 Var(e_{t-1})=(1+\theta^2)\sigma^2\]&lt;/p&gt;
+&lt;p&gt;自协方差：&lt;/p&gt;
+&lt;p&gt;\[\gamma_{t,s}=Cov(e_t-\theta e_{t-1},e_s-\theta e_{s-1})=Cov(e_t,e_s)-\theta Cov(e_t,e_{s-1})-\theta Cov(e_{t-1},e_s)+\theta^2 Cov(e_{t-1},e_{s-1})\]&lt;/p&gt;
+&lt;p&gt;显然，在t小于s时，只有s-t=1时，有\(Cov(e_t,e_{s-1})=Var(e_t)=\sigma^2\)。所以自协方差函数只与时滞s-t有关，我们将自协方差表示为时滞k的函数\(\gamma_k\)，我们有：&lt;/p&gt;
+&lt;p&gt;\[\gamma_k=\left\{
+\begin{array}{l l}
+(1+\theta^2)\sigma^2 &amp; (k=0) \\
+-\theta \sigma^2     &amp; (k=1) \\
+0                      &amp; (k&gt;1)
+\end{array}
+\right.\]&lt;/p&gt;
+&lt;p&gt;自相关系数：&lt;/p&gt;
+&lt;p&gt;\[\rho_k=\left\{
+\begin{array}{l l}
+1                          &amp; (k=0) \\
+(-\theta) / (1+\theta^2) &amp; (k=1) \\
+0                          &amp; (k&gt;1)
+\end{array}
+\right.\]&lt;/p&gt;
+&lt;p&gt;从上面分析得出，MA(1)模型是一个平稳序列，因为其均值为常数，自协方差只与时滞相关。以后任何平稳模型，我们都将自协方差和自相关系数表示为时滞k的函数，而不再表示为t和s的函数。另外还可以发现，MA(1)模型每一个序列值只与其前一个值有相关性，而时滞超过1则无相关性，后面可以看到这个特性是识别MA模型的重要特征。另外不难证明，一阶自相关系数在\(\theta\)为正负1时分别达到最强负相关-0.5和最强正相关0.5，在\(\theta\)为0时，MA(1)退化为白噪声，因此自相关系数为0。&lt;/p&gt;
+&lt;p&gt;类似的，MA(2)模型可以表述为：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t-\theta_1 e_{t-1}-\theta_2 e_{t-2}\]&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/ma2.png&quot;/&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+Y[2] = Ye[2] - (-0.8) * Ye[1];
+for (i in 3:length(Ye)) {
+    Y[i] = Ye[i] - (-0.8) * Ye[i-1] - (-0.9) * Ye[i-2];
+}
+Y = ts(Y);
+plot(Y, family=&quot;simhei&quot;, main=&quot;MA(2)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
+abline(h=0)&lt;/pre&gt;
+
+&lt;p&gt;如果做统计分析，会发现MA(2)模型也是一个平稳模型，并且在时滞大于2后没有相关性。&lt;/p&gt;
+&lt;p&gt;一般的，MA(q)模型是一个平稳模型，并且在时滞大于q后没有相关性。此处不再给出一般MA模型的统计分析，有兴趣的朋友可以自行推导。&lt;/p&gt;
+&lt;h3&gt;AR模型&lt;/h3&gt;
+&lt;p&gt;现在考虑另一种模型：t时刻的序列值与其滞后p的p个时间序列呈多元线性相关：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}\]&lt;/p&gt;
+&lt;p&gt;从公式上看，AR应该比MA具有更强的自相关性，因为MA仅与滞后的白噪声因素相关，而AR是时间序列前后直接相关。由于AR模型的统计特性推导比MA复杂很多，所以我们先分析最简单的AR(1)，借此了解AR模型的特性。&lt;/p&gt;
+&lt;p&gt;AR(1)的序列公式如下：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi Y_{t-1}\]&lt;/p&gt;
+&lt;p&gt;与MA(1)不同，这是一个递推公式，并且是一个线性递推公式，我们可以把它展开：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi e_{t-1}+\phi^2 e_{t-2}+\cdots+\phi^k e_{t-k}+\cdots\]&lt;/p&gt;
+&lt;p&gt;我们会得到一个无穷级数表达式（假设原始白噪声序列有无穷多滞后项）。显然其均值为0。方差的计算如下：&lt;/p&gt;
+&lt;p&gt;\[\sigma^2_t=Var(Y_t)=(1+\phi^2+\phi^4+\cdots+\phi^{2k}+\cdots)\sigma^2=(\lim_{n \to \infty}{\frac{1-\phi^{2n}}{1-\phi^2})\sigma^2}\]&lt;/p&gt;
+&lt;p&gt;显然只有当\(|\phi| &lt; 1\)时级数收敛到\(\frac{\sigma^2}{1-\phi^2}\)&lt;/p&gt;
+&lt;p&gt;这里不加证明给出一个重要的结论：AR(1)是平稳的当且仅当\(|\phi| &lt; 1\)。下面我们假设序列满足平稳条件，推导其自协方差和自相关系数。&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+\gamma_k &amp; = &amp; E((Y_{t-k}-\mu_{t-k})(Y_t-\mu_t)) \\
+           &amp; = &amp; E(Y_{t-k}Y_t) \\
+           &amp; = &amp; E(Y_{t-k}e_t + \phi Y_{t-k}Y_{t-1}) \\
+           &amp; = &amp; E(Y_{t-k})E(e_t) + \phi E(Y_{t-k}Y_{t-1}) \\
+           &amp; = &amp; \phi \gamma_{k-1}
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;由上面的递推式得：&lt;/p&gt;
+&lt;p&gt;\[\gamma_k = \phi^k\gamma_0 = \phi^k\frac{\sigma^2}{1-\phi^2}\]&lt;/p&gt;
+&lt;p&gt;\[\rho_k=\gamma_k / \gamma_0=\phi^k\]&lt;/p&gt;
+&lt;p&gt;从统计特性可以知道，AR(1)模型相近的时序点倾向于一起“运动”，因此可能呈现假趋势。前置节点的影响随着时滞的增大而呈指数衰减。这种特性对于模型识别非常重要。&lt;/p&gt;
+&lt;p&gt;下面是一个R模拟的AR(1)时间序列。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/ar1.png&quot;/&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+for (i in 2:length(Ye)) {
+    Y[i] = Ye[i] + 0.8 * Y[i-1];
+}
+Y = ts(Y);
+plot(Y, family=&quot;simhei&quot;, main=&quot;AR(1)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
+abline(h=0)&lt;/pre&gt;
+
+&lt;p&gt;下面说一下AR模型的平稳条件。为了讨论这点，我们先引进一个定义：AR模型的特征方程。一般的，AR(p)模型的特征方程被定义为：&lt;/p&gt;
+&lt;p&gt;\[1-\phi_1x-\phi_2x^2-\cdots-\phi_px^p=0\]&lt;/p&gt;
+&lt;p&gt;显然一个AR(p)的特征方程是一个一元p次方程。&lt;/p&gt;
+&lt;p&gt;已经证明：一个AR模型是平稳的当且仅当其特征方程的所有根的绝对值大于1。&lt;/p&gt;
+&lt;p&gt;利用这个结论可以将AR的平稳性问题转化为一个代数问题。例如上面的AR(1)模型，其特征方程为\(1-\phi x=0\)，唯一的根为\(x=1/\phi\)，因此AR(1)的平稳条件是\(|1/\phi| &gt; 1\)，等价于\(|\phi| &lt; 1\)，这是上面给出过的AR(1)平稳条件。&lt;/p&gt;
+&lt;p&gt;当p大于1时，因为特征方程可能存在复数根，所以平稳条件的计算涉及比较复杂的线性代数和复变函数知识，这里就不再详述了。&lt;/p&gt;
+&lt;p&gt;对于一般AR模型&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}\]&lt;/p&gt;
+&lt;p&gt;假设AR已经满足平稳性条件，有如下统计特性：&lt;/p&gt;
+&lt;p&gt;对上式两边求期望，可得\(\mu=E(Y_t)=(\phi_1 + \cdots + \phi_p)\mu\)，要使此等式恒成立显然：&lt;/p&gt;
+&lt;p&gt;\[\mu=0\]&lt;/p&gt;
+&lt;p&gt;对上式两边乘以\(Y_{t-k}\)，然后求期望，可得自协方差递推式：&lt;/p&gt;
+&lt;p&gt;\[\gamma_k=E(Y_tY_{t-k})=\phi_1\gamma_{k-1}+\cdots+\phi_p\gamma_{k-p}\]&lt;/p&gt;
+&lt;p&gt;再除以\(\gamma_0\)自相关系数递推式：&lt;/p&gt;
+&lt;p&gt;\[\rho_k=E(Y_tY_{t-k})=\phi_1\rho_{k-1}+\cdots+\phi_p\rho_{k-p}\]&lt;/p&gt;
+&lt;p&gt;而对于初始值\(\rho_1,\ldots,\rho_p\)的求解，根据平稳序列自相关系数的稳定性，有\(\rho_{-k}=\rho_k\)，再加上\(\rho_0=1\)，带入上面递推式可得一个含有p个未知量的线性方程组，解方程组就可以得到\(\rho_1,\ldots,\rho_p\)。&lt;/p&gt;
+&lt;p&gt;通过上面的分析可以发现AR模型统计特性的分析最终会归结为线性代数问题，不过在现实的时间序列分析中能否从数学意义上理解上述过程并不是重点，重点是直观理解AR(p)模型在不同的参数\(\phi\)下其自相关系数随时滞k的变化情况。&lt;/p&gt;
+&lt;p&gt;而且现实建模时一般很少使用高于AR(2)的模型，因为过高的阶会导致复杂的模型和提高过拟合风险。因此在实际使用中了解AR(1)和AR(2)的特性一般就足够了，后面在模型识别中会结合图形描述AR(2)的自相关函数特性。&lt;/p&gt;
+&lt;h3&gt;ARMA模型&lt;/h3&gt;
+&lt;p&gt;如果一个时间序列兼有AR和MA部分，并且是平稳的，则构成ARMA模型。一般\(ARMA(p,q)\)的表达式为：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}-\theta_{1}e_{t-1}-\theta_{2}e_{t-2}-\cdots-\theta_{q}e_{t-q}\]&lt;/p&gt;
+&lt;p&gt;已经证明，ARMA序列是平稳的当且仅当其AR特征方程的根的模大于1。因此求解ARMA平稳条件与AR平稳条件无异，只需忽略MA部分直接套用AR平稳条件求解即可。换句话说，ARMA(p,q)平稳当且仅当AR(p)平稳。&lt;/p&gt;
+&lt;p&gt;下面研究最简单的ARMA(1,1)模型。这是一个带有一阶自回归和一阶滑动平均的序列：&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi Y_{t-1}-\theta e_{t-1}\]&lt;/p&gt;
+&lt;p&gt;其平稳的条件等于AR(1)的平稳条件，也就是\(|\phi| &lt; 1\)。在这个前提下，我们分析其统计特性。由于推导过程比较复杂，这里直接把我之前在纸上推导的草稿贴出来，详见下图（点击图片可放大）。&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;a href=&quot;/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot; target=&quot;_blank&quot;&gt;&lt;img width=&quot;600&quot; alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot;/&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;其中结论性部分我用红笔标出了。根据上面的推导结果，ARMA(1,1)的统计特性如下：&lt;/p&gt;
+&lt;p&gt;\[\mu=0\]&lt;/p&gt;
+&lt;p&gt;\[\gamma_k=\left\{
+\begin{array}{l l}
+\frac{1+\theta^2-2\phi\theta}{1-\phi^2}\sigma^2 &amp; (k = 0) \\
+\phi\gamma_0-\theta\sigma^2 &amp; (k = 1) \\
+\phi\gamma_{k-1} &amp; (k \ge 2)
+\end{array}
+\right.\]&lt;/p&gt;
+&lt;p&gt;\[\rho_k=\phi^{k-1}\frac{(\phi-\theta)(1-\phi\theta)}{1+\theta^2-2\phi\theta}\]&lt;/p&gt;
+&lt;p&gt;大约可以看到相关系数也是随时滞呈指数递减，当然不同的参数会有不同的情况，具体我们留待模型识别一节讨论。&lt;/p&gt;
+&lt;p&gt;下面给出一个模拟的ARMA(1,1)时间序列：&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/arma11.png&quot;/&gt;&lt;/p&gt;
+
+&lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
+Y = c();
+Y[1] = Ye[1];
+for (i in 2:length(Ye)) {
+    Y[i] = Ye[i] + 0.8 * Y[i-1] - (-0.9) * Ye[i-1];
+}
+Y = ts(Y);
+plot(Y, family=&quot;simhei&quot;, main=&quot;ARMA(1,1)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
+abline(h=0)&lt;/pre&gt;
+
+&lt;h3&gt;ARIMA模型&lt;/h3&gt;
+&lt;h2&gt;模型识别&lt;/h2&gt;
+&lt;h2&gt;参数估计&lt;/h2&gt;
+&lt;h2&gt;模型预测&lt;/h2&gt;
+&lt;h2&gt;实例：使用R进行ARIMA时间序列分析&lt;/h2&gt;
+&lt;h2&gt;模型诊断&lt;/h2&gt;
+&lt;h1&gt;季节ARIMA模型&lt;/h1&gt;
+&lt;h1&gt;趋势分析&lt;/h1&gt;
+&lt;h1&gt;干预分析&lt;/h1&gt;
+&lt;h2&gt;突发事件干预&lt;/h2&gt;
+&lt;h2&gt;带协变量时间序列分析&lt;/h2&gt;
+&lt;h1&gt;基本谱分析&lt;/h1&gt;
+</description>
 </item>
 <item>
 <title>算法分析中递推式的一般代数解法</title>
@@ -29,195 +377,149 @@
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Sun, 17 Mar 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如&lt;a href=&quot;http://en.wikipedia.org/wiki/Tower_of_Hanoi&quot;&gt;汉诺塔问题&lt;/a&gt;的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。&lt;/p&gt;
-
 &lt;p&gt;因为递推式求解的重要性，许多算法书籍对其有专门介绍。&lt;a href=&quot;http://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;在&lt;a href=&quot;http://en.wikipedia.org/wiki/Concrete_Mathematics&quot;&gt;Concrete Mathematics&lt;/a&gt;一书中多个章节都涉及递推式求解方法。&lt;a href=&quot;http://book.douban.com/subject/1885170/&quot;&gt;算法导论&lt;/a&gt;也在第四章中专门论述的这个主题。&lt;/p&gt;
-
 &lt;p&gt;在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。&lt;/p&gt;
-
 &lt;p&gt;而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。&lt;/p&gt;
-
 &lt;p&gt;本文首先会给出两个例子：如何使用纯代数方法求解斐波那契数列和汉诺塔递推式；然后会借助线性代数论述这种方法背后的数学意义，说明线性递推式与线性方程的内在联系以及这种解法的数学原理；最后将例子中的方法推广到一般情况。&lt;/p&gt;
-
 &lt;h1&gt;示例&lt;/h1&gt;
-
 &lt;h2&gt;例1：斐波那契数列&lt;/h2&gt;
-
 &lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Fibonacci_number&quot;&gt;斐波那契数列&lt;/a&gt;大家应该很熟悉了，这里不再赘述，直接进入问题。&lt;/p&gt;
-
 &lt;h3&gt;问题&lt;/h3&gt;
-
 &lt;p&gt;设斐波那契数列为由如下递推式定义的数列：&lt;/p&gt;
-
 &lt;p&gt;\[\begin{array}{l l l}
 T(0) &amp; = &amp; 0 \\
 T(1) &amp; = &amp; 1 \\
 T(n) &amp; = &amp; T(n-2)+T(n-1) \quad (n \geq 2)
 \end{array}\]&lt;/p&gt;
-
 &lt;p&gt;求解\(T(n)\)的封闭形式（也就是斐波那契数列的通项公式）。&lt;/p&gt;
-
 &lt;h3&gt;求解&lt;/h3&gt;
-
 &lt;p&gt;首先忽略初始条件，考虑递推式\(T(n)=T(n-2)+T(n-1)\)。可以对解的形式进行一个猜测\(T(n)=q^n\)（这个不是瞎猜的，实际上可以证明线性递推式都遵循这种形式）。那么，递推式可以重写为：&lt;/p&gt;
-
 &lt;p&gt;\[\begin{array}{l l}
             &amp; T(n)=T(n-2)+T(n-1) \\
 \Rightarrow &amp; q^n=q^{n-2}+q^{n-1} \\
 \Rightarrow &amp; q^2=1+q \\
 \Rightarrow &amp; q^2-q-1=0
 \end{array}\]&lt;/p&gt;
-
 &lt;p&gt;这样问题被转化为一个一元二次方程的求根问题。利用求根公式可得：&lt;/p&gt;
-
 &lt;p&gt;\[q=\frac{1 \pm \sqrt{5}}{2}\]&lt;/p&gt;
-
 &lt;p&gt;因此得到递推式的一个通解：&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=c_1(\frac{1+\sqrt{5}}{2})^n+c_2(\frac{1-\sqrt{5}}{2})^n\]&lt;/p&gt;
-
 &lt;p&gt;即其中\(c_1\)和\(c_2\)为任意实数。下一步要代入初始条件解出\(c_1\)和\(c_2\)。根据n为0和1时的初始条件，可得：&lt;/p&gt;
-
 &lt;p&gt;\[\left\{
 \begin{array}{l l l}
 c_1+c_2 &amp; = &amp; 0 \\
 c_1(\frac{1+\sqrt{5}}{2})+c_2(\frac{1-\sqrt{5}}{2}) &amp; = &amp; 1
 \end{array}
 \right.\]&lt;/p&gt;
-
 &lt;p&gt;解得\(c_1=\frac{1}{\sqrt{5}}\)，\(c_2=-\frac{1}{\sqrt{5}}\)。因此最终解为：&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=\frac{1}{\sqrt{5}}((\frac{1+\sqrt{5}}{2})^n-(\frac{1-\sqrt{5}}{2})^n)\]&lt;/p&gt;
-
 &lt;h2&gt;例2：汉诺塔&lt;/h2&gt;
-
 &lt;p&gt;汉诺塔的时间复杂度通常使用递归式定义，在这个例子中将使用代数方法求解其封闭形式。&lt;/p&gt;
-
 &lt;h3&gt;问题&lt;/h3&gt;
-
 &lt;p&gt;汉诺塔的时间复杂度为\(T(n)=2T(n-1)+1\)，求解其封闭形式。&lt;/p&gt;
-
 &lt;h3&gt;求解&lt;/h3&gt;
-
 &lt;p&gt;这里并不能直接使用例1中的方法，因为右边除了递推项外，还有一个非递推项1，用线性代数的语言说，这个线性递推式是非齐次的。&lt;/p&gt;
-
 &lt;p&gt;可以回想一下线性代数中求解非齐次方程组通解的方法：1）求解其齐次部分的通解。2）求其一个特解，将特解加到通解上即得非齐次方程组通解。&lt;/p&gt;
-
 &lt;p&gt;我们用类似的方法求解汉诺塔时间复杂度递推式。首先，忽略后面的1，则得到一个齐次线性递推式：&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=2T(n-1)\]&lt;/p&gt;
-
 &lt;p&gt;转化为多项式方程：&lt;/p&gt;
-
 &lt;p&gt;\[\begin{array}{l l}
             &amp; T(n)=2T(n-1) \\
 \Rightarrow &amp; q^n=2q^{n-1} \\
 \Rightarrow &amp; q=2 \\
 \end{array}\]&lt;/p&gt;
-
 &lt;p&gt;因为方程是一次多项式，我们直接得到了其解为2。因此齐次递推式的通解为\(c2^n\)，其中c为任意常数。&lt;/p&gt;
-
 &lt;p&gt;然后我们需要求得\(T(n)=2T(n-1)+1\)的一个特解，解是一个以n为变量的函数。我们可以先从常数试起，设特解为\(T(n)=a\)，带入得\(a=2a+1\)，
 解得\(a=-1\)。因此，原递推式的通解为：&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=c2^n-1\]&lt;/p&gt;
-
 &lt;p&gt;最后我们求解常数c。&lt;/p&gt;
-
 &lt;p&gt;将初始条件\(T(0)=0\)带入，得\(0=c-1\)，因此\(c=1\)。代入原通解，得汉诺塔时间复杂度递推式的封闭形式为：&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=2^n-1\]&lt;/p&gt;
-
 &lt;h1&gt;数学原理&lt;/h1&gt;
-
 &lt;p&gt;上面两个例子可能有些同学看的不是很明白，其中提到了一些线性代数术语。在这一章节中，我们分析上述解法的数学原理，看看递推式是如何与线性代数关联起来的。&lt;/p&gt;
-
 &lt;h2&gt;线性递推式的一般化&lt;/h2&gt;
-
 &lt;p&gt;斐波那契数列和汉诺塔递推式可以看成线性递推式的特例，下面给出线性递推式的一般定义：&lt;/p&gt;
-
 &lt;p&gt;我们将满足如下递推关系的递推式称为线性递推式：&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)+C(n)\]&lt;/p&gt;
-
 &lt;p&gt;其中\(C(n)\)是只与n有关系的一个函数。如果\(C(n)=0\)，则称递推式为齐次此，否则称为非齐次的。齐次递推式一定有平凡解\(T(n)=0\)。&lt;/p&gt;
-
 &lt;p&gt;注意仅有递推式是不能求得\(T(n)\)的唯一解，因此递推关系式只能给出一个通解。只有当下列初始条件确定后，才有可能给出\(T(n)\)的唯一特解。&lt;/p&gt;
-
 &lt;p&gt;\[\begin{array}{l}
 T(0)=b_0 \\
 T(1)=b_1 \\
 \vdots \\
 T(k-1)=b_{k-1}
 \end{array}\]&lt;/p&gt;
-
 &lt;h2&gt;齐次递推式求解定理&lt;/h2&gt;
-
 &lt;p&gt;下面先考虑齐次线性递推式的求解。定理如下：&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;设有线性齐次递推式\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)&lt;/p&gt;&lt;p&gt;另设多项式方程\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\)的根是
-\(q_1,q_2,\dots ,q_k\)，我们先讨论不存在重根的情况，也就是说k个根互不相等。&lt;/p&gt;&lt;p&gt;则\(T(n)\)的通解为：&lt;/p&gt;&lt;p&gt;\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]&lt;/p&gt;&lt;p&gt;并且对于任意的初始情况&lt;/p&gt;&lt;p&gt;\[\begin{array}{l}
+&lt;blockquote&gt;
+&lt;p&gt;设有线性齐次递推式\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)&lt;/p&gt;
+&lt;p&gt;另设多项式方程\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\)的根是
+\(q_1,q_2,\dots ,q_k\)，我们先讨论不存在重根的情况，也就是说k个根互不相等。&lt;/p&gt;
+&lt;p&gt;则\(T(n)\)的通解为：&lt;/p&gt;
+&lt;p&gt;\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]&lt;/p&gt;
+&lt;p&gt;并且对于任意的初始情况&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l}
 T(0)=b_0 \\
 T(1)=b_1 \\
 \vdots \\
 T(k-1)=b_{k-1}
-\end{array}\]&lt;/p&gt;&lt;p&gt;都存在一组解\(c_1, \dots ,c_k\)使得递推式成立&lt;/p&gt;&lt;/blockquote&gt;
-
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;都存在一组解\(c_1, \dots ,c_k\)使得递推式成立&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h2&gt;定理的证明&lt;/h2&gt;
-
 &lt;p&gt;要证明以上定理，主要需要证明两部分。一是证明多项式根的线性组合可以满足递推式，二是证明任意初始条件下总有解。&lt;/p&gt;
-
 &lt;h3&gt;可满足性证明&lt;/h3&gt;
-
 &lt;p&gt;首先来证明\(T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\)可以满足递推式。&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)经过变换可以改写为
-\(T(n)-a_1T(n-1)-a_2T(n-2)- \dots -a_{k-1}T(n-k+1)-a_kT(n-k)=0\)&lt;/p&gt;&lt;p&gt;假设\(T(n)=q^n\)，因为\(q&gt;0\)，所以两边除以\(q^{n-k}\)，得到\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0\)&lt;/p&gt;&lt;p&gt;因此这个多项式和原递推式同解，因此多项式的每个根q的几何级数\(q^n\)都是原递推式的一个解。同时，根的线性组合
-\(c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\)均满足原递推式（可以带入验证）。&lt;/p&gt;&lt;/blockquote&gt;
-
+&lt;blockquote&gt;
+&lt;p&gt;\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)经过变换可以改写为
+\(T(n)-a_1T(n-1)-a_2T(n-2)- \dots -a_{k-1}T(n-k+1)-a_kT(n-k)=0\)&lt;/p&gt;
+&lt;p&gt;假设\(T(n)=q^n\)，因为\(q&gt;0\)，所以两边除以\(q^{n-k}\)，得到\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0\)&lt;/p&gt;
+&lt;p&gt;因此这个多项式和原递推式同解，因此多项式的每个根q的几何级数\(q^n\)都是原递推式的一个解。同时，根的线性组合
+\(c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\)均满足原递推式（可以带入验证）。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h3&gt;任意初始值有解证明&lt;/h3&gt;
-
 &lt;p&gt;下面要证明对于任意初始条件，均存在适当的常数\(c_1, \dots ,c_k\)。&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;将&lt;/p&gt;&lt;p&gt;\[\begin{array}{l}
+&lt;blockquote&gt;
+&lt;p&gt;将&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l}
 T(0)=b_0 \\
 T(1)=b_1 \\
 \vdots \\
 T(k-1)=b_{k-1}
-\end{array}\]&lt;/p&gt;&lt;p&gt;带入通解公式，得到一个线性方程组&lt;/p&gt;&lt;p&gt;\[\begin{array}{l l l}
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;带入通解公式，得到一个线性方程组&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
 c_1+c_2+ \dots +c_k &amp; = &amp; b_0 \\
 c_1q_1+c_2q_2+ \dots +c_kq_k &amp; = &amp; b_1 \\
 c_1q_1^2+c_2q_2^2+ \dots +c_kq_k^2 &amp; = &amp; b_2 \\
 \vdots &amp; &amp; \\
 c_1q_1^{k-1}+c_2q_2^{k-1}+ \dots +c_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
-\end{array}\]&lt;/p&gt;&lt;p&gt;此时问题转化为证明此方程组对于必然有解，下面就要用到线性代数的知识了。这个方程组的系数行列式为：&lt;/p&gt;&lt;p&gt;\[{det}(V)=\begin{vmatrix}
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;此时问题转化为证明此方程组对于必然有解，下面就要用到线性代数的知识了。这个方程组的系数行列式为：&lt;/p&gt;
+&lt;p&gt;\[{det}(V)=\begin{vmatrix}
 1 &amp; 1 &amp; \dots &amp; 1 \\
 q_1 &amp; q_2 &amp; \dots &amp; q_k \\
 q_1^2 &amp; q_2^2 &amp; \dots &amp; q_k^2 \\
 \vdots &amp; \vdots &amp; \dots &amp; \vdots \\
 q_1^{k-1} &amp; q_2^{k-1} &amp; \dots &amp; q_k^{k-1}
-\end{vmatrix}\]&lt;/p&gt;&lt;p&gt;这个行列式就是非常著名&lt;a href=&quot;http://en.wikipedia.org/wiki/Vandermonde_matrix&quot;&gt;Vandermonde行列式&lt;/a&gt;，所以&lt;/p&gt;&lt;p&gt;\[{det}(V)=\prod_{1 \leq i &lt; j \leq k}{(q_i-q_j)}\]&lt;/p&gt;&lt;p&gt;上面我们假设了多项式各个根均互异，因此行列式的值不等于0，这意味着系数矩阵的秩为k。有线性代数知识可知，这表明
-对于任意初始值\(b_0, \dots, b_{k-1}\)，方程组均有唯一解。&lt;/p&gt;&lt;p&gt;证毕。&lt;/p&gt;&lt;p&gt;顺便说一下，上面的多项式叫特征多项式。其根叫特征根。&lt;/p&gt;&lt;/blockquote&gt;
-
+\end{vmatrix}\]&lt;/p&gt;
+&lt;p&gt;这个行列式就是非常著名&lt;a href=&quot;http://en.wikipedia.org/wiki/Vandermonde_matrix&quot;&gt;Vandermonde行列式&lt;/a&gt;，所以&lt;/p&gt;
+&lt;p&gt;\[{det}(V)=\prod_{1 \leq i &lt; j \leq k}{(q_i-q_j)}\]&lt;/p&gt;
+&lt;p&gt;上面我们假设了多项式各个根均互异，因此行列式的值不等于0，这意味着系数矩阵的秩为k。有线性代数知识可知，这表明
+对于任意初始值\(b_0, \dots, b_{k-1}\)，方程组均有唯一解。&lt;/p&gt;
+&lt;p&gt;证毕。&lt;/p&gt;
+&lt;p&gt;顺便说一下，上面的多项式叫特征多项式。其根叫特征根。&lt;/p&gt;
+&lt;/blockquote&gt;
 &lt;h1&gt;通用解法&lt;/h1&gt;
-
 &lt;p&gt;通过上面的数学分析，我们得到了一个解线性递推式的通用方法。&lt;/p&gt;
-
 &lt;h2&gt;齐次递推式&lt;/h2&gt;
-
 &lt;p&gt;设有齐次递推式&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\]&lt;/p&gt;
-
 &lt;p&gt;我们可以写出其特征多项式方程&lt;/p&gt;
-
 &lt;p&gt;\[q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\]&lt;/p&gt;
-
 &lt;p&gt;解出其k个根\(q_1, \dots, q_k\)。如果k个根互异（但可以有复根），则原递推式的通解为&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]&lt;/p&gt;
-
 &lt;p&gt;然后将初始条件\(b_0, \dots, b_{k-1}\)带入组成线性方程组&lt;/p&gt;
-
 &lt;p&gt;\[\begin{array}{l l l}
 x_1+x_2+ \dots +x_k &amp; = &amp; b_0 \\
 x_1q_1+x_2q_2+ \dots +x_kq_k &amp; = &amp; b_1 \\
@@ -225,27 +527,18 @@ x_1q_1^2+x_2q_2^2+ \dots +x_kq_k^2 &amp; = &amp; b_2 \\
 \vdots &amp; &amp; \\
 x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 \end{array}\]&lt;/p&gt;
-
 &lt;p&gt;解线性方程组得唯一解\(\hat{x}_1, \dots, \hat{x}_k\)。带回通解公式则得到递推式的最终解&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=\hat{x}_1q_1^n+\hat{x}_2q_2^n+ \dots +\hat{x}_kq_k^n\]&lt;/p&gt;
-
 &lt;h2&gt;非齐次递推式&lt;/h2&gt;
-
 &lt;p&gt;对于非齐次递推式&lt;/p&gt;
-
 &lt;p&gt;\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)+C(n) \quad (C(n) \neq 0)\]&lt;/p&gt;
-
 &lt;p&gt;可以首先按上面的方法求解其齐次部分的通解\(T_n\)。然后求得其一个特解\(y_n\)，则非齐次递推式的通解为&lt;/p&gt;
-
 &lt;p&gt;\[T_n+y_n\]&lt;/p&gt;
-
 &lt;p&gt;然后用同样的方法带入初始值，通过线性方程组求出个常量参数带回即可（具体可参见例2）。&lt;/p&gt;
-
 &lt;h2&gt;有重根的情况&lt;/h2&gt;
-
 &lt;p&gt;上面的解法只针对特征根互异，如果有重根的话，则上述方法会无效。不过只要经过一定处理也可以有通用方法求解，
-因有点复杂，本文不在针对重根情况进行叙述。关于重根情况下的求解，有感兴趣的同学可以参考线性代数或微分方程相关文献。&lt;/p&gt;</description>
+因有点复杂，本文不在针对重根情况进行叙述。关于重根情况下的求解，有感兴趣的同学可以参考线性代数或微分方程相关文献。&lt;/p&gt;
+</description>
 </item>
 <item>
 <title>为什么算法渐进复杂度中对数的底数总为2</title>
@@ -2626,142 +2919,6 @@ make install&lt;/pre&gt;
 &lt;p&gt;说明扩展已经正常工作了。&lt;/p&gt;
 &lt;h1&gt;总结&lt;/h1&gt;
 &lt;p&gt;这篇文章主要用示例方法介绍PHP Extension的开发基础。在PHP的使用中，也许是因为需要支持新的组件（如新的数据库），又或是业务需要或性能需要，几乎都会遇到需要开发PHP扩展的地方。后续如果有机会，我会写文章介绍一些关于扩展开发较为深入的东西，如扩展模块生命周期、INI使用以及编写面向对象的扩展模块等等。&lt;/p&gt;
-</description>
-</item>
-<item>
-<title>使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</title>
-<link>http://blog.codinglabs.org/articles/nginx-memc-and-srcache.html</link>
-<guid>http://blog.codinglabs.org/articles/nginx-memc-and-srcache.html</guid>
-<author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Tue, 18 Oct 2011 00:00:00 GMT</pubDate>
-<description>&lt;p&gt;为了提高性能，几乎所有互联网应用都有缓存机制，其中&lt;a href=&quot;http://memcached.org&quot; target=&quot;_blank&quot;&gt;Memcache&lt;/a&gt;是使用非常广泛的一个分布式缓存系统。众所周知，LAMP是非常经典的Web架构方式，但是随着&lt;a href=&quot;http://wiki.nginx.org/&quot; target=&quot;_blank&quot;&gt;Nginx&lt;/a&gt;的成熟，越来越多的系统开始转型为LNMP（Linux+Nginx+MySQL+PHP with fpm），这是因为Nginx采用基于事件机制的I/O多路复用思想设计，在高并发情况下其性能远远优于默认采用prefork模式的Apache，另外，相对于Apache，Nginx更轻量，同时拥有大量优秀的扩展模块，使得在Nginx上可以实现一些美妙的功能。&lt;/p&gt;
-&lt;p&gt;传统上，PHP中使用memcache的方法是使用&lt;a href=&quot;http://pecl.php.net/package/memcache&quot; target=&quot;_blank&quot;&gt;php-memcache&lt;/a&gt;或&lt;a href=&quot;http://pecl.php.net/package/memcached&quot; target=&quot;_blank&quot;&gt;php-memached&lt;/a&gt;扩展操作memcache，然而在Nginx上有构建更高效缓存机制的方法，本文将首先介绍这种机制，然后介绍具体的操作步骤方法，最后将对这种机制和传统的PHP操作memcache的性能进行一个benchmark。
-&lt;!--more--&gt;
-&lt;/p&gt;
-&lt;h1&gt;Nginx的Memc和SR Cache模块&lt;/h1&gt;
-&lt;h2&gt;缓存策略的改进&lt;/h2&gt;
-&lt;p&gt;我们知道，Nginx的核心设计思想是事件驱动的非阻塞I/O。Nginx被设计为可以配置I/O多路复用策略，在Unix系统中传统的多路复用是采用select或poll，但是这两个方法的问题是随着监听socket的增加，性能会下降，因为在linux内核中是采用轮询的方式判断是否可以触发事件，换句话说算法的复杂度为O(N)，而在较新的linux内核中引入了复杂度为O(1)的epoll，因此Nginx在Linux下默认采用epoll，而在FreeBSD下默认采用kqueue作为I/O策略。&lt;/p&gt;
-&lt;p&gt;即便是这样，传统的缓存策略仍可能造成效率低下，因为传统上是通过PHP操作memcache的，要执行PHP代码，Nginx就必然要和FastCGI通信，同时也要进入PHP的生命周期，因此SAPI、PHP Core和Zend Engine的一系列逻辑会被执行。&lt;strike&gt;更糟糕的是，fpm和PHP可能会阻塞，因此破坏了Nginx的非阻塞性。&lt;/strike&gt;（原文中此处表述有误，fastcgi与nginx进行同步通信，但并不会破坏nginx i/o的非阻塞性，多谢&lt;a target=&quot;_blank&quot; href=&quot;http://agentzh.org&quot;&gt;agentzh&lt;/a&gt;给予指正）下图展示了在memcache命中时整个处理过程。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/1.png&quot;/&gt;&lt;/p&gt;
-&lt;p&gt;可以看到，即使memcache命中，还是要进入PHP的生命周期。我们知道，目前很多互联网应用都使用RESTful规范进行设计，在RESTful应用下，普遍使用uri和查询参数作为缓存的key，因此一种更高效的缓存策略是Nginx直接访问memcache，并用$uri和$args等Nginx内置变量设定缓存key规则，这样，当缓存命中时，Nginx可以跳过通过fastcgi和PHP通信的过程，直接从memcache中获取数据并返回。memc-nginx和srcache-nginx正是利用这种策略提高了缓存的效率。下图是这种高效缓存策略的示意图（当memcache命中时）。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/2.png&quot;/&gt;&lt;/p&gt;
-&lt;h2&gt;模块介绍&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;http://wiki.nginx.org/HttpMemcModule&quot; target=&quot;_blank&quot;&gt;memc-nginx&lt;/a&gt;和&lt;a href=&quot;http://wiki.nginx.org/HttpSRCacheModule&quot; target=&quot;_blank&quot;&gt;srcache-nginx&lt;/a&gt;模块均为前淘宝工程师agentzh（章亦春）开发。其中memc模块扩展了Nginx标准的memcache模块，增加了set、add、delete等memcache命令，而srcache则是为location增加了透明的基于subrequest的缓存层。两者配合使用，可以实现上一节提到的高效缓存机制。关于两个模块的详细信息可以参考它们Nginx官网的wiki（&lt;a href=&quot;http://wiki.nginx.org/HttpMemcModule&quot; target=&quot;_blank&quot;&gt;memc wiki&lt;/a&gt;，&lt;a href=&quot;http://wiki.nginx.org/HttpSRCacheModule&quot; target=&quot;_blank&quot;&gt;srcache wiki&lt;/a&gt;）页。&lt;/p&gt;
-&lt;h2&gt;安装及配置&lt;/h2&gt;
-&lt;p&gt;下面以LNMP环境介绍如何使用这两个模块构建缓存层。&lt;/p&gt;
-&lt;p&gt;因为Nginx并不支持模块动态加载，所以要安装新的模块，必须重新编译Nginx。首先下载两个模块（&lt;a href=&quot;https://github.com/agentzh/memc-nginx-module/downloads&quot; target=&quot;_blank&quot;&gt;memc下载地址&lt;/a&gt;，&lt;a href=&quot;https://github.com/agentzh/srcache-nginx-module/downloads&quot; target=&quot;_blank&quot;&gt;srcache下载地址&lt;/a&gt;），另外，为了发挥出缓存的最大性能，建议将memcache的upstream配置为keep-alive，为了支持upstream的keep-alive需要同时安装&lt;a href=&quot;http://wiki.nginx.org/HttpUpstreamKeepaliveModule&quot; target=&quot;_blank&quot;&gt;http-upstream-keepalive-module&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;将模块下载并解压到合适的目录，这里我Nginx使用的版本是1.0.4，与相关模块一起解压到了/home/zhangyang/downloads，如下图所示。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/3.png&quot;/&gt;&lt;/p&gt;
-&lt;p&gt;其中红框框起来的是我们需要用到的模块。进入nginx目录，执行下列命令：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint&quot;&gt;./configure --prefix=/usr/local/nginx \
---add-module=../memc-nginx-module \
---add-module=../srcache-nginx-module \
---add-module=../ngx_http_upstream_keepalive
-make
-make install&lt;/pre&gt;
-&lt;p&gt;这里我将nginx安装到/usr/local/nginx下，你可以根据自己的需要更改安装路径，另外，我只列出了本文必要的configure命令，你也可以增加需要的configure选项。&lt;/p&gt;
-&lt;p&gt;然后需要对nginx进行配置，nginx默认主配置文件放在安装目录的conf下，例如我的主配置文件为/usr/local/nginx/conf/nginx.conf。&lt;/p&gt;
-&lt;p&gt;这里我只贴出相关的配置：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint&quot;&gt;#Memcache服务upstream
-upstream memcache {
-    server localhost:11211;
-    keepalive 512 single;
-}
-server {
-    listen       80;
-    server_name  localhost;
-    #memc-nginx-module
-    location /memc {
-        internal;
-        memc_connect_timeout 100ms;
-        memc_send_timeout 100ms;
-        memc_read_timeout 100ms;
-        set $memc_key $query_string;
-        set $memc_exptime 300;
-        memc_pass memcache;
-    }
-    location / {
-        root   /var/www;
-        index  index.html index.htm index.php;
-    }
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-    #
-    location ~ \.php$ {
-        charset        utf-8;
-        default_type   text/html;
-        #srcache-nginx-module
-        set $key $uri$args;
-        srcache_fetch GET /memc $key;
-        srcache_store PUT /memc $key;
-        root           /var/www;
-        fastcgi_pass   127.0.0.1:9000;
-        fastcgi_index  index.php;
-        include        fastcgi_params;
-        fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    }
-}&lt;/pre&gt;
-&lt;p&gt;下面解释一下其中几个点。&lt;/p&gt;
-&lt;p&gt;上文说过，memc-nginx是一个标准的upstream模块，因此首先需要定义memcache的upstream。这里我在本机上启动了一个memcache服务，端口为默认的11211，keepalive指令是http-upsteram-keepalive-module提供的功能，这里我们最大保持512个不立即关闭的连接用于提升性能。&lt;/p&gt;
-&lt;p&gt;下面是为memc-nginx-module配置location，我们配置为/memc，所有请求都通过请求这个location来操作memcache，memc-nginx-module存取memcache是基于http method语义的，使用http的GET方法表示get、PUT方法表示set、DELETE方法表示delete。这里我们将/memc设为&lt;a href=&quot;http://wiki.nginx.org/NginxHttpCoreModule#internal&quot; target=&quot;_blank&quot;&gt;internal&lt;/a&gt;表示只接受内部访问，不接收外部http请求，这是为了安全考虑，当然如果需要通过http协议开放外部访问，可以去掉internal然后使用&lt;a href=&quot;http://wiki.nginx.org/NginxHttpAccessModule#deny&quot; target=&quot;_blank&quot;&gt;deny&lt;/a&gt;和&lt;a href=&quot;http://wiki.nginx.org/NginxHttpAccessModule#allow&quot; target=&quot;_blank&quot;&gt;allow&lt;/a&gt;指令控制权限。比较重要的是$memc_key这个变量，它表示以什么作为key，这里我们直接使用Nginx内置的$query_string来作为key，$memc_exptime表示缓存失效时间，以秒记。这里统一设为300（5分钟），在实际应用中可以根据具体情况为不同的内容设置不同的过期时间。&lt;/p&gt;
-&lt;p&gt;最后我们为“~ \.php$”这个location配置了缓存，这表示所有以“.php”结尾的请求都会结果被缓存，当然这里只是示例需要，实际中一般不会这么配，而是为特定需要缓存的location配置缓存。&lt;/p&gt;
-&lt;p&gt;srcache_fetch表示注册一个输入拦截处理器到location，这个配置将在location进入时被执行；而srcache_store表示注册一个输出拦截器到location，当location执行完成并输出时会被执行。注意srcache模块实际可以与任何缓存模块进行配合使用，而不必一定是memc。这里我们以$uri$args作为缓存的key。&lt;/p&gt;
-&lt;p&gt;经过上述配置后，相当于对Nginx增加了如下逻辑：当所请求的uri以“.php”结尾时，首先到memcache中查询有没有以$uri$args为key的数据，如果有则直接返回；否则，执行location的逻辑，如果返回的http状态码为200，则在输出前以$uri$args为key，将输入结果存入memcache。&lt;/p&gt;
-&lt;h2&gt;更多配置&lt;/h2&gt;
-&lt;p&gt;上一节给出了使用memc和srcache构建缓存层的最基本方法，实际应用中可能需要更多灵活的配置，例如为不同的location配置不同的缓存参数，根据返回内容而不是返回的http状态码确定是否缓存等等。可以有很多的方法实现这些需求，例如，srcache还支持两个指令：srcache_fetch_skip和srcache_fetch_skip，这两个指令接受一个参数，当参数已定义且非0时，则进行相应操作，否则不进行。例如，如果配置了srcache_fetch_skip $skip，这条指令，那么只有当$skip的值为非0时，才将结果缓存，如果配合&lt;a href=&quot;http://wiki.nginx.org/HttpLuaModule&quot; target=&quot;_blank&quot;&gt;ngx_lua&lt;/a&gt;模块的&lt;a href=&quot;http://wiki.nginx.org/HttpLuaModule#set_by_lua&quot; target=&quot;_blank&quot;&gt;set_by_lua&lt;/a&gt;指令，则可以实现复杂的缓存控制。如：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint&quot;&gt;location /xxxx {
-    set $key ...;
-    set_by_lua $skip '
-        if ngx.var.cookie_foo == &quot;bar&quot; then
-            return 1
-        end
-        return 0
-    ';
-    srcache_fetch_skip $skip;
-    srcache_store_skip $skip;
-    srcache_fetch GET /memc $key;
-    srcache_store GET /memc $key;
-    # proxy_pass/fastcgi_pass/...
-}&lt;/pre&gt;
-&lt;p&gt;这表示对/xxxx这个location的访问，只有存在cookie “foo”且值为“bar”时缓存机制才起作用。关于ngx_lua的更多内容请参考其&lt;a href=&quot;http://wiki.nginx.org/HttpLuaModule&quot; target=&quot;_blank&quot;&gt;主页&lt;/a&gt;。&lt;/p&gt;
-&lt;p&gt;另外，我最近在春哥（章亦春在淘宝的昵称）的微博上看到他目前正在完善srcache的功能，为其实现更多&lt;a href=&quot;http://tools.ietf.org/pdf/rfc2616.pdf&quot; target=&quot;_blank&quot;&gt;RFC2616&lt;/a&gt;的缓存行为标准。关于这个模块的最新动态可以关注其&lt;a href=&quot;https://github.com/agentzh/srcache-nginx-module&quot; target=&quot;_blank&quot;&gt;github&lt;/a&gt;主页。&lt;/p&gt;
-&lt;h1&gt;Benchmark&lt;/h1&gt;
-&lt;p&gt;下面对使用memc和srcache构建的缓存机制进行一个简单的benchmark，并与使用PHP操作memcache的策略进行一个对比。为了简单起见，我们的测试PHP脚本不去访问I/O，而仅仅是调用phpinfo函数输出PHP相关信息。&lt;/p&gt;
-&lt;p&gt;测试一共分三组进行：第一组在Nginx和PHP中均不开启缓存，第二组仅使用PHP memcache缓存，第三组仅使用Nginx memcache缓存。三组都用&lt;a href=&quot;http://httpd.apache.org/docs/2.0/programs/ab.html&quot; target=&quot;_blank&quot;&gt;ab&lt;/a&gt;程序去压，并发数为20，请求次数为10000。&lt;/p&gt;
-&lt;p&gt;这里的测试环境是我的一个虚拟机，操作系统为Ubuntu10，内存512M。Nginx采用epoll，单worker进程，memcache最大并发数为1024，最大使用内存64m。&lt;/p&gt;
-&lt;h2&gt;不开启缓存&lt;/h2&gt;
-&lt;p&gt;这一组我们不开启缓存，PHP程序非常简单：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
-phpinfo();
-?&gt;&lt;/pre&gt;
-&lt;p&gt;测试结果如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/4.png&quot;/&gt;&lt;/p&gt;
-&lt;h2&gt;PHP memcache缓存策略&lt;/h2&gt;
-&lt;p&gt;第二组我们用PHP操作缓存，测试脚本为：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
-$memc = new Memcached;
-$memc-&gt;addServer('localhost', 11211) or die('Connect to memcache server failed!');
-$output = $memc-&gt;get('my_key');
-if(empty($output)) {
-    ob_start();
-    phpinfo();
-    $output = ob_get_contents();
-    ob_end_clean();
-    $memc-&gt;set('my_key', $output, 300);
-}
-echo $output; 
-?&gt;&lt;/pre&gt;
-&lt;p&gt;测试结果如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/5.png&quot;/&gt;&lt;/p&gt;
-&lt;h2&gt;Nginx memcache缓存策略&lt;/h2&gt;
-&lt;p&gt;最后，我们将PHP脚本回归到不使用缓存的版本，并配置好memc和srcache缓存机制。测试结果如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/6.png&quot;/&gt;&lt;/p&gt;
-&lt;h2&gt;结果对比分析&lt;/h2&gt;
-&lt;p&gt;为了直观，我取“每秒处理请求数”、“平均每个请求处理时间”和“吞吐率”作为评价指标，制作了一张图表。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/nginx-memc-and-srcache/7.png&quot;/&gt;&lt;/p&gt;
-&lt;p&gt;我想看到图表，结论已毋需我多言。在各项指标上使用memc和srcache构建的缓存机制都大大优于使用PHP操作memcache。其中每秒处理请求数（并发度）和吞吐率都是其9倍左右，而平均个请求所用时间仅有传统策略的1/8。&lt;/p&gt;
-&lt;p&gt;这里要特别说明一下，这里之所以PHP memcache策略比不使用缓存优势不明显，是因为我们的PHP脚本不涉及I/O操作，如果其中存在如数据库存取，PHP memcache的优势还是有的，但不论如何，Nginx memcache策略在性能上的优势是其无法比拟的。&lt;/p&gt;
-&lt;p&gt;另外，除了性能优势外，使用这种策略还可以简化PHP逻辑，因为缓存这一层都放在Nginx中了，PHP就从缓存操作中解放了出来，因此是一举多得。&lt;/p&gt;
-&lt;p&gt;如果你的系统也构建在LNMP上（或LAMP）上，不妨使用本文提到的方法替代传统的缓存策略，尽情享受性能上的提升。&lt;/p&gt;
 </description>
 </item>
 
