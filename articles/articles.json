@@ -1,6 +1,15 @@
 {
     "articles": [
         {
+            "id": "basic-statistics-calculate",
+            "title": "期望、方差、协方差及相关系数的基本运算",
+            "postedOn": "2013-06-05",
+            "author": "张洋",
+            "tags": ["概率","统计","数学"],
+            "category": "",
+            "abstract": "这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。"
+        },
+        {
             "id": "time-series-analysis-foundation",
             "title": "时间序列分析基础",
             "postedOn": "2013-05-27",

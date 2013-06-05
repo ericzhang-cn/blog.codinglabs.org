@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。"/>
+        <meta name="keywords" content="编程,代码,计算机,数学,PHP,Nginx,数据挖掘,机器学习,算法,编译器,分布式"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 期望、方差、协方差及相关系数的基本运算</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/prettify.css"/>
+        <link rel="stylesheet" href="/assets/css/simplog.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
+        <script type="text/javascript">
+            var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+            document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+    </head>
+    <body onload="prettyPrint()">
+        <div id="header">
+            <div id="header-inner">
+                <div id="title"><a href="/"><small>{</small> CodingLabs <small>}</small></a></div>
+                <div id="subtitle">/&gt; keep coding, keep foolish</div>
+            </div>
+        </div>
+        <div id="main">
+            <div id="main-inner">
+                <div id="article-title">
+                    <a href="/articles/basic-statistics-calculate.html">期望、方差、协方差及相关系数的基本运算</a>
+                </div>
+                <div id="article-meta">
+                    作者 张洋 | 发布于 2013-06-05 | 最后更新 2013-06-05
+                </div>
+                <div id="article-tags">
+                    <a class="tag" href="/tag.html#概率">概率</a><a class="tag" href="/tag.html#统计">统计</a><a class="tag" href="/tag.html#数学">数学</a>
+                </div>
+                <div id="article-content">
+                    <p>这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。</p>
+<h1>期望</h1>
+<h2>定义</h2>
+<p>设\(P(x)\)是一个离散概率分布函数，自变量的取值范围为\(\{x_1, x_2, \cdots, \x_n\}\)。其期望被定义为：</p>
+<p>\[E(x)=sum_{k=1}^n{x_kP(x_k)}\]</p>
+<p>设\(p(x)\)是一个连续概率密度函数。其期望为：</p>
+<p>\[E(x)=\int_{-\infty}^{+\infty}{xp(x)dx}\]</p>
+<h2>性质</h2>
+<p>1、线性运算规则</p>
+<p>期望服从线性性质（可以很容易从期望的定义公式中导出）。因此线性运算的期望等于期望的线性运算：</p>
+<p>\[E(ax+by+c)=aE(x)+bE(y)+c\]</p>
+<p>这个性质可以推广到任意一般情况：</p>
+<p>\[E(\sum_{k=1}^{n}{a_ix_i}+c)=\sum_{k=1}^{n}{a_iE(x_i)}+c\]</p>
+<p>2、函数的期望</p>
+<p>设\(f(x)\)为x的函数，则\(f(x)\)的期望为：</p>
+<p>离散：</p>
+<p>\[E(f(x))=sum_{k=1}^n{f(x_k)P(x_k)}\]</p>
+<p>连续：</p>
+<p>\[E(f(x))=\int_{-\infty}^{+\infty}{f(x)p(x)dx}\]</p>
+<p>一定要注意，<em>函数的期望不等于期望的函数</em>，即\(E(f(x)) \ne f(E(x))\)！。</p>
+<p>3、乘积的期望</p>
+<p>一般来说，<em>乘积的期望不等于期望的乘积</em>，除非变量相互独立。因此，如果x和y相互独立，则\(E(xy)=E(x)E(x)\)。</p>
+<p>期望的运算构成了统计量的运算基础，因为<em>方差、协方差等统计量本质上是一种特殊的期望</em>。</p>
+
+                </div>
+
+<!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {lkrc:0};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+<!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+    <span class="jiathis_txt">分享到：</span>
+    <a class="jiathis_button_qzone">QQ空间</a>
+    <a class="jiathis_button_tsina">新浪微博</a>
+    <a class="jiathis_button_tqq">腾讯微博</a>
+    <a class="jiathis_button_renren">人人网</a>
+    <a href="http://www.jiathis.com/share?uid=894207" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+    <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">
+    var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=894207" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+    var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- Duoshuo Comment END -->
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2013 CodingLabs. <span id="madeonmymac" style="color:#999999;">Made on my Mac </span></p>
+                <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
