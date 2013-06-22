@@ -128,14 +128,14 @@ __一般的，如果我们有M个N维向量，想将其变换为由R个N维向�
   p\_R
 \\end{pmatrix}
 \\begin{pmatrix}
-  a\_1 & a\_2 & \\cdots & a\_N
+  a\_1 & a\_2 & \\cdots & a\_M
 \\end{pmatrix}
 =
 \\begin{pmatrix}
-  p\_1a\_1 & p\_1a\_2 & \\cdots & p\_1a\_N \\\\
-  p\_2a\_1 & p\_2a\_2 & \\cdots & p\_2a\_N \\\\
+  p\_1a\_1 & p\_1a\_2 & \\cdots & p\_1a\_M \\\\
+  p\_2a\_1 & p\_2a\_2 & \\cdots & p\_2a\_M \\\\
   \\vdots  & \\vdots  & \\ddots & \\vdots \\\\
-  p\_Ra\_1 & p\_Ra\_2 & \\cdots & p\_Ra\_N \\\\
+  p\_Ra\_1 & p\_Ra\_2 & \\cdots & p\_Ra\_M \\\\
 \\end{pmatrix}\\]
 
 其中\\(p\_i\\)是一个行向量，表示第i个基，\\(a\_j\\)是一个列向量，表示第j个原始数据记录。

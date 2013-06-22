@@ -124,14 +124,14 @@
   p_R
 \end{pmatrix}
 \begin{pmatrix}
-  a_1 &amp; a_2 &amp; \cdots &amp; a_N
+  a_1 &amp; a_2 &amp; \cdots &amp; a_M
 \end{pmatrix}
 =
 \begin{pmatrix}
-  p_1a_1 &amp; p_1a_2 &amp; \cdots &amp; p_1a_N \\
-  p_2a_1 &amp; p_2a_2 &amp; \cdots &amp; p_2a_N \\
+  p_1a_1 &amp; p_1a_2 &amp; \cdots &amp; p_1a_M \\
+  p_2a_1 &amp; p_2a_2 &amp; \cdots &amp; p_2a_M \\
   \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots \\
-  p_Ra_1 &amp; p_Ra_2 &amp; \cdots &amp; p_Ra_N \\
+  p_Ra_1 &amp; p_Ra_2 &amp; \cdots &amp; p_Ra_M \\
 \end{pmatrix}\]</p>
 <p>其中\(p_i\)是一个行向量，表示第i个基，\(a_j\)是一个列向量，表示第j个原始数据记录。</p>
 <p>特别要注意的是，这里R可以小于N，而R决定了变换后数据的维数。也就是说，我们可以将一N维数据变换到更低维度的空间中去，变换后的维度取决于基的数量。因此这种矩阵相乘的表示也可以表示降维变换。</p>
