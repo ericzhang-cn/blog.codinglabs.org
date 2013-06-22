@@ -78,6 +78,6 @@ PCA（Principal Component Analysis）是一种常用的数据分析方法。PCA�
 
 现在，我们想获得(3,2)在新基上的坐标，即在两个方向上的投影矢量值，那么根据内积的几何意义，我们只要分别计算(3,2)和两个基的内积，不难得到新的坐标为\\((\\frac{5}{\\sqrt{2}},-\\frac{1}{\\sqrt{2}})\\)。下图给出了新的基以及(3,2)在新基上坐标值的示意图：
 
-<p class="picture"><img alt="" src="/uploads/pictures/pca-tutorial/04.png"/></p>
+<p class="picture"><img alt="" src="/uploads/pictures/pca-tutorial/05.png"/></p>
 
 ## 基变换的矩阵表示
