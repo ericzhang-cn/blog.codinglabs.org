@@ -204,7 +204,27 @@
 <p>回顾一下大学的线性代数课程，你一定听说过矩阵的特征值和特征向量这东西。简要复习一下，对于矩阵A，如果存在向量x和实数\(\lambda\)，使得：</p>
 <p>\[Ax=\lambda x\]</p>
 <p>则x叫做矩阵的一个特征向量，而\(\lambda\)叫做对应的特征值。关于特征向量和特征值的话题我就不深入下去了，我们只看一下它们在矩阵对角化中的作用。</p>
-<p>考虑协方差矩阵C，假设S是其特征向量按列组成的矩阵，即S的一行\(s_i\)为C的第i个特征向量，那么根据特征向量的定义：</p>
+<p>设协方差矩阵的特征向量分别为\(e_1,e_2,\cdots,\e_n\)，那么将它们按列排成矩阵E，则：</p>
+<p>\[E=\begin{pmatrix}
+  e_1 &amp; e_2 &amp; \cdots &amp; e_n
+\end{pmatrix}\]</p>
+<p>由线性代数知识可知实对称矩阵特征向量均正交，而C是实对称矩阵，因此E是正交矩阵。</p>
+<p>用C乘以E，得出如下运算：</p>
+<p>\[CE=\begin{pmatrix}
+  Ce_1 &amp; Ce_2 &amp; \cdots &amp; Ce_n
+\end{pmatrix}=\begin{pmatrix}
+  \lambda_1e_1 &amp; \lambda_2e_2 &amp; \cdots &amp; \lambda_ne_n
+\end{pmatrix}=E\begin{pmatrix}
+  \lambda_1 &amp;             &amp;         &amp;             \\
+              &amp; \lambda_2 &amp;         &amp;             \\
+              &amp;             &amp; \ddots &amp;             \\
+              &amp;             &amp;         &amp; \lambda_n 
+\end{pmatrix}=E\Lambda\]</p>
+<p>两边左边乘以E的逆矩阵，就得出：</p>
+<p>\[E^{-1}CE=(E^{-1}E)\Lambda=\Lambda\]</p>
+<p>因为E是正交矩阵，所以\(E^{-1}=E^\mathsf{T}\)</p>
+<p>因此：</p>
+<p>\[E^\mathsf{T}CE=\Lambda\]</p>
 
                 </div>
 
