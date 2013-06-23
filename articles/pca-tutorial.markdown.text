@@ -235,7 +235,7 @@ __设我们有m个n维数据记录，将其按列排成n乘m的矩阵X，设\\(C
 
 设原始数据矩阵X对应的协方差矩阵为C，而P是一组基按行组成的矩阵，设Y=PX，则Y为X对P做基变换后的数据。设Y的协方差矩阵为D，我们推导一下D与C的关系：
 
-\\[\\begin{array}(l l l)
+\\[\\begin{array}{l l l}
   D & = & \\frac{1}{m}YY^\\mathsf{T} \\\\
     & = & \\frac{1}{m}(PX)(PX)^\\mathsf{T} \\\\
     & = & \\frac{1}{m}PXX^\\mathsf{T}P^\\mathsf{T} \\\\
