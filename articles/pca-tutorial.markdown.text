@@ -263,7 +263,7 @@ __设我们有m个n维数据记录，将其按列排成n乘m的矩阵X，设\\(C
 
 则对协方差矩阵C有如下结论：
 
-\\[E^\\mathsf{T}CE=\\Lambda\\=\\begin{pmatrix}
+\\[E^\\mathsf{T}CE=\\Lambda=\\begin{pmatrix}
   \\lambda\_1 &             &         & \\\\
               & \\lambda\_2 &         & \\\\
               &             & \\ddots & \\\\
