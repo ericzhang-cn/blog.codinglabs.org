@@ -180,12 +180,12 @@
   a_1 &amp; a_2 &amp; \cdots &amp; a_m \\
   b_1 &amp; b_2 &amp; \cdots &amp; b_m
 \end{pmatrix}\]</p>
-<p>然后我们用X乘以X的转置：</p>
-<p>\[XX^\mathsf{T}=\begin{pmatrix}
-  \sum_{i=1}^m{a_i^2}   &amp; \sum_{i=1}^m{a_ib_i} \\
-  \sum_{i=1}^m{a_ib_i} &amp; \sum_{i=1}^m{b_i^2}
+<p>然后我们用X乘以X的转置，并乘上系数1/m：</p>
+<p>\[\frac{1}{m}XX^\mathsf{T}=\begin{pmatrix}
+  \frac{1}{m}\sum_{i=1}^m{a_i^2}   &amp; \frac{1}{m}\sum_{i=1}^m{a_ib_i} \\
+  \frac{1}{m}\sum_{i=1}^m{a_ib_i} &amp; \frac{1}{m}\sum_{i=1}^m{b_i^2}
 \end{pmatrix}\]</p>
-<p>奇迹出现了！如果不考虑常数项1/m，这个矩阵对角线上的两个元素分别是两个字段的方差，而其它元素是a和b的协方差。两者被统一到了一个矩阵的。</p>
+<p>奇迹出现了！这个矩阵对角线上的两个元素分别是两个字段的方差，而其它元素是a和b的协方差。两者被统一到了一个矩阵的。</p>
 <p>根据矩阵相乘的运算法则，这个结论很容易被推广到一般情况：</p>
 <p><strong>设我们有m个n维数据记录，将其按列排成n乘m的矩阵X，设\(C=\frac{1}{m}XX^\mathsf{T}\)，则C是一个对称矩阵，其对角线分别个各个字段的方差，而第i行j列和j行i列元素相同，表示i和j两个字段的协方差</strong>。</p>
 <h2>协方差矩阵对角化</h2>
