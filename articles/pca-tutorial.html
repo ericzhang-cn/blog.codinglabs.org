@@ -31,7 +31,7 @@
                     <a href="/articles/pca-tutorial.html">PCA的数学原理</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2013-06-22 | 最后更新 2013-06-23
+                    作者 张洋 | 发布于 2013-06-22 | 最后更新 2013-06-24
                 </div>
                 <div id="article-tags">
                     <a class="tag" href="/tag.html#机器学习">机器学习</a><a class="tag" href="/tag.html#线性代数">线性代数</a><a class="tag" href="/tag.html#PCA">PCA</a>
@@ -201,32 +201,7 @@
 <p>现在事情很明白了！我们要找的P不是别的，而是能让原始协方差矩阵对角化的P。换句话说，优化目标变成了<strong>寻找一个矩阵P，满足\(PCP^\mathsf{T}\)是一个对角矩阵，并且对角元素按从大到小依次排列，那么P的前K行就是要寻找的基，用P的前K行组成的矩阵乘以X就使得X从N维降到了K维并满足上述优化条件</strong>。</p>
 <p>至此，我们离“发明”PCA还有仅一步之遥！</p>
 <p>现在所有焦点都聚焦在了协方差矩阵对角化问题上，有时，我们真应该感谢数学家的先行，因为矩阵对角化在线性代数领域已经属于被玩烂了的东西，所以这在数学上根本不是问题。</p>
-<p>回顾一下大学的线性代数课程，你一定听说过矩阵的特征值和特征向量这东西。简要复习一下，对于矩阵A，如果存在向量x和实数\(\lambda\)，使得：</p>
-<p>\[Ax=\lambda x\]</p>
-<p>则x叫做矩阵的一个特征向量，而\(\lambda\)叫做对应的特征值。关于特征向量和特征值的话题我就不深入下去了，我们只看一下它们在矩阵对角化中的作用。</p>
-<p>设协方差矩阵的特征向量分别为\(e_1,e_2,\cdots,e_n\)，那么将它们按列排成矩阵E，则：</p>
-<p>\[E=\begin{pmatrix}
-  e_1 &amp; e_2 &amp; \cdots &amp; e_n
-\end{pmatrix}\]</p>
-<p>由线性代数知识可知实对称矩阵特征向量均正交，而C是实对称矩阵，因此E是正交矩阵。</p>
-<p>用C乘以E，得出如下运算：</p>
-<p>\[CE=\begin{pmatrix}
-  Ce_1 &amp; Ce_2 &amp; \cdots &amp; Ce_n
-\end{pmatrix}=\begin{pmatrix}
-  \lambda_1e_1 &amp; \lambda_2e_2 &amp; \cdots &amp; \lambda_ne_n
-\end{pmatrix}=E\begin{pmatrix}
-  \lambda_1 &amp;             &amp;         &amp;             \\
-              &amp; \lambda_2 &amp;         &amp;             \\
-              &amp;             &amp; \ddots &amp;             \\
-              &amp;             &amp;         &amp; \lambda_n 
-\end{pmatrix}=E\Lambda\]</p>
-<p>两边左边乘以E的逆矩阵，就得出：</p>
-<p>\[E^{-1}CE=(E^{-1}E)\Lambda=\Lambda\]</p>
-<p>因为E是正交矩阵，所以\(E^{-1}=E^\mathsf{T}\)</p>
-<p>因此：</p>
-<p>\[E^\mathsf{T}CE=\Lambda\]</p>
-<p>于是我们找到了需要的矩阵\(P=E^\mathsf{T}\)。它就是E的转置，也就是C的特征向量按行组成的矩阵。其中P中特征向量从上到下按对应特征值的大小排列。用这个P的前K行去乘以原始数据矩阵X，得到的结果矩阵Y就是PCA降维后的结果，其中的列两两正交，并且最大限度保持了原数据的信息，信息保持量可以用对应的特征值之和量化表示。</p>
-<p>至此，我们完成了PCA的所有数学理论分析。下一节会给出一个PCA变换的实例。</p>
+<h1>算法及实例</h1>
 
                 </div>
 
