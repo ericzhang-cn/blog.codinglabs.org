@@ -235,11 +235,72 @@
 <h2>实例</h2>
 <p>这里以上文提到的</p>
 <p>\[\begin{pmatrix}
-  1 &amp; 1 &amp; 2 &amp; 4 &amp; 2 \\
-  1 &amp; 3 &amp; 3 &amp; 4 &amp; 4
+  -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0 \\
+  -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
 \end{pmatrix}\]</p>
 <p>为例，我们用PCA方法将这组二维数据其降到一维。</p>
-
+<p>因为这个矩阵的每行已经是零均值，这里我们直接求协方差矩阵：</p>
+<p>\[C=\frac{1}{5}\begin{pmatrix}
+  -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0 \\
+  -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
+\end{pmatrix}\begin{pmatrix}
+  -1 &amp; -2 \\
+  -1 &amp; 0  \\
+  0  &amp; 0  \\
+  2  &amp; 1  \\
+  0  &amp; 1
+\end{pmatrix}=\begin{pmatrix}
+  \frac{6}{5} &amp; \frac{4}{5} \\
+  \frac{4}{5} &amp; \frac{6}{5}
+\end{pmatrix}\]</p>
+<p>然后求其特征值和特征向量，具体求解方法不再详述，可以参考相关资料。求解后特征值为：</p>
+<p>\[\lambda_1=2,\lambda_2=2/5\]</p>
+<p>其对应的特征向量分别是：</p>
+<p>\[c_1\begin{pmatrix}
+  1 \\
+  1
+\end{pmatrix},c_2\begin{pmatrix}
+  -1 \\
+  1
+\end{pmatrix}\]</p>
+<p>其中对应的特征向量分布是一组通解，\(c_1\)和\(c_2\)可取任意实数。那么标准化后的特征向量为：</p>
+<p>\[\begin{pmatrix}
+  1/\sqrt{2} \\
+  1/\sqrt{2}
+\end{pmatrix},\begin{pmatrix}
+  -1/\sqrt{2} \\
+  1/\sqrt{2}
+\end{pmatrix}\]</p>
+<p>因此我们的矩阵P是：</p>
+<p>\[P=\begin{pmatrix}
+  1/\sqrt{2}  &amp; 1/\sqrt{2}  \\
+  -1/\sqrt{2} &amp; 1/\sqrt{2}
+\end{pmatrix}\]</p>
+<p>可以验证协方差矩阵C的对角化：</p>
+<p>\[PCP^mathsf{T}=\begin{pmatrix}
+  1/\sqrt{2}  &amp; 1/\sqrt{2}  \\
+  -1/\sqrt{2} &amp; 1/\sqrt{2}
+\end{pmatrix}\begin{pmatrix}
+  6/5 &amp; 4/5 \\
+  4/5 &amp; 6/5
+\end{pmatrix}\begin{pmatrix}
+  1/\sqrt{2} &amp; -1/\sqrt{2}  \\
+  1/\sqrt{2} &amp; 1/\sqrt{2}
+\end{pmatrix}=\begin{pmatrix}
+  2 &amp; 0  \\
+  0 &amp; 2/5
+\end{pmatrix}\]</p>
+<p>最后我们用P的第一行乘以数据矩阵，就得到了降维后的表示：</p>
+<p>\[Y=\begin{pmatrix}
+  1/\sqrt{2} &amp; 1/\sqrt{2}
+\end{pmatrix}\begin{pmatrix}
+  -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0 \\
+  -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
+\end{pmatrix}=\begin{pmatrix}
+  -3/\sqrt{2} &amp; -1/\sqrt{2} &amp; 0 &amp; 3/\sqrt{2} &amp; -1/\sqrt{2}
+\end{pmatrix}\]</p>
+<p>降维投影结果如下图：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/pca-tutorial/07.png"/></p>
                 </div>
 
 <!-- UJian Button BEGIN -->
