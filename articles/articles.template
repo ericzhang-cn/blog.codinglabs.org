@@ -31,7 +31,7 @@
                     <a href="{%= ARTICLE_LINK %}">{%= ARTICLE_TITLE %}</a>
                 </div>
                 <div id="article-meta">
-                    作者 {%= ARTICLE_AUTHOR %} | 发布于 {%= ARTICLE_POSTED_ON %} | 最后更新 {%= ARTICLE_UPDATED_ON %}
+                    作者 {%= ARTICLE_AUTHOR %} | 发布于 {%= ARTICLE_POSTED_ON %}
                 </div>
                 <div id="article-tags">
                     {%= ARTICLE_TAGS %}
@@ -83,6 +83,6 @@
                 <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">{%= COPYRIGHT_ICP %}</a></p>
             </div>
         </div>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </body>
 </html>

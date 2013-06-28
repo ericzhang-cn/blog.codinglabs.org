@@ -31,202 +31,156 @@
                     <a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a>
                 </div>
                 <div id="article-meta">
-                    作者 张洋 | 发布于 2013-03-17 | 最后更新 2013-03-18
+                    作者 张洋 | 发布于 2013-03-17
                 </div>
                 <div id="article-tags">
                     <a class="tag" href="/tag.html#算法">算法</a><a class="tag" href="/tag.html#数学">数学</a><a class="tag" href="/tag.html#线性代数">线性代数</a><a class="tag" href="/tag.html#递推式">递推式</a>
                 </div>
                 <div id="article-content">
                     <p>算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如<a href="http://en.wikipedia.org/wiki/Tower_of_Hanoi">汉诺塔问题</a>的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。</p>
-
 <p>因为递推式求解的重要性，许多算法书籍对其有专门介绍。<a href="http://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a>在<a href="http://en.wikipedia.org/wiki/Concrete_Mathematics">Concrete Mathematics</a>一书中多个章节都涉及递推式求解方法。<a href="http://book.douban.com/subject/1885170/">算法导论</a>也在第四章中专门论述的这个主题。</p>
-
 <p>在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。</p>
-
 <p>而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。</p>
-
 <p>本文首先会给出两个例子：如何使用纯代数方法求解斐波那契数列和汉诺塔递推式；然后会借助线性代数论述这种方法背后的数学意义，说明线性递推式与线性方程的内在联系以及这种解法的数学原理；最后将例子中的方法推广到一般情况。</p>
-
 <h1>示例</h1>
-
 <h2>例1：斐波那契数列</h2>
-
 <p><a href="http://en.wikipedia.org/wiki/Fibonacci_number">斐波那契数列</a>大家应该很熟悉了，这里不再赘述，直接进入问题。</p>
-
 <h3>问题</h3>
-
 <p>设斐波那契数列为由如下递推式定义的数列：</p>
-
 <p>\[\begin{array}{l l l}
 T(0) &amp; = &amp; 0 \\
 T(1) &amp; = &amp; 1 \\
 T(n) &amp; = &amp; T(n-2)+T(n-1) \quad (n \geq 2)
 \end{array}\]</p>
-
 <p>求解\(T(n)\)的封闭形式（也就是斐波那契数列的通项公式）。</p>
-
 <h3>求解</h3>
-
 <p>首先忽略初始条件，考虑递推式\(T(n)=T(n-2)+T(n-1)\)。可以对解的形式进行一个猜测\(T(n)=q^n\)（这个不是瞎猜的，实际上可以证明线性递推式都遵循这种形式）。那么，递推式可以重写为：</p>
-
 <p>\[\begin{array}{l l}
             &amp; T(n)=T(n-2)+T(n-1) \\
 \Rightarrow &amp; q^n=q^{n-2}+q^{n-1} \\
 \Rightarrow &amp; q^2=1+q \\
 \Rightarrow &amp; q^2-q-1=0
 \end{array}\]</p>
-
 <p>这样问题被转化为一个一元二次方程的求根问题。利用求根公式可得：</p>
-
 <p>\[q=\frac{1 \pm \sqrt{5}}{2}\]</p>
-
 <p>因此得到递推式的一个通解：</p>
-
 <p>\[T(n)=c_1(\frac{1+\sqrt{5}}{2})^n+c_2(\frac{1-\sqrt{5}}{2})^n\]</p>
-
 <p>即其中\(c_1\)和\(c_2\)为任意实数。下一步要代入初始条件解出\(c_1\)和\(c_2\)。根据n为0和1时的初始条件，可得：</p>
-
 <p>\[\left\{
 \begin{array}{l l l}
 c_1+c_2 &amp; = &amp; 0 \\
 c_1(\frac{1+\sqrt{5}}{2})+c_2(\frac{1-\sqrt{5}}{2}) &amp; = &amp; 1
 \end{array}
 \right.\]</p>
-
 <p>解得\(c_1=\frac{1}{\sqrt{5}}\)，\(c_2=-\frac{1}{\sqrt{5}}\)。因此最终解为：</p>
-
 <p>\[T(n)=\frac{1}{\sqrt{5}}((\frac{1+\sqrt{5}}{2})^n-(\frac{1-\sqrt{5}}{2})^n)\]</p>
-
 <h2>例2：汉诺塔</h2>
-
 <p>汉诺塔的时间复杂度通常使用递归式定义，在这个例子中将使用代数方法求解其封闭形式。</p>
-
 <h3>问题</h3>
-
 <p>汉诺塔的时间复杂度为\(T(n)=2T(n-1)+1\)，求解其封闭形式。</p>
-
 <h3>求解</h3>
-
 <p>这里并不能直接使用例1中的方法，因为右边除了递推项外，还有一个非递推项1，用线性代数的语言说，这个线性递推式是非齐次的。</p>
-
 <p>可以回想一下线性代数中求解非齐次方程组通解的方法：1）求解其齐次部分的通解。2）求其一个特解，将特解加到通解上即得非齐次方程组通解。</p>
-
 <p>我们用类似的方法求解汉诺塔时间复杂度递推式。首先，忽略后面的1，则得到一个齐次线性递推式：</p>
-
 <p>\[T(n)=2T(n-1)\]</p>
-
 <p>转化为多项式方程：</p>
-
 <p>\[\begin{array}{l l}
             &amp; T(n)=2T(n-1) \\
 \Rightarrow &amp; q^n=2q^{n-1} \\
 \Rightarrow &amp; q=2 \\
 \end{array}\]</p>
-
 <p>因为方程是一次多项式，我们直接得到了其解为2。因此齐次递推式的通解为\(c2^n\)，其中c为任意常数。</p>
-
 <p>然后我们需要求得\(T(n)=2T(n-1)+1\)的一个特解，解是一个以n为变量的函数。我们可以先从常数试起，设特解为\(T(n)=a\)，带入得\(a=2a+1\)，
 解得\(a=-1\)。因此，原递推式的通解为：</p>
-
 <p>\[T(n)=c2^n-1\]</p>
-
 <p>最后我们求解常数c。</p>
-
 <p>将初始条件\(T(0)=0\)带入，得\(0=c-1\)，因此\(c=1\)。代入原通解，得汉诺塔时间复杂度递推式的封闭形式为：</p>
-
 <p>\[T(n)=2^n-1\]</p>
-
 <h1>数学原理</h1>
-
 <p>上面两个例子可能有些同学看的不是很明白，其中提到了一些线性代数术语。在这一章节中，我们分析上述解法的数学原理，看看递推式是如何与线性代数关联起来的。</p>
-
 <h2>线性递推式的一般化</h2>
-
 <p>斐波那契数列和汉诺塔递推式可以看成线性递推式的特例，下面给出线性递推式的一般定义：</p>
-
 <p>我们将满足如下递推关系的递推式称为线性递推式：</p>
-
 <p>\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)+C(n)\]</p>
-
 <p>其中\(C(n)\)是只与n有关系的一个函数。如果\(C(n)=0\)，则称递推式为齐次此，否则称为非齐次的。齐次递推式一定有平凡解\(T(n)=0\)。</p>
-
 <p>注意仅有递推式是不能求得\(T(n)\)的唯一解，因此递推关系式只能给出一个通解。只有当下列初始条件确定后，才有可能给出\(T(n)\)的唯一特解。</p>
-
 <p>\[\begin{array}{l}
 T(0)=b_0 \\
 T(1)=b_1 \\
 \vdots \\
 T(k-1)=b_{k-1}
 \end{array}\]</p>
-
 <h2>齐次递推式求解定理</h2>
-
 <p>下面先考虑齐次线性递推式的求解。定理如下：</p>
-
-<blockquote><p>设有线性齐次递推式\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)</p><p>另设多项式方程\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\)的根是
-\(q_1,q_2,\dots ,q_k\)，我们先讨论不存在重根的情况，也就是说k个根互不相等。</p><p>则\(T(n)\)的通解为：</p><p>\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]</p><p>并且对于任意的初始情况</p><p>\[\begin{array}{l}
+<blockquote>
+<p>设有线性齐次递推式\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)</p>
+<p>另设多项式方程\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\)的根是
+\(q_1,q_2,\dots ,q_k\)，我们先讨论不存在重根的情况，也就是说k个根互不相等。</p>
+<p>则\(T(n)\)的通解为：</p>
+<p>\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]</p>
+<p>并且对于任意的初始情况</p>
+<p>\[\begin{array}{l}
 T(0)=b_0 \\
 T(1)=b_1 \\
 \vdots \\
 T(k-1)=b_{k-1}
-\end{array}\]</p><p>都存在一组解\(c_1, \dots ,c_k\)使得递推式成立</p></blockquote>
-
+\end{array}\]</p>
+<p>都存在一组解\(c_1, \dots ,c_k\)使得递推式成立</p>
+</blockquote>
 <h2>定理的证明</h2>
-
 <p>要证明以上定理，主要需要证明两部分。一是证明多项式根的线性组合可以满足递推式，二是证明任意初始条件下总有解。</p>
-
 <h3>可满足性证明</h3>
-
 <p>首先来证明\(T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\)可以满足递推式。</p>
-
-<blockquote><p>\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)经过变换可以改写为
-\(T(n)-a_1T(n-1)-a_2T(n-2)- \dots -a_{k-1}T(n-k+1)-a_kT(n-k)=0\)</p><p>假设\(T(n)=q^n\)，因为\(q&gt;0\)，所以两边除以\(q^{n-k}\)，得到\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0\)</p><p>因此这个多项式和原递推式同解，因此多项式的每个根q的几何级数\(q^n\)都是原递推式的一个解。同时，根的线性组合
-\(c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\)均满足原递推式（可以带入验证）。</p></blockquote>
-
+<blockquote>
+<p>\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)经过变换可以改写为
+\(T(n)-a_1T(n-1)-a_2T(n-2)- \dots -a_{k-1}T(n-k+1)-a_kT(n-k)=0\)</p>
+<p>假设\(T(n)=q^n\)，因为\(q&gt;0\)，所以两边除以\(q^{n-k}\)，得到\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0\)</p>
+<p>因此这个多项式和原递推式同解，因此多项式的每个根q的几何级数\(q^n\)都是原递推式的一个解。同时，根的线性组合
+\(c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\)均满足原递推式（可以带入验证）。</p>
+</blockquote>
 <h3>任意初始值有解证明</h3>
-
 <p>下面要证明对于任意初始条件，均存在适当的常数\(c_1, \dots ,c_k\)。</p>
-
-<blockquote><p>将</p><p>\[\begin{array}{l}
+<blockquote>
+<p>将</p>
+<p>\[\begin{array}{l}
 T(0)=b_0 \\
 T(1)=b_1 \\
 \vdots \\
 T(k-1)=b_{k-1}
-\end{array}\]</p><p>带入通解公式，得到一个线性方程组</p><p>\[\begin{array}{l l l}
+\end{array}\]</p>
+<p>带入通解公式，得到一个线性方程组</p>
+<p>\[\begin{array}{l l l}
 c_1+c_2+ \dots +c_k &amp; = &amp; b_0 \\
 c_1q_1+c_2q_2+ \dots +c_kq_k &amp; = &amp; b_1 \\
 c_1q_1^2+c_2q_2^2+ \dots +c_kq_k^2 &amp; = &amp; b_2 \\
 \vdots &amp; &amp; \\
 c_1q_1^{k-1}+c_2q_2^{k-1}+ \dots +c_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
-\end{array}\]</p><p>此时问题转化为证明此方程组对于必然有解，下面就要用到线性代数的知识了。这个方程组的系数行列式为：</p><p>\[{det}(V)=\begin{vmatrix}
+\end{array}\]</p>
+<p>此时问题转化为证明此方程组对于必然有解，下面就要用到线性代数的知识了。这个方程组的系数行列式为：</p>
+<p>\[{det}(V)=\begin{vmatrix}
 1 &amp; 1 &amp; \dots &amp; 1 \\
 q_1 &amp; q_2 &amp; \dots &amp; q_k \\
 q_1^2 &amp; q_2^2 &amp; \dots &amp; q_k^2 \\
 \vdots &amp; \vdots &amp; \dots &amp; \vdots \\
 q_1^{k-1} &amp; q_2^{k-1} &amp; \dots &amp; q_k^{k-1}
-\end{vmatrix}\]</p><p>这个行列式就是非常著名<a href="http://en.wikipedia.org/wiki/Vandermonde_matrix">Vandermonde行列式</a>，所以</p><p>\[{det}(V)=\prod_{1 \leq i &lt; j \leq k}{(q_i-q_j)}\]</p><p>上面我们假设了多项式各个根均互异，因此行列式的值不等于0，这意味着系数矩阵的秩为k。有线性代数知识可知，这表明
-对于任意初始值\(b_0, \dots, b_{k-1}\)，方程组均有唯一解。</p><p>证毕。</p><p>顺便说一下，上面的多项式叫特征多项式。其根叫特征根。</p></blockquote>
-
+\end{vmatrix}\]</p>
+<p>这个行列式就是非常著名<a href="http://en.wikipedia.org/wiki/Vandermonde_matrix">Vandermonde行列式</a>，所以</p>
+<p>\[{det}(V)=\prod_{1 \leq i &lt; j \leq k}{(q_i-q_j)}\]</p>
+<p>上面我们假设了多项式各个根均互异，因此行列式的值不等于0，这意味着系数矩阵的秩为k。有线性代数知识可知，这表明
+对于任意初始值\(b_0, \dots, b_{k-1}\)，方程组均有唯一解。</p>
+<p>证毕。</p>
+<p>顺便说一下，上面的多项式叫特征多项式。其根叫特征根。</p>
+</blockquote>
 <h1>通用解法</h1>
-
 <p>通过上面的数学分析，我们得到了一个解线性递推式的通用方法。</p>
-
 <h2>齐次递推式</h2>
-
 <p>设有齐次递推式</p>
-
 <p>\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\]</p>
-
 <p>我们可以写出其特征多项式方程</p>
-
 <p>\[q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\]</p>
-
 <p>解出其k个根\(q_1, \dots, q_k\)。如果k个根互异（但可以有复根），则原递推式的通解为</p>
-
 <p>\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]</p>
-
 <p>然后将初始条件\(b_0, \dots, b_{k-1}\)带入组成线性方程组</p>
-
 <p>\[\begin{array}{l l l}
 x_1+x_2+ \dots +x_k &amp; = &amp; b_0 \\
 x_1q_1+x_2q_2+ \dots +x_kq_k &amp; = &amp; b_1 \\
@@ -234,27 +188,18 @@ x_1q_1^2+x_2q_2^2+ \dots +x_kq_k^2 &amp; = &amp; b_2 \\
 \vdots &amp; &amp; \\
 x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 \end{array}\]</p>
-
 <p>解线性方程组得唯一解\(\hat{x}_1, \dots, \hat{x}_k\)。带回通解公式则得到递推式的最终解</p>
-
 <p>\[T(n)=\hat{x}_1q_1^n+\hat{x}_2q_2^n+ \dots +\hat{x}_kq_k^n\]</p>
-
 <h2>非齐次递推式</h2>
-
 <p>对于非齐次递推式</p>
-
 <p>\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)+C(n) \quad (C(n) \neq 0)\]</p>
-
 <p>可以首先按上面的方法求解其齐次部分的通解\(T_n\)。然后求得其一个特解\(y_n\)，则非齐次递推式的通解为</p>
-
 <p>\[T_n+y_n\]</p>
-
 <p>然后用同样的方法带入初始值，通过线性方程组求出个常量参数带回即可（具体可参见例2）。</p>
-
 <h2>有重根的情况</h2>
-
 <p>上面的解法只针对特征根互异，如果有重根的话，则上述方法会无效。不过只要经过一定处理也可以有通用方法求解，
 因有点复杂，本文不在针对重根情况进行叙述。关于重根情况下的求解，有感兴趣的同学可以参考线性代数或微分方程相关文献。</p>
+
                 </div>
 
 <!-- UJian Button BEGIN -->
@@ -300,6 +245,6 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
                 <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
             </div>
         </div>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </body>
 </html>
