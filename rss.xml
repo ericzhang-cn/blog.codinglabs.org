@@ -4,11 +4,11 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Fri, 28 Jun 2013 00:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 09 Jul 2013 10:24:38 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>PCA的数学原理</title>
-<link>http://blog.codinglabs.org/articles/pca-tutorial.html</link>
+<link>http://blog.codinglabs.org/articles/pca-tutorial.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/pca-tutorial.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Sat, 22 Jun 2013 00:00:00 GMT</pubDate>
@@ -286,7 +286,7 @@
 </item>
 <item>
 <title>期望、方差、协方差及相关系数的基本运算</title>
-<link>http://blog.codinglabs.org/articles/basic-statistics-calculate.html</link>
+<link>http://blog.codinglabs.org/articles/basic-statistics-calculate.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/basic-statistics-calculate.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Wed, 05 Jun 2013 00:00:00 GMT</pubDate>
@@ -366,7 +366,7 @@ Var(x) &amp; = &amp; E((x-E(x))^2) \\
 </item>
 <item>
 <title>时间序列分析基础</title>
-<link>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html</link>
+<link>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Mon, 27 May 2013 00:00:00 GMT</pubDate>
@@ -645,7 +645,7 @@ abline(h=0)&lt;/pre&gt;
 </item>
 <item>
 <title>算法分析中递推式的一般代数解法</title>
-<link>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html</link>
+<link>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Sun, 17 Mar 2013 00:00:00 GMT</pubDate>
@@ -815,7 +815,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 </item>
 <item>
 <title>为什么算法渐进复杂度中对数的底数总为2</title>
-<link>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html</link>
+<link>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Tue, 29 Jan 2013 00:00:00 GMT</pubDate>
@@ -864,7 +864,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
-<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</link>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Wed, 09 Jan 2013 00:00:00 GMT</pubDate>
@@ -939,7 +939,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第三部分：LogLog Counting）</title>
-<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</link>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Thu, 03 Jan 2013 00:00:00 GMT</pubDate>
@@ -1021,7 +1021,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第二部分：Linear Counting）</title>
-<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</link>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Mon, 31 Dec 2012 00:00:00 GMT</pubDate>
@@ -1092,7 +1092,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第一部分：基本概念）</title>
-<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</link>
+<link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Sun, 30 Dec 2012 00:00:00 GMT</pubDate>
@@ -1155,7 +1155,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 </item>
 <item>
 <title>基数估计算法概览</title>
-<link>http://blog.codinglabs.org/articles/cardinality-estimation.html</link>
+<link>http://blog.codinglabs.org/articles/cardinality-estimation.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/cardinality-estimation.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Fri, 23 Nov 2012 00:00:00 GMT</pubDate>
@@ -1216,7 +1216,7 @@ def estimate_cardinality(values, k):
 </item>
 <item>
 <title>从抛硬币试验看概率论的基本内容及统计方法</title>
-<link>http://blog.codinglabs.org/articles/basis-of-probability-and-statistics.html</link>
+<link>http://blog.codinglabs.org/articles/basis-of-probability-and-statistics.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/basis-of-probability-and-statistics.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Tue, 20 Nov 2012 00:00:00 GMT</pubDate>
@@ -1344,7 +1344,7 @@ def estimate_cardinality(values, k):
 </item>
 <item>
 <title>x86-64体系下一个奇怪问题的定位</title>
-<link>http://blog.codinglabs.org/articles/trouble-of-x86-64-platform.html</link>
+<link>http://blog.codinglabs.org/articles/trouble-of-x86-64-platform.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/trouble-of-x86-64-platform.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Tue, 13 Nov 2012 00:00:00 GMT</pubDate>
@@ -1491,7 +1491,7 @@ ret
 </item>
 <item>
 <title>网站统计中的数据收集原理及实现</title>
-<link>http://blog.codinglabs.org/articles/how-web-analytics-data-collection-system-work.html</link>
+<link>http://blog.codinglabs.org/articles/how-web-analytics-data-collection-system-work.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/how-web-analytics-data-collection-system-work.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Wed, 24 Oct 2012 00:00:00 GMT</pubDate>
@@ -1783,7 +1783,7 @@ awk -F^A '{print $2}' ma-2012102409.log | uniq | wc -l&lt;/pre&gt;
 </item>
 <item>
 <title>聊聊如何检测素数</title>
-<link>http://blog.codinglabs.org/articles/prime-test.html</link>
+<link>http://blog.codinglabs.org/articles/prime-test.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/prime-test.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Tue, 28 Aug 2012 00:00:00 GMT</pubDate>
@@ -1962,7 +1962,7 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 </item>
 <item>
 <title>浅析PageRank算法</title>
-<link>http://blog.codinglabs.org/articles/intro-to-pagerank.html</link>
+<link>http://blog.codinglabs.org/articles/intro-to-pagerank.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/intro-to-pagerank.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Mon, 02 Jul 2012 00:00:00 GMT</pubDate>
@@ -2107,7 +2107,7 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 </item>
 <item>
 <title>发布一个查看PHP opcode的扩展模块及Web服务</title>
-<link>http://blog.codinglabs.org/articles/opdumper-and-web-opcode-dumper.html</link>
+<link>http://blog.codinglabs.org/articles/opdumper-and-web-opcode-dumper.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/opdumper-and-web-opcode-dumper.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Wed, 16 May 2012 00:00:00 GMT</pubDate>
@@ -2220,7 +2220,7 @@ var_dump($opcodes);
 </item>
 <item>
 <title>PHP哈希表碰撞攻击原理</title>
-<link>http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html</link>
+<link>http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/hash-collisions-attack-on-php.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Wed, 04 Jan 2012 00:00:00 GMT</pubDate>
@@ -2403,7 +2403,7 @@ echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
 </item>
 <item>
 <title>闭包漫谈（从抽象代数及函数式编程角度）</title>
-<link>http://blog.codinglabs.org/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html</link>
+<link>http://blog.codinglabs.org/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Mon, 05 Dec 2011 00:00:00 GMT</pubDate>
@@ -2503,7 +2503,7 @@ console.log(lam(2));&lt;/pre&gt;
 </item>
 <item>
 <title>深入研究PHP及Zend Engine的线程安全模型</title>
-<link>http://blog.codinglabs.org/articles/zend-thread-safety.html</link>
+<link>http://blog.codinglabs.org/articles/zend-thread-safety.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/zend-thread-safety.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Fri, 04 Nov 2011 00:00:00 GMT</pubDate>
@@ -2726,7 +2726,7 @@ zend_##module_name##_globals module_name##_globals;
 </item>
 <item>
 <title>如何使用PHP编写daemon process</title>
-<link>http://blog.codinglabs.org/articles/write-daemon-with-php.html</link>
+<link>http://blog.codinglabs.org/articles/write-daemon-with-php.html?utm_source=rss&utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/write-daemon-with-php.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
 <pubDate>Mon, 24 Oct 2011 00:00:00 GMT</pubDate>
