@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Tue, 09 Jul 2013 10:28:23 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 09 Jul 2013 10:39:34 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>PCA的数学原理</title>
@@ -33,7 +33,7 @@
 &lt;p&gt;下面先来看一个高中就学过的向量运算：内积。两个维数相同的向量的内积被定义为：&lt;/p&gt;
 &lt;p&gt;\[(a_1,a_2,\cdots,a_n)^\mathsf{T}\cdot (b_1,b_2,\cdots,b_n)^\mathsf{T}=a_1b_1+a_2b_2+\cdots+a_nb_n\]&lt;/p&gt;
 &lt;p&gt;内积运算将两个向量映射为一个实数。其计算方式非常容易理解，但是其意义并不明显。下面我们分析内积的几何意义。假设A和B是两个n维向量，我们知道n维向量可以等价表示为n维空间中的一条从原点发射的有向线段，为了简单起见我们假设A和B均为二维向量，则\(A=(x_1,y_1)\)，\(B=(x_2,y_2)\)。则在二维平面上A和B可以用两条发自原点的有向线段表示，见下图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/pca-tutorial/01.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/01.png&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;好，现在我们从A点向B所在直线引一条垂线。我们知道垂线与B的交点叫做A在B上的投影，再设A与B的夹角是a，则投影的矢量长度为\(|A|cos(a)\)，其中\(|A|=\sqrt{x_1^2+y_1^2}\)是向量A的模，也就是A线段的标量长度。&lt;/p&gt;
 &lt;p&gt;注意这里我们专门区分了矢量长度和标量长度，标量长度总是大于等于0，值就是线段的长度；而矢量长度可能为负，其绝对值是线段长度，而符号取决于其方向与标准方向相同或相反。&lt;/p&gt;
@@ -44,20 +44,20 @@
 &lt;p&gt;也就是说，&lt;strong&gt;设向量B的模为1，则A与B的内积值等于A向B所在直线投影的矢量长度&lt;/strong&gt;！这就是内积的一种几何解释，也是我们得到的第一个重要结论。在后面的推导中，将反复使用这个结论。&lt;/p&gt;
 &lt;h2&gt;基&lt;/h2&gt;
 &lt;p&gt;下面我们继续在二维空间内讨论向量。上文说过，一个二维向量可以对应二维笛卡尔直角坐标系中从原点出发的一个有向线段。例如下面这个向量：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/pca-tutorial/02.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/02.png&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;在代数表示方面，我们经常用线段终点的点坐标表示向量，例如上面的向量可以表示为(3,2)，这是我们再熟悉不过的向量表示。&lt;/p&gt;
 &lt;p&gt;不过我们常常忽略，&lt;strong&gt;只有一个(3,2)本身是不能够精确表示一个向量的&lt;/strong&gt;。我们仔细看一下，这里的3实际表示的是向量在x轴上的投影值是3，在y轴上的投影值是2。也就是说我们其实隐式引入了一个定义：以x轴和y轴上正方向长度为1的向量为标准。那么一个向量(3,2)实际是说在x轴投影为3而y轴的投影为2。注意投影是一个矢量，所以可以为负。&lt;/p&gt;
 &lt;p&gt;更正式的说，向量(x,y)实际上表示线性组合：&lt;/p&gt;
 &lt;p&gt;\[x(1,0)^\mathsf{T}+y(0,1)^\mathsf{T}\]&lt;/p&gt;
 &lt;p&gt;不难证明所有二维向量都可以表示为这样的线性组合。此处(1,0)和(0,1)叫做二维空间中的一组基。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/pca-tutorial/03.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/03.png&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;所以，&lt;strong&gt;要准确描述向量，首先要确定一组基，然后给出在基所在的各个直线上的投影值，就可以了&lt;/strong&gt;。只不过我们经常省略第一步，而默认以(1,0)和(0,1)为基。&lt;/p&gt;
 &lt;p&gt;我们之所以默认选择(1,0)和(0,1)为基，当然是比较方便，因为它们分别是x和y轴正方向上的单位向量，因此就使得二维平面上点坐标和向量一一对应，非常方便。但实际上任何两个线性无关的二维向量都可以成为一组基，所谓线性无关在二维平面内可以直观认为是两个不在一条直线上的向量。&lt;/p&gt;
 &lt;p&gt;例如，(1,1)和(-1,1)也可以成为一组基。一般来说，我们希望基的模是1，因为从内积的意义可以看到，如果基的模是1，那么就可以方便的用向量点乘基而直接获得其在新基上的坐标了！实际上，对应任何一个向量我们总可以找到其同方向上模为1的向量，只要让两个分量分别除以模就好了。例如，上面的基可以变为\((\frac{1}{\sqrt{2}},\frac{1}{\sqrt{2}})\)和\((-\frac{1}{\sqrt{2}},\frac{1}{\sqrt{2}})\)。&lt;/p&gt;
 &lt;p&gt;现在，我们想获得(3,2)在新基上的坐标，即在两个方向上的投影矢量值，那么根据内积的几何意义，我们只要分别计算(3,2)和两个基的内积，不难得到新的坐标为\((\frac{5}{\sqrt{2}},-\frac{1}{\sqrt{2}})\)。下图给出了新的基以及(3,2)在新基上坐标值的示意图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/pca-tutorial/05.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/05.png&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;另外这里要注意的是，我们列举的例子中基是正交的（即内积为0，或直观说相互垂直），但可以成为一组基的唯一要求就是线性无关，非正交的基也是可以的。不过因为正交基有较好的性质，所以一般使用的基都是正交的。&lt;/p&gt;
 &lt;h2&gt;基变换的矩阵表示&lt;/h2&gt;
@@ -126,7 +126,7 @@
   -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
 \end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;我们可以看下五条数据在平面直角坐标系内的样子：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/pca-tutorial/06.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/06.png&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;现在问题来了：如果我们必须使用一维来表示这些数据，又希望尽量保留原始的信息，你要如何选择？&lt;/p&gt;
 &lt;p&gt;通过上一节对基变换的讨论我们知道，这个问题实际上是要在二维平面中选择一个方向，将所有数据都投影到这个方向所在直线上，用投影值表示原始记录。这是一个实际的二维降到一维的问题。&lt;/p&gt;
@@ -275,7 +275,7 @@
   -3/\sqrt{2} &amp; -1/\sqrt{2} &amp; 0 &amp; 3/\sqrt{2} &amp; -1/\sqrt{2}
 \end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;降维投影结果如下图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/pca-tutorial/07.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/07.png&quot;/&gt;&lt;/p&gt;
 
 &lt;h1&gt;进一步讨论&lt;/h1&gt;
 &lt;p&gt;根据上面对PCA的数学原理的解释，我们可以了解到一些PCA的能力和限制。PCA本质上是将方差最大的方向作为主要特征，并且在各个正交方向上将数据“离相关”，也就是让它们在不同正交方向上没有相关性。&lt;/p&gt;
@@ -408,7 +408,7 @@ Var(x) &amp; = &amp; E((x-E(x))^2) \\
 &lt;h3&gt;白噪声&lt;/h3&gt;
 &lt;p&gt;考虑一个时间序列，其中每一个元素为独立同分布变量，且均值为0。这种时间序列叫做白噪声。之所以叫这个名字，是因为对这种序列的频域分析表明其中平等的包含了各个频率，和物理中的白光类似。&lt;/p&gt;
 &lt;p&gt;下面是用R模拟生成的白噪声时序图。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/whitenoise.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/whitenoise.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Y = ts(rnorm(100, mean=0, sd=1));
 plot(Y, family=&quot;simhei&quot;, main=&quot;白噪声&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
@@ -428,7 +428,7 @@ Y_t &amp; = &amp; e_1+e_2+\cdots +e_t \\
 &amp; \vdots &amp;
 \end{array}\]&lt;/p&gt;
 &lt;p&gt;下面是用R模拟的随机游走。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/randwalk.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/randwalk.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Y = ts(rnorm(100, mean=0, sd=1));
 for (i in 2:length(Y)) {
@@ -481,7 +481,7 @@ abline(h=0)&lt;/pre&gt;
 \end{array}\]&lt;/p&gt;
 &lt;p&gt;当不同参数取0时ARIMA可以退化为更简单的形式，例如d=0时，模型变为ARMA，如果d和q都等于0，就变为AR模型，而如果d和p为0，则是MA模型，如果d、p和q都为0，那就是白噪声了。所以\(ARIMA(0,0,0)\)就是白噪声序列函数，因此白噪声也只是ARIMA模型的一个特例。&lt;/p&gt;
 &lt;p&gt;下图说明了各个模型间的关系：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/arima-models.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arima-models.png&quot;/&gt;&lt;/p&gt;
 
 &lt;p&gt;图中自顶向下越来越特化，而自底向上则越来越泛化。&lt;/p&gt;
 &lt;p&gt;这一节我们从较为简单的特化ARIMA模型开始讲述，由简入难，一步一步描述各种模型。后面的几节会讲述如何对ARIMA模型进行训练和估计以及如何应用ARIMA模型进行预测。&lt;/p&gt;
@@ -494,7 +494,7 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;简单起见，我们分析一下最简单的MA(1)和MA(2)模型及其统计性质。&lt;/p&gt;
 &lt;p&gt;下面是MA(1)模型的序列函数以及用R产生的模拟数据：&lt;/p&gt;
 &lt;p&gt;\[Y_t=e_t-\theta e_{t-1}\]&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/ma1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/ma1.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
 Y = c();
@@ -532,7 +532,7 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;从上面分析得出，MA(1)模型是一个平稳序列，因为其均值为常数，自协方差只与时滞相关。以后任何平稳模型，我们都将自协方差和自相关系数表示为时滞k的函数，而不再表示为t和s的函数。另外还可以发现，MA(1)模型每一个序列值只与其前一个值有相关性，而时滞超过1则无相关性，后面可以看到这个特性是识别MA模型的重要特征。另外不难证明，一阶自相关系数在\(\theta\)为正负1时分别达到最强负相关-0.5和最强正相关0.5，在\(\theta\)为0时，MA(1)退化为白噪声，因此自相关系数为0。&lt;/p&gt;
 &lt;p&gt;类似的，MA(2)模型可以表述为：&lt;/p&gt;
 &lt;p&gt;\[Y_t=e_t-\theta_1 e_{t-1}-\theta_2 e_{t-2}\]&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/ma2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/ma2.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
 Y = c();
@@ -571,7 +571,7 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;\[\rho_k=\gamma_k / \gamma_0=\phi^k\]&lt;/p&gt;
 &lt;p&gt;从统计特性可以知道，AR(1)模型相近的时序点倾向于一起“运动”，因此可能呈现假趋势。前置节点的影响随着时滞的增大而呈指数衰减。这种特性对于模型识别非常重要。&lt;/p&gt;
 &lt;p&gt;下面是一个R模拟的AR(1)时间序列。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/ar1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/ar1.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
 Y = c();
@@ -608,7 +608,7 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;下面研究最简单的ARMA(1,1)模型。这是一个带有一阶自回归和一阶滑动平均的序列：&lt;/p&gt;
 &lt;p&gt;\[Y_t=e_t+\phi Y_{t-1}-\theta e_{t-1}\]&lt;/p&gt;
 &lt;p&gt;其平稳的条件等于AR(1)的平稳条件，也就是\(|\phi| &lt; 1\)。在这个前提下，我们分析其统计特性。由于推导过程比较复杂，这里直接把我之前在纸上推导的草稿贴出来，详见下图（点击图片可放大）。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;a href=&quot;/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot; target=&quot;_blank&quot;&gt;&lt;img width=&quot;600&quot; alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot;/&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;a href=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot; target=&quot;_blank&quot;&gt;&lt;img width=&quot;600&quot; alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot;/&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;其中结论性部分我用红笔标出了。根据上面的推导结果，ARMA(1,1)的统计特性如下：&lt;/p&gt;
 &lt;p&gt;\[\mu=0\]&lt;/p&gt;
@@ -622,7 +622,7 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;\[\rho_k=\phi^{k-1}\frac{(\phi-\theta)(1-\phi\theta)}{1+\theta^2-2\phi\theta}\]&lt;/p&gt;
 &lt;p&gt;大约可以看到相关系数也是随时滞呈指数递减，当然不同的参数会有不同的情况，具体我们留待模型识别一节讨论。&lt;/p&gt;
 &lt;p&gt;下面给出一个模拟的ARMA(1,1)时间序列：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/time-series-analysis-foundation/arma11.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arma11.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
 Y = c();
@@ -835,7 +835,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 
 &lt;p&gt;如果把这个递归式的递归树画出来，很容易得到\(T(n)=O(n\log_3n)\)。如下图所示：&lt;/p&gt;
 
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/why-logarithm-base-of-asymptotic-time-complexity-always-two/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/why-logarithm-base-of-asymptotic-time-complexity-always-two/1.png&quot;/&gt;&lt;/p&gt;
 
 &lt;h1&gt;对数的陷阱&lt;/h1&gt;
 
@@ -884,7 +884,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;\(E(\frac{f_\hat{n}(S)}{f_n(S)})=1\)&lt;/p&gt;
 &lt;p&gt;这个在上一篇文章中已经说明了。同时也可以看到，\(\frac{f_\hat{n}(S)}{f_n(S)}\)实际上是一个随机变量，并且服从正态分布。对于正态分布随机变量，一般可以通过标准差\(\sigma\)度量其稳定性，直观来看，标准差越小，则整体分布越趋近于均值，所以估计效果就越好。这是定性的，那么定量来看标准误差\(\sigma\)到底表达了什么意思呢。它的意义是这样的：&lt;/p&gt;
 &lt;p&gt;对于无偏正态分布而言，随机变量的一次随机取值落在均值一个标准差范围内的概率是68.2%，而落在两个和三个标准差范围内的概率分别为95.4%和99.6%，如下图所示（图片来自&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E6%A0%87%E5%87%86%E8%AF%AF&quot; target=&quot;_blank&quot;&gt;维基百科&lt;/a&gt;）：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-iv/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-iv/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;因此，假设标准误差是0.02（2%），它实际的意义是：假设真实基数为n，n与估计值之比落入(0.98, 1.02)的概率是68.2%，落入(0.96, 1.04)的概率是95.4%，落入(0.94, 1.06)的概率是99.6%。显然这个比值越大则估计值越不准，因此对于0.02的标准误差，这个比值大于1.06或小于0.94的概率不到0.004。&lt;/p&gt;
 &lt;p&gt;再直观一点，假设真实基数为10000，则一次估计值有99.6%的可能不大于10600且不小于9400。&lt;/p&gt;
 &lt;h2&gt;组合计数与渐近分析&lt;/h2&gt;
@@ -959,7 +959,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;h2&gt;思想来源&lt;/h2&gt;
 &lt;p&gt;下面非正式的从直观角度描述LLC算法的思想来源。&lt;/p&gt;
 &lt;p&gt;设a为待估集合（哈希后）中的一个元素，由上面对H的定义可知，a可以看做一个长度固定的比特串（也就是a的二进制表示），设H哈希后的结果长度为L比特，我们将这L个比特位从左到右分别编号为1、2、…、L：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-iii/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-iii/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;又因为a是从服从均与分布的样本空间中随机抽取的一个样本，因此a每个比特位服从如下分布且相互独立。&lt;/p&gt;
 &lt;p&gt;\(P(x=k)=\left\{\begin{matrix} 0.5 (k=0)\\ 0.5 (k=1)\end{matrix}\right.\)&lt;/p&gt;
 &lt;p&gt;通俗说就是a的每个比特位为0和1的概率各为0.5，且相互之间是独立的。&lt;/p&gt;
@@ -1037,7 +1037,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;\(\hat{n}=-mlog\frac{u}{m}\)&lt;/p&gt;
 &lt;p&gt;为n的一个估计，且为最大似然估计（MLE）。&lt;/p&gt;
 &lt;p&gt;示意图如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-ii/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-ii/1.png&quot;/&gt;&lt;/p&gt;
 &lt;h2&gt;推导及证明&lt;/h2&gt;
 &lt;p&gt;（对数学推导不感兴趣的读者可以跳过本节）&lt;/p&gt;
 &lt;p&gt;由上文对H的定义已知n个不同元素的哈希值服从独立均匀分布。设\(A_j\)为事件“经过n个不同元素哈希后，第j个桶值为0”，则：&lt;/p&gt;
@@ -1081,7 +1081,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;\(m &gt; \beta (e^t-t-1)\)&lt;/p&gt;
 &lt;p&gt;其中\(\beta = max(5, 1/(\epsilon t)^2)\)&lt;/p&gt;
 &lt;p&gt;下图是论文作者预先计算出的关于不同基数量级和误差情况下，m的选择表：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-ii/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-ii/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;可以看出精度要求越高，则bitmap的长度越大。随着m和n的增大，m大约为n的十分之一。因此LC所需要的空间只有传统的bitmap直接映射方法的1/10，但是从渐进复杂性的角度看，空间复杂度仍为\(O(N_{max})\)。&lt;/p&gt;
 &lt;h2&gt;合并&lt;/h2&gt;
 &lt;p&gt;LC非常方便于合并，合并方案与传统bitmap映射方法无异，都是通过按位或的方式。&lt;/p&gt;
@@ -1140,7 +1140,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;接着上面的例子，我们看一下目前常用的基数计数的实现方法。&lt;/p&gt;
 &lt;h2&gt;基于B树的基数计数&lt;/h2&gt;
 &lt;p&gt;对上面的伪代码做一个简单分析，会发现关键操作有两个：查找-迅速定位当前访客是否已经在集合中，插入-将新的访客标识插入到访客集合中。因此，需要为每一个需要统计UV的点（此处就是十个宝贝链接）维护一个查找效率较高的数据结构，又因为实时数据流的关系，这个数据结构需要尽量在内存中维护，因此这个数据结构在空间复杂度上也要比较适中。综合考虑一种传统的做法是在实时计算引擎采用了B树来组织这个集合。下图是一个示意图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/algorithms-for-cardinality-estimation-part-i/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-i/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;之所以选用B树是因为B树的查找和插入相关高效，同时空间复杂度也可以接受（关于B树具体的性能分析请参考&lt;a href=&quot;http://en.wikipedia.org/wiki/B-tree&quot; target=&quot;_blank&quot;&gt;这里&lt;/a&gt;）。&lt;/p&gt;
 &lt;p&gt;这种实现方案为一个基数计数器维护一棵B树，由于B树在查找效率、插入效率和内存使用之间非常平衡，所以算是一种可以接受的解决方案。但是当数据量特别巨大时，例如要同时统计几万个链接的UV，如果要将几万个链接一天的访问记录全部维护在内存中，这个内存使用量也是相当可观的（假设每个B树占用1M内存，10万个B树就是100G！）。一种方案是在某个时间点将内存数据结构写入磁盘（双十一和双十二大促时一淘数据部的效果平台是每分钟将数据写入HBase）然后将内存中的计数器和数据结构清零，但是B树并不能高效的进行合并，这就使得内存数据落地成了非常大的难题。&lt;/p&gt;
 &lt;p&gt;另一个需要数据结构合并的场景是查看并集的基数，例如在上面的例子中，如果我想查看Item1和Item2的总UV，是没有办法通过这种B树的结构快速得到的。当然可以为每一种可能的组合维护一棵B树。不过通过简单的分析就可以知道这个方案基本不可行。N个元素集合的非空幂集数量为\(2^N-1\)，因此要为10个链接维护1023棵B树，而随着链接的增加这个数量会以幂指级别增长。&lt;/p&gt;
@@ -1334,7 +1334,7 @@ def estimate_cardinality(values, k):
 &lt;p&gt;\(f(x) = {1 \over \sigma\sqrt{2\pi} }\,e^{- {{(x-\mu )^2 \over 2\sigma^2}}}\)&lt;/p&gt;
 &lt;p&gt;上面说过，我们希望显著水平是5%，所以，我需要找到x=z，使得此概率密度函数从-z到z的定积分为0.95，然后看0.632在不在[-z, z]内，如果在的话，我会认为我确实错了，至少我没有95%以上的把握说p不等于0.5，而如果0.632不再这个范围内，则我可以拍着胸脯说，我已经从理论上证明我有95%以上的把握，p不是0.5（换句话说，如果p是0.5，抛十次六次正面的可能性不足5%）。&lt;/p&gt;
 &lt;p&gt;坦白说这个z不是很好算，不过还好由于这东西特别常用，任何一本概率课本后面都可以找到标准正态分布表（或者很多工具如R语言可以直接计算分位点），下面就是我在网上找到的一个（来源&lt;a title=&quot;http://www.mathsisfun.com/data/standard-normal-distribution-table.html&quot; href=&quot;http://www.mathsisfun.com/data/standard-normal-distribution-table.html&quot;&gt;http://www.mathsisfun.com/data/standard-normal-distribution-table.html&lt;/a&gt;）：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/basis-of-probability-and-statistics/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/basis-of-probability-and-statistics/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;这是一个单侧表，要保证显著水平为5%，则单侧积分上限不能低于0.475，通过查上表，可知0.475对应的z是1.96，远大于我们算出的0.632。很不幸，我在5%的显著水平下无法拒绝p=0.5的假设。同时通过上表可以看到，0.63对应的单侧概率是0.2357，也就是说，通过抛十次得到六次正面，我们只有约50%的把握说出现正面的概率不是0.5。换句话说，抛十次硬币来做频率估计是不太合适的，于是，我们需要增加试验次数。&lt;/p&gt;
 &lt;p&gt;假如，我又做了100次实验，抛出了60次正面，40次背面。那么这个试验结果可以显著的认为p不是0.5吗？用同样的方法算出\(\frac{0.6-0.5}{\sqrt{0.25/100}} = 2.0\)。很显然，2.0大于1.96，所以这个试验结果可以充分（超过95%的可能）说明这枚硬币正面朝上的概率确实不是0.5。通过查表可以看到，2.0的显著水平约为0.046，换句话说，这次试验结果95.4%以上表明硬币正面出现的概率不是0.5。当然，也有可能结论是错误的，因为毕竟还有4.6%的可能这是在p=0.5的情况下偶然出现的。&lt;/p&gt;
 &lt;p&gt;通过假设检验理论，可以通过增加试验次数，将犯错的概率缩小到任意小的值。&lt;/p&gt;
@@ -1363,7 +1363,7 @@ main() {
 &lt;!--more--&gt;
 &lt;h1&gt;最初分析&lt;/h1&gt;
 &lt;p&gt;不妨以目前最普遍的x86-64体系（64位，小端序）考虑此问题。在64位机器上，double是符合&lt;a href=&quot;http://zh.wikipedia.org/wiki/IEEE_754&quot; target=&quot;_blank&quot;&gt;IEEE754标准&lt;/a&gt;的双精度浮点数。根据IEEE标准，双精度浮点数由8个字节共64位组成，其中最高位为符号位，次高的11位为指数位，余下的52位为尾数位。示意见下图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/trouble-of-x86-64-platform/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/trouble-of-x86-64-platform/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;各位段意义如下：&lt;/p&gt;
 &lt;p&gt;S = 0表示正数，S = 1表示负数。&lt;/p&gt; 
 &lt;p&gt;E可以看成一个无符号整数，当其二进制位为全0或全1时，表示非规约浮点数或特殊值，此处不讨论，仅讨论其不全为0或全为1的情况。当E不全为零或全为1时，浮点数是规约的，此时E表示以2为底的指数加上一个固定的偏移量。偏移量被定义为\(2^{(E) - 1} - 1\)，其中(E)表示E所占的比特数，此处为11，所以偏移量为\(2^{(11) - 1} - 1=1023\)。因此实际的指数值要在E的基础上减1023，例如E的位表示是10000000000（十进制1024），则表示实际指数值为\(1024-1023=1\)。&lt;/p&gt;
@@ -1375,11 +1375,11 @@ main() {
 &lt;p&gt;为了便于观察我在每8bit之间插入了分隔符。当printf使用“%d”输出时，由于int类型是4字节，所以只能取其中四个字节。当a被当做参数传递给printf时，有两种可能保存a的地方：寄存器或栈帧中。&lt;/p&gt;
 &lt;p&gt;如果是寄存器，则printf会取低四字节。&lt;/p&gt;
 &lt;p&gt;如果是栈，在小端序中，高字节存放在高地址，低字节放在低地址，而栈是从高地址向低地址增长的，所以入栈后每个字节的位置如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/trouble-of-x86-64-platform/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/trouble-of-x86-64-platform/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;printf会从低地址到高地址读取4个字节当做int型数据去解释并输出，所以，经过分析这段代码的输出应该为“a = 0”。&lt;/p&gt;
 &lt;h1&gt;奇怪的结果&lt;/h1&gt;
 &lt;p&gt;分析完了，下一步当然是通过实践验证，我在我的VPS上（CentOS 64位）用gcc编译。结果非常出乎意料，不但不是0，而且每次运行的结果都不一样！（见下图）&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/trouble-of-x86-64-platform/3.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/trouble-of-x86-64-platform/3.png&quot;/&gt;&lt;/p&gt;
 &lt;h1&gt;定位问题&lt;/h1&gt;
 &lt;p&gt;在试图解释这个奇怪现象时，我最初从C的层面上进行了诸多分析，结果都无法分析出问题所在，所以我怀疑出现这个问题的原因在机器代码层面。于是我将其汇编代码打出来：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;.file   &quot;double_as_int.c&quot;
 .section    .rodata.str1.1,&quot;aMS&quot;,@progbits,1
@@ -1476,7 +1476,7 @@ ret
 .ident  &quot;GCC: (GNU) 4.4.6 20120305 (Red Hat 4.4.6-4)&quot;
 .section    .note.GNU-stack,&quot;&quot;,@progbits&lt;/pre&gt;
 &lt;p&gt;编译这段汇编代码执行，果然结果固定为0：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/trouble-of-x86-64-platform/4.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/trouble-of-x86-64-platform/4.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;最后，我用-m32指令编译成32位代码，结果也固定为0，并且汇编代码中没有看到mmx相关寄存器的使用。然后，我手工用movl将12345送入esi，结果为输出总为12345，证明printf默认认为第一个int参数放在esi中。至此问题原因基本确定。&lt;/p&gt;
 &lt;h1&gt;总结&lt;/h1&gt;
 &lt;p&gt;从上述过程知道，最初的笔试代码，在64位环境下，浮点数参数被送入mmx寄存器，而%d告诉printf第一个参数为int类型，所以printf仍然去默认的esi中寻找第一个int参数，所以从esi中读取了一个未确定的32bit数据并按int解释，最终造成结果的不确定。&lt;/p&gt;
@@ -1504,13 +1504,13 @@ ret
 &lt;p&gt;其实说起来两种数据收集模式的基本原理和流程是一致的，只是后一种通过javascript收集到了更多的信息。下面看一下现在各种网站统计工具的数据收集基本原理。&lt;/p&gt;
 &lt;h2&gt;流程概览&lt;/h2&gt;
 &lt;p&gt;首先通过一幅图总体看一下数据收集的基本流程。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图1. 网站统计数据收集基本流程&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;首先，用户的行为会触发浏览器对被统计页面的一个http请求，这里姑且先认为行为就是打开网页。当网页被打开，页面中的埋点javascript片段会被执行，用过相关工具的朋友应该知道，一般网站统计工具都会要求用户在网页中加入一小段javascript代码，这个代码片段一般会动态创建一个script标签，并将src指向一个单独的js文件，此时这个单独的js文件（图1中绿色节点）会被浏览器请求到并执行，这个js往往就是真正的数据收集脚本。数据收集完成后，js会请求一个后端的数据收集脚本（图1中的backend），这个脚本一般是一个伪装成图片的动态脚本程序，可能由php、python或其它服务端语言编写，js会将收集到的数据通过http参数的方式传递给后端脚本，后端脚本解析参数并按固定格式记录到访问日志，同时可能会在http响应中给客户端种植一些用于追踪的cookie。&lt;/p&gt;
 &lt;p&gt;上面是一个数据收集的大概流程，下面以谷歌分析为例，对每一个阶段进行一个相对详细的分析。&lt;/p&gt;
 &lt;h2&gt;埋点脚本执行阶段&lt;/h2&gt;
 &lt;p&gt;若要使用谷歌分析（以下简称GA），需要在页面中插入一段它提供的javascript片段，这个片段往往被称为埋点代码。下面是我的博客中所放置的谷歌分析埋点代码截图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图2. 谷歌分析埋点代码&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;其中_gaq是GA的的全局数组，用于放置各种配置，其中每一条配置的格式为：&lt;/p&gt;
 &lt;pre class=&quot;prettyprint&quot;&gt;_gaq.push(['Action', 'param1', 'param2', ...]);&lt;/pre&gt;
@@ -1524,7 +1524,7 @@ ret
 &lt;p&gt;3、将上面两步收集的数据按预定义格式解析并拼接。&lt;/p&gt;
 &lt;p&gt;4、请求一个后端脚本，将信息放在http request参数中携带给后端脚本。&lt;/p&gt;
 &lt;p&gt;这里唯一的问题是步骤4，javascript请求后端脚本常用的方法是ajax，但是ajax是不能跨域请求的。这里ga.js在被统计网站的域内执行，而后端脚本在另外的域（GA的后端统计脚本是&lt;a href=&quot;http://www.google-analytics.com/__utm.gif&quot;&gt;http://www.google-analytics.com/__utm.gif&lt;/a&gt;），ajax行不通。一种通用的方法是js脚本创建一个Image对象，将Image对象的src属性指向后端脚本并携带参数，此时即实现了跨域请求后端。这也是后端脚本为什么通常伪装成gif文件的原因。通过http抓包可以看到ga.js对__utm.gif的请求：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/3.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/3.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图3. 后端脚本请求的http包&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;可以看到ga.js在请求__utm.gif时带了很多信息，例如utmsr=1280×1024是屏幕分辨率，utmac=UA-35712773-1是_gaq中解析出的我的GA标识ID等等。&lt;/p&gt;
 &lt;p&gt;值得注意的是，__utm.gif未必只会在埋点代码执行时被请求，如果用_trackEvent配置了事件跟踪，则在事件发生时也会请求这个脚本。&lt;/p&gt;
@@ -1537,12 +1537,12 @@ ret
 &lt;p&gt;5、生成一副1×1的空gif图片作为响应内容并将响应头的Content-type设为image/gif。&lt;/p&gt;
 &lt;p&gt;5、在响应头中通过Set-cookie设置一些需要的cookie信息。&lt;/p&gt;
 &lt;p&gt;之所以要设置cookie是因为如果要跟踪唯一访客，通常做法是如果在请求时发现客户端没有指定的跟踪cookie，则根据规则生成一个全局唯一的cookie并种植给用户，否则Set-cookie中放置获取到的跟踪cookie以保持同一用户cookie不变（见图4）。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/4.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/4.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图4. 通过cookie跟踪唯一用户的原理&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;这种做法虽然不是完美的（例如用户清掉cookie或更换浏览器会被认为是两个用户），但是是目前被广泛使用的手段。注意，如果没有跨站跟踪同一用户的需求，可以通过js将cookie种植在被统计站点的域下（GA是这么做的），如果要全网统一定位，则通过后端脚本种植在服务端域下（我们待会的实现会这么做）。&lt;/p&gt;
 &lt;h1&gt;系统的设计实现&lt;/h1&gt;
 &lt;p&gt;根据上述原理，我自己搭建了一个访问日志收集系统。总体来说，搭建这个系统要做如下的事：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/5.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/5.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图5. 访问数据收集系统工作分解&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;下面详述每一步的实现。我将这个系统叫做MyAnalytics。&lt;/p&gt;
 &lt;h2&gt;确定收集的信息&lt;/h2&gt;
@@ -1752,17 +1752,17 @@ kill -USR1 `cat ${_prefix}/logs/nginx.pid`&lt;/pre&gt;
 &lt;p&gt;在每个小时的59分启动这个脚本进行日志轮转操作。&lt;/p&gt;
 &lt;h2&gt;测试&lt;/h2&gt;
 &lt;p&gt;下面可以测试这个系统是否能正常运行了。我昨天就在我的博客中埋了相关的点，通过http抓包可以看到ma.js和1.gif已经被正确请求：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/6.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/6.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图6. http包分析ma.js和1.gif的请求&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;同时可以看一下1.gif的请求参数：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/7.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/7.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图7. 1.gif的请求参数&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;相关信息确实也放在了请求参数中。&lt;/p&gt;
 &lt;p&gt;然后我tail打开日志文件，然后刷新一下页面，因为没有设access log buffer， 我立即得到了一条新日志：&lt;/p&gt;
 &lt;pre class=&quot;prettyprint&quot;&gt;1351060731.360^A0.0.0.0^Awww.codinglabs.org^Ahttp://www.codinglabs.org/^ACodingLabs^A^A1024^A1280^A24^Azh-CN^AMozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4^A4d612be64366768d32e623d594e82678^AU-1-1&lt;/pre&gt;
 &lt;p&gt;注意实际上原日志中的^A是不可见的，这里我用可见的^A替换为方便阅读，另外IP由于涉及隐私我替换为了0.0.0.0。&lt;/p&gt;
 &lt;p&gt;看一眼日志轮转目录，由于我之前已经埋了点，所以已经生成了很多轮转文件：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/how-web-analytics-data-collection-system-work/8.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/how-web-analytics-data-collection-system-work/8.png&quot;/&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot;&gt;&lt;strong&gt;图8. 轮转日志&lt;/strong&gt;&lt;/p&gt;
 &lt;h1&gt;关于分析&lt;/h1&gt;
 &lt;p&gt;通过上面的分析和开发可以大致理解一个网站统计的日志收集系统是如何工作的。有了这些日志，就可以进行后续的分析了。本文只注重日志收集，所以不会写太多关于分析的东西。&lt;/p&gt;
@@ -1974,7 +1974,7 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 &lt;p&gt;Google早已成为全球最成功的互联网搜索引擎，但这个当前的搜索引擎巨无霸却不是最早的互联网搜索引擎，在Google出现之前，曾出现过许多通用或专业领域搜索引擎。Google最终能击败所有竞争对手，很大程度上是因为它解决了困扰前辈们的最大难题：对搜索结果按重要性排序。而解决这个问题的算法就是PageRank。毫不夸张的说，是PageRank算法成就了Google今天的低位。要理解为什么解决这个难题如此重要，我们先来看一下搜索引擎的核心框架。&lt;/p&gt;
 &lt;h2&gt;搜索引擎的核心框架&lt;/h2&gt;
 &lt;p&gt;虽然搜索引擎已经发展了很多年，但是其核心却没有太大变化。从本质上说，搜索引擎是一个资料检索系统，搜索引擎拥有一个资料库（具体到这里就是互联网页面），用户提交一个检索条件（例如关键词），搜索引擎返回符合查询条件的资料列表。理论上检索条件可以非常复杂，为了简单起见，我们不妨设检索条件是一至多个以空格分隔的词，而其表达的语义是同时含有这些词的资料（等价于布尔代数的逻辑与）。例如，提交“张洋 博客”，意思就是“给我既含有‘张洋’又含有‘博客’词语的页面”，以下是Google对这条关键词的搜索结果：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/intro-to-pagerank/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/intro-to-pagerank/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;可以看到我的博客出现在第五条，而第四条是我之前在博客园的博客。&lt;/p&gt;
 &lt;p&gt;当然，实际上现在的搜索引擎都是有分词机制的，例如如果以“张洋的博客”为关键词，搜索引擎会自动将其分解为“张洋 的 博客”三个词，而“的”作为&lt;a href=&quot;http://en.wikipedia.org/wiki/Stop_word&quot; target=&quot;_blank&quot;&gt;停止词&lt;/a&gt;（Stop Word）会被过滤掉。关于分词及词权评价算法（如&lt;a href=&quot;http://en.wikipedia.org/wiki/Tf*idf&quot; target=&quot;_blank&quot;&gt;TF-IDF算法&lt;/a&gt;）是一个很大的话题，这里就不展开讨论了，为了简单此处可以将搜索引擎想象为一个只会机械匹配词语的检索系统。&lt;/p&gt;
 &lt;p&gt;这样看来，建立一个搜索引擎的核心问题就是两个：1、建立资料库；2、建立一种数据结构，可以根据关键词找到含有这个词的页面。&lt;/p&gt;
@@ -2001,7 +2001,7 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 &lt;h2&gt;简单PageRank计算&lt;/h2&gt;
 &lt;p&gt;首先，我们将Web做如下抽象：1、将每个网页抽象成一个节点；2、如果一个页面A有链接直接链向B，则存在一条有向边从A到B（多个相同链接不重复计算边）。因此，整个Web被抽象为一张有向图。&lt;/p&gt;
 &lt;p&gt;现在假设世界上只有四张网页：A、B、C、D，其抽象结构如下图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/intro-to-pagerank/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/intro-to-pagerank/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;显然这个图是强连通的（从任一节点出发都可以到达另外任何一个节点）。&lt;/p&gt;
 &lt;p&gt;然后需要用一种合适的数据结构表示页面间的连接关系。其实，PageRank算法是基于这样一种背景思想：被用户访问越多的网页更可能质量越高，而用户在浏览网页时主要通过超链接进行页面跳转，因此我们需要通过分析超链接组成的拓扑结构来推算每个网页被访问频率的高低。最简单的，我们可以假设当一个用户停留在某页面时，跳转到页面上每个被链页面的概率是相同的。例如，上图中A页面链向B、C、D，所以一个用户从A跳转到B、C、D的概率各为1/3。设一共有N个网页，则可以组织这样一个N维矩阵：其中i行j列的值表示用户从页面j转到页面i的概率。这样一个矩阵叫做转移矩阵（Transition Matrix）。下面的转移矩阵M对应上图：&lt;/p&gt;
 &lt;p&gt;\(\large M=\begin{bmatrix} 0 &amp; 1/2 &amp; 0 &amp; 1/2\\ 1/3 &amp; 0 &amp; 0 &amp; 1/2\\ 1/3 &amp; 1/2 &amp; 0 &amp; 0\\ 1/3 &amp; 0 &amp; 1 &amp; 0 \end{bmatrix}\)&lt;/p&gt;
@@ -2013,13 +2013,13 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 &lt;h2&gt;处理Dead Ends&lt;/h2&gt;
 &lt;p&gt;上面的PageRank计算方法假设Web是强连通的，但实际上，Web并不是强连通（甚至不是联通的）。下面看看PageRank算法如何处理一种叫做Dead Ends的情况。&lt;/p&gt;
 &lt;p&gt;所谓Dead Ends，就是这样一类节点：它们不存在外链。看下面的图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/intro-to-pagerank/3.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/intro-to-pagerank/3.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;注意这里D页面不存在外链，是一个Dead End。上面的算法之所以能成功收敛到非零值，很大程度依赖转移矩阵这样一个性质：每列的加和为1。而在这个图中，M第四列将全为0。在没有Dead Ends的情况下，每次迭代后向量v各项的和始终保持为1，而有了Dead Ends，迭代结果将最终归零（要解释为什么会这样，需要一些矩阵论的知识，比较枯燥，此处略）。&lt;/p&gt;
 &lt;p&gt;处理Dead Ends的方法如下：迭代拿掉图中的Dead Ends节点及Dead Ends节点相关的边（之所以迭代拿掉是因为当目前的Dead Ends被拿掉后，可能会出现一批新的Dead Ends），直到图中没有Dead Ends。对剩下部分计算rank，然后以拿掉Dead Ends逆向顺序反推Dead Ends的rank。&lt;/p&gt;
 &lt;p&gt;以上图为例，首先拿到D和D相关的边，D被拿到后，C就变成了一个新的Dead Ends，于是拿掉C，最终只剩A、B。此时可很容易算出A、B的PageRank均为1/2。然后我们需要反推Dead Ends的rank，最后被拿掉的是C，可以看到C前置节点有A和B，而A和B的出度分别为3和2，因此C的rank为：1/2 * 1/3 + 1/2 * 1/2 = 5/12；最后，D的rank为：1/2 * 1/3 + 5/12 * 1 = 7/12。所以最终的PageRank为（1/2, 1/2, 5/12, 7/12）。&lt;/p&gt;
 &lt;h2&gt;Spider Traps及平滑处理&lt;/h2&gt;
 &lt;p&gt;可以预见，如果把真实的Web组织成转移矩阵，那么这将是一个极为稀疏的矩阵，从矩阵论知识可以推断，极度稀疏的转移矩阵迭代相乘可能会使得向量v变得非常不平滑，即一些节点拥有很大的rank，而大多数节点rank值接近0。而一种叫做Spider Traps节点的存在加剧了这种不平滑。例如下图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/intro-to-pagerank/4.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/intro-to-pagerank/4.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;D有外链所以不是Dead Ends，但是它只链向自己（注意链向自己也算外链，当然同时也是个内链）。这种节点叫做Spider Trap，如果对这个图进行计算，会发现D的rank越来越大趋近于1，而其它节点rank值几乎归零。&lt;/p&gt;
 &lt;p&gt;为了克服这种由于矩阵稀疏性和Spider Traps带来的问题，需要对PageRank计算方法进行一个平滑处理，具体做法是加入“心灵转移（teleporting）”。所谓心灵转移，就是我们认为在任何一个页面浏览的用户都有可能以一个极小的概率瞬间转移到另外一个随机页面。当然，这两个页面可能不存在超链接，因此不可能真的直接转移过去，心灵转移只是为了算法需要而强加的一种纯数学意义的概率数字。&lt;/p&gt;
 &lt;p&gt;加入心灵转移后，向量迭代公式变为：&lt;/p&gt;
@@ -2067,7 +2067,7 @@ print prime_test_miller_rabin(68647976601306097149819007990813932172694353001433
 &lt;p&gt;作为一个spammer，我能利用的资源就是支持页和可达页。上面说过，单纯通过支持页是没有办法spam的，因此我要做的第一件事情就是尽量找一些rank较高的可达页去加上对我博客首页的链接。例如我可以去天涯、猫扑等地方回个这样的贴：“楼主的帖子很不错！精彩内容：&lt;a href=&quot;http://codinglabs.org&quot; target=&quot;_blank&quot;&gt;http://codinglabs.org&lt;/a&gt;”。我想大家一定在各大社区没少见这种帖子，这就是有人在做spam。&lt;/p&gt;
 &lt;p&gt;然后，再通过大量的支持页放大rank，具体做法是让每个支持页和目标页互链，且每个支持页只有一条链接。&lt;/p&gt;
 &lt;p&gt;这样一个结构叫做Spam Farm，其拓扑图如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/intro-to-pagerank/5.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/intro-to-pagerank/5.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;其中T是目标页，A是可达页，S是支持页。下面计算一下link spam的效果。&lt;/p&gt;
 &lt;p&gt;设T的总rank为y，则y由三部分组成：&lt;/p&gt;
 &lt;p&gt;1、可达页的rank贡献，设为x。&lt;/p&gt;
@@ -2135,7 +2135,7 @@ echo $a;
 &lt;p&gt;执行如下命令：&lt;/p&gt;
 &lt;pre class=&quot;prettyprint&quot;&gt;php -d opdumper.active=1 foo.php&lt;/pre&gt;
 &lt;p&gt;结果如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/opdumper-and-web-opcode-dumper/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/opdumper-and-web-opcode-dumper/1.png&quot;/&gt;&lt;/p&gt;
 &lt;h2&gt;PHP_FUNCTION API&lt;/h2&gt;
 &lt;p&gt;Opdumper还支持vld不支持的PHP_FUNCTION API，Opdumper提供了两个PHP函数：od_dump_opcodes_string和od_dump_opcodes_file。前者接受一个字符串作为产生，字符串是一段PHP代码；后者接受一个PHP文件作为参数，返回值均是一个存有opcode结果的PHP数组。以od_dump_opcodes_file为例，我们在foo.php同一目录下再写一个bar.php：&lt;/p&gt;
 &lt;pre class=&quot;prettyprint&quot;&gt;&lt;?php
@@ -2206,7 +2206,7 @@ var_dump($opcodes);
 &lt;p&gt;坦白说，安装PHP模块还是挺麻烦的。所以为了方便朋友们查看opcode，我为Opdumper搭建了一个在线Web服务：&lt;a href=&quot;http://supercompiler.com/app/opcode_dumper&quot; target=&quot;_blank&quot;&gt;http://supercompiler.com/app/opcode_dumper&lt;/a&gt;。&lt;/p&gt;
 &lt;h2&gt;Web页面访问&lt;/h2&gt;
 &lt;p&gt;只要访问这个页面，在编辑框中输入或粘贴进PHP代码，就可以快速看到相应的opcode：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/opdumper-and-web-opcode-dumper/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/opdumper-and-web-opcode-dumper/2.png&quot;/&gt;&lt;/p&gt;
 &lt;h2&gt;HTTP API方式访问&lt;/h2&gt;
 &lt;p&gt;您可以通过访问如下API获取PHP代码的opcode：&lt;/p&gt;
 &lt;p&gt;URI: &lt;b&gt;http://supercompiler.com/api/dump_opcodes&lt;/b&gt;&lt;/p&gt;
@@ -2231,7 +2231,7 @@ var_dump($opcodes);
 &lt;p&gt;理想情况下哈希表插入和查找操作的时间复杂度均为O(1)，任何一个数据项可以在一个与哈希表长度无关的时间内计算出一个哈希值（key），然后在常量时间内定位到一个桶（术语bucket，表示哈希表中的一个位置）。当然这是理想情况下，因为任何哈希表的长度都是有限的，所以一定存在不同的数据项具有相同哈希值的情况，此时不同数据项被定为到同一个桶，称为碰撞（collision）。哈希表的实现需要解决碰撞问题，碰撞解决大体有两种思路，第一种是根据某种原则将被碰撞数据定为到其它桶，例如线性探测——如果数据在插入时发生了碰撞，则顺序查找这个桶后面的桶，将其放入第一个没有被使用的桶；第二种策略是每个桶不是一个只能容纳单个数据项的位置，而是一个可容纳多个数据的数据结构（例如链表或红黑树），所有碰撞的数据以某种数据结构的形式组织起来。&lt;/p&gt;
 &lt;p&gt;不论使用了哪种碰撞解决策略，都导致插入和查找操作的时间复杂度不再是O(1)。以查找为例，不能通过key定位到桶就结束，必须还要比较原始key（即未做哈希之前的key）是否相等，如果不相等，则要使用与插入相同的算法继续查找，直到找到匹配的值或确认数据不在哈希表中。&lt;/p&gt;
 &lt;p&gt;PHP是使用单链表存储碰撞的数据，因此实际上PHP哈希表的平均查找复杂度为O(L)，其中L为桶链表的平均长度；而最坏复杂度为O(N)，此时所有数据全部碰撞，哈希表退化成单链表。下图PHP中正常哈希表和退化哈希表的示意图。&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/hash-collisions-attack-on-php/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;哈希表碰撞攻击就是通过精心构造数据，使得所有数据全部碰撞，人为将哈希表变成一个退化的单链表，此时哈希表各种操作的时间均提升了一个数量级，因此会消耗大量CPU资源，导致系统无法快速响应请求，从而达到拒绝服务攻击（DoS）的目的。&lt;/p&gt;
 &lt;p&gt;可以看到，进行哈希碰撞攻击的前提是哈希算法特别容易找出碰撞，如果是MD5或者SHA1那基本就没戏了，幸运的是（也可以说不幸的是）大多数编程语言使用的哈希算法都十分简单（这是为了效率考虑），因此可以不费吹灰之力之力构造出攻击数据。下一节将通过分析Zend相关内核代码，找出攻击哈希表碰撞攻击PHP的方法。&lt;/p&gt;
 &lt;h1&gt;Zend哈希表的内部实现&lt;/h1&gt;
@@ -2366,8 +2366,8 @@ $endTime = microtime(true);
 
 echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
 &lt;p&gt;这段代码在我的VPS上（单CPU，512M内存）上用了近88秒才完成，并且在此期间CPU资源几乎被用尽：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/2.png&quot;/&gt;&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/3.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/hash-collisions-attack-on-php/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/hash-collisions-attack-on-php/3.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;而普通的同样大小的哈希表插入仅用时0.036秒：&lt;/p&gt;&lt;pre  class=&quot;prettyprint&quot;&gt;&lt;?php
 
 $size = pow(2, 16);
@@ -2382,7 +2382,7 @@ for ($key = 0, $maxKey = ($size - 1) * $size; $key &lt;= $size; $key += 1) {
 $endTime = microtime(true);
 
 echo $endTime - $startTime, ' seconds', &quot;\n&quot;;&lt;/pre&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/hash-collisions-attack-on-php/4.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/hash-collisions-attack-on-php/4.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;可以证明第二段代码插入N个元素的时间在O(N)水平，而第一段攻击代码则需O(N^2)的时间去插入N个元素。&lt;/p&gt;
 &lt;h2&gt;POST攻击&lt;/h2&gt;
 &lt;p&gt;当然，一般情况下很难遇到攻击者可以直接修改PHP代码的情况，但是攻击者仍可以通过一些方法间接构造哈希表来进行攻击。例如PHP会将接收到的HTTP POST请求中的数据构造为$_POST，而这是一个Array，内部就是通过Zend HashTable表示，因此攻击者只要构造一个含有大量碰撞key的post请求，就可以达到攻击的目的。具体做法不再演示。&lt;/p&gt;
@@ -2518,7 +2518,7 @@ console.log(lam(2));&lt;/pre&gt;
 &lt;h2&gt;基本思想&lt;/h2&gt;
 &lt;p&gt;说起来ZTS的基本思想是很直观的，不是就是需要每个全局变量在每个线程都拥有一个副本吗？那我就提供这样的机制：&lt;/p&gt;
 &lt;p&gt;在多线程环境下，申请全局变量不再是简单声明一个变量，而是整个进程在堆上分配一块内存空间用作“线程全局变量池”，在进程启动时初始化这个内存池，每当有线程需要申请全局变量时，通过相应方法调用TSRM（Thread Safe Resource Manager，ZTS的具体实现）并传递必要的参数（如变量大小等等），TSRM负责在内存池中分配相应内存区块并将这块内存的引用标识返回，这样下次这个线程需要读写此变量时，就可以通过将唯一的引用标识传递给TSRM，TSRM将负责真正的读写操作。这样就实现了线程安全的全局变量。下图给出了ZTS原理的示意图：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/zend-thread-safety/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/zend-thread-safety/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;Thread1和Thread2同属一个进程，其中各自需要一个全局变量Global Var，TSRM为两者在线程全局内存池中（黄色部分）各自分配了一个区域，并且通过唯一的ID进行标识，这样两个线程就可以通过TSRM存取自己的变量而互不干扰。&lt;/p&gt;
 &lt;p&gt;下面通过具体的代码片段看一下Zend具体是如何实现这个机制的。这里我用的是PHP5.3.8的源码。&lt;/p&gt;
 &lt;p&gt;TSRM的实现代码在PHP源码的“TSRM”目录下。&lt;/p&gt;
@@ -2534,7 +2534,7 @@ struct _tsrm_tls_entry {
     tsrm_tls_entry *next;
 }&lt;/pre&gt;
 &lt;p&gt;每个tsrm_tls_entry结构负责表示一个线程的所有全局变量资源，其中thread_id存储线程ID，count记录全局变量数，next指向下一个节点。storage可以看做指针数组，其中每个元素是一个指向本节点代表线程的一个全局变量。最终各个线程的tsrm_tls_entry被组成一个链表结构，并将链表头指针赋值给一个全局静态变量tsrm_tls_table。注意，因为tsrm_tls_table是一个货真价实的全局变量，所以所有线程会共享这个变量，这就实现了线程间的内存管理一致性。tsrm_tls_entry和tsrm_tls_table结构的示意图如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/zend-thread-safety/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/zend-thread-safety/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;tsrm_resource_type的内部结构相对简单一些：&lt;/p&gt;
 &lt;pre class=&quot;prettyprint&quot;&gt;typedef struct {
     size_t size;
@@ -2574,7 +2574,7 @@ TSRM_API int tsrm_startup(int expected_threads, int expected_resources, int debu
     return 1;
 }&lt;/pre&gt;
 &lt;p&gt;其实tsrm_startup的主要任务就是初始化上文提到的两个数据结构。第一个比较有意思的是它的前两个参数：expected_threads和expected_resources。这两个参数由sapi传入，表示预计的线程数和资源数，可以看到tsrm_startup会按照这两个参数预先分配空间（通过calloc）。因此TSRM会首先分配可容纳expected_threads个线程和expected_resources个资源的。要看各个sapi默认会传入什么，可以看各个sapi的源码（在sapi目录下），我简单看了一下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/zend-thread-safety/3.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/zend-thread-safety/3.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;可以看到比较常用的sapi如mod_php5、php-fpm和cgi都是预分配一个线程和一个资源，这样是因为不愿浪费内存空间，而且多数情况下PHP还是运行于单线程环境。&lt;/p&gt;
 &lt;p&gt;这里还可以看到一个id_count变量，这个变量是一个全局静态变量，其作用就是通过自增产生资源ID，这个变量在这里被初始化为0。所以TSRM产生资源ID的方式非常简单：就是一个整形变量的自增。&lt;/p&gt;
 &lt;p&gt;第二个需要仔细分析的就是ts_allocate_id，编写过PHP扩展的朋友对这个函数肯定不陌生，这个函数用于在多线程环境下申请一个全局变量并返回资源ID。&lt;/p&gt;
@@ -2648,7 +2648,7 @@ TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate
 &lt;p&gt;这里需要简单提一下PHP的生命周期。&lt;/p&gt;
 &lt;p&gt;PHP的具体生命周期模式取决于sapi的实现，但一般都会有MINIT、RINIT、SCRIPT、RSHUTDOWN和MSHUTDOWN五个典型阶段，不同的只是各个阶段的执行次数不同。例如在CLI或CGI模式下，这五个阶段顺序执行一次，而在Apache或FastCGI模式下往往一个MINIT和MSHUTDOWN中间对应多个RINIT、SCRIPT、RSHUTDOWN。关于PHP生命周期的话题我回头写文单独研究，这里只是简单说一下。&lt;/p&gt;
 &lt;p&gt;MINIT和MSHUTDOWN是PHP Module的初始化和清理阶段，往往在进程起始后和结束前执行，在这两个阶段各个模块的MINIT和MSHUTDOWN方法会被调用。而RINIT、SCRIPT、RSHUTDOWN是每一次请求都会触发的一个小周期。在多线程模式中，PHP的生命周期如下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/zend-thread-safety/4.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/zend-thread-safety/4.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;在这种模式下，进程启动后仅执行一次MINIT。之所以要强调这一点，是因为TSRM的全局变量资源分配就是在MINIT阶段完成的，后续阶段只获取而不会再请求新的全局变量，这就不难理解为什么在ts_allocate_id中每次id_count加一需要遍历所有线程为每个线程分配相同的资源。到这里，终于可以看清TSRM分配线程全局变量的全貌：&lt;/p&gt;
 &lt;p&gt;进程启动后，在MINIT阶段启动TSRM（通过sapi调用tsrm_startup），然后在遍历模块时调用每一个模块的MINIT方法，模块在MINIT中告知TSRM要申请多少全局变量及大小（通过ts_allocate_id），TSRM在内存池中分配并做好登记工作（tsrm_tls_table和resource_types_table），然后将凭证（资源ID）返回给模块，告诉模块以后拿着这个凭证来取你的全局变量。&lt;/p&gt;
 &lt;h1&gt;ZTS在单线程和多线程环境的选择性编译&lt;/h1&gt;
@@ -2822,12 +2822,12 @@ run();
 &lt;h1&gt;检验&lt;/h1&gt;
 &lt;p&gt;下面在命令行下启动这个脚本：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;php httpserver.php&lt;/pre&gt;
 &lt;p&gt;用ps命令可以看到我们已经启动了一个daemon进程：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/write-daemon-with-php/1.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/write-daemon-with-php/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;这里我绑定的是我博客的域名www.codinglabs.org，端口是9999，可以按需要进行修改。&lt;/p&gt;
 &lt;p&gt;下面我先用curl命令看下这个http server是否正常运行：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/write-daemon-with-php/2.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/write-daemon-with-php/2.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;看来是没问题，再到浏览器中看一下：&lt;/p&gt;
-&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;/uploads/pictures/write-daemon-with-php/3.png&quot;/&gt;&lt;/p&gt;
+&lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/write-daemon-with-php/3.png&quot;/&gt;&lt;/p&gt;
 &lt;h1&gt;结语&lt;/h1&gt;
 &lt;p&gt;当然，这个程序算不上真正的http server，即使作为一个daemon process，也是不完善的，很多必要的事情如修改执行目录（php中可以通过chroot实现）、信号绑定、日志功能等等都没有去做，不过作为一个demo，它已经足够说明php不只是可以编写动态网页处理脚本。如果有的朋友有兴趣，可以使用php将我上面说的功能为这个的http server加上。&lt;/p&gt;
 &lt;p&gt;还有一点要说明的是，pcntl和sockets模块默认是不安装的，如果在安装php时没有通过参数指定安装，则需要单独安装这两个扩展模块。&lt;/p&gt;
