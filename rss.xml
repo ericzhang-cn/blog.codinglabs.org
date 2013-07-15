@@ -4,21 +4,21 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Mon, 15 Jul 2013 16:07:53 +0800</lastBuildDate>
+        <lastBuildDate>Mon, 15 Jul 2013 16:13:07 GMT</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>PCA的数学原理</title>
 <link>http://blog.codinglabs.org/articles/pca-tutorial.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/pca-tutorial.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Sat, 22 Jun 2013 00:00:00 +0800</pubDate>
+<pubDate>Sat, 22 Jun 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;PCA（Principal Component Analysis）是一种常用的数据分析方法。PCA通过线性变换将原始数据变换为一组各维度线性无关的表示，可用于提取数据的主要特征分量，常用于高维数据的降维。网上关于PCA的文章有很多，但是大多数只描述了PCA的分析过程，而没有讲述其中的原理。这篇文章的目的是介绍PCA的基本数学原理，帮助读者了解PCA的工作机制是什么。&lt;/p&gt;
 &lt;p&gt;当然我并不打算把文章写成纯数学文章，而是希望用直观和易懂的方式叙述PCA的数学原理，所以整个文章不会引入严格的数学推导。希望读者在看完这篇文章后能更好的明白PCA的工作原理。&lt;/p&gt;
 &lt;h1&gt;数据的向量表示及降维问题&lt;/h1&gt;
 &lt;p&gt;一般情况下，在数据挖掘和机器学习中，数据被表示为向量。例如某个淘宝店2012年全年的流量及交易情况可以看成一组记录的集合，其中每一天的数据是一条记录，格式如下：&lt;/p&gt;
 &lt;p&gt;(日期, 浏览量, 访客数, 下单数, 成交数, 成交金额)&lt;/p&gt;
 &lt;p&gt;其中“日期”是一个记录标志而非度量值，而数据挖掘关心的大多是度量值，因此如果我们忽略日期这个字段后，我们得到一组记录，每条记录可以被表示为一个五维向量，其中一条看起来大约是这个样子：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?(500,240,25,13,2312.15)^\mathsf{T}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[(500,240,25,13,2312.15)^\mathsf{T}\]&lt;/p&gt;
 &lt;p&gt;注意这里我用了转置，因为习惯上使用列向量表示一条记录（后面会看到原因），本文后面也会遵循这个准则。不过为了方便有时我会省略转置符号，但我们说到向量默认都是指列向量。&lt;/p&gt;
 &lt;p&gt;我们当然可以对这一组五维向量进行分析和挖掘，不过我们知道，很多机器学习算法的复杂度和数据的维数有着密切关系，甚至与维数呈指数级关联。当然，这里区区五维的数据，也许还无所谓，但是实际机器学习中处理成千上万甚至几十万维的情况也并不罕见，在这种情况下，机器学习的资源消耗是不可接受的，因此我们必须对数据进行降维。&lt;/p&gt;
 &lt;p&gt;降维当然意味着信息的丢失，不过鉴于实际数据本身常常存在的相关性，我们可以想办法在降维的同时将信息的损失尽量降低。&lt;/p&gt;
@@ -31,16 +31,16 @@
 &lt;p&gt;既然我们面对的数据被抽象为一组向量，那么下面有必要研究一些向量的数学性质。而这些数学性质将成为后续导出PCA的理论基础。&lt;/p&gt;
 &lt;h2&gt;内积与投影&lt;/h2&gt;
 &lt;p&gt;下面先来看一个高中就学过的向量运算：内积。两个维数相同的向量的内积被定义为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?(a_1,a_2,\cdots,a_n)^\mathsf{T}\cdot%20(b_1,b_2,\cdots,b_n)^\mathsf{T}=a_1b_1+a_2b_2+\cdots+a_nb_n" /&gt;&lt;/p&gt;
+&lt;p&gt;\[(a_1,a_2,\cdots,a_n)^\mathsf{T}\cdot (b_1,b_2,\cdots,b_n)^\mathsf{T}=a_1b_1+a_2b_2+\cdots+a_nb_n\]&lt;/p&gt;
 &lt;p&gt;内积运算将两个向量映射为一个实数。其计算方式非常容易理解，但是其意义并不明显。下面我们分析内积的几何意义。假设A和B是两个n维向量，我们知道n维向量可以等价表示为n维空间中的一条从原点发射的有向线段，为了简单起见我们假设A和B均为二维向量，则\(A=(x_1,y_1)\)，\(B=(x_2,y_2)\)。则在二维平面上A和B可以用两条发自原点的有向线段表示，见下图：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/01.png&quot;/&gt;&lt;/p&gt;
 
-&lt;p&gt;好，现在我们从A点向B所在直线引一条垂线。我们知道垂线与B的交点叫做A在B上的投影，再设A与B的夹角是a，则投影的矢量长度为\(|A|cos(a)\)，其中%lt;img src="http://latex.codecogs.com/gif.latex?|A|=\sqrt{x_1^2+y_1^2}" /&gt;是向量A的模，也就是A线段的标量长度。&lt;/p&gt;
+&lt;p&gt;好，现在我们从A点向B所在直线引一条垂线。我们知道垂线与B的交点叫做A在B上的投影，再设A与B的夹角是a，则投影的矢量长度为\(|A|cos(a)\)，其中\(|A|=\sqrt{x_1^2+y_1^2}\)是向量A的模，也就是A线段的标量长度。&lt;/p&gt;
 &lt;p&gt;注意这里我们专门区分了矢量长度和标量长度，标量长度总是大于等于0，值就是线段的长度；而矢量长度可能为负，其绝对值是线段长度，而符号取决于其方向与标准方向相同或相反。&lt;/p&gt;
 &lt;p&gt;到这里还是看不出内积和这东西有什么关系，不过如果我们将内积表示为另一种我们熟悉的形式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?A\cdot%20B=|A||B|cos(a)" /&gt;&lt;/p&gt;
-&lt;p&gt;现在事情似乎是有点眉目了：A与B的内积等于A到B的投影长度乘以B的模。再进一步，如果我们假设B的模为1，即让%lt;img src="http://latex.codecogs.com/gif.latex?|B|=1" /&gt;，那么就变成了：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?A\cdot%20B=|A|cos(a)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[A\cdot B=|A||B|cos(a)\]&lt;/p&gt;
+&lt;p&gt;现在事情似乎是有点眉目了：A与B的内积等于A到B的投影长度乘以B的模。再进一步，如果我们假设B的模为1，即让\(|B|=1\)，那么就变成了：&lt;/p&gt;
+&lt;p&gt;\[A\cdot B=|A|cos(a)\]&lt;/p&gt;
 &lt;p&gt;也就是说，&lt;strong&gt;设向量B的模为1，则A与B的内积值等于A向B所在直线投影的矢量长度&lt;/strong&gt;！这就是内积的一种几何解释，也是我们得到的第一个重要结论。在后面的推导中，将反复使用这个结论。&lt;/p&gt;
 &lt;h2&gt;基&lt;/h2&gt;
 &lt;p&gt;下面我们继续在二维空间内讨论向量。上文说过，一个二维向量可以对应二维笛卡尔直角坐标系中从原点出发的一个有向线段。例如下面这个向量：&lt;/p&gt;
@@ -49,7 +49,7 @@
 &lt;p&gt;在代数表示方面，我们经常用线段终点的点坐标表示向量，例如上面的向量可以表示为(3,2)，这是我们再熟悉不过的向量表示。&lt;/p&gt;
 &lt;p&gt;不过我们常常忽略，&lt;strong&gt;只有一个(3,2)本身是不能够精确表示一个向量的&lt;/strong&gt;。我们仔细看一下，这里的3实际表示的是向量在x轴上的投影值是3，在y轴上的投影值是2。也就是说我们其实隐式引入了一个定义：以x轴和y轴上正方向长度为1的向量为标准。那么一个向量(3,2)实际是说在x轴投影为3而y轴的投影为2。注意投影是一个矢量，所以可以为负。&lt;/p&gt;
 &lt;p&gt;更正式的说，向量(x,y)实际上表示线性组合：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?x(1,0)^\mathsf{T}+y(0,1)^\mathsf{T}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[x(1,0)^\mathsf{T}+y(0,1)^\mathsf{T}\]&lt;/p&gt;
 &lt;p&gt;不难证明所有二维向量都可以表示为这样的线性组合。此处(1,0)和(0,1)叫做二维空间中的一组基。&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/03.png&quot;/&gt;&lt;/p&gt;
 
@@ -62,69 +62,69 @@
 &lt;p&gt;另外这里要注意的是，我们列举的例子中基是正交的（即内积为0，或直观说相互垂直），但可以成为一组基的唯一要求就是线性无关，非正交的基也是可以的。不过因为正交基有较好的性质，所以一般使用的基都是正交的。&lt;/p&gt;
 &lt;h2&gt;基变换的矩阵表示&lt;/h2&gt;
 &lt;p&gt;下面我们找一种简便的方式来表示基变换。还是拿上面的例子，想一下，将(3,2)变换为新基上的坐标，就是用(3,2)与第一个基做内积运算，作为第一个新的坐标分量，然后用(3,2)与第二个基做内积运算，作为第二个新坐标的分量。实际上，我们可以用矩阵相乘的形式简洁的表示这个变换：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{pmatrix}
-%201/\sqrt{2}%20&amp;%201/\sqrt{2}%20\\
-%20-1/\sqrt{2}%20&amp;%201/\sqrt{2}
+&lt;p&gt;\[\begin{pmatrix}
+  1/\sqrt{2}  &amp; 1/\sqrt{2} \\
+  -1/\sqrt{2} &amp; 1/\sqrt{2}
 \end{pmatrix}
 \begin{pmatrix}
-%203%20\\
-%202
+  3 \\
+  2
 \end{pmatrix}
 =
 \begin{pmatrix}
-%205/\sqrt{2}%20\\
-%20-1/\sqrt{2}
-\end{pmatrix}" /&gt;&lt;/p&gt;
+  5/\sqrt{2} \\
+  -1/\sqrt{2}
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;太漂亮了！其中矩阵的两行分别为两个基，乘以原向量，其结果刚好为新基的坐标。可以稍微推广一下，如果我们有m个二维向量，只要将二维向量按列排成一个两行m列矩阵，然后用“基矩阵”乘以这个矩阵，就得到了所有这些向量在新基下的值。例如(1,1)，(2,2)，(3,3)，想变换到刚才那组基上，则可以这样表示：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{pmatrix}
-%201/\sqrt{2}%20&amp;%201/\sqrt{2}%20\\
-%20-1/\sqrt{2}%20&amp;%201/\sqrt{2}
+&lt;p&gt;\[\begin{pmatrix}
+  1/\sqrt{2}  &amp; 1/\sqrt{2} \\
+  -1/\sqrt{2} &amp; 1/\sqrt{2}
 \end{pmatrix}
 \begin{pmatrix}
-%201%20&amp;%202%20&amp;%203%20\\
-%201%20&amp;%202%20&amp;%203
+  1 &amp; 2 &amp; 3 \\
+  1 &amp; 2 &amp; 3
 \end{pmatrix}
 =
 \begin{pmatrix}
-%202/\sqrt{2}%20&amp;%204/\sqrt{2}%20&amp;%206/\sqrt{2}%20\\
-%200%20&amp;%200%20&amp;%200
-\end{pmatrix}" /&gt;&lt;/p&gt;
+  2/\sqrt{2} &amp; 4/\sqrt{2} &amp; 6/\sqrt{2} \\
+  0           &amp; 0           &amp; 0
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;于是一组向量的基变换被干净的表示为矩阵的相乘。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;一般的，如果我们有M个N维向量，想将其变换为由R个N维向量表示的新空间中，那么首先将R个基按行组成矩阵A，然后将向量按列组成矩阵B，那么两矩阵的乘积AB就是变换结果，其中AB的第m列为A中第m列变换后的结果&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;数学表示为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{pmatrix}
-%20p_1%20\\
-%20p_2%20\\
-%20\vdots%20\\
-%20p_R
+&lt;p&gt;\[\begin{pmatrix}
+  p_1 \\
+  p_2 \\
+  \vdots \\
+  p_R
 \end{pmatrix}
 \begin{pmatrix}
-%20a_1%20&amp;%20a_2%20&amp;%20\cdots%20&amp;%20a_M
+  a_1 &amp; a_2 &amp; \cdots &amp; a_M
 \end{pmatrix}
 =
 \begin{pmatrix}
-%20p_1a_1%20&amp;%20p_1a_2%20&amp;%20\cdots%20&amp;%20p_1a_M%20\\
-%20p_2a_1%20&amp;%20p_2a_2%20&amp;%20\cdots%20&amp;%20p_2a_M%20\\
-%20\vdots%20&amp;%20\vdots%20&amp;%20\ddots%20&amp;%20\vdots%20\\
-%20p_Ra_1%20&amp;%20p_Ra_2%20&amp;%20\cdots%20&amp;%20p_Ra_M
-\end{pmatrix}" /&gt;&lt;/p&gt;
-&lt;p&gt;其中%lt;img src="http://latex.codecogs.com/gif.latex?p_i" /&gt;是一个行向量，表示第i个基，%lt;img src="http://latex.codecogs.com/gif.latex?a_j" /&gt;是一个列向量，表示第j个原始数据记录。&lt;/p&gt;
+  p_1a_1 &amp; p_1a_2 &amp; \cdots &amp; p_1a_M \\
+  p_2a_1 &amp; p_2a_2 &amp; \cdots &amp; p_2a_M \\
+  \vdots  &amp; \vdots  &amp; \ddots &amp; \vdots \\
+  p_Ra_1 &amp; p_Ra_2 &amp; \cdots &amp; p_Ra_M
+\end{pmatrix}\]&lt;/p&gt;
+&lt;p&gt;其中\(p_i\)是一个行向量，表示第i个基，\(a_j\)是一个列向量，表示第j个原始数据记录。&lt;/p&gt;
 &lt;p&gt;特别要注意的是，这里R可以小于N，而R决定了变换后数据的维数。也就是说，我们可以将一N维数据变换到更低维度的空间中去，变换后的维度取决于基的数量。因此这种矩阵相乘的表示也可以表示降维变换。&lt;/p&gt;
 &lt;p&gt;最后，上述分析同时给矩阵相乘找到了一种物理解释：&lt;strong&gt;两个矩阵相乘的意义是将右边矩阵中的每一列列向量变换到左边矩阵中每一行行向量为基所表示的空间中去&lt;/strong&gt;。更抽象的说，一个矩阵可以表示一种线性变换。很多同学在学线性代数时对矩阵相乘的方法感到奇怪，但是如果明白了矩阵相乘的物理意义，其合理性就一目了然了。&lt;/p&gt;
 &lt;h1&gt;协方差矩阵及优化目标&lt;/h1&gt;
 &lt;p&gt;上面我们讨论了选择不同的基可以对同样一组数据给出不同的表示，而且如果基的数量少于向量本身的维数，则可以达到降维的效果。但是我们还没有回答一个最最关键的问题：如何选择基才是最优的。或者说，如果我们有一组N维向量，现在要将其降到K维（K小于N），那么我们应该如何选择K个基才能最大程度保留原有的信息？&lt;/p&gt;
 &lt;p&gt;要完全数学化这个问题非常繁杂，这里我们用一种非形式化的直观方法来看这个问题。&lt;/p&gt;
 &lt;p&gt;为了避免过于抽象的讨论，我们仍以一个具体的例子展开。假设我们的数据由五条记录组成，将它们表示成矩阵形式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{pmatrix}
-%201%20&amp;%201%20&amp;%202%20&amp;%204%20&amp;%202%20\\
-%201%20&amp;%203%20&amp;%203%20&amp;%204%20&amp;%204
-\end{pmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{pmatrix}
+  1 &amp; 1 &amp; 2 &amp; 4 &amp; 2 \\
+  1 &amp; 3 &amp; 3 &amp; 4 &amp; 4
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;其中每一列为一条数据记录，而一行为一个字段。为了后续处理方便，我们首先将每个字段内所有值都减去字段均值，其结果是将每个字段都变为均值为0（这样做的道理和好处后面会看到）。&lt;/p&gt;
 &lt;p&gt;我们看上面的数据，第一个字段均值为2，第二个字段均值为3，所以变换后：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{pmatrix}
-%20-1%20&amp;%20-1%20&amp;%200%20&amp;%202%20&amp;%200%20\\
-%20-2%20&amp;%200%20&amp;%200%20&amp;%201%20&amp;%201
-\end{pmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{pmatrix}
+  -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0 \\
+  -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;我们可以看下五条数据在平面直角坐标系内的样子：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/06.png&quot;/&gt;&lt;/p&gt;
 
@@ -135,15 +135,15 @@
 &lt;p&gt;下面，我们用数学方法表述这个问题。&lt;/p&gt;
 &lt;h2&gt;方差&lt;/h2&gt;
 &lt;p&gt;上文说到，我们希望投影后投影值尽可能分散，而这种分散程度，可以用数学上的方差来表述。此处，一个字段的方差可以看做是每个元素与字段均值的差的平方和的均值，即：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Var(a)=\frac{1}{m}\sum_{i=1}^m{(a_i-\mu)^2}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Var(a)=\frac{1}{m}\sum_{i=1}^m{(a_i-\mu)^2}\]&lt;/p&gt;
 &lt;p&gt;由于上面我们已经将每个字段的均值都化为0了，因此方差可以直接用每个元素的平方和除以元素个数表示：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Var(a)=\frac{1}{m}\sum_{i=1}^m{a_i^2}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Var(a)=\frac{1}{m}\sum_{i=1}^m{a_i^2}\]&lt;/p&gt;
 &lt;p&gt;于是上面的问题被形式化表述为：寻找一个一维基，使得所有数据变换为这个基上的坐标表示后，方差值最大。&lt;/p&gt;
 &lt;h2&gt;协方差&lt;/h2&gt;
 &lt;p&gt;对于上面二维降成一维的问题来说，找到那个使得方差最大的方向就可以了。不过对于更高维，还有一个问题需要解决。考虑三维降到二维问题。与之前相同，首先我们希望找到一个方向使得投影后方差最大，这样就完成了第一个方向的选择，继而我们选择第二个投影方向。&lt;/p&gt;
 &lt;p&gt;如果我们还是单纯只选择方差最大的方向，很明显，这个方向与第一个方向应该是“几乎重合在一起”，显然这样的维度是没有用的，因此，应该有其他约束条件。从直观上说，让两个字段尽可能表示更多的原始信息，我们是不希望它们之间存在（线性）相关性的，因为相关性意味着两个字段不是完全独立，必然存在重复表示的信息。&lt;/p&gt;
 &lt;p&gt;数学上可以用两个字段的协方差表示其相关性，由于已经让每个字段均值为0，则：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Cov(a,b)=\frac{1}{m}\sum_{i=1}^m{a_ib_i}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Cov(a,b)=\frac{1}{m}\sum_{i=1}^m{a_ib_i}\]&lt;/p&gt;
 &lt;p&gt;可以看到，在字段均值为0的情况下，两个字段的协方差简洁的表示为其内积除以元素数m。&lt;/p&gt;
 &lt;p&gt;当协方差为0时，表示两个字段完全独立。为了让协方差为0，我们选择第二个基时只能在与第一个基正交的方向上选择。因此最终选择的两个方向一定是正交的。&lt;/p&gt;
 &lt;p&gt;至此，我们得到了降维问题的优化目标：&lt;strong&gt;将一组N维向量降为K维（K大于0，小于N），其目标是选择K个单位（模为1）正交基，使得原始数据变换到这组基上后，各字段两两间协方差为0，而字段的方差则尽可能大（在正交的约束下，取最大的K个方差）&lt;/strong&gt;。&lt;/p&gt;
@@ -151,50 +151,50 @@
 &lt;p&gt;上面我们导出了优化目标，但是这个目标似乎不能直接作为操作指南（或者说算法），因为它只说要什么，但根本没有说怎么做。所以我们要继续在数学上研究计算方案。&lt;/p&gt;
 &lt;p&gt;我们看到，最终要达到的目的与字段内方差及字段间协方差有密切关系。因此我们希望能将两者统一表示，仔细观察发现，两者均可以表示为内积的形式，而内积又与矩阵相乘密切相关。于是我们来了灵感：&lt;/p&gt;
 &lt;p&gt;假设我们只有a和b两个字段，那么我们将它们按行组成矩阵X：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?X=\begin{pmatrix}
-%20a_1%20&amp;%20a_2%20&amp;%20\cdots%20&amp;%20a_m%20\\
-%20b_1%20&amp;%20b_2%20&amp;%20\cdots%20&amp;%20b_m
-\end{pmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[X=\begin{pmatrix}
+  a_1 &amp; a_2 &amp; \cdots &amp; a_m \\
+  b_1 &amp; b_2 &amp; \cdots &amp; b_m
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;然后我们用X乘以X的转置，并乘上系数1/m：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\frac{1}{m}XX^\mathsf{T}=\begin{pmatrix}
-%20\frac{1}{m}\sum_{i=1}^m{a_i^2}%20&amp;%20\frac{1}{m}\sum_{i=1}^m{a_ib_i}%20\\
-%20\frac{1}{m}\sum_{i=1}^m{a_ib_i}%20&amp;%20\frac{1}{m}\sum_{i=1}^m{b_i^2}
-\end{pmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\frac{1}{m}XX^\mathsf{T}=\begin{pmatrix}
+  \frac{1}{m}\sum_{i=1}^m{a_i^2}   &amp; \frac{1}{m}\sum_{i=1}^m{a_ib_i} \\
+  \frac{1}{m}\sum_{i=1}^m{a_ib_i} &amp; \frac{1}{m}\sum_{i=1}^m{b_i^2}
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;奇迹出现了！这个矩阵对角线上的两个元素分别是两个字段的方差，而其它元素是a和b的协方差。两者被统一到了一个矩阵的。&lt;/p&gt;
 &lt;p&gt;根据矩阵相乘的运算法则，这个结论很容易被推广到一般情况：&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;设我们有m个n维数据记录，将其按列排成n乘m的矩阵X，设%lt;img src="http://latex.codecogs.com/gif.latex?C=\frac{1}{m}XX^\mathsf{T}" /&gt;，则C是一个对称矩阵，其对角线分别个各个字段的方差，而第i行j列和j行i列元素相同，表示i和j两个字段的协方差&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;设我们有m个n维数据记录，将其按列排成n乘m的矩阵X，设\(C=\frac{1}{m}XX^\mathsf{T}\)，则C是一个对称矩阵，其对角线分别个各个字段的方差，而第i行j列和j行i列元素相同，表示i和j两个字段的协方差&lt;/strong&gt;。&lt;/p&gt;
 &lt;h2&gt;协方差矩阵对角化&lt;/h2&gt;
 &lt;p&gt;根据上述推导，我们发现要达到优化目前，等价于将协方差矩阵对角化：即除对角线外的其它元素化为0，并且在对角线上将元素按大小从上到下排列，这样我们就达到了优化目的。这样说可能还不是很明晰，我们进一步看下原矩阵与基变换后矩阵协方差矩阵的关系：&lt;/p&gt;
 &lt;p&gt;设原始数据矩阵X对应的协方差矩阵为C，而P是一组基按行组成的矩阵，设Y=PX，则Y为X对P做基变换后的数据。设Y的协方差矩阵为D，我们推导一下D与C的关系：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-%20D%20&amp;%20=%20&amp;%20\frac{1}{m}YY^\mathsf{T}%20\\
-%20&amp;%20=%20&amp;%20\frac{1}{m}(PX)(PX)^\mathsf{T}%20\\
-%20&amp;%20=%20&amp;%20\frac{1}{m}PXX^\mathsf{T}P^\mathsf{T}%20\\
-%20&amp;%20=%20&amp;%20P(\frac{1}{m}XX^\mathsf{T})P^\mathsf{T}%20\\
-%20&amp;%20=%20&amp;%20PCP^\mathsf{T}
-\end{array}" /&gt;&lt;/p&gt;
-&lt;p&gt;现在事情很明白了！我们要找的P不是别的，而是能让原始协方差矩阵对角化的P。换句话说，优化目标变成了&lt;strong&gt;寻找一个矩阵P，满足%lt;img src="http://latex.codecogs.com/gif.latex?PCP^\mathsf{T}" /&gt;是一个对角矩阵，并且对角元素按从大到小依次排列，那么P的前K行就是要寻找的基，用P的前K行组成的矩阵乘以X就使得X从N维降到了K维并满足上述优化条件&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+  D &amp; = &amp; \frac{1}{m}YY^\mathsf{T} \\
+    &amp; = &amp; \frac{1}{m}(PX)(PX)^\mathsf{T} \\
+    &amp; = &amp; \frac{1}{m}PXX^\mathsf{T}P^\mathsf{T} \\
+    &amp; = &amp; P(\frac{1}{m}XX^\mathsf{T})P^\mathsf{T} \\
+    &amp; = &amp; PCP^\mathsf{T}
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;现在事情很明白了！我们要找的P不是别的，而是能让原始协方差矩阵对角化的P。换句话说，优化目标变成了&lt;strong&gt;寻找一个矩阵P，满足\(PCP^\mathsf{T}\)是一个对角矩阵，并且对角元素按从大到小依次排列，那么P的前K行就是要寻找的基，用P的前K行组成的矩阵乘以X就使得X从N维降到了K维并满足上述优化条件&lt;/strong&gt;。&lt;/p&gt;
 &lt;p&gt;至此，我们离“发明”PCA还有仅一步之遥！&lt;/p&gt;
 &lt;p&gt;现在所有焦点都聚焦在了协方差矩阵对角化问题上，有时，我们真应该感谢数学家的先行，因为矩阵对角化在线性代数领域已经属于被玩烂了的东西，所以这在数学上根本不是问题。&lt;/p&gt;
 &lt;p&gt;由上文知道，协方差矩阵C是一个是对称矩阵，在线性代数上，实对称矩阵有一系列非常好的性质：&lt;/p&gt;
 &lt;p&gt;1）实对称矩阵不同特征值对应的特征向量必然正交。&lt;/p&gt;
-&lt;p&gt;2）设特征向量%lt;img src="http://latex.codecogs.com/gif.latex?\lambda" /&gt;重数为r，则必然存在r个线性无关的特征向量对应于%lt;img src="http://latex.codecogs.com/gif.latex?\lambda" /&gt;，因此可以将这r个特征向量单位正交化。&lt;/p&gt;
-&lt;p&gt;由上面两条可知，一个n行n列的实对称矩阵一定可以找到n个单位正交特征向量，设这n个特征向量为%lt;img src="http://latex.codecogs.com/gif.latex?e_1,e_2,\cdots,e_n" /&gt;，我们将其按列组成矩阵：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E=\begin{pmatrix}
-%20e_1%20&amp;%20e_2%20&amp;%20\cdots%20&amp;%20e_n
-\end{pmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;2）设特征向量\(\lambda\)重数为r，则必然存在r个线性无关的特征向量对应于\(\lambda\)，因此可以将这r个特征向量单位正交化。&lt;/p&gt;
+&lt;p&gt;由上面两条可知，一个n行n列的实对称矩阵一定可以找到n个单位正交特征向量，设这n个特征向量为\(e_1,e_2,\cdots,e_n\)，我们将其按列组成矩阵：&lt;/p&gt;
+&lt;p&gt;\[E=\begin{pmatrix}
+  e_1 &amp; e_2 &amp; \cdots &amp; e_n
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;则对协方差矩阵C有如下结论：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E^\mathsf{T}CE=\Lambda=\begin{pmatrix}
-%20\lambda_1%20&amp;%20&amp;%20&amp;%20\\
-%20&amp;%20\lambda_2%20&amp;%20&amp;%20\\
-%20&amp;%20&amp;%20\ddots%20&amp;%20\\
-%20&amp;%20&amp;%20&amp;%20\lambda_n
-\end{pmatrix}" /&gt;&lt;/p&gt;
-&lt;p&gt;其中%lt;img src="http://latex.codecogs.com/gif.latex?\Lambda" /&gt;为对角矩阵，其对角元素为各特征向量对应的特征值（可能有重复）。&lt;/p&gt;
+&lt;p&gt;\[E^\mathsf{T}CE=\Lambda=\begin{pmatrix}
+  \lambda_1 &amp;             &amp;         &amp; \\
+              &amp; \lambda_2 &amp;         &amp; \\
+              &amp;             &amp; \ddots &amp; \\
+              &amp;             &amp;         &amp; \lambda_n
+\end{pmatrix}\]&lt;/p&gt;
+&lt;p&gt;其中\(\Lambda\)为对角矩阵，其对角元素为各特征向量对应的特征值（可能有重复）。&lt;/p&gt;
 &lt;p&gt;以上结论不再给出严格的数学证明，对证明感兴趣的朋友可以参考线性代数书籍关于“实对称矩阵对角化”的内容。&lt;/p&gt;
 &lt;p&gt;到这里，我们发现我们已经找到了需要的矩阵P：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?P=E^\mathsf{T}" /&gt;&lt;/p&gt;
-&lt;p&gt;P是协方差矩阵的特征向量单位化后按行排列出的矩阵，其中每一行都是C的一个特征向量。如果设P按照%lt;img src="http://latex.codecogs.com/gif.latex?\Lambda" /&gt;中特征值的从大到小，将特征向量从上到下排列，则用P的前K行组成的矩阵乘以原始数据矩阵X，就得到了我们需要的降维后的数据矩阵Y。&lt;/p&gt;
+&lt;p&gt;\[P=E^\mathsf{T}\]&lt;/p&gt;
+&lt;p&gt;P是协方差矩阵的特征向量单位化后按行排列出的矩阵，其中每一行都是C的一个特征向量。如果设P按照\(\Lambda\)中特征值的从大到小，将特征向量从上到下排列，则用P的前K行组成的矩阵乘以原始数据矩阵X，就得到了我们需要的降维后的数据矩阵Y。&lt;/p&gt;
 &lt;p&gt;至此我们完成了整个PCA的数学原理讨论。在下面的一节，我们将给出PCA的一个实例。&lt;/p&gt;
 &lt;h1&gt;算法及实例&lt;/h1&gt;
 &lt;p&gt;为了巩固上面的理论，我们在这一节给出一个具体的PCA实例。&lt;/p&gt;
@@ -203,77 +203,77 @@
 &lt;p&gt;设有m条n维数据。&lt;/p&gt;
 &lt;p&gt;1）将原始数据按列组成n行m列矩阵X&lt;/p&gt;
 &lt;p&gt;2）将X的每一行（代表一个属性字段）进行零均值化，即减去这一行的均值&lt;/p&gt;
-&lt;p&gt;3）求出协方差矩阵%lt;img src="http://latex.codecogs.com/gif.latex?C=\frac{1}{m}XX^\mathsf{T}" /&gt;&lt;/p&gt;
+&lt;p&gt;3）求出协方差矩阵\(C=\frac{1}{m}XX^\mathsf{T}\)&lt;/p&gt;
 &lt;p&gt;4）求出协方差矩阵的特征值及对应的特征向量&lt;/p&gt;
 &lt;p&gt;5）将特征向量按对应特征值大小从上到下按行排列成矩阵，取前k行组成矩阵P&lt;/p&gt;
-&lt;p&gt;6）%lt;img src="http://latex.codecogs.com/gif.latex?Y=PX" /&gt;即为降维到k维后的数据&lt;/p&gt;
+&lt;p&gt;6）\(Y=PX\)即为降维到k维后的数据&lt;/p&gt;
 &lt;h2&gt;实例&lt;/h2&gt;
 &lt;p&gt;这里以上文提到的&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{pmatrix}
-%20-1%20&amp;%20-1%20&amp;%200%20&amp;%202%20&amp;%200%20\\
-%20-2%20&amp;%200%20&amp;%200%20&amp;%201%20&amp;%201
-\end{pmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{pmatrix}
+  -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0 \\
+  -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;为例，我们用PCA方法将这组二维数据其降到一维。&lt;/p&gt;
 &lt;p&gt;因为这个矩阵的每行已经是零均值，这里我们直接求协方差矩阵：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?C=\frac{1}{5}\begin{pmatrix}
-%20-1%20&amp;%20-1%20&amp;%200%20&amp;%202%20&amp;%200%20\\
-%20-2%20&amp;%200%20&amp;%200%20&amp;%201%20&amp;%201
+&lt;p&gt;\[C=\frac{1}{5}\begin{pmatrix}
+  -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0 \\
+  -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
 \end{pmatrix}\begin{pmatrix}
-%20-1%20&amp;%20-2%20\\
-%20-1%20&amp;%200%20\\
-%200%20&amp;%200%20\\
-%202%20&amp;%201%20\\
-%200%20&amp;%201
+  -1 &amp; -2 \\
+  -1 &amp; 0  \\
+  0  &amp; 0  \\
+  2  &amp; 1  \\
+  0  &amp; 1
 \end{pmatrix}=\begin{pmatrix}
-%20\frac{6}{5}%20&amp;%20\frac{4}{5}%20\\
-%20\frac{4}{5}%20&amp;%20\frac{6}{5}
-\end{pmatrix}" /&gt;&lt;/p&gt;
+  \frac{6}{5} &amp; \frac{4}{5} \\
+  \frac{4}{5} &amp; \frac{6}{5}
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;然后求其特征值和特征向量，具体求解方法不再详述，可以参考相关资料。求解后特征值为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\lambda_1=2,\lambda_2=2/5" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\lambda_1=2,\lambda_2=2/5\]&lt;/p&gt;
 &lt;p&gt;其对应的特征向量分别是：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?c_1\begin{pmatrix}
-%201%20\\
-%201
+&lt;p&gt;\[c_1\begin{pmatrix}
+  1 \\
+  1
 \end{pmatrix},c_2\begin{pmatrix}
-%20-1%20\\
-%201
-\end{pmatrix}" /&gt;&lt;/p&gt;
-&lt;p&gt;其中对应的特征向量分别是一个通解，%lt;img src="http://latex.codecogs.com/gif.latex?c_1" /&gt;和%lt;img src="http://latex.codecogs.com/gif.latex?c_2" /&gt;可取任意实数。那么标准化后的特征向量为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{pmatrix}
-%201/\sqrt{2}%20\\
-%201/\sqrt{2}
+  -1 \\
+  1
+\end{pmatrix}\]&lt;/p&gt;
+&lt;p&gt;其中对应的特征向量分别是一个通解，\(c_1\)和\(c_2\)可取任意实数。那么标准化后的特征向量为：&lt;/p&gt;
+&lt;p&gt;\[\begin{pmatrix}
+  1/\sqrt{2} \\
+  1/\sqrt{2}
 \end{pmatrix},\begin{pmatrix}
-%20-1/\sqrt{2}%20\\
-%201/\sqrt{2}
-\end{pmatrix}" /&gt;&lt;/p&gt;
+  -1/\sqrt{2} \\
+  1/\sqrt{2}
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;因此我们的矩阵P是：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?P=\begin{pmatrix}
-%201/\sqrt{2}%20&amp;%201/\sqrt{2}%20\\
-%20-1/\sqrt{2}%20&amp;%201/\sqrt{2}
-\end{pmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[P=\begin{pmatrix}
+  1/\sqrt{2}  &amp; 1/\sqrt{2}  \\
+  -1/\sqrt{2} &amp; 1/\sqrt{2}
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;可以验证协方差矩阵C的对角化：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?PCP^\mathsf{T}=\begin{pmatrix}
-%201/\sqrt{2}%20&amp;%201/\sqrt{2}%20\\
-%20-1/\sqrt{2}%20&amp;%201/\sqrt{2}
+&lt;p&gt;\[PCP^\mathsf{T}=\begin{pmatrix}
+  1/\sqrt{2}  &amp; 1/\sqrt{2}  \\
+  -1/\sqrt{2} &amp; 1/\sqrt{2}
 \end{pmatrix}\begin{pmatrix}
-%206/5%20&amp;%204/5%20\\
-%204/5%20&amp;%206/5
+  6/5 &amp; 4/5 \\
+  4/5 &amp; 6/5
 \end{pmatrix}\begin{pmatrix}
-%201/\sqrt{2}%20&amp;%20-1/\sqrt{2}%20\\
-%201/\sqrt{2}%20&amp;%201/\sqrt{2}
+  1/\sqrt{2} &amp; -1/\sqrt{2}  \\
+  1/\sqrt{2} &amp; 1/\sqrt{2}
 \end{pmatrix}=\begin{pmatrix}
-%202%20&amp;%200%20\\
-%200%20&amp;%202/5
-\end{pmatrix}" /&gt;&lt;/p&gt;
+  2 &amp; 0  \\
+  0 &amp; 2/5
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;最后我们用P的第一行乘以数据矩阵，就得到了降维后的表示：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y=\begin{pmatrix}
-%201/\sqrt{2}%20&amp;%201/\sqrt{2}
+&lt;p&gt;\[Y=\begin{pmatrix}
+  1/\sqrt{2} &amp; 1/\sqrt{2}
 \end{pmatrix}\begin{pmatrix}
-%20-1%20&amp;%20-1%20&amp;%200%20&amp;%202%20&amp;%200%20\\
-%20-2%20&amp;%200%20&amp;%200%20&amp;%201%20&amp;%201
+  -1 &amp; -1 &amp; 0 &amp; 2 &amp; 0 \\
+  -2 &amp; 0 &amp; 0 &amp; 1 &amp; 1
 \end{pmatrix}=\begin{pmatrix}
-%20-3/\sqrt{2}%20&amp;%20-1/\sqrt{2}%20&amp;%200%20&amp;%203/\sqrt{2}%20&amp;%20-1/\sqrt{2}
-\end{pmatrix}" /&gt;&lt;/p&gt;
+  -3/\sqrt{2} &amp; -1/\sqrt{2} &amp; 0 &amp; 3/\sqrt{2} &amp; -1/\sqrt{2}
+\end{pmatrix}\]&lt;/p&gt;
 &lt;p&gt;降维投影结果如下图：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/pca-tutorial/07.png&quot;/&gt;&lt;/p&gt;
 
@@ -289,26 +289,26 @@
 <link>http://blog.codinglabs.org/articles/basic-statistics-calculate.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/basic-statistics-calculate.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Wed, 05 Jun 2013 00:00:00 +0800</pubDate>
+<pubDate>Wed, 05 Jun 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。&lt;/p&gt;
 &lt;h1&gt;期望&lt;/h1&gt;
 &lt;h2&gt;定义&lt;/h2&gt;
-&lt;p&gt;设\(P(x)\)是一个离散概率分布函数，自变量的取值范围为%lt;img src="http://latex.codecogs.com/gif.latex?\{x_1,%20x_2,%20\cdots,%20x_n\}" /&gt;。其期望被定义为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E(x)=\sum_{k=1}^n{x_kP(x_k)}" /&gt;&lt;/p&gt;
+&lt;p&gt;设\(P(x)\)是一个离散概率分布函数，自变量的取值范围为\(\{x_1, x_2, \cdots, x_n\}\)。其期望被定义为：&lt;/p&gt;
+&lt;p&gt;\[E(x)=\sum_{k=1}^n{x_kP(x_k)}\]&lt;/p&gt;
 &lt;p&gt;设\(p(x)\)是一个连续概率密度函数。其期望为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E(x)=\int_{-\infty}^{+\infty}{xp(x)dx}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[E(x)=\int_{-\infty}^{+\infty}{xp(x)dx}\]&lt;/p&gt;
 &lt;h2&gt;性质&lt;/h2&gt;
 &lt;p&gt;1、线性运算规则&lt;/p&gt;
 &lt;p&gt;期望服从线性性质（可以很容易从期望的定义公式中导出）。因此线性运算的期望等于期望的线性运算：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E(ax+by+c)=aE(x)+bE(y)+c" /&gt;&lt;/p&gt;
+&lt;p&gt;\[E(ax+by+c)=aE(x)+bE(y)+c\]&lt;/p&gt;
 &lt;p&gt;这个性质可以推广到任意一般情况：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E(\sum_{k=1}^{n}{a_ix_i}+c)=\sum_{k=1}^{n}{a_iE(x_i)}+c" /&gt;&lt;/p&gt;
+&lt;p&gt;\[E(\sum_{k=1}^{n}{a_ix_i}+c)=\sum_{k=1}^{n}{a_iE(x_i)}+c\]&lt;/p&gt;
 &lt;p&gt;2、函数的期望&lt;/p&gt;
 &lt;p&gt;设\(f(x)\)为x的函数，则\(f(x)\)的期望为：&lt;/p&gt;
 &lt;p&gt;离散：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E(f(x))=\sum_{k=1}^n{f(x_k)P(x_k)}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[E(f(x))=\sum_{k=1}^n{f(x_k)P(x_k)}\]&lt;/p&gt;
 &lt;p&gt;连续：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?E(f(x))=\int_{-\infty}^{+\infty}{f(x)p(x)dx}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[E(f(x))=\int_{-\infty}^{+\infty}{f(x)p(x)dx}\]&lt;/p&gt;
 &lt;p&gt;一定要注意，&lt;strong&gt;函数的期望不等于期望的函数&lt;/strong&gt;，即\(E(f(x)) \ne f(E(x))\)！。&lt;/p&gt;
 &lt;p&gt;3、乘积的期望&lt;/p&gt;
 &lt;p&gt;一般来说，&lt;strong&gt;乘积的期望不等于期望的乘积&lt;/strong&gt;，除非变量相互独立。因此，如果x和y相互独立，则\(E(xy)=E(x)E(y)\)。&lt;/p&gt;
@@ -316,47 +316,47 @@
 &lt;h1&gt;方差&lt;/h1&gt;
 &lt;h2&gt;定义&lt;/h2&gt;
 &lt;p&gt;方差是一种特殊的期望，被定义为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Var(x)=E((x-E(x))^2)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Var(x)=E((x-E(x))^2)\]&lt;/p&gt;
 &lt;h2&gt;性质&lt;/h2&gt;
 &lt;p&gt;1、展开表示&lt;/p&gt;
 &lt;p&gt;反复利用期望的线性性质，可以算出方差的另一种表示形式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-Var(x)%20&amp;%20=%20&amp;%20E((x-E(x))^2)%20\\
-%20&amp;%20=%20&amp;%20E(x^2-2xE(x)+(E(x))^2)%20\\
-%20&amp;%20=%20&amp;%20E(x^2)-2E(x)E(x)+(E(x))^2%20\\
-%20&amp;%20=%20&amp;%20E(x^2)-2(E(x))^2+(E(x))^2%20\\
-%20&amp;%20=%20&amp;%20E(x^2)-(E(x))^2
-\end{array}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+Var(x) &amp; = &amp; E((x-E(x))^2) \\
+       &amp; = &amp; E(x^2-2xE(x)+(E(x))^2) \\
+       &amp; = &amp; E(x^2)-2E(x)E(x)+(E(x))^2 \\
+       &amp; = &amp; E(x^2)-2(E(x))^2+(E(x))^2 \\
+       &amp; = &amp; E(x^2)-(E(x))^2
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;2、常数的方差&lt;/p&gt;
 &lt;p&gt;常数的方差为0，由方差的展开表示很容易推得。&lt;/p&gt;
 &lt;p&gt;3、线性组合的方差&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;方差不满足线性性质&lt;/strong&gt;，两个变量的线性组合方差计算方法如下：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Var(ax+by)=a^2Var(x)+b^2Var(y)+2Cov(x,y)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Var(ax+by)=a^2Var(x)+b^2Var(y)+2Cov(x,y)\]&lt;/p&gt;
 &lt;p&gt;其中\(Cov(x,y)\)为x和y的协方差，下一节讨论。&lt;/p&gt;
 &lt;p&gt;4、独立变量的方差&lt;/p&gt;
 &lt;p&gt;如果两个变量相互独立，则：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Var(ax+by)=a^2Var(x)+b^2Var(y)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Var(ax+by)=a^2Var(x)+b^2Var(y)\]&lt;/p&gt;
 &lt;p&gt;作为推论，如果x和y相互独立：\(Var(x+y)=Var(x)+Var(y)\)。&lt;/p&gt;
 &lt;h1&gt;协方差&lt;/h1&gt;
 &lt;h2&gt;定义&lt;/h2&gt;
 &lt;p&gt;两个随机变量的协方差被定义为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Cov(x,y)=E((x-E(x))(y-E(y)))" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Cov(x,y)=E((x-E(x))(y-E(y)))\]&lt;/p&gt;
 &lt;p&gt;因此&lt;strong&gt;方差是一种特殊的协方差&lt;/strong&gt;。当x=y时，\(Cov(x,y)=Var(x)=Var(y)\)。&lt;/p&gt;
 &lt;h2&gt;性质&lt;/h2&gt;
 &lt;p&gt;1、独立变量的协方差&lt;/p&gt;
 &lt;p&gt;独立变量的协方差为0，可以由协方差公式推导出。&lt;/p&gt;
 &lt;p&gt;2、线性组合的协方差&lt;/p&gt;
 &lt;p&gt;协方差最重要的性质如下：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Cov(\sum_{i=1}^m{a_ix_i},%20\sum_{j=1}^n{b_jy_j})=\sum_{i=1}^m{\sum_{j=1}^n{a_i%20b_j%20Cov(x_i,%20y_j)}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Cov(\sum_{i=1}^m{a_ix_i}, \sum_{j=1}^n{b_jy_j})=\sum_{i=1}^m{\sum_{j=1}^n{a_i b_j Cov(x_i, y_j)}}\]&lt;/p&gt;
 &lt;p&gt;很多协方差的计算都是反复利用这个性质，而且可以导出一些列重要结论。&lt;/p&gt;
 &lt;p&gt;作为一种特殊情况：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Cov(a+bx,c+dy)=bdCov(x,y)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Cov(a+bx,c+dy)=bdCov(x,y)\]&lt;/p&gt;
 &lt;p&gt;另外当x=y时，可以导出方差的一般线性组合求解公式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Var(\sum_{k=1}^n{a_ix_i})=\sum_{i=1}^n{\sum_{j=1}^n{a_ia_jCov(x_i,x_j)}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Var(\sum_{k=1}^n{a_ix_i})=\sum_{i=1}^n{\sum_{j=1}^n{a_ia_jCov(x_i,x_j)}}\]&lt;/p&gt;
 &lt;h1&gt;相关系数&lt;/h1&gt;
 &lt;h2&gt;定义&lt;/h2&gt;
 &lt;p&gt;相关系数通过方差和协方差定义。两个随机变量的相关系数被定义为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Corr(x,y)=\frac{Cov(x,y)}{\sqrt{Var(x)Var(y)}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Corr(x,y)=\frac{Cov(x,y)}{\sqrt{Var(x)Var(y)}}\]&lt;/p&gt;
 &lt;h2&gt;性质&lt;/h2&gt;
 &lt;p&gt;1、有界性&lt;/p&gt;
 &lt;p&gt;相关系数的取值范围为-1到1，其可以看成是无量纲的协方差。&lt;/p&gt;
@@ -369,7 +369,7 @@ Var(x)%20&amp;%20=%20&amp;%20E((x-E(x))^2)%20\\
 <link>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Mon, 27 May 2013 00:00:00 +0800</pubDate>
+<pubDate>Mon, 27 May 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;时间序列是现实生活中经常会碰到的数据形式。例如北京市连续一年的日平均气温、某股票的股票价格、淘宝上某件商品的日销售件数等等。时间序列分析的的目的是挖掘时间序列中隐含的信息与模式，并借此对此序列数据进行评估以及对系列的后续走势进行预测。&lt;/p&gt;
 &lt;p&gt;由于工作需要，我最近简单学习了时间序列分析相关的基础理论和应用方法，这篇文章可以看做是我的学习笔记。&lt;/p&gt;
 &lt;p&gt;文章主要内容会首先描述时间序列分析的基本概念和相关的统计学基础理论，然后着重讲述十分经典和常用的ARIMA模型，在这之后会讲述季节ARIMA模型。&lt;/p&gt;
@@ -378,7 +378,7 @@ Var(x)%20&amp;%20=%20&amp;%20E((x-E(x))^2)%20\\
 &lt;h1&gt;基本概念&lt;/h1&gt;
 &lt;h2&gt;时间序列&lt;/h2&gt;
 &lt;p&gt;简单来说，时间序列是一个变量在不同时间点的值所组成的有序序列。例如北京市2013年4月每日的平均气温就构成了一个30个元素的时间序列，为了方便，我们一般认为序列中相邻元素具有相同的时间间隔。&lt;/p&gt;
-&lt;p&gt;时间序列可以分为确定的和随机的。例如一个1990年出生的人，从1990年到1999年年龄可以表述为%lt;img src="http://latex.codecogs.com/gif.latex?\{0,%201,%202,%20\ldots%20,%209\}" /&gt;，这个序列并没有任何随机因素。不过现实生活中我们面对的更多的是掺杂了随机因素的时间序列，例如气温、销售量等等。&lt;/p&gt;
+&lt;p&gt;时间序列可以分为确定的和随机的。例如一个1990年出生的人，从1990年到1999年年龄可以表述为\(\{0, 1, 2, \ldots , 9\}\)，这个序列并没有任何随机因素。不过现实生活中我们面对的更多的是掺杂了随机因素的时间序列，例如气温、销售量等等。&lt;/p&gt;
 &lt;h2&gt;时间序列分析&lt;/h2&gt;
 &lt;p&gt;时间序列分析说白了就是寻找时间序列中的模式。如果是在确定性时间序列中，这就基本等价于寻找序列的通项公式，例如上面年龄的时间序列，用差为1的等差数列公式就可以很好的描述其模式。&lt;/p&gt;
 &lt;p&gt;当然实际的时间序列分析基本都是针对随机时间序列。对于随机时间序列，情况会复杂一些，但本质上还是可以看做寻找通项公式（可以是封闭形式或递推形式），只不过我们面对的序列存在随机扰动，所以分析过程中除了确定性序列分析的技术外，还需要一些概率统计方面的知识和方法，下面一节会介绍一些相关的基础知识。&lt;/p&gt;
@@ -386,22 +386,22 @@ Var(x)%20&amp;%20=%20&amp;%20E((x-E(x))^2)%20\\
 &lt;p&gt;注意时间序列中的每一个元素都是一个普通的随机变量，如果忽略序列的时间性，那么我们面对的实际上是一个随机变量集合，所以从这个角度来说时间序列的统计分析与普通统计分析没有太大不同，相关的理论也是通用的。&lt;/p&gt;
 &lt;p&gt;对于随机变量集合来说，要完整描述其统计特性需要处理其多元联合分布，这是非常复杂的。所以实际我们往往做一些必要的简化假设，避免处理复杂的多元联合分布。&lt;/p&gt;
 &lt;p&gt;现假设我们有随机时间序列&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\{Y_t|t=0,%20\pm%201,%20\pm%202,%20\cdots%20\}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\{Y_t|t=0, \pm 1, \pm 2, \cdots \}\]&lt;/p&gt;
 &lt;p&gt;下面先给出一些常用的统计量。后面会接着通过一些常见序列来举例说明各统计量如何计算。&lt;/p&gt;
 &lt;h3&gt;均值&lt;/h3&gt;
 &lt;p&gt;均值函数被定义为关于自变量t的函数：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\mu_t=E(Y_t)" /&gt;&lt;/p&gt;
-&lt;p&gt;t的均值函数值表示在t时刻随机变量%lt;img src="http://latex.codecogs.com/gif.latex?Y_t" /&gt;的期望。&lt;/p&gt;
+&lt;p&gt;\[\mu_t=E(Y_t)\]&lt;/p&gt;
+&lt;p&gt;t的均值函数值表示在t时刻随机变量\(Y_t\)的期望。&lt;/p&gt;
 &lt;h3&gt;方差&lt;/h3&gt;
 &lt;p&gt;与均值类似，方差是t时刻序列元素的方差：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\sigma^2_t=E((Y_t-\mu_t)^2)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\sigma^2_t=E((Y_t-\mu_t)^2)\]&lt;/p&gt;
 &lt;h3&gt;自协方差&lt;/h3&gt;
 &lt;p&gt;自协方差是一个二元函数，其自变量为两个时间点，值是两个时间点上序列值的协方差：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_{t,s}=Cov(Y_t,Y_s)=E((Y_t-\mu_t)(Y_s-\mu_s))" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\gamma_{t,s}=Cov(Y_t,Y_s)=E((Y_t-\mu_t)(Y_s-\mu_s))\]&lt;/p&gt;
 &lt;p&gt;当t=s时，自协方差就是t时刻的方差。&lt;/p&gt;
 &lt;h3&gt;自相关系数&lt;/h3&gt;
 &lt;p&gt;自相关系数是两个时刻的值的相关系数：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{t,s}=\frac{\gamma_{t,s}}{\sqrt{\gamma_{t,t}\gamma_{s,s}}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\rho_{t,s}=\frac{\gamma_{t,s}}{\sqrt{\gamma_{t,t}\gamma_{s,s}}}\]&lt;/p&gt;
 &lt;p&gt;如果忽略元素来自时间序列这一事实，各统计量的意义实际上与普通的统计学中无异。因此这些统计量的一些性质也可以无缝推广到时间序列分析。例如期望的线性性质等等。如果有需要可以自行复习一下这些统计量的相关计算性质。后面的推导会主要集中于这几个统计量的计算。&lt;/p&gt;
 &lt;h2&gt;时间序列示例&lt;/h2&gt;
 &lt;p&gt;下面看几个简单的随机时间序列示例。&lt;/p&gt;
@@ -415,18 +415,18 @@ plot(Y, family=&quot;simhei&quot;, main=&quot;白噪声&quot;, type=&quot;b&quot
 abline(h=0)&lt;/pre&gt;
 
 &lt;p&gt;其中共100个元素，每个元素都独立服从标准正态分布\(N(0,1)\)。可以从图中看出白噪声基本是在均值附近较为平均的随机震荡。&lt;/p&gt;
-&lt;p&gt;由于每个元素服从\(N(0,1)\)，所以均值%lt;img src="http://latex.codecogs.com/gif.latex?\mu_t=0" /&gt;，方差%lt;img src="http://latex.codecogs.com/gif.latex?\sigma^2_t=1" /&gt;。又因为每个元素独立，所以对于任何%lt;img src="http://latex.codecogs.com/gif.latex?t%20\neq%20s" /&gt;，%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_{t,s}=0" /&gt;，%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{t,s}=0" /&gt;。这些统计特征与对图像的直观观察基本一致。&lt;/p&gt;
+&lt;p&gt;由于每个元素服从\(N(0,1)\)，所以均值\(\mu_t=0\)，方差\(\sigma^2_t=1\)。又因为每个元素独立，所以对于任何\(t \neq s\)，\(\gamma_{t,s}=0\)，\(\rho_{t,s}=0\)。这些统计特征与对图像的直观观察基本一致。&lt;/p&gt;
 &lt;p&gt;白噪声的重要之处在于很多其它的重要时间序列都可以通过它构造出来，这一点下文会看到。我们一般用e表示白噪声，将白噪声序列写作：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\{e_1,e_2,\ldots,e_t,\ldots\}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\{e_1,e_2,\ldots,e_t,\ldots\}\]&lt;/p&gt;
 &lt;h3&gt;随机游走&lt;/h3&gt;
-&lt;p&gt;下面考虑这样一个时间序列，其在t时刻的值是前面白噪声序列的前t个值之和，设%lt;img src="http://latex.codecogs.com/gif.latex?\{e_1,%20e_2,%20\ldots,%20e_t,%20\ldots%20\}" /&gt;为标准正态分布产生的白噪声，则：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-Y_1%20&amp;%20=%20&amp;%20e_1%20\\
-Y_2%20&amp;%20=%20&amp;%20e_1+e_2%20\\
-&amp;%20\vdots%20&amp;%20\\
-Y_t%20&amp;%20=%20&amp;%20e_1+e_2+\cdots%20+e_t%20\\
-&amp;%20\vdots%20&amp;
-\end{array}" /&gt;&lt;/p&gt;
+&lt;p&gt;下面考虑这样一个时间序列，其在t时刻的值是前面白噪声序列的前t个值之和，设\(\{e_1, e_2, \ldots, e_t, \ldots \}\)为标准正态分布产生的白噪声，则：&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+Y_1 &amp; = &amp; e_1 \\
+Y_2 &amp; = &amp; e_1+e_2 \\
+&amp; \vdots &amp; \\
+Y_t &amp; = &amp; e_1+e_2+\cdots +e_t \\
+&amp; \vdots &amp;
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;下面是用R模拟的随机游走。&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/randwalk.png&quot;/&gt;&lt;/p&gt;
 
@@ -441,44 +441,44 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;均值：\(\mu_t=E(e_1 + \cdots + e_t)=E(e_1) + \cdots + E(e_t)=0\)&lt;/p&gt;
 &lt;p&gt;方差：\(\sigma^2_t=Var(e_1 + \cdots + e_t)=Var(e_1) + \cdots + Var(e_t)=t\sigma^2\)&lt;/p&gt;
 &lt;p&gt;对协方差的计算需要用到一个协方差性质：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Cov(\sum_{i=1}^m{c_iY_i},%20\sum_{j=1}^n{d_jY_j})=\sum_{i=1}^m{\sum_{j=1}^n{c_i%20d_j%20Cov(Y_i,%20Y_j)}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Cov(\sum_{i=1}^m{c_iY_i}, \sum_{j=1}^n{d_jY_j})=\sum_{i=1}^m{\sum_{j=1}^n{c_i d_j Cov(Y_i, Y_j)}}\]&lt;/p&gt;
 &lt;p&gt;设t小于s，由于只有i=j时\(Cov(Y_i, Y_j)=\sigma^2\)，所以：&lt;/p&gt;
-&lt;p&gt;自协方差：%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_{t,s}=t\sigma^2" /&gt;&lt;/p&gt;
-&lt;p&gt;自相关系数：%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{t,s}=\frac{t\sigma^2}{\sqrt{ts\sigma^4}}=\sqrt{\frac{t}{s}}" /&gt;&lt;/p&gt;
+&lt;p&gt;自协方差：\(\gamma_{t,s}=t\sigma^2\)&lt;/p&gt;
+&lt;p&gt;自相关系数：\(\rho_{t,s}=\frac{t\sigma^2}{\sqrt{ts\sigma^4}}=\sqrt{\frac{t}{s}}\)&lt;/p&gt;
 &lt;p&gt;从统计性质可以看到，随机游走的“趋势性”实际是个假象，因为其均值函数一直是白噪声的均值，不存在偏离的期望。但是方差与时间呈线性增长并且趋向于无穷大，这意味着只要时间够长，随机游走的序列值可以偏离均值任意远，但期望永远在均值处。&lt;/p&gt;
 &lt;p&gt;物理与经济学中的很多现象都被看做是随机游走，例如分子的布朗运动，股票的价格走势等等。&lt;/p&gt;
-&lt;p&gt;从协方差和相关系数看，如果起点t固定，则越接近的点相关性越大，例如%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{1,2}=0.707" /&gt;，%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{1,3}=0.577" /&gt;，%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{1,4}=0.500" /&gt;。同时，起点不同，时滞相同自相关系数也不同，越往后同时滞自相关系数越大，例如%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{2,3}=0.816" /&gt;，%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{3,4}=0.866" /&gt;。&lt;/p&gt;
+&lt;p&gt;从协方差和相关系数看，如果起点t固定，则越接近的点相关性越大，例如\(\rho_{1,2}=0.707\)，\(\rho_{1,3}=0.577\)，\(\rho_{1,4}=0.500\)。同时，起点不同，时滞相同自相关系数也不同，越往后同时滞自相关系数越大，例如\(\rho_{2,3}=0.816\)，\(\rho_{3,4}=0.866\)。&lt;/p&gt;
 &lt;p&gt;实际上从纯数学角度可以将自相关系数看成一个二元函数，自变量是时间点t和时滞s-t。认识到这点很重要，因为它与时间序列分析中一个重要的概念——平稳性有着密切的关系。&lt;/p&gt;
 &lt;h2&gt;平稳性&lt;/h2&gt;
 &lt;p&gt;平稳性是时间序列分析中很重要的一个概念。一般的，我们认为一个时间序列是平稳的，如果它同时满足一下两个条件：&lt;/p&gt;
 &lt;p&gt;1）均值函数是一个常数函数&lt;/p&gt;
 &lt;p&gt;2）自协方差函数只与时滞有关，与时间点无关&lt;/p&gt;
 &lt;p&gt;以上面两个时间序列为例。两个序列均满足条件1），因为标准正态分布白噪声和其形成的随机游走的均值函数都是值恒为0的常数函数。再来看条件2）。白噪声的自协方差函数可以表述为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_{t,s}=\left\{
-\begin{array}{l%20l}
-1%20&amp;%20(t=s)%20\\
-0%20&amp;%20(t%20\neq%20s)
+&lt;p&gt;\[\gamma_{t,s}=\left\{
+\begin{array}{l l}
+1 &amp; (t=s) \\
+0 &amp; (t \neq s)
 \end{array}
-\right." /&gt;&lt;/p&gt;
+\right.\]&lt;/p&gt;
 &lt;p&gt;可以看到只有在时滞为0时值为1，其它均为0，所以白噪声是一个平稳序列。&lt;/p&gt;
 &lt;p&gt;而随机游走我们上面分析过，其自协方差为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_{t,s}=t\sigma^2" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\gamma_{t,s}=t\sigma^2\]&lt;/p&gt;
 &lt;p&gt;很明显其自协方差依赖于时间点，所以是一个非平稳序列。&lt;/p&gt;
 &lt;p&gt;后面可以看到，一般的时间序列分析往往针对平稳序列，对于非平稳序列会通过某些变换将其变为平稳的，例如，对于随机游走来说，其一阶差分序列是平稳的（显然其一阶差分是白噪声）。&lt;/p&gt;
 &lt;p&gt;下一章节会介绍ARIMA模型，其中将对上面提到的平稳性和差分的概念给出更具体的说明的示例。&lt;/p&gt;
-&lt;p&gt;注意我们下面说到平稳序列时都默认其均值为0，因为具有均值%lt;img src="http://latex.codecogs.com/gif.latex?\mu" /&gt;的平稳时间序列只要将其做一个变换%lt;img src="http://latex.codecogs.com/gif.latex?Y_t-\mu" /&gt;就可以得到一个均值为0的序列，假设均值为0可以使得问题分析得到简化。&lt;/p&gt;
+&lt;p&gt;注意我们下面说到平稳序列时都默认其均值为0，因为具有均值\(\mu\)的平稳时间序列只要将其做一个变换\(Y_t-\mu\)就可以得到一个均值为0的序列，假设均值为0可以使得问题分析得到简化。&lt;/p&gt;
 &lt;h1&gt;ARIMA模型&lt;/h1&gt;
 &lt;h2&gt;基本模型&lt;/h2&gt;
 &lt;p&gt;上文说过，时间序列分析实际上是寻找随机时间序列中的模式，所以首先要对时间序列做一个假设，假设其符合某个模式。具体一点，就是时间序列可以用一个函数（可以包含随机变量）来描述。函数的自变量是时刻，值是这个时刻序列的值。例如上例中的白噪声可以用\(f(t)=e\)描述，其中e是一个服从标准正态分布的随机变量。&lt;/p&gt;
 &lt;p&gt;时间序列分析的核心工作之一就是根据观察到的序列值来估计这个函数。&lt;/p&gt;
 &lt;p&gt;其中ARIMA模型是一个常用的函数模型。实际上ARIMA模型本身并不是一个具体描述时间序列的函数，而是一类函数的总称。ARIMA模型可以表述为\(ARIMA(p,d,q)\)，其中p、d和q定义域均为自然数。从这个角度看，ARIMA可以看成函数的函数，或者叫做高阶函数。这个高阶函数将一个定义在自然数上的三元空间映射到一个具体函数，具体函数可以描述一个时间序列。&lt;/p&gt;
 &lt;p&gt;例如：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-(ARIMA(0,0,1))(t)%20&amp;%20=%20&amp;%20e_t-\theta%20e_{t-1}%20\\
-(ARIMA(0,0,2))(t)%20&amp;%20=%20&amp;%20e_t-\theta_1%20e_{t-1}-\theta_2%20e_{t-2}%20\\
-(ARIMA(1,0,0))(t)%20&amp;%20=%20&amp;%20e_t+\phi%20(ARIMA(1,0,0))(t-1)%20\\
-(ARIMA(1,0,2))(t)%20&amp;%20=%20&amp;%20e_t+\phi%20(ARIMA(1,0,2))(t-1)-\theta_1%20e_{t-1}-\theta_2%20e_{t-2}%20
-\end{array}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+(ARIMA(0,0,1))(t) &amp; = &amp; e_t-\theta e_{t-1} \\
+(ARIMA(0,0,2))(t) &amp; = &amp; e_t-\theta_1 e_{t-1}-\theta_2 e_{t-2} \\
+(ARIMA(1,0,0))(t) &amp; = &amp; e_t+\phi (ARIMA(1,0,0))(t-1) \\
+(ARIMA(1,0,2))(t) &amp; = &amp; e_t+\phi (ARIMA(1,0,2))(t-1)-\theta_1 e_{t-1}-\theta_2 e_{t-2} 
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;当不同参数取0时ARIMA可以退化为更简单的形式，例如d=0时，模型变为ARMA，如果d和q都等于0，就变为AR模型，而如果d和p为0，则是MA模型，如果d、p和q都为0，那就是白噪声了。所以\(ARIMA(0,0,0)\)就是白噪声序列函数，因此白噪声也只是ARIMA模型的一个特例。&lt;/p&gt;
 &lt;p&gt;下图说明了各个模型间的关系：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arima-models.png&quot;/&gt;&lt;/p&gt;
@@ -488,12 +488,12 @@ abline(h=0)&lt;/pre&gt;
 &lt;h3&gt;MA模型&lt;/h3&gt;
 &lt;p&gt;ARIMA中的p、d和q分别表示自相关、差分和滑动平均。当p和d均为0时，就变成了简单的滑动平均模型\(MA(q)\)。&lt;/p&gt;
 &lt;p&gt;一般的滑动平均模型被定义为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t-\theta_{1}e_{t-1}-\theta_{2}e_{t-2}-\cdots-\theta_{q}e_{t-q}" /&gt;&lt;/p&gt;
-&lt;p&gt;其中e是方差为%lt;img src="http://latex.codecogs.com/gif.latex?\sigma^2" /&gt;的白噪声。并且要求各参数%lt;img src="http://latex.codecogs.com/gif.latex?-\theta" /&gt;是定义在-1到1的闭区间上。&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t-\theta_{1}e_{t-1}-\theta_{2}e_{t-2}-\cdots-\theta_{q}e_{t-q}\]&lt;/p&gt;
+&lt;p&gt;其中e是方差为\(\sigma^2\)的白噪声。并且要求各参数\(-\theta\)是定义在-1到1的闭区间上。&lt;/p&gt;
 &lt;p&gt;可以看出，MA(q)在t时刻的值就是白噪声序列t到t-q共q+1个点的线性组合，系数是\((1,-\theta_{1},\ldots,-\theta_{q})\)。&lt;/p&gt;
 &lt;p&gt;简单起见，我们分析一下最简单的MA(1)和MA(2)模型及其统计性质。&lt;/p&gt;
 &lt;p&gt;下面是MA(1)模型的序列函数以及用R产生的模拟数据：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t-\theta%20e_{t-1}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t-\theta e_{t-1}\]&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/ma1.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
@@ -508,30 +508,30 @@ abline(h=0)&lt;/pre&gt;
 
 &lt;p&gt;这个模拟数据构造自服从标准正态分布的白噪声，其中一阶滑动参数为-0.8。从图上看，这个序列比白噪声平滑，并且比随机游走平稳一些。下面定量分析其各统计量。&lt;/p&gt;
 &lt;p&gt;均值：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\mu_t=E(Y_t)=E(e_t)-\theta%20E(e_{t-1})=0" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\mu_t=E(Y_t)=E(e_t)-\theta E(e_{t-1})=0\]&lt;/p&gt;
 &lt;p&gt;方差：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\sigma^2_t=Var(Y_t)=Var(e_t)+\theta^2%20Var(e_{t-1})=(1+\theta^2)\sigma^2" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\sigma^2_t=Var(Y_t)=Var(e_t)+\theta^2 Var(e_{t-1})=(1+\theta^2)\sigma^2\]&lt;/p&gt;
 &lt;p&gt;自协方差：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_{t,s}=Cov(e_t-\theta%20e_{t-1},e_s-\theta%20e_{s-1})=Cov(e_t,e_s)-\theta%20Cov(e_t,e_{s-1})-\theta%20Cov(e_{t-1},e_s)+\theta^2%20Cov(e_{t-1},e_{s-1})" /&gt;&lt;/p&gt;
-&lt;p&gt;显然，在t小于s时，只有s-t=1时，有\(Cov(e_t,e_{s-1})=Var(e_t)=\sigma^2\)。所以自协方差函数只与时滞s-t有关，我们将自协方差表示为时滞k的函数%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_k" /&gt;，我们有：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_k=\left\{
-\begin{array}{l%20l}
-(1+\theta^2)\sigma^2%20&amp;%20(k=0)%20\\
--\theta%20\sigma^2%20&amp;%20(k=1)%20\\
-0%20&amp;%20(k&gt;1)
+&lt;p&gt;\[\gamma_{t,s}=Cov(e_t-\theta e_{t-1},e_s-\theta e_{s-1})=Cov(e_t,e_s)-\theta Cov(e_t,e_{s-1})-\theta Cov(e_{t-1},e_s)+\theta^2 Cov(e_{t-1},e_{s-1})\]&lt;/p&gt;
+&lt;p&gt;显然，在t小于s时，只有s-t=1时，有\(Cov(e_t,e_{s-1})=Var(e_t)=\sigma^2\)。所以自协方差函数只与时滞s-t有关，我们将自协方差表示为时滞k的函数\(\gamma_k\)，我们有：&lt;/p&gt;
+&lt;p&gt;\[\gamma_k=\left\{
+\begin{array}{l l}
+(1+\theta^2)\sigma^2 &amp; (k=0) \\
+-\theta \sigma^2     &amp; (k=1) \\
+0                      &amp; (k&gt;1)
 \end{array}
-\right." /&gt;&lt;/p&gt;
+\right.\]&lt;/p&gt;
 &lt;p&gt;自相关系数：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\rho_k=\left\{
-\begin{array}{l%20l}
-1%20&amp;%20(k=0)%20\\
-(-\theta)%20/%20(1+\theta^2)%20&amp;%20(k=1)%20\\
-0%20&amp;%20(k&gt;1)
+&lt;p&gt;\[\rho_k=\left\{
+\begin{array}{l l}
+1                          &amp; (k=0) \\
+(-\theta) / (1+\theta^2) &amp; (k=1) \\
+0                          &amp; (k&gt;1)
 \end{array}
-\right." /&gt;&lt;/p&gt;
-&lt;p&gt;从上面分析得出，MA(1)模型是一个平稳序列，因为其均值为常数，自协方差只与时滞相关。以后任何平稳模型，我们都将自协方差和自相关系数表示为时滞k的函数，而不再表示为t和s的函数。另外还可以发现，MA(1)模型每一个序列值只与其前一个值有相关性，而时滞超过1则无相关性，后面可以看到这个特性是识别MA模型的重要特征。另外不难证明，一阶自相关系数在%lt;img src="http://latex.codecogs.com/gif.latex?\theta" /&gt;为正负1时分别达到最强负相关-0.5和最强正相关0.5，在%lt;img src="http://latex.codecogs.com/gif.latex?\theta" /&gt;为0时，MA(1)退化为白噪声，因此自相关系数为0。&lt;/p&gt;
+\right.\]&lt;/p&gt;
+&lt;p&gt;从上面分析得出，MA(1)模型是一个平稳序列，因为其均值为常数，自协方差只与时滞相关。以后任何平稳模型，我们都将自协方差和自相关系数表示为时滞k的函数，而不再表示为t和s的函数。另外还可以发现，MA(1)模型每一个序列值只与其前一个值有相关性，而时滞超过1则无相关性，后面可以看到这个特性是识别MA模型的重要特征。另外不难证明，一阶自相关系数在\(\theta\)为正负1时分别达到最强负相关-0.5和最强正相关0.5，在\(\theta\)为0时，MA(1)退化为白噪声，因此自相关系数为0。&lt;/p&gt;
 &lt;p&gt;类似的，MA(2)模型可以表述为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t-\theta_1%20e_{t-1}-\theta_2%20e_{t-2}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t-\theta_1 e_{t-1}-\theta_2 e_{t-2}\]&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/ma2.png&quot;/&gt;&lt;/p&gt;
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Ye = rnorm(100, mean=0, sd=1);
@@ -549,26 +549,26 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;一般的，MA(q)模型是一个平稳模型，并且在时滞大于q后没有相关性。此处不再给出一般MA模型的统计分析，有兴趣的朋友可以自行推导。&lt;/p&gt;
 &lt;h3&gt;AR模型&lt;/h3&gt;
 &lt;p&gt;现在考虑另一种模型：t时刻的序列值与其滞后p的p个时间序列呈多元线性相关：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}\]&lt;/p&gt;
 &lt;p&gt;从公式上看，AR应该比MA具有更强的自相关性，因为MA仅与滞后的白噪声因素相关，而AR是时间序列前后直接相关。由于AR模型的统计特性推导比MA复杂很多，所以我们先分析最简单的AR(1)，借此了解AR模型的特性。&lt;/p&gt;
 &lt;p&gt;AR(1)的序列公式如下：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t+\phi%20Y_{t-1}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi Y_{t-1}\]&lt;/p&gt;
 &lt;p&gt;与MA(1)不同，这是一个递推公式，并且是一个线性递推公式，我们可以把它展开：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t+\phi%20e_{t-1}+\phi^2%20e_{t-2}+\cdots+\phi^k%20e_{t-k}+\cdots" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi e_{t-1}+\phi^2 e_{t-2}+\cdots+\phi^k e_{t-k}+\cdots\]&lt;/p&gt;
 &lt;p&gt;我们会得到一个无穷级数表达式（假设原始白噪声序列有无穷多滞后项）。显然其均值为0。方差的计算如下：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\sigma^2_t=Var(Y_t)=(1+\phi^2+\phi^4+\cdots+\phi^{2k}+\cdots)\sigma^2=(\lim_{n%20\to%20\infty}{\frac{1-\phi^{2n}}{1-\phi^2})\sigma^2}" /&gt;&lt;/p&gt;
-&lt;p&gt;显然只有当%lt;img src="http://latex.codecogs.com/gif.latex?|\phi|%20&lt;%201" /&gt;时级数收敛到%lt;img src="http://latex.codecogs.com/gif.latex?\frac{\sigma^2}{1-\phi^2}" /&gt;&lt;/p&gt;
-&lt;p&gt;这里不加证明给出一个重要的结论：AR(1)是平稳的当且仅当%lt;img src="http://latex.codecogs.com/gif.latex?|\phi|%20&lt;%201" /&gt;。下面我们假设序列满足平稳条件，推导其自协方差和自相关系数。&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-\gamma_k%20&amp;%20=%20&amp;%20E((Y_{t-k}-\mu_{t-k})(Y_t-\mu_t))%20\\
-%20&amp;%20=%20&amp;%20E(Y_{t-k}Y_t)%20\\
-%20&amp;%20=%20&amp;%20E(Y_{t-k}e_t%20+%20\phi%20Y_{t-k}Y_{t-1})%20\\
-%20&amp;%20=%20&amp;%20E(Y_{t-k})E(e_t)%20+%20\phi%20E(Y_{t-k}Y_{t-1})%20\\
-%20&amp;%20=%20&amp;%20\phi%20\gamma_{k-1}
-\end{array}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\sigma^2_t=Var(Y_t)=(1+\phi^2+\phi^4+\cdots+\phi^{2k}+\cdots)\sigma^2=(\lim_{n \to \infty}{\frac{1-\phi^{2n}}{1-\phi^2})\sigma^2}\]&lt;/p&gt;
+&lt;p&gt;显然只有当\(|\phi| &lt; 1\)时级数收敛到\(\frac{\sigma^2}{1-\phi^2}\)&lt;/p&gt;
+&lt;p&gt;这里不加证明给出一个重要的结论：AR(1)是平稳的当且仅当\(|\phi| &lt; 1\)。下面我们假设序列满足平稳条件，推导其自协方差和自相关系数。&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+\gamma_k &amp; = &amp; E((Y_{t-k}-\mu_{t-k})(Y_t-\mu_t)) \\
+           &amp; = &amp; E(Y_{t-k}Y_t) \\
+           &amp; = &amp; E(Y_{t-k}e_t + \phi Y_{t-k}Y_{t-1}) \\
+           &amp; = &amp; E(Y_{t-k})E(e_t) + \phi E(Y_{t-k}Y_{t-1}) \\
+           &amp; = &amp; \phi \gamma_{k-1}
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;由上面的递推式得：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_k%20=%20\phi^k\gamma_0%20=%20\phi^k\frac{\sigma^2}{1-\phi^2}" /&gt;&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\rho_k=\gamma_k%20/%20\gamma_0=\phi^k" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\gamma_k = \phi^k\gamma_0 = \phi^k\frac{\sigma^2}{1-\phi^2}\]&lt;/p&gt;
+&lt;p&gt;\[\rho_k=\gamma_k / \gamma_0=\phi^k\]&lt;/p&gt;
 &lt;p&gt;从统计特性可以知道，AR(1)模型相近的时序点倾向于一起“运动”，因此可能呈现假趋势。前置节点的影响随着时滞的增大而呈指数衰减。这种特性对于模型识别非常重要。&lt;/p&gt;
 &lt;p&gt;下面是一个R模拟的AR(1)时间序列。&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/ar1.png&quot;/&gt;&lt;/p&gt;
@@ -584,42 +584,42 @@ plot(Y, family=&quot;simhei&quot;, main=&quot;AR(1)&quot;, type=&quot;b&quot;, c
 abline(h=0)&lt;/pre&gt;
 
 &lt;p&gt;下面说一下AR模型的平稳条件。为了讨论这点，我们先引进一个定义：AR模型的特征方程。一般的，AR(p)模型的特征方程被定义为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?1-\phi_1x-\phi_2x^2-\cdots-\phi_px^p=0" /&gt;&lt;/p&gt;
+&lt;p&gt;\[1-\phi_1x-\phi_2x^2-\cdots-\phi_px^p=0\]&lt;/p&gt;
 &lt;p&gt;显然一个AR(p)的特征方程是一个一元p次方程。&lt;/p&gt;
 &lt;p&gt;已经证明：一个AR模型是平稳的当且仅当其特征方程的所有根的绝对值大于1。&lt;/p&gt;
-&lt;p&gt;利用这个结论可以将AR的平稳性问题转化为一个代数问题。例如上面的AR(1)模型，其特征方程为%lt;img src="http://latex.codecogs.com/gif.latex?1-\phi%20x=0" /&gt;，唯一的根为%lt;img src="http://latex.codecogs.com/gif.latex?x=1/\phi" /&gt;，因此AR(1)的平稳条件是%lt;img src="http://latex.codecogs.com/gif.latex?|1/\phi|%20&gt;%201" /&gt;，等价于%lt;img src="http://latex.codecogs.com/gif.latex?|\phi|%20&lt;%201" /&gt;，这是上面给出过的AR(1)平稳条件。&lt;/p&gt;
+&lt;p&gt;利用这个结论可以将AR的平稳性问题转化为一个代数问题。例如上面的AR(1)模型，其特征方程为\(1-\phi x=0\)，唯一的根为\(x=1/\phi\)，因此AR(1)的平稳条件是\(|1/\phi| &gt; 1\)，等价于\(|\phi| &lt; 1\)，这是上面给出过的AR(1)平稳条件。&lt;/p&gt;
 &lt;p&gt;当p大于1时，因为特征方程可能存在复数根，所以平稳条件的计算涉及比较复杂的线性代数和复变函数知识，这里就不再详述了。&lt;/p&gt;
 &lt;p&gt;对于一般AR模型&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}\]&lt;/p&gt;
 &lt;p&gt;假设AR已经满足平稳性条件，有如下统计特性：&lt;/p&gt;
 &lt;p&gt;对上式两边求期望，可得\(\mu=E(Y_t)=(\phi_1 + \cdots + \phi_p)\mu\)，要使此等式恒成立显然：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\mu=0" /&gt;&lt;/p&gt;
-&lt;p&gt;对上式两边乘以%lt;img src="http://latex.codecogs.com/gif.latex?Y_{t-k}" /&gt;，然后求期望，可得自协方差递推式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_k=E(Y_tY_{t-k})=\phi_1\gamma_{k-1}+\cdots+\phi_p\gamma_{k-p}" /&gt;&lt;/p&gt;
-&lt;p&gt;再除以%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_0" /&gt;自相关系数递推式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\rho_k=E(Y_tY_{t-k})=\phi_1\rho_{k-1}+\cdots+\phi_p\rho_{k-p}" /&gt;&lt;/p&gt;
-&lt;p&gt;而对于初始值%lt;img src="http://latex.codecogs.com/gif.latex?\rho_1,\ldots,\rho_p" /&gt;的求解，根据平稳序列自相关系数的稳定性，有%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{-k}=\rho_k" /&gt;，再加上%lt;img src="http://latex.codecogs.com/gif.latex?\rho_0=1" /&gt;，带入上面递推式可得一个含有p个未知量的线性方程组，解方程组就可以得到%lt;img src="http://latex.codecogs.com/gif.latex?\rho_1,\ldots,\rho_p" /&gt;。&lt;/p&gt;
-&lt;p&gt;通过上面的分析可以发现AR模型统计特性的分析最终会归结为线性代数问题，不过在现实的时间序列分析中能否从数学意义上理解上述过程并不是重点，重点是直观理解AR(p)模型在不同的参数%lt;img src="http://latex.codecogs.com/gif.latex?\phi" /&gt;下其自相关系数随时滞k的变化情况。&lt;/p&gt;
+&lt;p&gt;\[\mu=0\]&lt;/p&gt;
+&lt;p&gt;对上式两边乘以\(Y_{t-k}\)，然后求期望，可得自协方差递推式：&lt;/p&gt;
+&lt;p&gt;\[\gamma_k=E(Y_tY_{t-k})=\phi_1\gamma_{k-1}+\cdots+\phi_p\gamma_{k-p}\]&lt;/p&gt;
+&lt;p&gt;再除以\(\gamma_0\)自相关系数递推式：&lt;/p&gt;
+&lt;p&gt;\[\rho_k=E(Y_tY_{t-k})=\phi_1\rho_{k-1}+\cdots+\phi_p\rho_{k-p}\]&lt;/p&gt;
+&lt;p&gt;而对于初始值\(\rho_1,\ldots,\rho_p\)的求解，根据平稳序列自相关系数的稳定性，有\(\rho_{-k}=\rho_k\)，再加上\(\rho_0=1\)，带入上面递推式可得一个含有p个未知量的线性方程组，解方程组就可以得到\(\rho_1,\ldots,\rho_p\)。&lt;/p&gt;
+&lt;p&gt;通过上面的分析可以发现AR模型统计特性的分析最终会归结为线性代数问题，不过在现实的时间序列分析中能否从数学意义上理解上述过程并不是重点，重点是直观理解AR(p)模型在不同的参数\(\phi\)下其自相关系数随时滞k的变化情况。&lt;/p&gt;
 &lt;p&gt;而且现实建模时一般很少使用高于AR(2)的模型，因为过高的阶会导致复杂的模型和提高过拟合风险。因此在实际使用中了解AR(1)和AR(2)的特性一般就足够了，后面在模型识别中会结合图形描述AR(2)的自相关函数特性。&lt;/p&gt;
 &lt;h3&gt;ARMA模型&lt;/h3&gt;
 &lt;p&gt;如果一个时间序列兼有AR和MA部分，并且是平稳的，则构成ARMA模型。一般\(ARMA(p,q)\)的表达式为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}-\theta_{1}e_{t-1}-\theta_{2}e_{t-2}-\cdots-\theta_{q}e_{t-q}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi_{1}Y_{t-1}+\phi_{2}Y_{t-2}+\cdots+\phi_{p}Y_{t-p}-\theta_{1}e_{t-1}-\theta_{2}e_{t-2}-\cdots-\theta_{q}e_{t-q}\]&lt;/p&gt;
 &lt;p&gt;已经证明，ARMA序列是平稳的当且仅当其AR特征方程的根的模大于1。因此求解ARMA平稳条件与AR平稳条件无异，只需忽略MA部分直接套用AR平稳条件求解即可。换句话说，ARMA(p,q)平稳当且仅当AR(p)平稳。&lt;/p&gt;
 &lt;p&gt;下面研究最简单的ARMA(1,1)模型。这是一个带有一阶自回归和一阶滑动平均的序列：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?Y_t=e_t+\phi%20Y_{t-1}-\theta%20e_{t-1}" /&gt;&lt;/p&gt;
-&lt;p&gt;其平稳的条件等于AR(1)的平稳条件，也就是%lt;img src="http://latex.codecogs.com/gif.latex?|\phi|%20&lt;%201" /&gt;。在这个前提下，我们分析其统计特性。由于推导过程比较复杂，这里直接把我之前在纸上推导的草稿贴出来，详见下图（点击图片可放大）。&lt;/p&gt;
+&lt;p&gt;\[Y_t=e_t+\phi Y_{t-1}-\theta e_{t-1}\]&lt;/p&gt;
+&lt;p&gt;其平稳的条件等于AR(1)的平稳条件，也就是\(|\phi| &lt; 1\)。在这个前提下，我们分析其统计特性。由于推导过程比较复杂，这里直接把我之前在纸上推导的草稿贴出来，详见下图（点击图片可放大）。&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;a href=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot; target=&quot;_blank&quot;&gt;&lt;img width=&quot;600&quot; alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arma11-derivation.jpg&quot;/&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;其中结论性部分我用红笔标出了。根据上面的推导结果，ARMA(1,1)的统计特性如下：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\mu=0" /&gt;&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\gamma_k=\left\{
-\begin{array}{l%20l}
-\frac{1+\theta^2-2\phi\theta}{1-\phi^2}\sigma^2%20&amp;%20(k%20=%200)%20\\
-\phi\gamma_0-\theta\sigma^2%20&amp;%20(k%20=%201)%20\\
-\phi\gamma_{k-1}%20&amp;%20(k%20\ge%202)
+&lt;p&gt;\[\mu=0\]&lt;/p&gt;
+&lt;p&gt;\[\gamma_k=\left\{
+\begin{array}{l l}
+\frac{1+\theta^2-2\phi\theta}{1-\phi^2}\sigma^2 &amp; (k = 0) \\
+\phi\gamma_0-\theta\sigma^2 &amp; (k = 1) \\
+\phi\gamma_{k-1} &amp; (k \ge 2)
 \end{array}
-\right." /&gt;&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\rho_k=\phi^{k-1}\frac{(\phi-\theta)(1-\phi\theta)}{1+\theta^2-2\phi\theta}" /&gt;&lt;/p&gt;
+\right.\]&lt;/p&gt;
+&lt;p&gt;\[\rho_k=\phi^{k-1}\frac{(\phi-\theta)(1-\phi\theta)}{1+\theta^2-2\phi\theta}\]&lt;/p&gt;
 &lt;p&gt;大约可以看到相关系数也是随时滞呈指数递减，当然不同的参数会有不同的情况，具体我们留待模型识别一节讨论。&lt;/p&gt;
 &lt;p&gt;下面给出一个模拟的ARMA(1,1)时间序列：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/time-series-analysis-foundation/arma11.png&quot;/&gt;&lt;/p&gt;
@@ -648,7 +648,7 @@ abline(h=0)&lt;/pre&gt;
 <link>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Sun, 17 Mar 2013 00:00:00 +0800</pubDate>
+<pubDate>Sun, 17 Mar 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如&lt;a href=&quot;http://en.wikipedia.org/wiki/Tower_of_Hanoi&quot;&gt;汉诺塔问题&lt;/a&gt;的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。&lt;/p&gt;
 &lt;p&gt;因为递推式求解的重要性，许多算法书籍对其有专门介绍。&lt;a href=&quot;http://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;在&lt;a href=&quot;http://en.wikipedia.org/wiki/Concrete_Mathematics&quot;&gt;Concrete Mathematics&lt;/a&gt;一书中多个章节都涉及递推式求解方法。&lt;a href=&quot;http://book.douban.com/subject/1885170/&quot;&gt;算法导论&lt;/a&gt;也在第四章中专门论述的这个主题。&lt;/p&gt;
 &lt;p&gt;在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。&lt;/p&gt;
@@ -659,33 +659,33 @@ abline(h=0)&lt;/pre&gt;
 &lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Fibonacci_number&quot;&gt;斐波那契数列&lt;/a&gt;大家应该很熟悉了，这里不再赘述，直接进入问题。&lt;/p&gt;
 &lt;h3&gt;问题&lt;/h3&gt;
 &lt;p&gt;设斐波那契数列为由如下递推式定义的数列：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-T(0)%20&amp;%20=%20&amp;%200%20\\
-T(1)%20&amp;%20=%20&amp;%201%20\\
-T(n)%20&amp;%20=%20&amp;%20T(n-2)+T(n-1)%20\quad%20(n%20\geq%202)
-\end{array}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+T(0) &amp; = &amp; 0 \\
+T(1) &amp; = &amp; 1 \\
+T(n) &amp; = &amp; T(n-2)+T(n-1) \quad (n \geq 2)
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;求解\(T(n)\)的封闭形式（也就是斐波那契数列的通项公式）。&lt;/p&gt;
 &lt;h3&gt;求解&lt;/h3&gt;
 &lt;p&gt;首先忽略初始条件，考虑递推式\(T(n)=T(n-2)+T(n-1)\)。可以对解的形式进行一个猜测\(T(n)=q^n\)（这个不是瞎猜的，实际上可以证明线性递推式都遵循这种形式）。那么，递推式可以重写为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l}
-%20&amp;%20T(n)=T(n-2)+T(n-1)%20\\
-\Rightarrow%20&amp;%20q^n=q^{n-2}+q^{n-1}%20\\
-\Rightarrow%20&amp;%20q^2=1+q%20\\
-\Rightarrow%20&amp;%20q^2-q-1=0
-\end{array}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l}
+            &amp; T(n)=T(n-2)+T(n-1) \\
+\Rightarrow &amp; q^n=q^{n-2}+q^{n-1} \\
+\Rightarrow &amp; q^2=1+q \\
+\Rightarrow &amp; q^2-q-1=0
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;这样问题被转化为一个一元二次方程的求根问题。利用求根公式可得：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?q=\frac{1%20\pm%20\sqrt{5}}{2}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[q=\frac{1 \pm \sqrt{5}}{2}\]&lt;/p&gt;
 &lt;p&gt;因此得到递推式的一个通解：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=c_1(\frac{1+\sqrt{5}}{2})^n+c_2(\frac{1-\sqrt{5}}{2})^n" /&gt;&lt;/p&gt;
-&lt;p&gt;即其中%lt;img src="http://latex.codecogs.com/gif.latex?c_1" /&gt;和%lt;img src="http://latex.codecogs.com/gif.latex?c_2" /&gt;为任意实数。下一步要代入初始条件解出%lt;img src="http://latex.codecogs.com/gif.latex?c_1" /&gt;和%lt;img src="http://latex.codecogs.com/gif.latex?c_2" /&gt;。根据n为0和1时的初始条件，可得：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\left\{
-\begin{array}{l%20l%20l}
-c_1+c_2%20&amp;%20=%20&amp;%200%20\\
-c_1(\frac{1+\sqrt{5}}{2})+c_2(\frac{1-\sqrt{5}}{2})%20&amp;%20=%20&amp;%201
+&lt;p&gt;\[T(n)=c_1(\frac{1+\sqrt{5}}{2})^n+c_2(\frac{1-\sqrt{5}}{2})^n\]&lt;/p&gt;
+&lt;p&gt;即其中\(c_1\)和\(c_2\)为任意实数。下一步要代入初始条件解出\(c_1\)和\(c_2\)。根据n为0和1时的初始条件，可得：&lt;/p&gt;
+&lt;p&gt;\[\left\{
+\begin{array}{l l l}
+c_1+c_2 &amp; = &amp; 0 \\
+c_1(\frac{1+\sqrt{5}}{2})+c_2(\frac{1-\sqrt{5}}{2}) &amp; = &amp; 1
 \end{array}
-\right." /&gt;&lt;/p&gt;
-&lt;p&gt;解得%lt;img src="http://latex.codecogs.com/gif.latex?c_1=\frac{1}{\sqrt{5}}" /&gt;，%lt;img src="http://latex.codecogs.com/gif.latex?c_2=-\frac{1}{\sqrt{5}}" /&gt;。因此最终解为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=\frac{1}{\sqrt{5}}((\frac{1+\sqrt{5}}{2})^n-(\frac{1-\sqrt{5}}{2})^n)" /&gt;&lt;/p&gt;
+\right.\]&lt;/p&gt;
+&lt;p&gt;解得\(c_1=\frac{1}{\sqrt{5}}\)，\(c_2=-\frac{1}{\sqrt{5}}\)。因此最终解为：&lt;/p&gt;
+&lt;p&gt;\[T(n)=\frac{1}{\sqrt{5}}((\frac{1+\sqrt{5}}{2})^n-(\frac{1-\sqrt{5}}{2})^n)\]&lt;/p&gt;
 &lt;h2&gt;例2：汉诺塔&lt;/h2&gt;
 &lt;p&gt;汉诺塔的时间复杂度通常使用递归式定义，在这个例子中将使用代数方法求解其封闭形式。&lt;/p&gt;
 &lt;h3&gt;问题&lt;/h3&gt;
@@ -694,50 +694,50 @@ c_1(\frac{1+\sqrt{5}}{2})+c_2(\frac{1-\sqrt{5}}{2})%20&amp;%20=%20&amp;%201
 &lt;p&gt;这里并不能直接使用例1中的方法，因为右边除了递推项外，还有一个非递推项1，用线性代数的语言说，这个线性递推式是非齐次的。&lt;/p&gt;
 &lt;p&gt;可以回想一下线性代数中求解非齐次方程组通解的方法：1）求解其齐次部分的通解。2）求其一个特解，将特解加到通解上即得非齐次方程组通解。&lt;/p&gt;
 &lt;p&gt;我们用类似的方法求解汉诺塔时间复杂度递推式。首先，忽略后面的1，则得到一个齐次线性递推式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=2T(n-1)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[T(n)=2T(n-1)\]&lt;/p&gt;
 &lt;p&gt;转化为多项式方程：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l}
-%20&amp;%20T(n)=2T(n-1)%20\\
-\Rightarrow%20&amp;%20q^n=2q^{n-1}%20\\
-\Rightarrow%20&amp;%20q=2%20\\
-\end{array}" /&gt;&lt;/p&gt;
-&lt;p&gt;因为方程是一次多项式，我们直接得到了其解为2。因此齐次递推式的通解为%lt;img src="http://latex.codecogs.com/gif.latex?c2^n" /&gt;，其中c为任意常数。&lt;/p&gt;
-&lt;p&gt;然后我们需要求得\(T(n)=2T(n-1)+1\)的一个特解，解是一个以n为变量的函数。我们可以先从常数试起，设特解为\(T(n)=a\)，带入得%lt;img src="http://latex.codecogs.com/gif.latex?a=2a+1" /&gt;，
-解得%lt;img src="http://latex.codecogs.com/gif.latex?a=-1" /&gt;。因此，原递推式的通解为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=c2^n-1" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l}
+            &amp; T(n)=2T(n-1) \\
+\Rightarrow &amp; q^n=2q^{n-1} \\
+\Rightarrow &amp; q=2 \\
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;因为方程是一次多项式，我们直接得到了其解为2。因此齐次递推式的通解为\(c2^n\)，其中c为任意常数。&lt;/p&gt;
+&lt;p&gt;然后我们需要求得\(T(n)=2T(n-1)+1\)的一个特解，解是一个以n为变量的函数。我们可以先从常数试起，设特解为\(T(n)=a\)，带入得\(a=2a+1\)，
+解得\(a=-1\)。因此，原递推式的通解为：&lt;/p&gt;
+&lt;p&gt;\[T(n)=c2^n-1\]&lt;/p&gt;
 &lt;p&gt;最后我们求解常数c。&lt;/p&gt;
-&lt;p&gt;将初始条件\(T(0)=0\)带入，得%lt;img src="http://latex.codecogs.com/gif.latex?0=c-1" /&gt;，因此%lt;img src="http://latex.codecogs.com/gif.latex?c=1" /&gt;。代入原通解，得汉诺塔时间复杂度递推式的封闭形式为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=2^n-1" /&gt;&lt;/p&gt;
+&lt;p&gt;将初始条件\(T(0)=0\)带入，得\(0=c-1\)，因此\(c=1\)。代入原通解，得汉诺塔时间复杂度递推式的封闭形式为：&lt;/p&gt;
+&lt;p&gt;\[T(n)=2^n-1\]&lt;/p&gt;
 &lt;h1&gt;数学原理&lt;/h1&gt;
 &lt;p&gt;上面两个例子可能有些同学看的不是很明白，其中提到了一些线性代数术语。在这一章节中，我们分析上述解法的数学原理，看看递推式是如何与线性代数关联起来的。&lt;/p&gt;
 &lt;h2&gt;线性递推式的一般化&lt;/h2&gt;
 &lt;p&gt;斐波那契数列和汉诺塔递推式可以看成线性递推式的特例，下面给出线性递推式的一般定义：&lt;/p&gt;
 &lt;p&gt;我们将满足如下递推关系的递推式称为线性递推式：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=a_1T(n-1)+a_2T(n-2)+%20\dots%20+a_{k-1}T(n-k+1)+a_kT(n-k)+C(n)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)+C(n)\]&lt;/p&gt;
 &lt;p&gt;其中\(C(n)\)是只与n有关系的一个函数。如果\(C(n)=0\)，则称递推式为齐次此，否则称为非齐次的。齐次递推式一定有平凡解\(T(n)=0\)。&lt;/p&gt;
 &lt;p&gt;注意仅有递推式是不能求得\(T(n)\)的唯一解，因此递推关系式只能给出一个通解。只有当下列初始条件确定后，才有可能给出\(T(n)\)的唯一特解。&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l}
-T(0)=b_0%20\\
-T(1)=b_1%20\\
-\vdots%20\\
+&lt;p&gt;\[\begin{array}{l}
+T(0)=b_0 \\
+T(1)=b_1 \\
+\vdots \\
 T(k-1)=b_{k-1}
-\end{array}" /&gt;&lt;/p&gt;
+\end{array}\]&lt;/p&gt;
 &lt;h2&gt;齐次递推式求解定理&lt;/h2&gt;
 &lt;p&gt;下面先考虑齐次线性递推式的求解。定理如下：&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;设有线性齐次递推式\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)&lt;/p&gt;
 &lt;p&gt;另设多项式方程\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\)的根是
-%lt;img src="http://latex.codecogs.com/gif.latex?q_1,q_2,\dots%20,q_k" /&gt;，我们先讨论不存在重根的情况，也就是说k个根互不相等。&lt;/p&gt;
+\(q_1,q_2,\dots ,q_k\)，我们先讨论不存在重根的情况，也就是说k个根互不相等。&lt;/p&gt;
 &lt;p&gt;则\(T(n)\)的通解为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=c_1q_1^n+c_2q_2^n+%20\dots%20+c_kq_k^n" /&gt;&lt;/p&gt;
+&lt;p&gt;\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]&lt;/p&gt;
 &lt;p&gt;并且对于任意的初始情况&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l}
-T(0)=b_0%20\\
-T(1)=b_1%20\\
-\vdots%20\\
+&lt;p&gt;\[\begin{array}{l}
+T(0)=b_0 \\
+T(1)=b_1 \\
+\vdots \\
 T(k-1)=b_{k-1}
-\end{array}" /&gt;&lt;/p&gt;
-&lt;p&gt;都存在一组解%lt;img src="http://latex.codecogs.com/gif.latex?c_1,%20\dots%20,c_k" /&gt;使得递推式成立&lt;/p&gt;
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;都存在一组解\(c_1, \dots ,c_k\)使得递推式成立&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;定理的证明&lt;/h2&gt;
 &lt;p&gt;要证明以上定理，主要需要证明两部分。一是证明多项式根的线性组合可以满足递推式，二是证明任意初始条件下总有解。&lt;/p&gt;
@@ -746,40 +746,40 @@ T(k-1)=b_{k-1}
 &lt;blockquote&gt;
 &lt;p&gt;\(T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\)经过变换可以改写为
 \(T(n)-a_1T(n-1)-a_2T(n-2)- \dots -a_{k-1}T(n-k+1)-a_kT(n-k)=0\)&lt;/p&gt;
-&lt;p&gt;假设\(T(n)=q^n\)，因为%lt;img src="http://latex.codecogs.com/gif.latex?q&gt;0" /&gt;，所以两边除以%lt;img src="http://latex.codecogs.com/gif.latex?q^{n-k}" /&gt;，得到%lt;img src="http://latex.codecogs.com/gif.latex?q^k-a_1q^{k-1}-%20\dots%20-a_{k-1}q-a_k=0" /&gt;&lt;/p&gt;
-&lt;p&gt;因此这个多项式和原递推式同解，因此多项式的每个根q的几何级数%lt;img src="http://latex.codecogs.com/gif.latex?q^n" /&gt;都是原递推式的一个解。同时，根的线性组合
-%lt;img src="http://latex.codecogs.com/gif.latex?c_1q_1^n+c_2q_2^n+%20\dots%20+c_kq_k^n" /&gt;均满足原递推式（可以带入验证）。&lt;/p&gt;
+&lt;p&gt;假设\(T(n)=q^n\)，因为\(q&gt;0\)，所以两边除以\(q^{n-k}\)，得到\(q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0\)&lt;/p&gt;
+&lt;p&gt;因此这个多项式和原递推式同解，因此多项式的每个根q的几何级数\(q^n\)都是原递推式的一个解。同时，根的线性组合
+\(c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\)均满足原递推式（可以带入验证）。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3&gt;任意初始值有解证明&lt;/h3&gt;
-&lt;p&gt;下面要证明对于任意初始条件，均存在适当的常数%lt;img src="http://latex.codecogs.com/gif.latex?c_1,%20\dots%20,c_k" /&gt;。&lt;/p&gt;
+&lt;p&gt;下面要证明对于任意初始条件，均存在适当的常数\(c_1, \dots ,c_k\)。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;将&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l}
-T(0)=b_0%20\\
-T(1)=b_1%20\\
-\vdots%20\\
+&lt;p&gt;\[\begin{array}{l}
+T(0)=b_0 \\
+T(1)=b_1 \\
+\vdots \\
 T(k-1)=b_{k-1}
-\end{array}" /&gt;&lt;/p&gt;
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;带入通解公式，得到一个线性方程组&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-c_1+c_2+%20\dots%20+c_k%20&amp;%20=%20&amp;%20b_0%20\\
-c_1q_1+c_2q_2+%20\dots%20+c_kq_k%20&amp;%20=%20&amp;%20b_1%20\\
-c_1q_1^2+c_2q_2^2+%20\dots%20+c_kq_k^2%20&amp;%20=%20&amp;%20b_2%20\\
-\vdots%20&amp;%20&amp;%20\\
-c_1q_1^{k-1}+c_2q_2^{k-1}+%20\dots%20+c_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}%20\\
-\end{array}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+c_1+c_2+ \dots +c_k &amp; = &amp; b_0 \\
+c_1q_1+c_2q_2+ \dots +c_kq_k &amp; = &amp; b_1 \\
+c_1q_1^2+c_2q_2^2+ \dots +c_kq_k^2 &amp; = &amp; b_2 \\
+\vdots &amp; &amp; \\
+c_1q_1^{k-1}+c_2q_2^{k-1}+ \dots +c_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
+\end{array}\]&lt;/p&gt;
 &lt;p&gt;此时问题转化为证明此方程组对于必然有解，下面就要用到线性代数的知识了。这个方程组的系数行列式为：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?{det}(V)=\begin{vmatrix}
-1%20&amp;%201%20&amp;%20\dots%20&amp;%201%20\\
-q_1%20&amp;%20q_2%20&amp;%20\dots%20&amp;%20q_k%20\\
-q_1^2%20&amp;%20q_2^2%20&amp;%20\dots%20&amp;%20q_k^2%20\\
-\vdots%20&amp;%20\vdots%20&amp;%20\dots%20&amp;%20\vdots%20\\
-q_1^{k-1}%20&amp;%20q_2^{k-1}%20&amp;%20\dots%20&amp;%20q_k^{k-1}
-\end{vmatrix}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[{det}(V)=\begin{vmatrix}
+1 &amp; 1 &amp; \dots &amp; 1 \\
+q_1 &amp; q_2 &amp; \dots &amp; q_k \\
+q_1^2 &amp; q_2^2 &amp; \dots &amp; q_k^2 \\
+\vdots &amp; \vdots &amp; \dots &amp; \vdots \\
+q_1^{k-1} &amp; q_2^{k-1} &amp; \dots &amp; q_k^{k-1}
+\end{vmatrix}\]&lt;/p&gt;
 &lt;p&gt;这个行列式就是非常著名&lt;a href=&quot;http://en.wikipedia.org/wiki/Vandermonde_matrix&quot;&gt;Vandermonde行列式&lt;/a&gt;，所以&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?{det}(V)=\prod_{1%20\leq%20i%20&lt;%20j%20\leq%20k}{(q_i-q_j)}" /&gt;&lt;/p&gt;
+&lt;p&gt;\[{det}(V)=\prod_{1 \leq i &lt; j \leq k}{(q_i-q_j)}\]&lt;/p&gt;
 &lt;p&gt;上面我们假设了多项式各个根均互异，因此行列式的值不等于0，这意味着系数矩阵的秩为k。有线性代数知识可知，这表明
-对于任意初始值%lt;img src="http://latex.codecogs.com/gif.latex?b_0,%20\dots,%20b_{k-1}" /&gt;，方程组均有唯一解。&lt;/p&gt;
+对于任意初始值\(b_0, \dots, b_{k-1}\)，方程组均有唯一解。&lt;/p&gt;
 &lt;p&gt;证毕。&lt;/p&gt;
 &lt;p&gt;顺便说一下，上面的多项式叫特征多项式。其根叫特征根。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -787,26 +787,26 @@ q_1^{k-1}%20&amp;%20q_2^{k-1}%20&amp;%20\dots%20&amp;%20q_k^{k-1}
 &lt;p&gt;通过上面的数学分析，我们得到了一个解线性递推式的通用方法。&lt;/p&gt;
 &lt;h2&gt;齐次递推式&lt;/h2&gt;
 &lt;p&gt;设有齐次递推式&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=a_1T(n-1)+a_2T(n-2)+%20\dots%20+a_{k-1}T(n-k+1)+a_kT(n-k)" /&gt;&lt;/p&gt;
+&lt;p&gt;\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)\]&lt;/p&gt;
 &lt;p&gt;我们可以写出其特征多项式方程&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?q^k-a_1q^{k-1}-%20\dots%20-a_{k-1}q-a_k=0%20\quad%20(q%20&gt;%200,%20a_k%20\neq%200)" /&gt;&lt;/p&gt;
-&lt;p&gt;解出其k个根%lt;img src="http://latex.codecogs.com/gif.latex?q_1,%20\dots,%20q_k" /&gt;。如果k个根互异（但可以有复根），则原递推式的通解为&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=c_1q_1^n+c_2q_2^n+%20\dots%20+c_kq_k^n" /&gt;&lt;/p&gt;
-&lt;p&gt;然后将初始条件%lt;img src="http://latex.codecogs.com/gif.latex?b_0,%20\dots,%20b_{k-1}" /&gt;带入组成线性方程组&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\begin{array}{l%20l%20l}
-x_1+x_2+%20\dots%20+x_k%20&amp;%20=%20&amp;%20b_0%20\\
-x_1q_1+x_2q_2+%20\dots%20+x_kq_k%20&amp;%20=%20&amp;%20b_1%20\\
-x_1q_1^2+x_2q_2^2+%20\dots%20+x_kq_k^2%20&amp;%20=%20&amp;%20b_2%20\\
-\vdots%20&amp;%20&amp;%20\\
-x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}%20\\
-\end{array}" /&gt;&lt;/p&gt;
-&lt;p&gt;解线性方程组得唯一解%lt;img src="http://latex.codecogs.com/gif.latex?\hat{x}_1,%20\dots,%20\hat{x}_k" /&gt;。带回通解公式则得到递推式的最终解&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=\hat{x}_1q_1^n+\hat{x}_2q_2^n+%20\dots%20+\hat{x}_kq_k^n" /&gt;&lt;/p&gt;
+&lt;p&gt;\[q^k-a_1q^{k-1}- \dots -a_{k-1}q-a_k=0 \quad (q &gt; 0, a_k \neq 0)\]&lt;/p&gt;
+&lt;p&gt;解出其k个根\(q_1, \dots, q_k\)。如果k个根互异（但可以有复根），则原递推式的通解为&lt;/p&gt;
+&lt;p&gt;\[T(n)=c_1q_1^n+c_2q_2^n+ \dots +c_kq_k^n\]&lt;/p&gt;
+&lt;p&gt;然后将初始条件\(b_0, \dots, b_{k-1}\)带入组成线性方程组&lt;/p&gt;
+&lt;p&gt;\[\begin{array}{l l l}
+x_1+x_2+ \dots +x_k &amp; = &amp; b_0 \\
+x_1q_1+x_2q_2+ \dots +x_kq_k &amp; = &amp; b_1 \\
+x_1q_1^2+x_2q_2^2+ \dots +x_kq_k^2 &amp; = &amp; b_2 \\
+\vdots &amp; &amp; \\
+x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
+\end{array}\]&lt;/p&gt;
+&lt;p&gt;解线性方程组得唯一解\(\hat{x}_1, \dots, \hat{x}_k\)。带回通解公式则得到递推式的最终解&lt;/p&gt;
+&lt;p&gt;\[T(n)=\hat{x}_1q_1^n+\hat{x}_2q_2^n+ \dots +\hat{x}_kq_k^n\]&lt;/p&gt;
 &lt;h2&gt;非齐次递推式&lt;/h2&gt;
 &lt;p&gt;对于非齐次递推式&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T(n)=a_1T(n-1)+a_2T(n-2)+%20\dots%20+a_{k-1}T(n-k+1)+a_kT(n-k)+C(n)%20\quad%20(C(n)%20\neq%200)" /&gt;&lt;/p&gt;
-&lt;p&gt;可以首先按上面的方法求解其齐次部分的通解%lt;img src="http://latex.codecogs.com/gif.latex?T_n" /&gt;。然后求得其一个特解%lt;img src="http://latex.codecogs.com/gif.latex?y_n" /&gt;，则非齐次递推式的通解为&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?T_n+y_n" /&gt;&lt;/p&gt;
+&lt;p&gt;\[T(n)=a_1T(n-1)+a_2T(n-2)+ \dots +a_{k-1}T(n-k+1)+a_kT(n-k)+C(n) \quad (C(n) \neq 0)\]&lt;/p&gt;
+&lt;p&gt;可以首先按上面的方法求解其齐次部分的通解\(T_n\)。然后求得其一个特解\(y_n\)，则非齐次递推式的通解为&lt;/p&gt;
+&lt;p&gt;\[T_n+y_n\]&lt;/p&gt;
 &lt;p&gt;然后用同样的方法带入初始值，通过线性方程组求出个常量参数带回即可（具体可参见例2）。&lt;/p&gt;
 &lt;h2&gt;有重根的情况&lt;/h2&gt;
 &lt;p&gt;上面的解法只针对特征根互异，如果有重根的话，则上述方法会无效。不过只要经过一定处理也可以有通用方法求解，
@@ -818,7 +818,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 <link>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Tue, 29 Jan 2013 00:00:00 +0800</pubDate>
+<pubDate>Tue, 29 Jan 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;在分析各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。&lt;/p&gt;
 
 &lt;h1&gt;三分式归并排序的时间复杂度&lt;/h1&gt;
@@ -839,25 +839,25 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 
 &lt;h1&gt;对数的陷阱&lt;/h1&gt;
 
-&lt;p&gt;那么这是否意味着三分式归并排序在时间复杂度上要优于二分式的归并排序呢？因为直觉上%lt;img src="http://latex.codecogs.com/gif.latex?n\log_3n" /&gt;比%lt;img src="http://latex.codecogs.com/gif.latex?n\log_2n" /&gt;要优一些。&lt;/p&gt;
+&lt;p&gt;那么这是否意味着三分式归并排序在时间复杂度上要优于二分式的归并排序呢？因为直觉上\(n\log_3n\)比\(n\log_2n\)要优一些。&lt;/p&gt;
 
 &lt;p&gt;实际上三分式归并排序的时间复杂度确实是\(T(n)=O(n\log_3n)\)，而且同时也是\(T(n)=O(n\log_2n)\)。&lt;/p&gt;
 
-&lt;p&gt;这看起来似乎是矛盾的，%lt;img src="http://latex.codecogs.com/gif.latex?n\log_3n" /&gt;和%lt;img src="http://latex.codecogs.com/gif.latex?n\log_2n" /&gt;当然在绝大多数情况下是不相等的，但是在渐进复杂度情况下就不同了，因为渐进复杂度是忽略常系数的，但是似乎也看不出来%lt;img src="http://latex.codecogs.com/gif.latex?n\log_3n" /&gt;和%lt;img src="http://latex.codecogs.com/gif.latex?n\log_2n" /&gt;是差一个常系数。关键就在于我们应该在中学学过的一个东西：对数换底公式。&lt;/p&gt;
+&lt;p&gt;这看起来似乎是矛盾的，\(n\log_3n\)和\(n\log_2n\)当然在绝大多数情况下是不相等的，但是在渐进复杂度情况下就不同了，因为渐进复杂度是忽略常系数的，但是似乎也看不出来\(n\log_3n\)和\(n\log_2n\)是差一个常系数。关键就在于我们应该在中学学过的一个东西：对数换底公式。&lt;/p&gt;
 
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\log_ab%20=%20\frac{\log_cb}{\log_ca}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(\log_ab = \frac{\log_cb}{\log_ca}\)&lt;/p&gt;
 
 &lt;p&gt;其中a和c均大于0且不等于1。&lt;/p&gt;
 
 &lt;p&gt;根据换底公式可以得出：&lt;/p&gt;
 
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\log_3n%20=%20\frac{\log_2n}{\log_23}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(\log_3n = \frac{\log_2n}{\log_23}\)&lt;/p&gt;
 
-&lt;p&gt;所以%lt;img src="http://latex.codecogs.com/gif.latex?n\log_3n" /&gt;比%lt;img src="http://latex.codecogs.com/gif.latex?n\log_2n" /&gt;只差一个常系数%lt;img src="http://latex.codecogs.com/gif.latex?\frac{1}{\log_23}" /&gt;。因此，从渐进时间复杂度看，三分式归并并不比二分式归并更优，当然还是有个常系数的差别的。&lt;/p&gt;
+&lt;p&gt;所以\(n\log_3n\)比\(n\log_2n\)只差一个常系数\(\frac{1}{\log_23}\)。因此，从渐进时间复杂度看，三分式归并并不比二分式归并更优，当然还是有个常系数的差别的。&lt;/p&gt;
 
 &lt;p&gt;更一般的：&lt;/p&gt;
 
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\log_an%20=%20\frac{\log_2n}{\log_2a}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(\log_an = \frac{\log_2n}{\log_2a}\)&lt;/p&gt;
 
 &lt;p&gt;因此对于大于1的a来说，都与\(O(\log_2n)\)差一个常系数而已，因此为了简便，一般都用\(O(\log_2n)\)表示对数的渐进复杂度，这就解决了本文初始的疑问。当然，以任何大于1的a为底数都是没有问题的。&lt;/p&gt;
 </description>
@@ -867,37 +867,37 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Wed, 09 Jan 2013 00:00:00 +0800</pubDate>
-<description>&lt;p&gt;在&lt;a href=&quot;http://www.codinglabs.org/html/algorithms-for-cardinality-estimation-part-iii.html&quot; target=&quot;_blank&quot;&gt;前一篇文章&lt;/a&gt;中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;为0。由于LLC的估计值依赖于各桶%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。&lt;/p&gt;
+<pubDate>Wed, 09 Jan 2013 00:00:00 GMT</pubDate>
+<description>&lt;p&gt;在&lt;a href=&quot;http://www.codinglabs.org/html/algorithms-for-cardinality-estimation-part-iii.html&quot; target=&quot;_blank&quot;&gt;前一篇文章&lt;/a&gt;中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。&lt;/p&gt;
 &lt;p&gt;这一篇文章中将要介绍的HyperLogLog Counting及Adaptive Counting算法均是对LLC算法的改进，可以有效克服LLC对于较小基数估计效果差的缺点。&lt;/p&gt;
 &lt;!--more--&gt;
 &lt;h1&gt;评价基数估计算法的精度&lt;/h1&gt;
-&lt;p&gt;首先我们来分析一下LLC的问题。一般来说LLC最大问题在于当基数不太大时，估计效果比较差。上文说过，LLC的渐近标准误差为%lt;img src="http://latex.codecogs.com/gif.latex?1.30/\sqrt{m}" /&gt;，看起来貌似只和分桶数m有关，那么为什么基数的大小也会导致效果变差呢？这就需要重点研究一下如何评价基数估计算法的精度，以及“渐近标准误差”的意义是什么。&lt;/p&gt;
+&lt;p&gt;首先我们来分析一下LLC的问题。一般来说LLC最大问题在于当基数不太大时，估计效果比较差。上文说过，LLC的渐近标准误差为\(1.30/\sqrt{m}\)，看起来貌似只和分桶数m有关，那么为什么基数的大小也会导致效果变差呢？这就需要重点研究一下如何评价基数估计算法的精度，以及“渐近标准误差”的意义是什么。&lt;/p&gt;
 &lt;h2&gt;标准误差&lt;/h2&gt;
 &lt;p&gt;首先需要明确标准误差的意义。例如标准误差为0.02，到底表示什么意义。&lt;/p&gt;
-&lt;p&gt;标准误差是针对一个统计量（或估计量）而言。在分析基数估计算法的精度时，我们关心的统计量是%lt;img src="http://latex.codecogs.com/gif.latex?\hat{n}/n" /&gt;。注意这个量分子分母均为一组抽样的统计量。下面正式描述一下这个问题。&lt;/p&gt;
-&lt;p&gt;设S是我们要估计基数的可重复有限集合。S中每个元素都是来自值服从均匀分布的样本空间的一个独立随机抽样样本。这个集合共有C个元素，但其基数不一定是C，因为其中可能存在重复元素。设%lt;img src="http://latex.codecogs.com/gif.latex?f_n" /&gt;为定义在S上的函数：&lt;/p&gt;
+&lt;p&gt;标准误差是针对一个统计量（或估计量）而言。在分析基数估计算法的精度时，我们关心的统计量是\(\hat{n}/n\)。注意这个量分子分母均为一组抽样的统计量。下面正式描述一下这个问题。&lt;/p&gt;
+&lt;p&gt;设S是我们要估计基数的可重复有限集合。S中每个元素都是来自值服从均匀分布的样本空间的一个独立随机抽样样本。这个集合共有C个元素，但其基数不一定是C，因为其中可能存在重复元素。设\(f_n\)为定义在S上的函数：&lt;/p&gt;
 &lt;p&gt;\(f_n(S) = Cardinality\;of\;S\)&lt;/p&gt;
-&lt;p&gt;同时定义%lt;img src="http://latex.codecogs.com/gif.latex?f_\hat{n}" /&gt;也是定义在S上的函数：&lt;/p&gt;
+&lt;p&gt;同时定义\(f_\hat{n}\)也是定义在S上的函数：&lt;/p&gt;
 &lt;p&gt;\(f_\hat{n}(S)=LogLog\;estimate\;value\;of\;S\)&lt;/p&gt;
 &lt;p&gt;我们想得到的第一个函数值，但是由于第一个函数值不好计算，所以我们计算同样集合的第二个函数值来作为第一个函数值得估计。因此最理想的情况是对于任意一个集合两个函数值是相等的，如果这样估计就是100%准确了。不过显然没有这么好的事，因此我们退而求其次，只希望\(f_\hat{n}(S)\)是一个无偏估计，即：&lt;/p&gt;
 &lt;p&gt;\(E(\frac{f_\hat{n}(S)}{f_n(S)})=1\)&lt;/p&gt;
-&lt;p&gt;这个在上一篇文章中已经说明了。同时也可以看到，\(\frac{f_\hat{n}(S)}{f_n(S)}\)实际上是一个随机变量，并且服从正态分布。对于正态分布随机变量，一般可以通过标准差%lt;img src="http://latex.codecogs.com/gif.latex?\sigma" /&gt;度量其稳定性，直观来看，标准差越小，则整体分布越趋近于均值，所以估计效果就越好。这是定性的，那么定量来看标准误差%lt;img src="http://latex.codecogs.com/gif.latex?\sigma" /&gt;到底表达了什么意思呢。它的意义是这样的：&lt;/p&gt;
+&lt;p&gt;这个在上一篇文章中已经说明了。同时也可以看到，\(\frac{f_\hat{n}(S)}{f_n(S)}\)实际上是一个随机变量，并且服从正态分布。对于正态分布随机变量，一般可以通过标准差\(\sigma\)度量其稳定性，直观来看，标准差越小，则整体分布越趋近于均值，所以估计效果就越好。这是定性的，那么定量来看标准误差\(\sigma\)到底表达了什么意思呢。它的意义是这样的：&lt;/p&gt;
 &lt;p&gt;对于无偏正态分布而言，随机变量的一次随机取值落在均值一个标准差范围内的概率是68.2%，而落在两个和三个标准差范围内的概率分别为95.4%和99.6%，如下图所示（图片来自&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E6%A0%87%E5%87%86%E8%AF%AF&quot; target=&quot;_blank&quot;&gt;维基百科&lt;/a&gt;）：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-iv/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;因此，假设标准误差是0.02（2%），它实际的意义是：假设真实基数为n，n与估计值之比落入(0.98, 1.02)的概率是68.2%，落入(0.96, 1.04)的概率是95.4%，落入(0.94, 1.06)的概率是99.6%。显然这个比值越大则估计值越不准，因此对于0.02的标准误差，这个比值大于1.06或小于0.94的概率不到0.004。&lt;/p&gt;
 &lt;p&gt;再直观一点，假设真实基数为10000，则一次估计值有99.6%的可能不大于10600且不小于9400。&lt;/p&gt;
 &lt;h2&gt;组合计数与渐近分析&lt;/h2&gt;
-&lt;p&gt;如果LLC能够做到绝对服从%lt;img src="http://latex.codecogs.com/gif.latex?1.30/\sqrt{m}" /&gt;，那么也算很好了，因为我们只要通过控制分桶数m就可以得到一个一致的标准误差。这里的一致是指标准误差与基数无关。不幸的是并不是这样，上面已经说过，这是一个“渐近”标注误差。下面解释一下什么叫渐近。&lt;/p&gt;
+&lt;p&gt;如果LLC能够做到绝对服从\(1.30/\sqrt{m}\)，那么也算很好了，因为我们只要通过控制分桶数m就可以得到一个一致的标准误差。这里的一致是指标准误差与基数无关。不幸的是并不是这样，上面已经说过，这是一个“渐近”标注误差。下面解释一下什么叫渐近。&lt;/p&gt;
 &lt;p&gt;在计算数学中，有一个非常有用的分支就是组合计数。组合计数简单来说就是分析自然数的组合函数随着自然数的增长而增长的量级。可能很多人已经意识到这个听起来很像算法复杂度分析。没错，算法复杂度分析就是组合计数在算法领域的应用。&lt;/p&gt;
-&lt;p&gt;举个例子，设A是一个有n个元素的集合（这里A是严格的集合，不存在重复元素），则A的幂集（即由A的所有子集组成的集合）有%lt;img src="http://latex.codecogs.com/gif.latex?2^n" /&gt;个元素。&lt;/p&gt;
-&lt;p&gt;上述关于幂集的组合计数是一个非常整齐一致的组合计数，也就是不管n多大，A的幂集总有%lt;img src="http://latex.codecogs.com/gif.latex?2^n" /&gt;个元素。&lt;/p&gt;
-&lt;p&gt;可惜的是现实中一般的组合计数都不存在如此干净一致的解。LLC的偏差和标准差其实都是组合函数，但是论文中已经分析出，LLC的偏差和标准差都是渐近组合计数，也就是说，随着n趋向于无穷大，标准差趋向于%lt;img src="http://latex.codecogs.com/gif.latex?1.30/\sqrt{m}" /&gt;，而不是说n多大时其值都一致为%lt;img src="http://latex.codecogs.com/gif.latex?1.30/\sqrt{m}" /&gt;。另外，其无偏性也是渐近的，只有当n远远大于m时，其估计值才近似无偏。因此当n不太大时，LLC的效果并不好。&lt;/p&gt;
+&lt;p&gt;举个例子，设A是一个有n个元素的集合（这里A是严格的集合，不存在重复元素），则A的幂集（即由A的所有子集组成的集合）有\(2^n\)个元素。&lt;/p&gt;
+&lt;p&gt;上述关于幂集的组合计数是一个非常整齐一致的组合计数，也就是不管n多大，A的幂集总有\(2^n\)个元素。&lt;/p&gt;
+&lt;p&gt;可惜的是现实中一般的组合计数都不存在如此干净一致的解。LLC的偏差和标准差其实都是组合函数，但是论文中已经分析出，LLC的偏差和标准差都是渐近组合计数，也就是说，随着n趋向于无穷大，标准差趋向于\(1.30/\sqrt{m}\)，而不是说n多大时其值都一致为\(1.30/\sqrt{m}\)。另外，其无偏性也是渐近的，只有当n远远大于m时，其估计值才近似无偏。因此当n不太大时，LLC的效果并不好。&lt;/p&gt;
 &lt;p&gt;庆幸的是，同样通过统计分析方法，我们可以得到n具体小到什么程度我们就不可忍受了，另外就是当n太小时可不可以用别的估计方法替代LLC来弥补LLC这个缺陷。HyperLogLog Counting及Adaptive Counting都是基于这个思想实现的。&lt;/p&gt;
 &lt;h1&gt;Adaptive Counting&lt;/h1&gt;
 &lt;p&gt;Adaptive Counting（简称AC）在“Fast and accurate traffic matrix measurement using adaptive cardinality counting”一文中被提出。其思想也非常简单直观：实际上AC只是简单将LC和LLC组合使用，根据基数量级决定是使用LC还是LLC。具体是通过分析两者的标准差，给出一个阈值，根据阈值选择使用哪种估计。&lt;/p&gt;
 &lt;h2&gt;基本算法&lt;/h2&gt;
-&lt;p&gt;如果分析一下LC和LLC的存储结构，可以发现两者是兼容的，区别仅仅在于LLC关心每个桶的%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;，而LC仅关心此桶是否为空。因此只要简单认为%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;值不为0的桶为非空，0为空就可以使用LLC的数据结构做LC估计了。&lt;/p&gt;
+&lt;p&gt;如果分析一下LC和LLC的存储结构，可以发现两者是兼容的，区别仅仅在于LLC关心每个桶的\(\rho_{max}\)，而LC仅关心此桶是否为空。因此只要简单认为\(\rho_{max}\)值不为0的桶为非空，0为空就可以使用LLC的数据结构做LC估计了。&lt;/p&gt;
 &lt;p&gt;而我们已经知道，LC在基数不太大时效果好，基数太大时会失效；LLC恰好相反，因此两者有很好的互补性。&lt;/p&gt;
 &lt;p&gt;回顾一下，LC的标准误差为：&lt;/p&gt;
 &lt;p&gt;\(SE_{lc}(\hat{n}/n)=\sqrt{e^t-t-1}/(t\sqrt{m})\)&lt;/p&gt;
@@ -905,22 +905,22 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;\(SE_{llc}(\hat{n}/n)=1.30/\sqrt{m}\)&lt;/p&gt;
 &lt;p&gt;将两个公式联立：&lt;/p&gt;
 &lt;p&gt;\(\sqrt{e^t-t-1}/(t\sqrt{m})=1.30/\sqrt{m}\)&lt;/p&gt;
-&lt;p&gt;解得%lt;img src="http://latex.codecogs.com/gif.latex?t%20\approx%202.89" /&gt;。注意m被消掉了，说明这个阈值与m无关。其中%lt;img src="http://latex.codecogs.com/gif.latex?t=n/m" /&gt;。&lt;/p&gt;
-&lt;p&gt;设%lt;img src="http://latex.codecogs.com/gif.latex?\beta" /&gt;为空桶率，根据LC的估算公式，带入上式可得：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\beta%20=%20e^{-t}%20\approx%200.051" /&gt;&lt;/p&gt;
+&lt;p&gt;解得\(t \approx 2.89\)。注意m被消掉了，说明这个阈值与m无关。其中\(t=n/m\)。&lt;/p&gt;
+&lt;p&gt;设\(\beta\)为空桶率，根据LC的估算公式，带入上式可得：&lt;/p&gt;
+&lt;p&gt;\(\beta = e^{-t} \approx 0.051\)&lt;/p&gt;
 &lt;p&gt;因此可以知道，当空桶率大于0.051时，LC的标准误差较小，而当小于0.051时，LLC的标准误差较小。&lt;/p&gt;
 &lt;p&gt;完整的AC算法如下：&lt;/p&gt;
 &lt;p&gt;\(\hat{n}=\left\{ \begin{eqnarray} \alpha_m m2^{\frac{1}{m}\sum{M}} &amp; if &amp; 0 \leq \beta &lt; 0.051 \\ -mlog(\beta) &amp; if &amp; 0.051 \leq \beta \leq 1 \end{eqnarray} \right.\)&lt;/p&gt;
 &lt;h2&gt;误差分析&lt;/h2&gt;
-&lt;p&gt;因为AC只是LC和LLC的简单组合，所以误差分析可以依照LC和LLC进行。值得注意的是，当%lt;img src="http://latex.codecogs.com/gif.latex?\beta%20&lt;%200.051" /&gt;时，LLC最大的偏差不超过0.17%，因此可以近似认为是无偏的。&lt;/p&gt;
+&lt;p&gt;因为AC只是LC和LLC的简单组合，所以误差分析可以依照LC和LLC进行。值得注意的是，当\(\beta &lt; 0.051\)时，LLC最大的偏差不超过0.17%，因此可以近似认为是无偏的。&lt;/p&gt;
 &lt;h1&gt;HyperLogLog Counting&lt;/h1&gt;
 &lt;p&gt;HyperLogLog Counting（以下简称HLLC）的基本思想也是在LLC的基础上做改进，不过相对于AC来说改进的比较多，所以相对也要复杂一些。本文不做具体细节分析，具体细节请参考“HyperLogLog: the analysis of a near-optimal cardinality estimation algorithm”这篇论文。&lt;/p&gt;
 &lt;h2&gt;基本算法&lt;/h2&gt;
 &lt;p&gt;HLLC的第一个改进是使用调和平均数替代几何平均数。注意LLC是对各个桶取算数平均数，而算数平均数最终被应用到2的指数上，所以总体来看LLC取得是几何平均数。由于几何平均数对于离群值（例如这里的0）特别敏感，因此当存在离群值时，LLC的偏差就会很大，这也从另一个角度解释了为什么n不太大时LLC的效果不太好。这是因为n较小时，可能存在较多空桶，而这些特殊的离群值强烈干扰了几何平均数的稳定性。&lt;/p&gt;
 &lt;p&gt;因此，HLLC使用调和平均数来代替几何平均数，调和平均数的定义如下：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?H%20=%20\frac{n}{\frac{1}{x_1}%20+%20\frac{1}{x_2}%20+%20...%20+%20\frac{1}{x_n}}%20=%20\frac{n}{\sum_{i=1}^n%20\frac{1}{x_i}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(H = \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + ... + \frac{1}{x_n}} = \frac{n}{\sum_{i=1}^n \frac{1}{x_i}}\)&lt;/p&gt;
 &lt;p&gt;调和平均数可以有效抵抗离群值的扰动。使用调和平均数代替几何平均数后，估计公式变为如下：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\hat{n}=\frac{\alpha_m%20m^2}{\sum{2^{-M}}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=\frac{\alpha_m m^2}{\sum{2^{-M}}}\)&lt;/p&gt;
 &lt;p&gt;其中：&lt;/p&gt;
 &lt;p&gt;\(\alpha_m=(m\int _0^\infty (log_2(\frac{2+u}{1+u}))^m du)^{-1}\)&lt;/p&gt;
 &lt;h2&gt;偏差分析&lt;/h2&gt;
@@ -929,9 +929,9 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;因此在存储空间相同的情况下，HLLC比LLC具有更高的精度。例如，对于分桶数m为2^13（8k字节）时，LLC的标准误差为1.4%，而HLLC为1.1%。&lt;/p&gt;
 &lt;h2&gt;分段偏差修正&lt;/h2&gt;
 &lt;p&gt;在HLLC的论文中，作者在实现建议部分还给出了在n相对于m较小或较大时的偏差修正方案。具体来说，设E为估计值：&lt;/p&gt;
-&lt;p&gt;当%lt;img src="http://latex.codecogs.com/gif.latex?E%20\leq%20\frac{5}{2}m" /&gt;时，使用LC进行估计。&lt;/p&gt;
-&lt;p&gt;当%lt;img src="http://latex.codecogs.com/gif.latex?\frac{5}{2}m%20&lt;%20E%20\leq%20\frac{1}{30}2^{32}" /&gt;是，使用上面给出的HLLC公式进行估计。&lt;/p&gt;
-&lt;p&gt;当%lt;img src="http://latex.codecogs.com/gif.latex?E%20&gt;%20\frac{1}{30}2^{32}" /&gt;时，估计公式如为\(\hat{n}=-2^{32}log(1-E/2^{32})\)。&lt;/p&gt;
+&lt;p&gt;当\(E \leq \frac{5}{2}m\)时，使用LC进行估计。&lt;/p&gt;
+&lt;p&gt;当\(\frac{5}{2}m &lt; E \leq \frac{1}{30}2^{32}\)是，使用上面给出的HLLC公式进行估计。&lt;/p&gt;
+&lt;p&gt;当\(E &gt; \frac{1}{30}2^{32}\)时，估计公式如为\(\hat{n}=-2^{32}log(1-E/2^{32})\)。&lt;/p&gt;
 &lt;p&gt;关于分段偏差修正效果分析也可以在原论文中找到。&lt;/p&gt;
 &lt;h1&gt;小结&lt;/h1&gt;
 &lt;p&gt;本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。在本系列最后一篇文章中，我会介绍一淘数据部的基数估计实现&lt;a href=&quot;https://github.com/chaoslawful/ccard-lib&quot; target=&quot;_blank&quot;&gt;ccard-lib&lt;/a&gt;的一些实现细节和使用方式。并做一些实验。&lt;/p&gt;
@@ -942,7 +942,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Thu, 03 Jan 2013 00:00:00 +0800</pubDate>
+<pubDate>Thu, 03 Jan 2013 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-ii.html&quot; target=&quot;_blank&quot;&gt;上一篇文章&lt;/a&gt;介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。&lt;/p&gt;
 &lt;p&gt;本文将介绍LogLog Counting。
 &lt;!--more--&gt;
@@ -963,27 +963,27 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;又因为a是从服从均与分布的样本空间中随机抽取的一个样本，因此a每个比特位服从如下分布且相互独立。&lt;/p&gt;
 &lt;p&gt;\(P(x=k)=\left\{\begin{matrix} 0.5 (k=0)\\ 0.5 (k=1)\end{matrix}\right.\)&lt;/p&gt;
 &lt;p&gt;通俗说就是a的每个比特位为0和1的概率各为0.5，且相互之间是独立的。&lt;/p&gt;
-&lt;p&gt;设\(\rho(a)\)为a的比特串中第一个“1”出现的位置，显然\(1 \leq \rho(a) \leq L\)，这里我们忽略比特串全为0的情况（概率为%lt;img src="http://latex.codecogs.com/gif.latex?1/2^L" /&gt;）。如果我们遍历集合中所有元素的比特串，取%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;为所有\(\rho(a)\)的最大值。&lt;/p&gt;
-&lt;p&gt;此时我们可以将%lt;img src="http://latex.codecogs.com/gif.latex?2^{\rho_{max}}" /&gt;作为基数的一个粗糙估计，即：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\hat{n}%20=%202^{\rho_{max}}" /&gt;&lt;/p&gt;
+&lt;p&gt;设\(\rho(a)\)为a的比特串中第一个“1”出现的位置，显然\(1 \leq \rho(a) \leq L\)，这里我们忽略比特串全为0的情况（概率为\(1/2^L\)）。如果我们遍历集合中所有元素的比特串，取\(\rho_{max}\)为所有\(\rho(a)\)的最大值。&lt;/p&gt;
+&lt;p&gt;此时我们可以将\(2^{\rho_{max}}\)作为基数的一个粗糙估计，即：&lt;/p&gt;
+&lt;p&gt;\(\hat{n} = 2^{\rho_{max}}\)&lt;/p&gt;
 &lt;p&gt;下面解释为什么可以这样估计。注意如下事实：&lt;/p&gt;
-&lt;p&gt;由于比特串每个比特都独立且服从0-1分布，因此从左到右扫描上述某个比特串寻找第一个“1”的过程从统计学角度看是一个伯努利过程，例如，可以等价看作不断投掷一个硬币（每次投掷正反面概率皆为0.5），直到得到一个正面的过程。在一次这样的过程中，投掷一次就得到正面的概率为%lt;img src="http://latex.codecogs.com/gif.latex?1/2" /&gt;，投掷两次得到正面的概率是%lt;img src="http://latex.codecogs.com/gif.latex?1/2^2" /&gt;，…，投掷k次才得到第一个正面的概率为%lt;img src="http://latex.codecogs.com/gif.latex?1/2^k" /&gt;。&lt;/p&gt;
+&lt;p&gt;由于比特串每个比特都独立且服从0-1分布，因此从左到右扫描上述某个比特串寻找第一个“1”的过程从统计学角度看是一个伯努利过程，例如，可以等价看作不断投掷一个硬币（每次投掷正反面概率皆为0.5），直到得到一个正面的过程。在一次这样的过程中，投掷一次就得到正面的概率为\(1/2\)，投掷两次得到正面的概率是\(1/2^2\)，…，投掷k次才得到第一个正面的概率为\(1/2^k\)。&lt;/p&gt;
 &lt;p&gt;现在考虑如下两个问题：&lt;/p&gt;
 &lt;p&gt;1、进行n次伯努利过程，所有投掷次数都不大于k的概率是多少？&lt;/p&gt;
 &lt;p&gt;2、进行n次伯努利过程，至少有一次投掷次数等于k的概率是多少？&lt;/p&gt;
-&lt;p&gt;首先看第一个问题，在一次伯努利过程中，投掷次数大于k的概率为%lt;img src="http://latex.codecogs.com/gif.latex?1/2^k" /&gt;，即连续掷出k个反面的概率。因此，在一次过程中投掷次数不大于k的概率为%lt;img src="http://latex.codecogs.com/gif.latex?1-1/2^k" /&gt;。因此，n次伯努利过程投掷次数均不大于k的概率为：&lt;/p&gt;
+&lt;p&gt;首先看第一个问题，在一次伯努利过程中，投掷次数大于k的概率为\(1/2^k\)，即连续掷出k个反面的概率。因此，在一次过程中投掷次数不大于k的概率为\(1-1/2^k\)。因此，n次伯努利过程投掷次数均不大于k的概率为：&lt;/p&gt;
 &lt;p&gt;\(P_n(X \leq k)=(1-1/2^k)^n\)&lt;/p&gt;
 &lt;p&gt;显然第二个问题的答案是：&lt;/p&gt;
 &lt;p&gt;\(P_n(X \geq k)=1-(1-1/2^{k-1})^n\)&lt;/p&gt;
-&lt;p&gt;从以上分析可以看出，当%lt;img src="http://latex.codecogs.com/gif.latex?n%20\ll%202^k" /&gt;时，\(P_n(X \geq k)\)的概率几乎为0，同时，当%lt;img src="http://latex.codecogs.com/gif.latex?n%20\gg%202^k" /&gt;时，\(P_n(X \leq k)\)的概率也几乎为0。用自然语言概括上述结论就是：当伯努利过程次数远远小于%lt;img src="http://latex.codecogs.com/gif.latex?2^k" /&gt;时，至少有一次过程投掷次数等于k的概率几乎为0；当伯努利过程次数远远大于%lt;img src="http://latex.codecogs.com/gif.latex?2^k" /&gt;时，没有一次过程投掷次数大于k的概率也几乎为0。&lt;/p&gt;
+&lt;p&gt;从以上分析可以看出，当\(n \ll 2^k\)时，\(P_n(X \geq k)\)的概率几乎为0，同时，当\(n \gg 2^k\)时，\(P_n(X \leq k)\)的概率也几乎为0。用自然语言概括上述结论就是：当伯努利过程次数远远小于\(2^k\)时，至少有一次过程投掷次数等于k的概率几乎为0；当伯努利过程次数远远大于\(2^k\)时，没有一次过程投掷次数大于k的概率也几乎为0。&lt;/p&gt;
 &lt;p&gt;如果将上面描述做一个对应：一次伯努利过程对应一个元素的比特串，反面对应0，正面对应1，投掷次数k对应第一个“1”出现的位置，我们就得到了下面结论：&lt;/p&gt;
-&lt;p&gt;设一个集合的基数为n，%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;为所有元素中首个“1”的位置最大的那个元素的“1”的位置，如果n远远小于%lt;img src="http://latex.codecogs.com/gif.latex?2^{\rho_{max}}" /&gt;，则我们得到%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;为当前值的概率几乎为0（它应该更小），同样的，如果n远远大于%lt;img src="http://latex.codecogs.com/gif.latex?2^{\rho_{max}}" /&gt;，则我们得到%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;为当前值的概率也几乎为0（它应该更大），因此%lt;img src="http://latex.codecogs.com/gif.latex?2^{\rho_{max}}" /&gt;可以作为基数n的一个粗糙估计。&lt;/p&gt;
+&lt;p&gt;设一个集合的基数为n，\(\rho_{max}\)为所有元素中首个“1”的位置最大的那个元素的“1”的位置，如果n远远小于\(2^{\rho_{max}}\)，则我们得到\(\rho_{max}\)为当前值的概率几乎为0（它应该更小），同样的，如果n远远大于\(2^{\rho_{max}}\)，则我们得到\(\rho_{max}\)为当前值的概率也几乎为0（它应该更大），因此\(2^{\rho_{max}}\)可以作为基数n的一个粗糙估计。&lt;/p&gt;
 &lt;h2&gt;分桶平均&lt;/h2&gt;
-&lt;p&gt;上述分析给出了LLC的基本思想，不过如果直接使用上面的单一估计量进行基数估计会由于偶然性而存在较大误差。因此，LLC采用了分桶平均的思想来消减误差。具体来说，就是将哈希空间平均分成m份，每份称之为一个桶（bucket）。对于每一个元素，其哈希值的前k比特作为桶编号，其中%lt;img src="http://latex.codecogs.com/gif.latex?2^k=m" /&gt;，而后L-k个比特作为真正用于基数估计的比特串。桶编号相同的元素被分配到同一个桶，在进行基数估计时，首先计算每个桶内元素最大的第一个“1”的位置，设为M[i]，然后对这m个值取平均后再进行估计，即：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\hat{n}=2^{\frac{1}{m}\sum{M[i]}}" /&gt;&lt;/p&gt;
+&lt;p&gt;上述分析给出了LLC的基本思想，不过如果直接使用上面的单一估计量进行基数估计会由于偶然性而存在较大误差。因此，LLC采用了分桶平均的思想来消减误差。具体来说，就是将哈希空间平均分成m份，每份称之为一个桶（bucket）。对于每一个元素，其哈希值的前k比特作为桶编号，其中\(2^k=m\)，而后L-k个比特作为真正用于基数估计的比特串。桶编号相同的元素被分配到同一个桶，在进行基数估计时，首先计算每个桶内元素最大的第一个“1”的位置，设为M[i]，然后对这m个值取平均后再进行估计，即：&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=2^{\frac{1}{m}\sum{M[i]}}\)&lt;/p&gt;
 &lt;p&gt;这相当于物理试验中经常使用的多次试验取平均的做法，可以有效消减因偶然性带来的误差。&lt;/p&gt;
 &lt;p&gt;下面举一个例子说明分桶平均怎么做。&lt;/p&gt;
-&lt;p&gt;假设H的哈希长度为16bit，分桶数m定为32。设一个元素哈希值的比特串为“0001001010001010”，由于m为32，因此前5个bit为桶编号，所以这个元素应该归入“00010”即2号桶（桶编号从0开始，最大编号为m-1），而剩下部分是“01010001010”且显然\(\rho(01010001010)=2\)，所以桶编号为“00010”的元素最大的%lt;img src="http://latex.codecogs.com/gif.latex?\rho" /&gt;即为M[2]的值。&lt;/p&gt;
+&lt;p&gt;假设H的哈希长度为16bit，分桶数m定为32。设一个元素哈希值的比特串为“0001001010001010”，由于m为32，因此前5个bit为桶编号，所以这个元素应该归入“00010”即2号桶（桶编号从0开始，最大编号为m-1），而剩下部分是“01010001010”且显然\(\rho(01010001010)=2\)，所以桶编号为“00010”的元素最大的\(\rho\)即为M[2]的值。&lt;/p&gt;
 &lt;h2&gt;偏差修正&lt;/h2&gt;
 &lt;p&gt;上述经过分桶平均后的估计量看似已经很不错了，不过通过数学分析可以知道这并不是基数n的无偏估计。因此需要修正成无偏估计。这部分的具体数学分析在“Loglog Counting of Large Cardinalities”中，过程过于艰涩这里不再具体详述，有兴趣的朋友可以参考原论文。这里只简要提一下分析框架：&lt;/p&gt;
 &lt;p&gt;首先上文已经得出：&lt;/p&gt;
@@ -993,9 +993,9 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;这是一个未知通项公式的递推数列，研究这种问题的常用方法是使用生成函数（generating function）。通过运用指数生成函数和poissonization得到上述估计量的Poisson期望和方差为：&lt;/p&gt;
 &lt;p&gt;\(\varepsilon _n\sim [(\Gamma (-1/m)\frac{1-2^{1/m}}{log2})^m+\epsilon _n]n\)&lt;/p&gt;
 &lt;p&gt;\(\nu _n\sim [(\Gamma (-2/m)\frac{1-2^{2/m}}{log2})^m - (\Gamma (-1/m)\frac{1-2^{1/m}}{log2})^{2m}+\eta _n]n^2\)&lt;/p&gt;
-&lt;p&gt;其中%lt;img src="http://latex.codecogs.com/gif.latex?|\epsilon%20_n|" /&gt;和%lt;img src="http://latex.codecogs.com/gif.latex?|\eta%20_n|" /&gt;不超过%lt;img src="http://latex.codecogs.com/gif.latex?10^{-6}" /&gt;。&lt;/p&gt;
+&lt;p&gt;其中\(|\epsilon _n|\)和\(|\eta _n|\)不超过\(10^{-6}\)。&lt;/p&gt;
 &lt;p&gt;最后通过depoissonization得到一个渐进无偏估计量：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\hat{n}=\alpha%20_m%202^{\frac{1}{m}\sum{M[i]}}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=\alpha _m 2^{\frac{1}{m}\sum{M[i]}}\)&lt;/p&gt;
 &lt;p&gt;其中：&lt;/p&gt;
 &lt;p&gt;\(\alpha _m = (\Gamma (-1/m)\frac{1-2^{1/m}}{log2})^{-m}\)&lt;/p&gt;
 &lt;p&gt;\(\Gamma (s)=\frac{1}{s}\int_{0}^{\infty }e^{-t}t^sdt\)&lt;/p&gt;
@@ -1004,17 +1004,17 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;不加证明给出如下结论：&lt;/p&gt;
 &lt;p&gt;\(E_n(\hat{n})/n = 1 + \theta_{1,n} + o(1)\)&lt;/p&gt;
 &lt;p&gt;\(\sqrt{Var_n(E)}/n = \beta_m / \sqrt{m} + \theta_{2,n} + o(1)\)&lt;/p&gt;
-&lt;p&gt;其中%lt;img src="http://latex.codecogs.com/gif.latex?|\theta_{1,n}|" /&gt;和%lt;img src="http://latex.codecogs.com/gif.latex?|\theta_{2,n}|" /&gt;不超过%lt;img src="http://latex.codecogs.com/gif.latex?10^{-6}" /&gt;。&lt;/p&gt;
-&lt;p&gt;当m不太小（不小于64）时，%lt;img src="http://latex.codecogs.com/gif.latex?\beta" /&gt;大约为1.30。因此：&lt;/p&gt;
+&lt;p&gt;其中\(|\theta_{1,n}|\)和\(|\theta_{2,n}|\)不超过\(10^{-6}\)。&lt;/p&gt;
+&lt;p&gt;当m不太小（不小于64）时，\(\beta\)大约为1.30。因此：&lt;/p&gt;
 &lt;p&gt;\(StdError(\hat{n}/n) \approx \frac{1.30}{\sqrt{m}}\)&lt;/p&gt;
 &lt;h1&gt;算法应用&lt;/h1&gt;
 &lt;h2&gt;误差控制&lt;/h2&gt;
-&lt;p&gt;在应用LLC时，主要需要考虑的是分桶数m，而这个m主要取决于误差。根据上面的误差分析，如果要将误差控制在%lt;img src="http://latex.codecogs.com/gif.latex?\epsilon" /&gt;之内，则：&lt;/p&gt;
+&lt;p&gt;在应用LLC时，主要需要考虑的是分桶数m，而这个m主要取决于误差。根据上面的误差分析，如果要将误差控制在\(\epsilon\)之内，则：&lt;/p&gt;
 &lt;p&gt;\(m &gt; (\frac{1.30}{\epsilon})^2\)&lt;/p&gt;
 &lt;h2&gt;内存使用分析&lt;/h2&gt;
-&lt;p&gt;内存使用与m的大小及哈希值得长度（或说基数上限）有关。假设H的值为32bit，由于%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}%20\leq%2032" /&gt;，因此每个桶需要5bit空间存储这个桶的%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;，m个桶就是%lt;img src="http://latex.codecogs.com/gif.latex?5%20\times%20m/8" /&gt;字节。例如基数上限为一亿（约%lt;img src="http://latex.codecogs.com/gif.latex?2^{27}" /&gt;），当分桶数m为1024时，每个桶的基数上限约为%lt;img src="http://latex.codecogs.com/gif.latex?2^{27}%20/%202^{10}%20=%202^{17}" /&gt;，而\(log_2(log_2(2^{17}))=4.09\)，因此每个桶需要5bit，需要字节数就是%lt;img src="http://latex.codecogs.com/gif.latex?5%20\times%201024%20/%208%20=%20640" /&gt;，误差为%lt;img src="http://latex.codecogs.com/gif.latex?1.30%20/%20\sqrt{1024}%20=%200.040625" /&gt;，也就是约为4%。&lt;/p&gt;
+&lt;p&gt;内存使用与m的大小及哈希值得长度（或说基数上限）有关。假设H的值为32bit，由于\(\rho_{max} \leq 32\)，因此每个桶需要5bit空间存储这个桶的\(\rho_{max}\)，m个桶就是\(5 \times m/8\)字节。例如基数上限为一亿（约\(2^{27}\)），当分桶数m为1024时，每个桶的基数上限约为\(2^{27} / 2^{10} = 2^{17}\)，而\(log_2(log_2(2^{17}))=4.09\)，因此每个桶需要5bit，需要字节数就是\(5 \times 1024 / 8 = 640\)，误差为\(1.30 / \sqrt{1024} = 0.040625\)，也就是约为4%。&lt;/p&gt;
 &lt;h2&gt;合并&lt;/h2&gt;
-&lt;p&gt;与LC不同，LLC的合并是以桶为单位而不是bit为单位，由于LLC只需记录桶的%lt;img src="http://latex.codecogs.com/gif.latex?\rho_{max}" /&gt;，因此合并时取相同桶编号数值最大者为合并后此桶的数值即可。&lt;/p&gt;
+&lt;p&gt;与LC不同，LLC的合并是以桶为单位而不是bit为单位，由于LLC只需记录桶的\(\rho_{max}\)，因此合并时取相同桶编号数值最大者为合并后此桶的数值即可。&lt;/p&gt;
 &lt;h1&gt;小结&lt;/h1&gt;
 &lt;p&gt;本文主要介绍了LogLog Counting算法，相比LC其最大的优势就是内存使用极少。不过LLC也有自己的问题，就是当n不是特别大时，其估计误差过大，因此目前实际使用的基数估计算法都是基于LLC改进的算法，这些改进算法通过一定手段抑制原始LLC在n较小时偏差过大的问题。后面要介绍的HyperLogLog Counting和Adaptive Counting就是这类改进算法。&lt;/p&gt;
 </description>
@@ -1024,7 +1024,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Mon, 31 Dec 2012 00:00:00 +0800</pubDate>
+<pubDate>Mon, 31 Dec 2012 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;在&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-i.html&quot; target=&quot;_blank&quot;&gt;上一篇文章&lt;/a&gt;中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。&lt;/p&gt;
 &lt;p&gt;在这一篇文章中，我们讨论Linear Counting算法。
 &lt;!--more--&gt;
@@ -1034,17 +1034,17 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;h1&gt;基本算法&lt;/h1&gt;
 &lt;h2&gt;思路&lt;/h2&gt;
 &lt;p&gt;LC的基本思路是：设有一哈希函数H，其哈希结果空间有m个值（最小值0，最大值m-1），并且哈希结果服从均匀分布。使用一个长度为m的bitmap，每个bit为一个桶，均初始化为0，设一个集合的基数为n，此集合所有元素通过H哈希到bitmap中，如果某一个元素被哈希到第k个比特并且第k个比特为0，则将其置为1。当集合所有元素哈希完成后，设bitmap中还有u个bit为0。则：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\hat{n}=-mlog\frac{u}{m}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(\hat{n}=-mlog\frac{u}{m}\)&lt;/p&gt;
 &lt;p&gt;为n的一个估计，且为最大似然估计（MLE）。&lt;/p&gt;
 &lt;p&gt;示意图如下：&lt;/p&gt;
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-ii/1.png&quot;/&gt;&lt;/p&gt;
 &lt;h2&gt;推导及证明&lt;/h2&gt;
 &lt;p&gt;（对数学推导不感兴趣的读者可以跳过本节）&lt;/p&gt;
-&lt;p&gt;由上文对H的定义已知n个不同元素的哈希值服从独立均匀分布。设%lt;img src="http://latex.codecogs.com/gif.latex?A_j" /&gt;为事件“经过n个不同元素哈希后，第j个桶值为0”，则：&lt;/p&gt;
+&lt;p&gt;由上文对H的定义已知n个不同元素的哈希值服从独立均匀分布。设\(A_j\)为事件“经过n个不同元素哈希后，第j个桶值为0”，则：&lt;/p&gt;
 &lt;p&gt;\(P(A_j)=(1-\frac{1}{m})^n\)&lt;/p&gt;
 &lt;p&gt;又每个桶是独立的，则u的期望为：&lt;/p&gt;
 &lt;p&gt;\(E(u)=\sum_{j=1}^mP(A_j)=m(1-\frac{1}{m})^n=m((1+\frac{1}{-m})^{-m})^{-n/m}\)&lt;/p&gt;
-&lt;p&gt;当n和m趋于无穷大时，其值约为%lt;img src="http://latex.codecogs.com/gif.latex?me^{-n/m}" /&gt;&lt;/p&gt;
+&lt;p&gt;当n和m趋于无穷大时，其值约为\(me^{-n/m}\)&lt;/p&gt;
 &lt;p&gt;令：&lt;/p&gt;
 &lt;p&gt;\(E(u)=me^{-n/m}\)&lt;/p&gt;
 &lt;p&gt;得：&lt;/p&gt;
@@ -1052,20 +1052,20 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;显然每个桶的值服从参数相同0-1分布，因此u服从二项分布。由概率论知识可知，当n很大时，可以用正态分布逼近二项分布，因此可以认为当n和m趋于无穷大时u渐进服从正态分布。&lt;/p&gt;
 &lt;p&gt;因此u的概率密度函数为：&lt;/p&gt;
 &lt;p&gt;\(f(x) = {1 \over \sigma\sqrt{2\pi} }\,e^{- {{(x-\mu )^2 \over 2\sigma^2}}}\)&lt;/p&gt;
-&lt;p&gt;由于我们观察到的空桶数u是从正态分布中随机抽取的一个样本，因此它就是%lt;img src="http://latex.codecogs.com/gif.latex?\mu" /&gt;的最大似然估计（正态分布的期望的最大似然估计是样本均值）。&lt;/p&gt;
+&lt;p&gt;由于我们观察到的空桶数u是从正态分布中随机抽取的一个样本，因此它就是\(\mu\)的最大似然估计（正态分布的期望的最大似然估计是样本均值）。&lt;/p&gt;
 &lt;p&gt;又由如下定理：&lt;/p&gt;
-&lt;p&gt;设\(f(x)\)是可逆函数%lt;img src="http://latex.codecogs.com/gif.latex?\hat{x}" /&gt;是%lt;img src="http://latex.codecogs.com/gif.latex?x" /&gt;的最大似然估计，则\(f(\hat{x})\)是\(f(x)\)的最大似然估计。&lt;/p&gt;
-&lt;p&gt;且%lt;img src="http://latex.codecogs.com/gif.latex?-mlog\frac{x}{m}" /&gt;是可逆函数，则%lt;img src="http://latex.codecogs.com/gif.latex?\hat{n}=-mlog\frac{u}{m}" /&gt;是\(-mlog\frac{E(u)}{m}=n\)的最大似然估计。&lt;/p&gt;
+&lt;p&gt;设\(f(x)\)是可逆函数\(\hat{x}\)是\(x\)的最大似然估计，则\(f(\hat{x})\)是\(f(x)\)的最大似然估计。&lt;/p&gt;
+&lt;p&gt;且\(-mlog\frac{x}{m}\)是可逆函数，则\(\hat{n}=-mlog\frac{u}{m}\)是\(-mlog\frac{E(u)}{m}=n\)的最大似然估计。&lt;/p&gt;
 &lt;h2&gt;偏差分析&lt;/h2&gt;
 &lt;p&gt;下面不加证明给出如下结论：&lt;/p&gt;
 &lt;p&gt;\(Bias(\frac{\hat{n}}{n})=E(\frac{\hat{n}}{n})-1=\frac{e^t-t-1}{2n}\)&lt;/p&gt;
 &lt;p&gt;\(StdError(\frac{\hat{n}}{n})=\frac{\sqrt{m}(e^t-t-1)^{1/2}}{n}\)&lt;/p&gt;
-&lt;p&gt;其中%lt;img src="http://latex.codecogs.com/gif.latex?t=n/m" /&gt;&lt;/p&gt;
+&lt;p&gt;其中\(t=n/m\)&lt;/p&gt;
 &lt;p&gt;以上结论的推导在“A linear-time probabilistic counting algorithm for database applications”可以找到。&lt;/p&gt;
 &lt;h1&gt;算法应用&lt;/h1&gt;
-&lt;p&gt;在应用LC算法时，主要需要考虑的是bitmap长度m的选择。这个选择主要受两个因素的影响：基数n的量级以及容许的误差。这里假设估计基数n的量级大约为N，允许的误差为%lt;img src="http://latex.codecogs.com/gif.latex?\epsilon" /&gt;，则m的选择需要遵循如下约束。&lt;/p&gt;
+&lt;p&gt;在应用LC算法时，主要需要考虑的是bitmap长度m的选择。这个选择主要受两个因素的影响：基数n的量级以及容许的误差。这里假设估计基数n的量级大约为N，允许的误差为\(\epsilon\)，则m的选择需要遵循如下约束。&lt;/p&gt;
 &lt;h2&gt;误差控制&lt;/h2&gt;
-&lt;p&gt;这里以标准差作为误差。由上面标准差公式可以推出，当基数的量级为N，容许误差为%lt;img src="http://latex.codecogs.com/gif.latex?\epsilon" /&gt;时，有如下限制：&lt;/p&gt;
+&lt;p&gt;这里以标准差作为误差。由上面标准差公式可以推出，当基数的量级为N，容许误差为\(\epsilon\)时，有如下限制：&lt;/p&gt;
 &lt;p&gt;\(m &gt; \frac{e^t-t-1}{(\epsilon t)^2}\)&lt;/p&gt;
 &lt;p&gt;将量级和容许误差带入上式，就可以得出m的最小值。&lt;/p&gt;
 &lt;h2&gt;满桶控制&lt;/h2&gt;
@@ -1075,9 +1075,9 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;\(Pr(u=k)=(\frac{\lambda^k}{k!})e^{-\lambda}\)&lt;/p&gt;
 &lt;p&gt;因此：&lt;/p&gt;
 &lt;p&gt;\(Pr(u=0)&lt;e^{-5}=0.007\)&lt;/p&gt;
-&lt;p&gt;由于泊松分布的方差为%lt;img src="http://latex.codecogs.com/gif.latex?\lambda" /&gt;，因此只要保证u的期望偏离0点%lt;img src="http://latex.codecogs.com/gif.latex?\sqrt{5}" /&gt;的标准差就可以保证满桶的概率不大约0.7%。因此可得：&lt;/p&gt;
+&lt;p&gt;由于泊松分布的方差为\(\lambda\)，因此只要保证u的期望偏离0点\(\sqrt{5}\)的标准差就可以保证满桶的概率不大约0.7%。因此可得：&lt;/p&gt;
 &lt;p&gt;\(m &gt; 5(e^t-t-1)\)&lt;/p&gt;
-&lt;p&gt;综上所述，当基数量级为N，可接受误差为%lt;img src="http://latex.codecogs.com/gif.latex?\epsilon" /&gt;，则m的选取应该遵从&lt;/p&gt;
+&lt;p&gt;综上所述，当基数量级为N，可接受误差为\(\epsilon\)，则m的选取应该遵从&lt;/p&gt;
 &lt;p&gt;\(m &gt; \beta (e^t-t-1)\)&lt;/p&gt;
 &lt;p&gt;其中\(\beta = max(5, 1/(\epsilon t)^2)\)&lt;/p&gt;
 &lt;p&gt;下图是论文作者预先计算出的关于不同基数量级和误差情况下，m的选择表：&lt;/p&gt;
@@ -1095,7 +1095,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Sun, 30 Dec 2012 00:00:00 +0800</pubDate>
+<pubDate>Sun, 30 Dec 2012 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;基数计数（cardinality counting）是实际应用中一种常见的计算场景，在数据分析、网络监控及数据库优化等领域都有相关需求。精确的基数计数算法由于种种原因，在面对大数据场景时往往力不从心，因此如何在误差可控的情况下对基数进行估计就显得十分重要。目前常见的基数估计算法有Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting等。这几种算法都是基于概率统计理论所设计的概率算法，它们克服了精确基数计数算法的诸多弊端（如内存需求过大或难以合并等），同时可以通过一定手段将误差控制在所要求的范围内。&lt;/p&gt;
 &lt;p&gt;作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。&lt;/p&gt;
 &lt;p&gt;后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。&lt;/p&gt;
@@ -1109,7 +1109,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;第五部分：ccard-lib介绍&lt;/p&gt;
 &lt;h1&gt;基数的定义&lt;/h1&gt;
 &lt;p&gt;简单来说，基数（cardinality，也译作势），是指一个集合（这里的集合允许存在重复元素，与集合论对集合严格的定义略有不同，如不做特殊说明，本文中提到的集合均允许存在重复元素）中不同元素的个数。例如看下面的集合：&lt;/p&gt;
-&lt;p&gt;%lt;img src="http://latex.codecogs.com/gif.latex?\{1,%202,%203,%204,%205,%202,%203,%209,%207\}" /&gt;&lt;/p&gt;
+&lt;p&gt;\(\{1, 2, 3, 4, 5, 2, 3, 9, 7\}\)&lt;/p&gt;
 &lt;p&gt;这个集合有9个元素，但是2和3各出现了两次，因此不重复的元素为1,2,3,4,5,9,7，所以这个集合的基数是7。&lt;/p&gt;
 &lt;p&gt;如果两个集合具有相同的基数，我们说这两个集合等势。基数和等势的概念在有限集范畴内比较直观，但是如果扩展到无限集则会比较复杂，一个无限集可能会与其真子集等势（例如整数集和偶数集是等势的）。不过在这个系列文章中，我们仅讨论有限集的情况，关于无限集合基数的讨论，有兴趣的同学可以参考实变分析相关内容。&lt;/p&gt;
 &lt;p&gt;容易证明，如果一个集合是有限集，则其基数是一个自然数。&lt;/p&gt;
@@ -1143,7 +1143,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p class=&quot;picture&quot;&gt;&lt;img alt=&quot;&quot; src=&quot;http://blog.codinglabs.org/uploads/pictures/algorithms-for-cardinality-estimation-part-i/1.png&quot;/&gt;&lt;/p&gt;
 &lt;p&gt;之所以选用B树是因为B树的查找和插入相关高效，同时空间复杂度也可以接受（关于B树具体的性能分析请参考&lt;a href=&quot;http://en.wikipedia.org/wiki/B-tree&quot; target=&quot;_blank&quot;&gt;这里&lt;/a&gt;）。&lt;/p&gt;
 &lt;p&gt;这种实现方案为一个基数计数器维护一棵B树，由于B树在查找效率、插入效率和内存使用之间非常平衡，所以算是一种可以接受的解决方案。但是当数据量特别巨大时，例如要同时统计几万个链接的UV，如果要将几万个链接一天的访问记录全部维护在内存中，这个内存使用量也是相当可观的（假设每个B树占用1M内存，10万个B树就是100G！）。一种方案是在某个时间点将内存数据结构写入磁盘（双十一和双十二大促时一淘数据部的效果平台是每分钟将数据写入HBase）然后将内存中的计数器和数据结构清零，但是B树并不能高效的进行合并，这就使得内存数据落地成了非常大的难题。&lt;/p&gt;
-&lt;p&gt;另一个需要数据结构合并的场景是查看并集的基数，例如在上面的例子中，如果我想查看Item1和Item2的总UV，是没有办法通过这种B树的结构快速得到的。当然可以为每一种可能的组合维护一棵B树。不过通过简单的分析就可以知道这个方案基本不可行。N个元素集合的非空幂集数量为%lt;img src="http://latex.codecogs.com/gif.latex?2^N-1" /&gt;，因此要为10个链接维护1023棵B树，而随着链接的增加这个数量会以幂指级别增长。&lt;/p&gt;
+&lt;p&gt;另一个需要数据结构合并的场景是查看并集的基数，例如在上面的例子中，如果我想查看Item1和Item2的总UV，是没有办法通过这种B树的结构快速得到的。当然可以为每一种可能的组合维护一棵B树。不过通过简单的分析就可以知道这个方案基本不可行。N个元素集合的非空幂集数量为\(2^N-1\)，因此要为10个链接维护1023棵B树，而随着链接的增加这个数量会以幂指级别增长。&lt;/p&gt;
 &lt;h2&gt;基于bitmap的基数计数&lt;/h2&gt;
 &lt;p&gt;为了克服B树不能高效合并的问题，一种替代方案是使用bitmap表示集合。也就是使用一个很长的bit数组表示集合，将bit位顺序编号，bit为1表示此编号在集合中，为0表示不在集合中。例如“00100110”表示集合 {2，5，6}。bitmap中1的数量就是这个集合的基数。&lt;/p&gt;
 &lt;p&gt;显然，与B树不同bitmap可以高效的进行合并，只需进行按位或（or）运算就可以，而位运算在计算机中的运算效率是很高的。但是bitmap方式也有自己的问题，就是内存使用问题。&lt;/p&gt;
@@ -1158,7 +1158,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 <link>http://blog.codinglabs.org/articles/cardinality-estimation.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/cardinality-estimation.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Fri, 23 Nov 2012 00:00:00 +0800</pubDate>
+<pubDate>Fri, 23 Nov 2012 00:00:00 GMT</pubDate>
 <description>&lt;p&gt;翻译自《&lt;a href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;Damn Cool Algorithms: Cardinality Estimation&lt;/a&gt;》，原文链接：&lt;a title=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;假如你有一个巨大的含有重复数据项数据集，这个数据集过于庞大以至于无法全部放到内存中处理。现在你想知道这个数据集里有多少不同的元素，但是数据集没有排好序，而且对如此大的一个数据集进行排序和计数几乎是不可行的。你要如何估计数据集中有多少不同的数据项？很多应用场景都涉及这个问题，例如设计数据库的查询策略：一个良好的数据库查询策略不但和总的数据量有关，同时也依赖于数据中不同数据项的数量。&lt;/p&gt;
 &lt;p&gt;我建议在继续阅读本文前你可以稍微是思考一下这个问题，因为接下来我们要谈的算法相当有创意，而且实在是不怎么直观。&lt;/p&gt;
@@ -1167,12 +1167,12 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+%20\dots%20+x_kq_k^{k-1}%20&amp;%20=%20&amp;%20b_{k-1}
 &lt;p&gt;1、随机生成n个服从均匀分布的数字&lt;/p&gt;
 &lt;p&gt;2、随便重复其中一些数字，重复的数字和重复次数都不确定&lt;/p&gt;
 &lt;p&gt;3、打乱这些数字的顺序，得到一个数据集&lt;/p&gt;
-&lt;p&gt;我们要如何估计这个数据集中有多少不同的数字呢？因为知道这些数字是服从均匀分布的随机数字，一个比较简单的可行方案是：找出数据集中最小的数字。假如m是数值上限，x是找到的最小的数，则%lt;img src="http://latex.codecogs.com/gif.latex?m/x" /&gt;是基数的一个估计。例如，我们扫描一个包含0到1之间数字组成的数据集，其中最小的数是0.01，则一个比较合理的推断是数据集中大约有100个不同的元素，否则我们应该预期能找到一个更小的数。注意这个估计值和重复次数无关：就如最小值重复多少次都不改变最小值的数值。&lt;/p&gt;
+&lt;p&gt;我们要如何估计这个数据集中有多少不同的数字呢？因为知道这些数字是服从均匀分布的随机数字，一个比较简单的可行方案是：找出数据集中最小的数字。假如m是数值上限，x是找到的最小的数，则\(m/x\)是基数的一个估计。例如，我们扫描一个包含0到1之间数字组成的数据集，其中最小的数是0.01，则一个比较合理的推断是数据集中大约有100个不同的元素，否则我们应该预期能找到一个更小的数。注意这个估计值和重复次数无关：就如最小值重复多少次都不改变最小值的数值。&lt;/p&gt;
 &lt;p&gt;这个估计方法的优点是十分直观，但是准确度一般。例如，一个只有很少不同数值的数据集却拥有很小的最小值；类似的一个有很多不同值的数据集可能最小值并不小。最后一点，其实只有很少的数据集符合随机均匀分布这一前提。尽管如此，这个原型算法仍然是了解基数估计思想的一个途径；后面我们会了解一些更加精巧的算法。&lt;/p&gt;
 &lt;h1&gt;基数估计的概率算法&lt;/h1&gt;
 &lt;p&gt;最早研究高精度基数估计的论文是Flajolet和Martin的&lt;a href=&quot;http://www.cse.unsw.edu.au/~cs9314/07s1/lectures/Lin_CS9314_References/fm85.pdf&quot;&gt;Probabilistic Counting Algorithms for Data Base Applications&lt;/a&gt;，后来Flajolet又发表了&lt;a href=&quot;http://www.ic.unicamp.br/~celio/peer2peer/math/bitmap-algorithms/durand03loglog.pdf&quot;&gt;LogLog counting of large cardinalities&lt;/a&gt;和&lt;a href=&quot;http://algo.inria.fr/flajolet/Publications/FlFuGaMe07.pdf&quot;&gt;HyperLogLog: The analysis of a near-optimal cardinality estimation algorithm&lt;/a&gt;两篇论文对算法进行了进一步改进。通过逐篇阅读这些论文来了解算法的发展和细节固然有趣，不过在这篇文章中我会忽略一些算法的理论细节，把精力主要放在如何通过论文中的算法解决问题。有兴趣的读者可以读一下这三篇论文；本文不会介绍其中的数学细节。&lt;/p&gt;
 &lt;p&gt;Flajolet和Martin最早发现通过一个良好的哈希函数，可以将任意数据集映射成服从均匀分布的（伪）随机值。根据这一事实，可以将任意数据集变换为均匀分布的随机数集合，然后就可以使用上面的方法进行估计了，不过只是这样是远远不够的。&lt;/p&gt;
-&lt;p&gt;接下来，他们陆续发现一些其它的基数估计方法，而其中一些方法的效果优于之前提到的方法。Flajolet和Martin计算了哈希值的二进制表示的0前缀，结果发现在随机数集合中，通过计算每一个元素的二进制表示的0前缀，设k为最长的0前缀的长度，则平均来说集合中大约有%lt;img src="http://latex.codecogs.com/gif.latex?2^k" /&gt;个不同的元素；我们可以用这个方法估计基数。但是，这仍然不是很理想的估计方法，因为和基于最小值的估计一样，这个方法的方差很大。不过另一方面，这个估计方法比较节省资源：对于32位的哈希值来说，只需要5比特去存储0前缀的长度。&lt;/p&gt;
+&lt;p&gt;接下来，他们陆续发现一些其它的基数估计方法，而其中一些方法的效果优于之前提到的方法。Flajolet和Martin计算了哈希值的二进制表示的0前缀，结果发现在随机数集合中，通过计算每一个元素的二进制表示的0前缀，设k为最长的0前缀的长度，则平均来说集合中大约有\(2^k\)个不同的元素；我们可以用这个方法估计基数。但是，这仍然不是很理想的估计方法，因为和基于最小值的估计一样，这个方法的方差很大。不过另一方面，这个估计方法比较节省资源：对于32位的哈希值来说，只需要5比特去存储0前缀的长度。&lt;/p&gt;
 &lt;p&gt;值得一提的是，Flajolet-Martin在最初的论文里通过一种基于bitmap的过程去提高估计算法的准确度。关于这点我就不再详述了，因为这种方法已经被后续论文中更好的方法所取代；对这个细节有兴趣的读者可以去阅读原始论文。&lt;/p&gt;
 &lt;p&gt;到目前为止，我们这种基于位模式的估计算法给出的结果仍然不够理想。如何进行改进呢？一个直观的改进方法就是使用多个相互独立的哈希函数：通过计算每个哈希函数所产生的最长0前缀，然后取其平均值可以提高算法的精度。&lt;/p&gt;
 &lt;p&gt;实践表明从统计意义来说这种方法确实可以提高估计的准确度，但是计算哈希值的消耗比较大。另一个更高效的方法就是随机平均（stochastic averaging）。这种方法不是使用多个哈希函数，而是使用一个哈希函数，但是将哈希值的区间按位切分成多个桶（bucket）。例如我们希望取1024个数进行平均，那么我们可以取哈希值的前10比特作为桶编号，然后计算剩下部分的0前缀长度。这种方法的准确度和多哈希函数方法相当，但是比计算多个哈希效率高很多。&lt;/p&gt;
@@ -1200,14 +1200,14 @@ def estimate_cardinality(values, k):
         bucket_hash = h &gt;&gt; k
         max_zeroes[bucket] = max(max_zeroes[bucket], trailing_zeroes(bucket_hash))
     return 2 ** (float(sum(max_zeroes)) / num_buckets) * num_buckets * 0.79402&lt;/pre&gt;
-    &lt;p&gt;这段代码实现了我们上面讨论的估计算法：我们计算每个桶的0前缀（或尾缀）的最长长度；然后计算这些长度的平均数；假设平均数是x，桶数量是m，则最终的估计值是%lt;img src="http://latex.codecogs.com/gif.latex?2^x%20\times%20m" /&gt;。其中一个没提过的地方是魔法数字0.79402。统计分析显示这种预测方法存在一个可预测的偏差；这个魔法数字是对这个偏差的修正。实际经验表明计算值随着桶数量的不同而变化，不过当桶数量不太小时（大于64），计算值会收敛于估计值。原论文中描述了这个结论的推导过程。&lt;/p&gt;
-    &lt;p&gt;这个方法给出的估计值比较精确 —— 在分桶数为m的情况下，平均误差为%lt;img src="http://latex.codecogs.com/gif.latex?1.3/\sqrt{m}" /&gt;。因此对于分桶数为1024的情况（所需内存1024*5 = 5120位，或640字节），大约会有4%的平均误差；每桶5比特的存储已经足以估计%lt;img src="http://latex.codecogs.com/gif.latex?2^{27}" /&gt;的数据集，而我们只用的不到1k的内存！&lt;/p&gt;
+    &lt;p&gt;这段代码实现了我们上面讨论的估计算法：我们计算每个桶的0前缀（或尾缀）的最长长度；然后计算这些长度的平均数；假设平均数是x，桶数量是m，则最终的估计值是\(2^x \times m\)。其中一个没提过的地方是魔法数字0.79402。统计分析显示这种预测方法存在一个可预测的偏差；这个魔法数字是对这个偏差的修正。实际经验表明计算值随着桶数量的不同而变化，不过当桶数量不太小时（大于64），计算值会收敛于估计值。原论文中描述了这个结论的推导过程。&lt;/p&gt;
+    &lt;p&gt;这个方法给出的估计值比较精确 —— 在分桶数为m的情况下，平均误差为\(1.3/\sqrt{m}\)。因此对于分桶数为1024的情况（所需内存1024*5 = 5120位，或640字节），大约会有4%的平均误差；每桶5比特的存储已经足以估计\(2^{27}\)的数据集，而我们只用的不到1k的内存！&lt;/p&gt;
     &lt;p&gt;让我们看一下试验结果：&lt;/p&gt;&lt;pre class=&quot;prettyprint&quot;&gt;&gt;&gt;&gt; [100000/estimate_cardinality([random.random() for i in range(100000)], 10) for j in range(10)]
 [0.9825616152548807, 0.9905752876839672, 0.979241749110407, 1.050662616357679, 0.937090578752079, 0.9878968276629505, 0.9812323203117748, 1.0456960262467019, 0.9415413413873975, 0.9608567203911741]&lt;/pre&gt;
     &lt;p&gt;不错！虽然有些估计误差大于4%的平均误差，但总体来说效果良好。如果你准备自己做一下这个试验，有一点需要注意：Python内置的 hash() 方法将整数哈希为它自己。因此诸如 estimate_cardinality(range(10000), 10) 这种方式得到的结果不会很理想，因为内置 hash() 对于这种情况并不能生成很好的散列。但是像上面例子中使用随机数会好很多。&lt;/p&gt;
     &lt;h1&gt;提升准确度：SuperLogLog和HyperLogLog&lt;/h1&gt;
-    &lt;p&gt;虽然我们已经有了一个不错的估计算法，但是我们还能进一步提升算法的准确度。Durand和Flajolet发现离群点会大大降低估计准确度；如果在计算平均值前丢弃一些特别大的离群值，则可以提高精确度。特别的，通过丢弃最大的30%的桶的值，只使用较小的70%的桶的值来进行平均值计算，则平均误差可以从%lt;img src="http://latex.codecogs.com/gif.latex?1.3/\sqrt{m}" /&gt;降低到%lt;img src="http://latex.codecogs.com/gif.latex?1.05/\sqrt{m}" /&gt;！这意味着在我们上面的例子中，使用640个字节可情况下可以将平均误差从4%降低到3.2%，而所需内存并没有增加。&lt;/p&gt;
-    &lt;p&gt;最后，Flajolet等人在HyperLogLog论文中给出一种不同的平均值，使用调和平均数取代几何平均数（译注：原文有误，此处应该是算数平均数）。这一改进可以将平均误差降到%lt;img src="http://latex.codecogs.com/gif.latex?1.04/\sqrt{m}" /&gt;，而且并没不需要额外资源。但是这个算法比前面的算法复杂很多，因为对于不同基数的数据集要做不同的修正。有兴趣的读者可以阅读原论文。&lt;/p&gt;
+    &lt;p&gt;虽然我们已经有了一个不错的估计算法，但是我们还能进一步提升算法的准确度。Durand和Flajolet发现离群点会大大降低估计准确度；如果在计算平均值前丢弃一些特别大的离群值，则可以提高精确度。特别的，通过丢弃最大的30%的桶的值，只使用较小的70%的桶的值来进行平均值计算，则平均误差可以从\(1.3/\sqrt{m}\)降低到\(1.05/\sqrt{m}\)！这意味着在我们上面的例子中，使用640个字节可情况下可以将平均误差从4%降低到3.2%，而所需内存并没有增加。&lt;/p&gt;
+    &lt;p&gt;最后，Flajolet等人在HyperLogLog论文中给出一种不同的平均值，使用调和平均数取代几何平均数（译注：原文有误，此处应该是算数平均数）。这一改进可以将平均误差降到\(1.04/\sqrt{m}\)，而且并没不需要额外资源。但是这个算法比前面的算法复杂很多，因为对于不同基数的数据集要做不同的修正。有兴趣的读者可以阅读原论文。&lt;/p&gt;
     &lt;h1&gt;并行化&lt;/h1&gt;
     &lt;p&gt;这些基数估计算法的一个好处就是非常容易并行化。对于相同分桶数和相同哈希函数的情况，多台机器节点可以独立并行的执行这个算法；最后只要将各个节点计算的同一个桶的最大值做一个简单的合并就可以得到这个桶最终的值。而且这种并行计算的结果和单机计算结果是完全一致的，所需的额外消耗仅仅是小于1k的字节在不同节点间的传输。&lt;/p&gt;
     &lt;h1&gt;结论&lt;/h1&gt;
