@@ -4,14 +4,14 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Mon, 15 Jul 2013 16:13:07 GMT</lastBuildDate>
+        <lastBuildDate>Mon, 15 Jul 2013 16:15:03 +0800</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>PCA的数学原理</title>
 <link>http://blog.codinglabs.org/articles/pca-tutorial.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/pca-tutorial.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Sat, 22 Jun 2013 00:00:00 GMT</pubDate>
+<pubDate>Sat, 22 Jun 2013 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;PCA（Principal Component Analysis）是一种常用的数据分析方法。PCA通过线性变换将原始数据变换为一组各维度线性无关的表示，可用于提取数据的主要特征分量，常用于高维数据的降维。网上关于PCA的文章有很多，但是大多数只描述了PCA的分析过程，而没有讲述其中的原理。这篇文章的目的是介绍PCA的基本数学原理，帮助读者了解PCA的工作机制是什么。&lt;/p&gt;
 &lt;p&gt;当然我并不打算把文章写成纯数学文章，而是希望用直观和易懂的方式叙述PCA的数学原理，所以整个文章不会引入严格的数学推导。希望读者在看完这篇文章后能更好的明白PCA的工作原理。&lt;/p&gt;
 &lt;h1&gt;数据的向量表示及降维问题&lt;/h1&gt;
@@ -289,7 +289,7 @@
 <link>http://blog.codinglabs.org/articles/basic-statistics-calculate.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/basic-statistics-calculate.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Wed, 05 Jun 2013 00:00:00 GMT</pubDate>
+<pubDate>Wed, 05 Jun 2013 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。&lt;/p&gt;
 &lt;h1&gt;期望&lt;/h1&gt;
 &lt;h2&gt;定义&lt;/h2&gt;
@@ -369,7 +369,7 @@ Var(x) &amp; = &amp; E((x-E(x))^2) \\
 <link>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Mon, 27 May 2013 00:00:00 GMT</pubDate>
+<pubDate>Mon, 27 May 2013 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;时间序列是现实生活中经常会碰到的数据形式。例如北京市连续一年的日平均气温、某股票的股票价格、淘宝上某件商品的日销售件数等等。时间序列分析的的目的是挖掘时间序列中隐含的信息与模式，并借此对此序列数据进行评估以及对系列的后续走势进行预测。&lt;/p&gt;
 &lt;p&gt;由于工作需要，我最近简单学习了时间序列分析相关的基础理论和应用方法，这篇文章可以看做是我的学习笔记。&lt;/p&gt;
 &lt;p&gt;文章主要内容会首先描述时间序列分析的基本概念和相关的统计学基础理论，然后着重讲述十分经典和常用的ARIMA模型，在这之后会讲述季节ARIMA模型。&lt;/p&gt;
@@ -648,7 +648,7 @@ abline(h=0)&lt;/pre&gt;
 <link>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Sun, 17 Mar 2013 00:00:00 GMT</pubDate>
+<pubDate>Sun, 17 Mar 2013 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如&lt;a href=&quot;http://en.wikipedia.org/wiki/Tower_of_Hanoi&quot;&gt;汉诺塔问题&lt;/a&gt;的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。&lt;/p&gt;
 &lt;p&gt;因为递推式求解的重要性，许多算法书籍对其有专门介绍。&lt;a href=&quot;http://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;在&lt;a href=&quot;http://en.wikipedia.org/wiki/Concrete_Mathematics&quot;&gt;Concrete Mathematics&lt;/a&gt;一书中多个章节都涉及递推式求解方法。&lt;a href=&quot;http://book.douban.com/subject/1885170/&quot;&gt;算法导论&lt;/a&gt;也在第四章中专门论述的这个主题。&lt;/p&gt;
 &lt;p&gt;在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。&lt;/p&gt;
@@ -818,7 +818,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <link>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Tue, 29 Jan 2013 00:00:00 GMT</pubDate>
+<pubDate>Tue, 29 Jan 2013 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;在分析各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。&lt;/p&gt;
 
 &lt;h1&gt;三分式归并排序的时间复杂度&lt;/h1&gt;
@@ -867,7 +867,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Wed, 09 Jan 2013 00:00:00 GMT</pubDate>
+<pubDate>Wed, 09 Jan 2013 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;在&lt;a href=&quot;http://www.codinglabs.org/html/algorithms-for-cardinality-estimation-part-iii.html&quot; target=&quot;_blank&quot;&gt;前一篇文章&lt;/a&gt;中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。&lt;/p&gt;
 &lt;p&gt;这一篇文章中将要介绍的HyperLogLog Counting及Adaptive Counting算法均是对LLC算法的改进，可以有效克服LLC对于较小基数估计效果差的缺点。&lt;/p&gt;
 &lt;!--more--&gt;
@@ -942,7 +942,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Thu, 03 Jan 2013 00:00:00 GMT</pubDate>
+<pubDate>Thu, 03 Jan 2013 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-ii.html&quot; target=&quot;_blank&quot;&gt;上一篇文章&lt;/a&gt;介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。&lt;/p&gt;
 &lt;p&gt;本文将介绍LogLog Counting。
 &lt;!--more--&gt;
@@ -1024,7 +1024,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Mon, 31 Dec 2012 00:00:00 GMT</pubDate>
+<pubDate>Mon, 31 Dec 2012 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;在&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-i.html&quot; target=&quot;_blank&quot;&gt;上一篇文章&lt;/a&gt;中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。&lt;/p&gt;
 &lt;p&gt;在这一篇文章中，我们讨论Linear Counting算法。
 &lt;!--more--&gt;
@@ -1095,7 +1095,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Sun, 30 Dec 2012 00:00:00 GMT</pubDate>
+<pubDate>Sun, 30 Dec 2012 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;基数计数（cardinality counting）是实际应用中一种常见的计算场景，在数据分析、网络监控及数据库优化等领域都有相关需求。精确的基数计数算法由于种种原因，在面对大数据场景时往往力不从心，因此如何在误差可控的情况下对基数进行估计就显得十分重要。目前常见的基数估计算法有Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting等。这几种算法都是基于概率统计理论所设计的概率算法，它们克服了精确基数计数算法的诸多弊端（如内存需求过大或难以合并等），同时可以通过一定手段将误差控制在所要求的范围内。&lt;/p&gt;
 &lt;p&gt;作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。&lt;/p&gt;
 &lt;p&gt;后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。&lt;/p&gt;
@@ -1158,7 +1158,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <link>http://blog.codinglabs.org/articles/cardinality-estimation.html?utm_source=rss&amp;utm_medium=rss</link>
 <guid>http://blog.codinglabs.org/articles/cardinality-estimation.html</guid>
 <author>ericzhang.buaa@gmail.com 张洋</author>
-<pubDate>Fri, 23 Nov 2012 00:00:00 GMT</pubDate>
+<pubDate>Fri, 23 Nov 2012 00:00:00 +0800</pubDate>
 <description>&lt;p&gt;翻译自《&lt;a href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;Damn Cool Algorithms: Cardinality Estimation&lt;/a&gt;》，原文链接：&lt;a title=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; href=&quot;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&quot; target=&quot;_blank&quot;&gt;http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;假如你有一个巨大的含有重复数据项数据集，这个数据集过于庞大以至于无法全部放到内存中处理。现在你想知道这个数据集里有多少不同的元素，但是数据集没有排好序，而且对如此大的一个数据集进行排序和计数几乎是不可行的。你要如何估计数据集中有多少不同的数据项？很多应用场景都涉及这个问题，例如设计数据库的查询策略：一个良好的数据库查询策略不但和总的数据量有关，同时也依赖于数据中不同数据项的数量。&lt;/p&gt;
 &lt;p&gt;我建议在继续阅读本文前你可以稍微是思考一下这个问题，因为接下来我们要谈的算法相当有创意，而且实在是不怎么直观。&lt;/p&gt;
