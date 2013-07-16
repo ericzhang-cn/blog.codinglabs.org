@@ -23,12 +23,12 @@ div#header {
     height: 50px;
 }
 div#header-inner {
-    width: 70%;
+    width: 1024px;
     margin: 0 auto;
     padding-top: 2px;
 }
 div#main-inner {
-    width: 70%;
+    width: 1024px;
     margin: 0 auto;
 }
 div#title a {
@@ -44,7 +44,7 @@ div#subtitle {
 }
 div#footer-inner {
     border-top: 1px solid #0099CC;
-    width: 70%;
+    width: 1024px;
     margin: 20px auto 0;
 }
 div#footer-inner p {
