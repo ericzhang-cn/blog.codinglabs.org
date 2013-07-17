@@ -134,6 +134,7 @@ div#tag-cloud a {
     background-color: #0099CC;
     color: #FFFFFF;
     padding: 3px;
+    font-size: 14px;
 }
 div#tag-cloud a .count {
     color: #FFCC00;
