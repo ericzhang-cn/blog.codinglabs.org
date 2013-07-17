@@ -1,5 +1,5 @@
 body {
-    font-family: 'lucida grande',Arial,sans-serif; 
+    font-family: arial,sans-serif; 
 }
 a {
     text-decoration: none;
@@ -9,14 +9,14 @@ a:hover {
     text-decoration: underline;
 }
 p {
-    font-size: 18px;
-    line-height: 30px;
+    font-size: 16px;
+    line-height: 1.5em;
     color: #333333;
 }
 h1, h2, h3, h4 {
 }
 pre.prettyprint {
-	font-size: 14px;
+	font-size: 12px;
 }
 div#header {
     background-color: #0099CC;
@@ -49,14 +49,14 @@ div#footer-inner {
 }
 div#footer-inner p {
     text-align: right;
-    font-size: 16px;
+    font-size: 14px;
 }
 div#footer-inner p#icp a {
     color: #999999;
 }
 div#article-title {
     margin: 30px 0;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: bold;
     border-left: 6px solid #CCCCCC;
     padding-left: 12px;
@@ -81,7 +81,7 @@ div#article-content blockquote {
     margin-left: 5px;
     padding-left: 30px;
 	border-left: 5px solid #0099CC;
-	font-size: 16px;
+	font-size: 14px;
 }
 div#article-meta {
     color: #999999;
@@ -103,13 +103,13 @@ div.article-block a.tag {
     background-color: #0099CC;
     color: #FFFFFF;
     padding: 3px;
-    font-size: 14px;
+    font-size: 12px;
 }
 div#aboutme {
     margin: 20px auto;
 }
 div#aboutme p {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: #666666;
 }
@@ -137,7 +137,7 @@ div#tag-cloud a {
 }
 div#tag-cloud a .count {
     color: #FFCC00;
-    font-size: 14px;
+    font-size: 12px;
 }
 div#tag-index h1 {
     border-bottom: 1px dashed #CCCCCC;
@@ -154,5 +154,5 @@ div#article-tags a.tag {
     background-color: #0099CC;
     color: #FFFFFF;
     padding: 3px;
-    font-size: 14px;
+    font-size: 12px;
 }
