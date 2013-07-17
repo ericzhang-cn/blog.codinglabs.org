@@ -13,6 +13,9 @@ p {
     line-height: 1.8em;
     color: #333333;
 }
+li {
+    line-height: 1.8em;
+}
 h1, h2, h3, h4 {
 }
 pre.prettyprint {
