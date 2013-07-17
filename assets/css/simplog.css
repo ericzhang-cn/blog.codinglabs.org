@@ -1,5 +1,5 @@
 body {
-    font-family: 'Microsoft Yahei','微软雅黑',arial,sans-serif; 
+    font-family: arial,sans-serif; 
 }
 a {
     text-decoration: none;
@@ -55,7 +55,7 @@ div#footer-inner p#icp a {
     color: #999999;
 }
 div#article-title {
-    margin: 24px 0;
+    margin: 18px 0;
     font-size: 30px;
     font-weight: bold;
     border-left: 6px solid #CCCCCC;
