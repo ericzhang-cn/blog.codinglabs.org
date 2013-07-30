@@ -48,7 +48,6 @@
                     </ul>
                     <div style="clear:both;"></div>
                 </div>
-                <div id="rss"><a href="/rss.xml"><img alt="RSS订阅" src="/assets/images/icon-rss.png"/></a></div>
                 <div id="aboutme"><p>&lt;关于我&gt;: {%= ABOUT_ME %}</p></div>
                 <div id="tag-cloud">{%= TAG_CLOUD %}<div style="clear:both;"></div></div>
                 <div id="article-blocks">{%= ARTICLES %}</div>
