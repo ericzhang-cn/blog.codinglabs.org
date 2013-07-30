@@ -1,5 +1,6 @@
 <pre class="prettyprint">
 #include&lt;stdio.h&gt;
+
 int main(int argc, char** argv) {
     printf("%s\n", "张洋");
     printf("职业：%s\n", "程序猿");
