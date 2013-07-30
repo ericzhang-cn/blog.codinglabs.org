@@ -160,7 +160,19 @@ div#article-tags a.tag {
     padding: 3px;
     font-size: 14px;
 }
+div#topnav ul {
+    margin: 0;
+    padding: 0;
+    margin-top: 18px;
+}
 div#topnav ul li {
     list-style: none;
     float: left;
+}
+div#topnav ul li a {
+    display: block;
+}
+div#topnav ul li.sep {
+    color: #CCCCCC;
+    margin: 0 12px;
 }

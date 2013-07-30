@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Tue, 16 Jul 2013 17:06:12 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 30 Jul 2013 17:52:04 +0800</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>PCA的数学原理</title>
@@ -412,7 +412,8 @@ Var(x) &amp; = &amp; E((x-E(x))^2) \\
 
 &lt;pre class=&quot;prettyprint&quot;&gt;Y = ts(rnorm(100, mean=0, sd=1));
 plot(Y, family=&quot;simhei&quot;, main=&quot;白噪声&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
-abline(h=0)&lt;/pre&gt;
+abline(h=0)
+&lt;/pre&gt;
 
 &lt;p&gt;其中共100个元素，每个元素都独立服从标准正态分布\(N(0,1)\)。可以从图中看出白噪声基本是在均值附近较为平均的随机震荡。&lt;/p&gt;
 &lt;p&gt;由于每个元素服从\(N(0,1)\)，所以均值\(\mu_t=0\)，方差\(\sigma^2_t=1\)。又因为每个元素独立，所以对于任何\(t \neq s\)，\(\gamma_{t,s}=0\)，\(\rho_{t,s}=0\)。这些统计特征与对图像的直观观察基本一致。&lt;/p&gt;
@@ -435,7 +436,8 @@ for (i in 2:length(Y)) {
     Y[i] = Y[i] + Y[i-1];
 }
 plot(Y, family=&quot;simhei&quot;, main=&quot;随机游走&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
-abline(h=0)&lt;/pre&gt;
+abline(h=0)
+&lt;/pre&gt;
 
 &lt;p&gt;可以看到随机游走比白噪声平滑很多，并且呈现出一些“趋势性”的感觉。下面分析其相关统计特征。&lt;/p&gt;
 &lt;p&gt;均值：\(\mu_t=E(e_1 + \cdots + e_t)=E(e_1) + \cdots + E(e_t)=0\)&lt;/p&gt;
@@ -504,7 +506,8 @@ for (i in 2:length(Ye)) {
 }
 Y = ts(Y);
 plot(Y, family=&quot;simhei&quot;, main=&quot;MA(1)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
-abline(h=0)&lt;/pre&gt;
+abline(h=0)
+&lt;/pre&gt;
 
 &lt;p&gt;这个模拟数据构造自服从标准正态分布的白噪声，其中一阶滑动参数为-0.8。从图上看，这个序列比白噪声平滑，并且比随机游走平稳一些。下面定量分析其各统计量。&lt;/p&gt;
 &lt;p&gt;均值：&lt;/p&gt;
@@ -543,7 +546,8 @@ for (i in 3:length(Ye)) {
 }
 Y = ts(Y);
 plot(Y, family=&quot;simhei&quot;, main=&quot;MA(2)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
-abline(h=0)&lt;/pre&gt;
+abline(h=0)
+&lt;/pre&gt;
 
 &lt;p&gt;如果做统计分析，会发现MA(2)模型也是一个平稳模型，并且在时滞大于2后没有相关性。&lt;/p&gt;
 &lt;p&gt;一般的，MA(q)模型是一个平稳模型，并且在时滞大于q后没有相关性。此处不再给出一般MA模型的统计分析，有兴趣的朋友可以自行推导。&lt;/p&gt;
@@ -581,7 +585,8 @@ for (i in 2:length(Ye)) {
 }
 Y = ts(Y);
 plot(Y, family=&quot;simhei&quot;, main=&quot;AR(1)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
-abline(h=0)&lt;/pre&gt;
+abline(h=0)
+&lt;/pre&gt;
 
 &lt;p&gt;下面说一下AR模型的平稳条件。为了讨论这点，我们先引进一个定义：AR模型的特征方程。一般的，AR(p)模型的特征方程被定义为：&lt;/p&gt;
 &lt;p&gt;\[1-\phi_1x-\phi_2x^2-\cdots-\phi_px^p=0\]&lt;/p&gt;
@@ -632,9 +637,11 @@ for (i in 2:length(Ye)) {
 }
 Y = ts(Y);
 plot(Y, family=&quot;simhei&quot;, main=&quot;ARMA(1,1)&quot;, type=&quot;b&quot;, col=&quot;red&quot;);
-abline(h=0)&lt;/pre&gt;
+abline(h=0)
+&lt;/pre&gt;
 
 &lt;h3&gt;ARIMA模型&lt;/h3&gt;
+&lt;h2&gt;平稳性、可逆性及一般线性过程&lt;/h2&gt;
 &lt;h2&gt;模型识别&lt;/h2&gt;
 &lt;h2&gt;参数估计&lt;/h2&gt;
 &lt;h2&gt;模型预测&lt;/h2&gt;
