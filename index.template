@@ -32,6 +32,13 @@
         </div>
         <div id="main">
             <div id="main-inner">
+                <div id="topnav">
+                    <ul>
+                        <li><a href="/">首页</a></li>
+                        <li><a href="/tag.html">标签</a></li>
+                        <li><a href="/pages/about-me.html">关于我</a></li>
+                    </ul>
+                </div>
                 <div id="rss"><a href="/rss.xml"><img alt="RSS订阅" src="/assets/images/icon-rss.png"/></a></div>
                 <div id="aboutme"><p>&lt;关于我&gt;: {%= ABOUT_ME %}</p></div>
                 <div id="tag-cloud">{%= TAG_CLOUD %}<div style="clear:both;"></div></div>

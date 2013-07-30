@@ -160,3 +160,7 @@ div#article-tags a.tag {
     padding: 3px;
     font-size: 14px;
 }
+div#topnav ul li {
+    list-style: none;
+    float: left;
+}
