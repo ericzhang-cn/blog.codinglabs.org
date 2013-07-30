@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Tue, 30 Jul 2013 18:53:16 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 30 Jul 2013 23:31:13 +0800</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>PCA的数学原理</title>
@@ -282,7 +282,7 @@
 &lt;p&gt;因此，PCA也存在一些限制，例如它可以很好的解除线性相关，但是对于高阶相关性就没有办法了，对于存在高阶相关性的数据，可以考虑Kernel PCA，通过Kernel函数将非线性相关转为线性相关，关于这点就不展开讨论了。另外，PCA假设数据各主特征是分布在正交方向上，如果在非正交方向上存在几个方差较大的方向，PCA的效果就大打折扣了。&lt;/p&gt;
 &lt;p&gt;最后需要说明的是，PCA是一种无参数技术，也就是说面对同样的数据，如果不考虑清洗，谁来做结果都一样，没有主观参数的介入，所以PCA便于通用实现，但是本身无法个性化的优化。&lt;/p&gt;
 &lt;p&gt;希望这篇文章能帮助朋友们了解PCA的数学理论基础和实现原理，借此了解PCA的适用场景和限制，从而更好的使用这个算法。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>期望、方差、协方差及相关系数的基本运算</title>
@@ -362,7 +362,7 @@ Var(x) &amp; = &amp; E((x-E(x))^2) \\
 &lt;p&gt;相关系数的取值范围为-1到1，其可以看成是无量纲的协方差。&lt;/p&gt;
 &lt;p&gt;2、统计意义&lt;/p&gt;
 &lt;p&gt;值越接近1，说明两个变量正相关性（线性）越强，越接近-1，说明负相关性越强，当为0时表示两个变量没有相关性。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>时间序列分析基础</title>
@@ -648,7 +648,7 @@ abline(h=0)
 &lt;h2&gt;实例：使用R进行ARIMA时间序列分析&lt;/h2&gt;
 &lt;h2&gt;模型诊断&lt;/h2&gt;
 &lt;h1&gt;季节ARIMA模型&lt;/h1&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>算法分析中递推式的一般代数解法</title>
@@ -818,7 +818,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;h2&gt;有重根的情况&lt;/h2&gt;
 &lt;p&gt;上面的解法只针对特征根互异，如果有重根的话，则上述方法会无效。不过只要经过一定处理也可以有通用方法求解，
 因有点复杂，本文不在针对重根情况进行叙述。关于重根情况下的求解，有感兴趣的同学可以参考线性代数或微分方程相关文献。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>为什么算法渐进复杂度中对数的底数总为2</title>
@@ -867,7 +867,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;\(\log_an = \frac{\log_2n}{\log_2a}\)&lt;/p&gt;
 
 &lt;p&gt;因此对于大于1的a来说，都与\(O(\log_2n)\)差一个常系数而已，因此为了简便，一般都用\(O(\log_2n)\)表示对数的渐进复杂度，这就解决了本文初始的疑问。当然，以任何大于1的a为底数都是没有问题的。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</title>
@@ -942,7 +942,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;关于分段偏差修正效果分析也可以在原论文中找到。&lt;/p&gt;
 &lt;h1&gt;小结&lt;/h1&gt;
 &lt;p&gt;本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。在本系列最后一篇文章中，我会介绍一淘数据部的基数估计实现&lt;a href=&quot;https://github.com/chaoslawful/ccard-lib&quot; target=&quot;_blank&quot;&gt;ccard-lib&lt;/a&gt;的一些实现细节和使用方式。并做一些实验。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第三部分：LogLog Counting）</title>
@@ -1024,7 +1024,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;与LC不同，LLC的合并是以桶为单位而不是bit为单位，由于LLC只需记录桶的\(\rho_{max}\)，因此合并时取相同桶编号数值最大者为合并后此桶的数值即可。&lt;/p&gt;
 &lt;h1&gt;小结&lt;/h1&gt;
 &lt;p&gt;本文主要介绍了LogLog Counting算法，相比LC其最大的优势就是内存使用极少。不过LLC也有自己的问题，就是当n不是特别大时，其估计误差过大，因此目前实际使用的基数估计算法都是基于LLC改进的算法，这些改进算法通过一定手段抑制原始LLC在n较小时偏差过大的问题。后面要介绍的HyperLogLog Counting和Adaptive Counting就是这类改进算法。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第二部分：Linear Counting）</title>
@@ -1095,7 +1095,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;h1&gt;小结&lt;/h1&gt;
 &lt;p&gt;这篇文章主要介绍了Linear Counting。LC算法虽然由于空间复杂度不够理想已经很少被单独使用，但是由于其在元素数量较少时表现非常优秀，因此常被用于弥补LogLog Counting在元素较少时误差较大的缺陷，实际上LC及其思想是组成HyperLogLog Counting和Adaptive Counting的一部分。&lt;/p&gt;
 &lt;p&gt;在下一篇文章中，我会介绍空间复杂度仅有\(O(log_2(log_2(N_{max})))\)的基数估计算法LogLog Counting。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>解读Cardinality Estimation算法（第一部分：基本概念）</title>
@@ -1158,7 +1158,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;由此可见，虽然bitmap方式易于合并，却由于内存使用问题而无法广泛用于大数据场景。&lt;/p&gt;
 &lt;h1&gt;小结&lt;/h1&gt;
 &lt;p&gt;本文重点在于通过电商数据分析中UV计算的例子，说明基数的应用、传统的基数计数算法及这些算法在大数据面前遇到的问题。实际上目前还没有发现更好的在大数据场景中准确计算基数的高效算法，因此在不追求绝对准确的情况下，使用概率算法算是一个不错的解决方案。在后续文章中，我将逐一解读常用的基数估计概率算法。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 <item>
 <title>基数估计算法概览</title>
@@ -1219,7 +1219,7 @@ def estimate_cardinality(values, k):
     &lt;p&gt;这些基数估计算法的一个好处就是非常容易并行化。对于相同分桶数和相同哈希函数的情况，多台机器节点可以独立并行的执行这个算法；最后只要将各个节点计算的同一个桶的最大值做一个简单的合并就可以得到这个桶最终的值。而且这种并行计算的结果和单机计算结果是完全一致的，所需的额外消耗仅仅是小于1k的字节在不同节点间的传输。&lt;/p&gt;
     &lt;h1&gt;结论&lt;/h1&gt;
     &lt;p&gt;基数估计算法使用很少的资源给出数据集基数的一个良好估计，一般只要使用少于1k的空间存储状态。这个方法和数据本身的特征无关，而且可以高效的进行分布式并行计算。估计结果可以用于很多方面，例如流量监控（多少不同IP访问过一个服务器）以及数据库查询优化（例如我们是否需要排序和合并，或者是否需要构建哈希表）。&lt;/p&gt;
-<img src="http://img.tongji.linezing.com/3272838/tongji.gif"/></description>
+</description>
 </item>
 
     </channel>
