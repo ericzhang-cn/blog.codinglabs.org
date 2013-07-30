@@ -26,6 +26,22 @@
     <body onload="prettyPrint()">
         <div id="header">
             <div id="header-inner">
+                <div id="topnav">
+                    <ul>
+                        <li><a href="/">首页</a></li>
+                        <li class="sep"> | </li>
+                        <li><a href="/tag.html">标签</a></li>
+                        <li class="sep"> | </li>
+                        <li><a href="/pages/about-me.html">关于我</a></li>
+                        <li class="sep"> | </li>
+                        <li><a href="/rss.xml">+订阅</a></li>
+                        <li class="sep"> | </li>
+                        <li><a href="http://weibo.com/ericzhangbuaa" target="_blank">@微博</a></li>
+                        <li class="sep"> | </li>
+                        <li><a href="https://github.com/ericzhang-cn" target="_blank">@github</a></li>
+                    </ul>
+                    <div style="clear:both;"></div>
+                </div>
                 <div id="title"><a href="/"><small>{</small> CodingLabs <small>}</small></a></div>
                 <div id="subtitle">/&gt; keep coding, keep foolish</div>
             </div>
@@ -33,13 +49,16 @@
         <div id="main">
             <div id="main-inner">
                 <h1>About me</h1>
-                <div id="page-content"><ul>
-<li>张洋</li>
-<li>职业：程序猿</li>
-<li>Mail：ericzhang.buaa(at)gmail.com</li>
-<li>新浪微博：<a href="http://weibo.com/ericzhangbuaa">@敲代码的张洋</a></li>
-<li>Github：<a href="https://github.com/ericzhang-cn">github.com/ericzhang-cn</a></li>
-</ul>
+                <div id="page-content"><pre class="prettyprint">
+#include<stdio.h>
+int main(int argc, char** argv) {
+    printf("%s\n", "张洋");
+    printf("职业：%s\n", "程序猿");
+    printf("%s\n", "写代码..数学..算法..机器学习..数据..电影..足球..吃..骑行");
+    printf("email：%s\n", "ericzhang.buaa(at)gmail.com");
+    printf("%s\n", "...没什么太多要说的了");
+}
+</pre>
 </div>
             </div>
         </div>
