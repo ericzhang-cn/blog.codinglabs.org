@@ -171,7 +171,7 @@ define(function(require, exports, module) = {
 
 要在项目中使用SeaJS，你所有需要做的准备工作就是下载sea.js然后放到你项目的某个位置。
 
-SeaJS项目目前托管在GitHub上，主页为https://github.com/seajs/seajs/。可以到其git库的build目录下（https://github.com/seajs/seajs/tree/master/build）下载sea.js（已压缩）或sea-debug.js（未压缩）。
+SeaJS项目目前托管在GitHub上，主页为 https://github.com/seajs/seajs/ 。可以到其git库的build目录下下载sea.js（已压缩）或sea-debug.js（未压缩）。
 
 下载完成后放到项目的相应位置，然后在页面中通过&lt;script&gt;标签引入，你就可以使用SeaJS了。
 
@@ -221,7 +221,7 @@ define(function(require, exports, module) {
 
 个人建议遵循SeaJS官方示例的标准，用一个参数的define定义模块。那么id和deps会怎么处理呢？
 
-id是一个模块的标识字符串，define只有一个参数时，id会被默认赋值为此js文件的绝对路径。如example.com下的a.js文件中使用define定义模块，则这个模块的ID会赋值为“http://example.com/a.js”，没有特别的必要建议不要传入id。deps一般也不需要传入，需要用到的模块用require加载即可。
+id是一个模块的标识字符串，define只有一个参数时，id会被默认赋值为此js文件的绝对路径。如example.com下的a.js文件中使用define定义模块，则这个模块的ID会赋值为 http://example.com/a.js ，没有特别的必要建议不要传入id。deps一般也不需要传入，需要用到的模块用require加载即可。
 
 ### 工厂函数factory解析
 
@@ -315,17 +315,17 @@ define({
 require("http://example/js/a");
 </pre>
 
-就代表载入“http://example/js/a.js”。
+就代表载入 http://example/js/a.js 。
 
 相对地址——用相对调用载入函数所在js文件的相对地址寻找模块。
 
-例如在“http://example/js/b.js”中载入
+例如在 http://example/js/b.js 中载入
 
 <pre class="prettyprint">
 require("./c");
 </pre>
 
-则载入“http://example/js/c.js”。
+则载入 http://example/js/c.js 。
 
 基址地址——如果载入字符串标识既不是绝对路径也不是以”./”开头，则相对SeaJS全局配置中的“base”来寻址，这种方法稍后讨论。
 
@@ -439,13 +439,13 @@ seajs.config({
 });
 </pre>
 
-其中base表示基址寻址时的基址路径。例如base设置为”http://example.com/js/3-party/”，则
+其中base表示基址寻址时的基址路径。例如base设置为 http://example.com/js/3-party/ ，则
 
 <pre class="prettyprint">
 var $ = require('jquery');
 </pre>
 
-会载入”http://example.com/js/3-party/jquery.js”。
+会载入 http://example.com/js/3-party/jquery.js 。
 
 alias可以对较长的常用路径设置缩写。
 
@@ -487,7 +487,7 @@ return $.noConflict();
 
 ## SeaJS项目的打包部署
 
-SeaJS本来集成了一个打包部署工具spm，后来作者为了更KISS一点，将spm拆出了SeaJS而成为了一个单独的项目。spm的核心思想是将所有模块的代码都合并压缩后并入入口模块，由于SeaJS本身的特性，html不需要做任何改动就可以很方便的在开发环境和生产环境间切换。但是由于spm目前并没有发布正式版本，所以本文不打算详细介绍，有兴趣的朋友可以参看其github项目主页https://github.com/seajs/spm/。
+SeaJS本来集成了一个打包部署工具spm，后来作者为了更KISS一点，将spm拆出了SeaJS而成为了一个单独的项目。spm的核心思想是将所有模块的代码都合并压缩后并入入口模块，由于SeaJS本身的特性，html不需要做任何改动就可以很方便的在开发环境和生产环境间切换。但是由于spm目前并没有发布正式版本，所以本文不打算详细介绍，有兴趣的朋友可以参看其github项目主页 https://github.com/seajs/spm/。
 
 其实，由于每个项目所用的JS合并和压缩工具不尽相同，所以spm可能并不是完全适合每个项目。在了解了SeaJS原理后，完全可以自己写一个符合自己项目特征的合并打包脚本。
 
