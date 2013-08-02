@@ -1,6 +1,15 @@
 {
     "articles": [
         {
+            "id": "modularized-javascript-with-seajs",
+            "title": "使用SeaJS实现模块化JavaScript开发",
+            "postedOn": "2013-08-02",
+            "author": "张洋",
+            "tags": ["Javascript","SeaJS"],
+            "category": "",
+            "abstract": "SeaJS是一个遵循CommonJS规范的JavaScript模块加载框架，可以实现JavaScript的模块化开发及加载机制。与jQuery等JavaScript框架不同，SeaJS不会扩展封装语言特性，而只是实现JavaScript的模块化及按模块加载。SeaJS的主要目的是令JavaScript开发模块化并可以轻松愉悦进行加载，将前端工程师从繁重的JavaScript文件及对象依赖处理中解放出来，可以专注于代码本身的逻辑。SeaJS可以与jQuery这类框架完美集成。使用SeaJS可以提高JavaScript代码的可读性和清晰度，解决目前JavaScript编程中普遍存在的依赖关系混乱和代码纠缠等问题，方便代码的编写和维护。"
+        },
+        {
             "id": "pca-tutorial",
             "title": "PCA的数学原理",
             "postedOn": "2013-06-22",
