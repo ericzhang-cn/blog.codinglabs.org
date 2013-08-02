@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Fri, 02 Aug 2013 16:15:22 +0800</lastBuildDate>
+        <lastBuildDate>Fri, 02 Aug 2013 16:17:53 +0800</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>使用SeaJS实现模块化JavaScript开发</title>
@@ -1411,7 +1411,7 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 &lt;p&gt;当\(E &gt; \frac{1}{30}2^{32}\)时，估计公式如为\(\hat{n}=-2^{32}log(1-E/2^{32})\)。&lt;/p&gt;
 &lt;p&gt;关于分段偏差修正效果分析也可以在原论文中找到。&lt;/p&gt;
 &lt;h1&gt;小结&lt;/h1&gt;
-&lt;p&gt;本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。在本系列最后一篇文章中，我会介绍一淘数据部的基数估计实现&lt;a href=&quot;https://github.com/chaoslawful/ccard-lib&quot; target=&quot;_blank&quot;&gt;ccard-lib&lt;/a&gt;的一些实现细节和使用方式。并做一些实验。&lt;/p&gt;
+&lt;p&gt;本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。&lt;/p&gt;
 </description>
 </item>
 <item>

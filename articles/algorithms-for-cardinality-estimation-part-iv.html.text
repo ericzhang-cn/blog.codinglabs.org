@@ -64,4 +64,4 @@
 <p>当\(E &gt; \frac{1}{30}2^{32}\)时，估计公式如为\(\hat{n}=-2^{32}log(1-E/2^{32})\)。</p>
 <p>关于分段偏差修正效果分析也可以在原论文中找到。</p>
 <h1>小结</h1>
-<p>本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。在本系列最后一篇文章中，我会介绍一淘数据部的基数估计实现<a href="https://github.com/chaoslawful/ccard-lib" target="_blank">ccard-lib</a>的一些实现细节和使用方式。并做一些实验。</p>
+<p>本文首先介绍了基数估计算法标准误差的意义，并据此说明了为什么LLC在基数较小时效果不好。然后，以此介绍了两种对LLC的改进算法：HyperLogLog Counting及Adaptive Counting。到此为止，常见的四种基数估计算法就介绍完了。</p>
