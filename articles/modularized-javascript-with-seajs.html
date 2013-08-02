@@ -244,14 +244,18 @@ define(function(require, exports, module) {
 <p>id是一个模块的标识字符串，define只有一个参数时，id会被默认赋值为此js文件的绝对路径。如example.com下的a.js文件中使用define定义模块，则这个模块的ID会赋值为 <a href="http://example.com/a.js">http://example.com/a.js</a> ，没有特别的必要建议不要传入id。deps一般也不需要传入，需要用到的模块用require加载即可。</p>
 <h3>工厂函数factory解析</h3>
 <p>工厂函数是模块的主体和重点。在只传递一个参数给define时（推荐写法），这个参数就是工厂函数，此时工厂函数的三个参数分别是：</p>
-<p>require——模块加载函数，用于记载依赖模块。</p>
-<p>exports——接口点，将数据或方法定义在其上则将其暴露给外部调用。</p>
-<p>module——模块的元数据。</p>
+<ul>
+<li>require——模块加载函数，用于记载依赖模块。</li>
+<li>exports——接口点，将数据或方法定义在其上则将其暴露给外部调用。</li>
+<li>module——模块的元数据。</li>
+</ul>
 <p>这三个参数可以根据需要选择是否需要显示指定。</p>
 <p>下面说一下module。module是一个对象，存储了模块的元信息，具体如下：</p>
-<p>module.id——模块的ID。</p>
-<p>module.dependencies——一个数组，存储了此模块依赖的所有模块的ID列表。</p>
-<p>module.exports——与exports指向同一个对象。</p>
+<ul>
+<li>module.id——模块的ID。</li>
+<li>module.dependencies——一个数组，存储了此模块依赖的所有模块的ID列表。</li>
+<li>module.exports——与exports指向同一个对象。</li>
+</ul>
 <h3>三种编写模块的模式</h3>
 <p>第一种定义模块的模式是基于exports的模式：</p>
 <pre class="prettyprint">
@@ -456,13 +460,15 @@ return $.noConflict();
 <p>其实，由于每个项目所用的JS合并和压缩工具不尽相同，所以spm可能并不是完全适合每个项目。在了解了SeaJS原理后，完全可以自己写一个符合自己项目特征的合并打包脚本。</p>
 <h1>一个完整的例子</h1>
 <p>上文说了那么多，知识点比较分散，所以最后我打算用一个完整的SeaJS例子把这些知识点串起来，方便朋友们归纳回顾。这个例子包含如下文件：</p>
-<p>index.html——主页面。</p>
-<p>sea.js——SeaJS脚本。</p>
-<p>init.js——init模块，入口模块，依赖data、jquery、style三个模块。由主页面载入。</p>
-<p>data.js——data模块，纯json数据模块，由init载入。</p>
-<p>jquery.js——jquery模块，对 jQuery库的模块化封装，由init载入。</p>
-<p>style.css——CSS样式表，作为style模块由init载入。</p>
-<p>sea.js和jquery.js的代码属于库代码，就不赘述，这里只给出自己编写的文件的代码。</p>
+<ul>
+<li>index.html——主页面。</li>
+<li>sea.js——SeaJS脚本。</li>
+<li>init.js——init模块，入口模块，依赖data、jquery、style三个模块。由主页面载入。</li>
+<li>data.js——data模块，纯json数据模块，由init载入。</li>
+<li>jquery.js——jquery模块，对 jQuery库的模块化封装，由init载入。</li>
+<li>style.css——CSS样式表，作为style模块由init载入。</li>
+<li>sea.js和jquery.js的代码属于库代码，就不赘述，这里只给出自己编写的文件的代码。</li>
+</ul>
 <p>html：</p>
 <pre class="prettyprint">
 &lt;!DOCTYPE HTML&gt;
@@ -508,7 +514,8 @@ define({
 </pre>
 
 <p>运行效果如下：</p>
-<p><p class="picture"><img alt="" src="/uploads/pictures/modularized-javascript-with-seajs/1.png"/></p>;</p>
+<p class="picture"><img alt="" src="/uploads/pictures/modularized-javascript-with-seajs/1.png"/></p>
+
 <h1>主要参考文献&amp;SeaJS学习资源</h1>
 <p>[1] SeaJS主页 – <a href="http://seajs.org">http://seajs.org</a></p>
 <p>[2] SeaJS的GitHub库（可获取源码） – <a href="https://github.com/seajs/seajs">https://github.com/seajs/seajs</a></p>
