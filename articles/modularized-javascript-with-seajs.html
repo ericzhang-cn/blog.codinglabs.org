@@ -99,24 +99,24 @@ var module4 = {
 
 <p>此时index.html需要引用module1.js及其所有下层依赖（注意顺序）：</p>
 <pre class="prettyprint">
-<!DOCTYPE HTML>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>TinyApp</title>
-    <script src="./jquery-min.js"></script>
-    <script src="./module4.js"></script>
-    <script src="./module2.js"></script>
-    <script src="./module3.js"></script>
-    <script src="./module1.js"></script>
-</head>
-<body>
-    <p class="content"></p>
-    <script>
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;TinyApp&lt;/title&gt;
+    &lt;script src="./jquery-min.js"&gt;&lt;/script&gt;
+    &lt;script src="./module4.js"&gt;&lt;/script&gt;
+    &lt;script src="./module2.js"&gt;&lt;/script&gt;
+    &lt;script src="./module3.js"&gt;&lt;/script&gt;
+    &lt;script src="./module1.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p class="content"&gt;&lt;/p&gt;
+    &lt;script&gt;
         $('.content').html(module1.run());
-    </script>
-</body>
-</html>
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </pre>
 
 <p>随着项目的进行，js文件会越来越多，依赖关系也会越来越复杂，使得js代码和html里的script列表往往变得难以维护。</p>
@@ -124,22 +124,22 @@ var module4 = {
 <p>下面看看如何使用SeaJS实现相同的功能。</p>
 <p>首先是index.html：</p>
 <pre class="prettyprint">
-<!DOCTYPE HTML>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>TinyApp</title>
-</head>
-<body>
-    <p class="content"></p>
-    <script src="./sea.js"></script>
-    <script>
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;TinyApp&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p class="content"&gt;&lt;/p&gt;
+    &lt;script src="./sea.js"&gt;&lt;/script&gt;
+    &lt;script&gt;
         seajs.use('./init', function(init) {
             init.initPage();
         });
-    </script>
-</body>
-</html>
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </pre>
 
 <p>可以看到html页面不再需要引入所有依赖的js文件，而只是引入一个sea.js，sea.js会处理所有依赖，加载相应的js文件，加载策略可以选择在渲染页面时一次性加载所有js文件，也可以按需加载（用到时才加载响应js），具体加载策略使用方法下文讨论。</p>
@@ -153,47 +153,53 @@ define(function(require, exports, module) = {
 
     module.exports = $.noConflict(true);
 });
-</pre>
 
-<p>//init.js
+//init.js
 define(function(require, exports, module) = {
-    var $ = require(&#39;jquery&#39;);
-    var m1 = require(&#39;module1&#39;);</p>
-<pre><code>exports.initPage = function() {
-    $(&#39;.content&#39;).html(m1.run());    
-}</code></pre>
-<p>});
-</pre></p>
-<p>//module1.js
-define(function(require, exports, module) = {
-    var $ = require(&#39;jquery&#39;);
-    var m2 = require(&#39;module2&#39;);
-    var m3 = require(&#39;module3&#39;);</p>
-<pre><code>exports.run = function() {
-    return $.merge([&#39;module1&#39;], $.merge(m2.run(), m3.run()));    
-}</code></pre>
-<p>});</p>
-<p>//module2.js
-define(function(require, exports, module) = {
-    exports.run = function() {
-        return [&#39;module2&#39;];
-    }
-});</p>
-<p>//module3.js
-define(function(require, exports, module) = {
-    var $ = require(&#39;jquery&#39;);
-    var m4 = require(&#39;module4&#39;);</p>
-<pre><code>exports.run = function() {
-    return $.merge([&#39;module3&#39;], m4.run());    
-}</code></pre>
-<p>});</p>
-<p>//module4.js
-define(function(require, exports, module) = {
-    exports.run = function() {
-        return [&#39;module4&#39;];
+    var $ = require('jquery');
+    var m1 = require('module1');
+
+    exports.initPage = function() {
+        $('.content').html(m1.run());    
     }
 });
-</pre></p>
+
+//module1.js
+define(function(require, exports, module) = {
+    var $ = require('jquery');
+    var m2 = require('module2');
+    var m3 = require('module3');
+
+    exports.run = function() {
+        return $.merge(['module1'], $.merge(m2.run(), m3.run()));    
+    }
+});
+
+//module2.js
+define(function(require, exports, module) = {
+    exports.run = function() {
+        return ['module2'];
+    }
+});
+
+//module3.js
+define(function(require, exports, module) = {
+    var $ = require('jquery');
+    var m4 = require('module4');
+
+    exports.run = function() {
+        return $.merge(['module3'], m4.run());    
+    }
+});
+
+//module4.js
+define(function(require, exports, module) = {
+    exports.run = function() {
+        return ['module4'];
+    }
+});
+</pre>
+
 <p>乍看之下代码似乎变多变复杂了，这是因为这个例子太简单，如果是大型项目，SeaJS代码的优势就会显现出来。不过从这里我们还是能窥探到一些SeaJS的特性：</p>
 <p>一是html页面不用再维护冗长的script标签列表，只要引入一个sea.js即可。</p>
 <p>二是js代码以模块进行组织，各个模块通过require引入自己依赖的模块，代码清晰明了。</p>
@@ -202,7 +208,7 @@ define(function(require, exports, module) = {
 <h2>下载及安装</h2>
 <p>要在项目中使用SeaJS，你所有需要做的准备工作就是下载sea.js然后放到你项目的某个位置。</p>
 <p>SeaJS项目目前托管在GitHub上，主页为<a href="https://github.com/seajs/seajs/。可以到其git库的build目录下（https://github.com/seajs/seajs/tree/master/build）下载sea.js（已压缩）或sea-debug.js（未压缩）。">https://github.com/seajs/seajs/。可以到其git库的build目录下（https://github.com/seajs/seajs/tree/master/build）下载sea.js（已压缩）或sea-debug.js（未压缩）。</a></p>
-<p>下载完成后放到项目的相应位置，然后在页面中通过<script>标签引入，你就可以使用SeaJS了。</p>
+<p>下载完成后放到项目的相应位置，然后在页面中通过&lt;script&gt;标签引入，你就可以使用SeaJS了。</p>
 <h2>SeaJS基本开发原则</h2>
 <p>在讨论SeaJS的具体使用前，先介绍一下SeaJS的模块化理念和开发原则。</p>
 <p>使用SeaJS开发JavaScript的基本原则就是：一切皆为模块。引入SeaJS后，编写JavaScript代码就变成了编写一个又一个模块，SeaJS中模块的概念有点类似于面向对象中的类——模块可以拥有数据和方法，数据和方法可以定义为公共或私有，公共数据和方法可以供别的模块调用。</p>
@@ -325,7 +331,7 @@ require("./module1-style.css");
 
 <p>路径中含有”?”时，如</p>
 <pre class="prettyprint">
-require(<a href="http://example/js/a.json?cb=func">http://example/js/a.json?cb=func</a>);
+require(&lt;a href="http://example/js/a.json?cb=func"&gt;http://example/js/a.json?cb=func&lt;/a&gt;);
 </pre>
 
 <p>路径以”#”结尾时，如</p>
@@ -354,17 +360,17 @@ seajs.use(['./a', './b'], function(a, b) {
 
 <p>一般seajs.use只用在页面载入入口模块，SeaJS会顺着入口模块解析所有依赖模块并将它们加载。如果入口模块只有一个，也可以通过给引入sea.js的script标签加入”data-main”属性来省略seajs.use，例如，上面TinyApp的index.html也可以改为如下写法：</p>
 <pre class="prettyprint">
-<!DOCTYPE HTML>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>TinyApp</title>
-</head>
-<body>
-    <p class="content"></p>
-    <script src="./sea.js" data-main="./init"></script>
-</body>
-</html>
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;TinyApp&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p class="content"&gt;&lt;/p&gt;
+    &lt;script src="./sea.js" data-main="./init"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </pre>
 
 <p>这种写法会令html更加简洁。</p>
@@ -459,21 +465,21 @@ return $.noConflict();
 <p>sea.js和jquery.js的代码属于库代码，就不赘述，这里只给出自己编写的文件的代码。</p>
 <p>html：</p>
 <pre class="prettyprint">
-<!DOCTYPE HTML>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<div id="content">
-    <p class="author"></p>
-    <p class="blog"><a href="#">Blog</a></p>
-</div>
+&lt;!DOCTYPE HTML&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id="content"&gt;
+    &lt;p class="author"&gt;&lt;/p&gt;
+    &lt;p class="blog"&gt;&lt;a href="#"&gt;Blog&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
 
-<script src="./sea.js" data-main="./init"></script>
-</body>
-</html>
+&lt;script src="./sea.js" data-main="./init"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </pre>
 
 <p>javascript：</p>
@@ -502,8 +508,7 @@ define({
 </pre>
 
 <p>运行效果如下：</p>
-<p class="picture"><img alt="" src="/uploads/pictures/modularized-javascript-with-seajs/1.png"/></p>
-
+<p><p class="picture"><img alt="" src="/uploads/pictures/modularized-javascript-with-seajs/1.png"/></p>;</p>
 <h1>主要参考文献&amp;SeaJS学习资源</h1>
 <p>[1] SeaJS主页 – <a href="http://seajs.org">http://seajs.org</a></p>
 <p>[2] SeaJS的GitHub库（可获取源码） – <a href="https://github.com/seajs/seajs">https://github.com/seajs/seajs</a></p>
