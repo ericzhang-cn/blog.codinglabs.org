@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Fri, 02 Aug 2013 16:10:39 +0800</lastBuildDate>
+        <lastBuildDate>Fri, 02 Aug 2013 16:15:22 +0800</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>使用SeaJS实现模块化JavaScript开发</title>
@@ -1576,14 +1576,12 @@ x_1q_1^{k-1}+x_2q_2^{k-1}+ \dots +x_kq_k^{k-1} &amp; = &amp; b_{k-1} \\
 <description>&lt;p&gt;基数计数（cardinality counting）是实际应用中一种常见的计算场景，在数据分析、网络监控及数据库优化等领域都有相关需求。精确的基数计数算法由于种种原因，在面对大数据场景时往往力不从心，因此如何在误差可控的情况下对基数进行估计就显得十分重要。目前常见的基数估计算法有Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting等。这几种算法都是基于概率统计理论所设计的概率算法，它们克服了精确基数计数算法的诸多弊端（如内存需求过大或难以合并等），同时可以通过一定手段将误差控制在所要求的范围内。&lt;/p&gt;
 &lt;p&gt;作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。&lt;/p&gt;
 &lt;p&gt;后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。&lt;/p&gt;
-&lt;p&gt;最后在第五部分会介绍一淘数据部的开源基数估计算法库&lt;a href=&quot;https://github.com/chaoslawful/ccard-lib&quot; target=&quot;_blank&quot;&gt;ccard-lib&lt;/a&gt;，这个算法库由一淘数据部工程师&lt;a href=&quot;http://weibo.com/u/1919389283&quot; target=&quot;_blank&quot;&gt;清无&lt;/a&gt;（王晓哲）、&lt;a href=&quot;http://weibo.com/u/1447857772&quot; target=&quot;_blank&quot;&gt;民瞻&lt;/a&gt;（张维）及我开发，并已用于一淘数据部多个业务线，ccard-lib实现了上述四种算法，整个库使用C写成，并附带PHP扩展模块，我会在这一部分介绍ccard-lib的实现重点及使用方法。&lt;/p&gt;
 &lt;!--more--&gt;
 文章索引：
 &lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-i.html&quot; target=&quot;_blank&quot;&gt;第一部分：基本概念&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-ii.html&quot; target=&quot;_blank&quot;&gt;第二部分：Linear Counting&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-iii.html&quot;&gt;第三部分：LogLog Counting&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;/articles/algorithms-for-cardinality-estimation-part-iv.html&quot; target=&quot;_blank&quot;&gt;第四部分：HyperLogLog Counting及Adaptive Counting&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;第五部分：ccard-lib介绍&lt;/p&gt;
 &lt;h1&gt;基数的定义&lt;/h1&gt;
 &lt;p&gt;简单来说，基数（cardinality，也译作势），是指一个集合（这里的集合允许存在重复元素，与集合论对集合严格的定义略有不同，如不做特殊说明，本文中提到的集合均允许存在重复元素）中不同元素的个数。例如看下面的集合：&lt;/p&gt;
 &lt;p&gt;\(\{1, 2, 3, 4, 5, 2, 3, 9, 7\}\)&lt;/p&gt;

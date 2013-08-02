@@ -88,7 +88,7 @@
             "author": "张洋",
             "tags": ["算法","基数估计","大数据"],
             "category": "",
-            "abstract": "作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。最后在第五部分会介绍一淘数据部的开源基数估计算法库ccard-lib，这个算法库由一淘数据部工程师清无（王晓哲）、民瞻（张维）及我开发，并已用于一淘数据部多个业务线，ccard-lib实现了上述四种算法，整个库使用C写成，并附带PHP扩展模块，我会在这一部分介绍ccard-lib的实现重点及使用方法。"
+            "abstract": "作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。"
         },
         {
             "id": "cardinality-estimation",
