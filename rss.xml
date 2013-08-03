@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Fri, 02 Aug 2013 16:17:53 +0800</lastBuildDate>
+        <lastBuildDate>Sat, 03 Aug 2013 14:19:37 +0800</lastBuildDate>
         <language>zh-cn</language>
         <item>
 <title>使用SeaJS实现模块化JavaScript开发</title>
@@ -457,7 +457,7 @@ define(function(require, exports, module) {
 //data.js
 define({
     author: 'ZhangYang',
-    blog: 'http://leoo2sk.cnblogs.com'
+    blog: 'http://blog.codinglabs.org'
 });
 &lt;/pre&gt;
 
