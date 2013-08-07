@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title><%= title %></title>
+        <link><%= link %></link>
+        <description><%= desc %></description>
+        <lastBuildDate><%= lastBuildDate %></lastBuildDate>
+        <language><%= lang %></language>
+        <% items.forEach(function (item) { %>
+        <item> 
+            <title><%= item.title %></title> 
+            <link><%= item.link %></link> 
+            <guid><%= item.guid %></guid> 
+            <author><%= item.author %></author> 
+            <pubDate><%= item.pubDate %></pubDate> 
+            <description><%= item.description %></description> 
+        </item> 
+        <% }) %>
+    </channel>
+</rss>
