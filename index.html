@@ -49,7 +49,7 @@
             </ul>
             <div style="clear:both;"></div>
         </div>
-        <div id="aboutme"><p>又一个程序猿（programmer &lt;span style=&quot;color:#999;&quot;&gt;/'progræmɚ/&lt;/span&gt;），&lt;a href=&quot;/pages/about-me.html&quot;&gt;更多...&lt;/a&gt;</p></div>
+        <div id="aboutme"><p>又一个程序猿（programmer <span style="color:#999;">/'progræmɚ/</span>），<a href="/pages/about-me.html">更多...</a></p></div>
         <div id="tag-cloud">
             
             <a href="/tag.html#Javascript">Javascript<span class="count">×2</span></a>
@@ -228,7 +228,7 @@
             
             <div class="article-block">
                 <p class="title"><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p>
-                <p class="abstract">&lt;摘要&gt;: 算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如汉诺塔问题的时间复杂度递推形式为\\(T(n)=2T(n-1)+1 \\quad (n \\geq 1)\\)，可以解出封闭形式为\\(T(n)=2^n-1\\)（设初始状态\\(T(0)=0\\)）。因为递推式求解的重要性，许多算法书籍对其有专门介绍。Donald Knuth在Concrete Mathematics一书中多个章节都涉及递推式求解方法。算法导论也在第四章中专门论述的这个主题。在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。本文首先会给出两个例子：如何使用纯代数方法求解斐波那契数列和汉诺塔递推式；然后会借助线性代数论述这种方法背后的数学意义，说明线性递推式与线性方程的内在联系以及这种解法的数学原理；最后将例子中的方法推广到一般情况。</p>
+                <p class="abstract">&lt;摘要&gt;: 算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如汉诺塔问题的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。因为递推式求解的重要性，许多算法书籍对其有专门介绍。Donald Knuth在Concrete Mathematics一书中多个章节都涉及递推式求解方法。算法导论也在第四章中专门论述的这个主题。在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。本文首先会给出两个例子：如何使用纯代数方法求解斐波那契数列和汉诺塔递推式；然后会借助线性代数论述这种方法背后的数学意义，说明线性递推式与线性方程的内在联系以及这种解法的数学原理；最后将例子中的方法推广到一般情况。</p>
                 <p class="meta">作者 张洋 | 发布于 Sun Mar 17 2013 08:00:00 GMT+0800 (CST) | Tags 
                     
                     <a class="tag" href="/tag.html#算法">算法</a>
@@ -244,7 +244,7 @@
             
             <div class="article-block">
                 <p class="title"><a href="/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html">为什么算法渐进复杂度中对数的底数总为2</a></p>
-                <p class="abstract">&lt;摘要&gt;: 各种算法时，经常看到\\(O(\\log_2n)\\)或\\(O(n\\log_2n)\\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\\(O(n\\log_3n)\\)这样的渐进复杂度？本文解释这个问题。</p>
+                <p class="abstract">&lt;摘要&gt;: 各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。</p>
                 <p class="meta">作者 张洋 | 发布于 Tue Jan 29 2013 08:00:00 GMT+0800 (CST) | Tags 
                     
                     <a class="tag" href="/tag.html#算法">算法</a>
@@ -256,7 +256,7 @@
             
             <div class="article-block">
                 <p class="title"><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p>
-                <p class="abstract">&lt;摘要&gt;: 在前一篇文章中，我们了解了LogLog Counting。LLC算法的空间复杂度为\\(O(log_2(log_2(N_{max})))\\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\\(\\rho_{max}\\)为0。由于LLC的估计值依赖于各桶\\(\\rho_{max}\\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。</p>
+                <p class="abstract">&lt;摘要&gt;: 在前一篇文章中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。</p>
                 <p class="meta">作者 张洋 | 发布于 Wed Jan 09 2013 08:00:00 GMT+0800 (CST) | Tags 
                     
                     <a class="tag" href="/tag.html#算法">算法</a>
@@ -274,7 +274,7 @@
             
             <div class="article-block">
                 <p class="title"><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p>
-                <p class="abstract">&lt;摘要&gt;: 上一篇文章介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\\(O(N_{max})\\)。而本文要介绍的LogLog Counting却只有\\(O(log_2(log_2(N_{max})))\\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。</p>
+                <p class="abstract">&lt;摘要&gt;: 上一篇文章介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。</p>
                 <p class="meta">作者 张洋 | 发布于 Thu Jan 03 2013 08:00:00 GMT+0800 (CST) | Tags 
                     
                     <a class="tag" href="/tag.html#算法">算法</a>

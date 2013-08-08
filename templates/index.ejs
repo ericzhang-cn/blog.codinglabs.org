@@ -23,7 +23,7 @@
             </ul>
             <div style="clear:both;"></div>
         </div>
-        <div id="aboutme"><p><%= aboutMe %></p></div>
+        <div id="aboutme"><p><%- aboutMe %></p></div>
         <div id="tag-cloud">
             <% tags.forEach(function (tag) { %>
             <a href="/tag.html#<%= tag.label %>"><%= tag.label %><span class="count">×<%= tag.count %></span></a>
