@@ -18,6 +18,7 @@
         </div>
         <div id="article-tags">
         <% article.tags.forEach(function (tag) { %>
+        <a class="tag" href="/tag.html#<%= tag %>"><%= tag %></a>
         <% }); %>
         </div>
         <div id="article-content">

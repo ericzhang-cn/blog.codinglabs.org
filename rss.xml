@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Thu, 08 Aug 2013 16:00:02 +0800</lastBuildDate>
+        <lastBuildDate>Fri, 09 Aug 2013 15:07:48 +0800</lastBuildDate>
         <language>zh-cn</language>
         
         <item> 
@@ -12,7 +12,7 @@
             <link>http://blog.codinglabs.org/articles/modularized-javascript-with-seajs.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/modularized-javascript-with-seajs.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Fri, 02 Aug 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Fri, 02 Aug 2013 00:00:00 +0800</pubDate> 
             <description>SeaJS是一个遵循CommonJS规范的JavaScript模块加载框架，可以实现JavaScript的模块化开发及加载机制。与jQuery等JavaScript框架不同，SeaJS不会扩展封装语言特性，而只是实现JavaScript的模块化及按模块加载。SeaJS的主要目的是令JavaScript开发模块化并可以轻松愉悦进行加载，将前端工程师从繁重的JavaScript文件及对象依赖处理中解放出来，可以专注于代码本身的逻辑。SeaJS可以与jQuery这类框架完美集成。使用SeaJS可以提高JavaScript代码的可读性和清晰度，解决目前JavaScript编程中普遍存在的依赖关系混乱和代码纠缠等问题，方便代码的编写和维护。</description> 
         </item> 
         
@@ -21,7 +21,7 @@
             <link>http://blog.codinglabs.org/articles/pca-tutorial.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/pca-tutorial.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Sat, 22 Jun 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Sat, 22 Jun 2013 00:00:00 +0800</pubDate> 
             <description>PCA（Principal Component Analysis）是一种常用的数据分析方法。PCA通过线性变换将原始数据变换为一组各维度线性无关的表示，可用于提取数据的主要特征分量，常用于高维数据的降维。网上关于PCA的文章有很多，但是大多数只描述了PCA的分析过程，而没有讲述其中的原理。这篇文章的目的是介绍PCA的基本数学原理，帮助读者了解PCA的工作机制是什么。当然我并不打算把文章写成纯数学文章，而是希望用直观和易懂的方式叙述PCA的数学原理，所以整个文章不会引入严格的数学推导。希望读者在看完这篇文章后能更好的明白PCA的工作原理。</description> 
         </item> 
         
@@ -30,7 +30,7 @@
             <link>http://blog.codinglabs.org/articles/basic-statistics-calculate.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/basic-statistics-calculate.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Wed, 05 Jun 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Wed, 05 Jun 2013 00:00:00 +0800</pubDate> 
             <description>这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。</description> 
         </item> 
         
@@ -39,7 +39,7 @@
             <link>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/time-series-analysis-foundation.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Mon, 27 May 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Mon, 27 May 2013 00:00:00 +0800</pubDate> 
             <description>时间序列是现实生活中经常会碰到的数据形式。例如北京市连续一年的日平均气温、某股票的股票价格、淘宝上某件商品的日销售件数等等。时间序列分析的的目的是挖掘时间序列中隐含的信息与模式，并借此对此序列数据进行评估以及对系列的后续走势进行预测。由于工作需要，我最近简单学习了时间序列分析相关的基础理论和应用方法，这篇文章可以看做是我的学习笔记。文章主要内容会首先描述时间序列分析的基本概念和相关的统计学基础理论，然后着重讲述十分经典和常用的ARIMA模型，在这之后会讲述季节ARIMA模型。由于打算以学习笔记的形式写这篇文章，所以我不会一下子写完整篇文章才发布，而是持续更新这篇文章，写的过程中也可能会对前面的内容进行修订。文章中会穿插许多实例（兼有模拟数据和数据分析），分析过程中将使用R为分析工具。</description> 
         </item> 
         
@@ -48,7 +48,7 @@
             <link>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/linear-algebra-for-recursion.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Sun, 17 Mar 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Sun, 17 Mar 2013 00:00:00 +0800</pubDate> 
             <description>算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如汉诺塔问题的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。因为递推式求解的重要性，许多算法书籍对其有专门介绍。Donald Knuth在Concrete Mathematics一书中多个章节都涉及递推式求解方法。算法导论也在第四章中专门论述的这个主题。在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。本文首先会给出两个例子：如何使用纯代数方法求解斐波那契数列和汉诺塔递推式；然后会借助线性代数论述这种方法背后的数学意义，说明线性递推式与线性方程的内在联系以及这种解法的数学原理；最后将例子中的方法推广到一般情况。</description> 
         </item> 
         
@@ -57,7 +57,7 @@
             <link>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Tue, 29 Jan 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Tue, 29 Jan 2013 00:00:00 +0800</pubDate> 
             <description>各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。</description> 
         </item> 
         
@@ -66,7 +66,7 @@
             <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iv.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Wed, 09 Jan 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Wed, 09 Jan 2013 00:00:00 +0800</pubDate> 
             <description>在前一篇文章中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。</description> 
         </item> 
         
@@ -75,7 +75,7 @@
             <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-iii.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Thu, 03 Jan 2013 08:00:00 +0800</pubDate> 
+            <pubDate>Thu, 03 Jan 2013 00:00:00 +0800</pubDate> 
             <description>上一篇文章介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。</description> 
         </item> 
         
@@ -84,7 +84,7 @@
             <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-ii.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Mon, 31 Dec 2012 08:00:00 +0800</pubDate> 
+            <pubDate>Mon, 31 Dec 2012 00:00:00 +0800</pubDate> 
             <description>在上一篇文章中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。</description> 
         </item> 
         
@@ -93,7 +93,7 @@
             <link>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html?utm_source=rss&amp;utm_medium=rss</link> 
             <guid>http://blog.codinglabs.org/articles/algorithms-for-cardinality-estimation-part-i.html</guid> 
             <author>ericzhang.buaa@gmail.com 张洋</author> 
-            <pubDate>Sun, 30 Dec 2012 08:00:00 +0800</pubDate> 
+            <pubDate>Sun, 30 Dec 2012 00:00:00 +0800</pubDate> 
             <description>作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。</description> 
         </item> 
         
