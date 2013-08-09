@@ -3,8 +3,8 @@
   target: _self
 
 - label: 订阅
-  href: http://feed.feedsky.com/EricZhangsTechBlog
-  target: _blank
+  href: /rss.xml
+  target: _self
 
 - label: 微博
   href: http://weibo.com/ericzhangbuaa
