@@ -1,10 +1,4 @@
 <% include inc/header %>
-<div id="header">
-    <div id="header-inner">
-        <div id="title"><a href="/"><small>{</small> {%= TITLE %} <small>}</small></a></div>
-        <div id="subtitle">/&gt; {%= SUBTITLE %}</div>
-    </div>
-</div>
 <div id="main">
     <div id="main-inner">
         <div id="topnav">
@@ -12,65 +6,24 @@
                 <li><a href="/">首页</a></li>
                 <li class="sep"> | </li>
                 <li><a href="/tag.html">标签</a></li>
-                <li class="sep"> | </li>
-                <li><a href="/pages/about-me.html">关于我</a></li>
-                <li class="sep"> | </li>
-                <li><a href="http://feed.feedsky.com/EricZhangsTechBlog">+订阅</a></li>
-                <li class="sep"> | </li>
-                <li><a href="http://weibo.com/ericzhangbuaa" target="_blank">@微博</a></li>
-                <li class="sep"> | </li>
-                <li><a href="https://github.com/ericzhang-cn" target="_blank">@github</a></li>
+                <% include inc/navbar %>
             </ul>
             <div style="clear:both;"></div>
         </div>
         <div id="article-title">
-            <a href="{%= ARTICLE_LINK %}">{%= ARTICLE_TITLE %}</a>
+            <a href="<%= article.link %>"><%= article.title %></a>
         </div>
         <div id="article-meta">
-            作者 {%= ARTICLE_AUTHOR %} | 发布于 {%= ARTICLE_POSTED_ON %}
+            作者 <%= article.author %> | 发布于 <%= article.postedOn %>
         </div>
         <div id="article-tags">
-            {%= ARTICLE_TAGS %}
+        <% article.tags.forEach(function (tag) { %>
+        <% }); %>
         </div>
         <div id="article-content">
-            {%= ARTICLE_CONTENT %}
+            <%- article.content %>
         </div>
-
-<!-- UJian Button BEGIN -->
-<div class="ujian-hook"></div>
-<script type="text/javascript">var ujian_config = {lkrc:0};</script>
-<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
-<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
-<!-- UJian Button END -->
-<!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-<span class="jiathis_txt">分享到：</span>
-<a class="jiathis_button_qzone">QQ空间</a>
-<a class="jiathis_button_tsina">新浪微博</a>
-<a class="jiathis_button_tqq">腾讯微博</a>
-<a class="jiathis_button_renren">人人网</a>
-<a href="http://www.jiathis.com/share?uid=894207" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
-<a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript">
-var jiathis_config = {data_track_clickback:'true'};
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=894207" charset="utf-8"></script>
-<!-- JiaThis Button END -->
-<!-- Duoshuo Comment BEGIN -->
-<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"coding-labs"};
-(function() {
-var ds = document.createElement('script');
-ds.type = 'text/javascript';ds.async = true;
-ds.src = 'http://static.duoshuo.com/embed.js';
-ds.charset = 'UTF-8';
-(document.getElementsByTagName('head')[0] 
-|| document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
-</script>
-<!-- Duoshuo Comment END -->
+        <% include inc/article_footer_plugin %>
     </div>
 </div>
-<% include inc/header %>
+<% include inc/footer %>

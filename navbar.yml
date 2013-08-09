@@ -1,0 +1,15 @@
+- label: 关于我
+  href: /pages/about-me.html
+  target: _self
+
+- label: 订阅
+  href: http://feed.feedsky.com/EricZhangsTechBlog
+  target: _blank
+
+- label: 微博
+  href: http://weibo.com/ericzhangbuaa
+  target: _blank
+
+- label: github
+  href: https://github.com/ericzhang-cn
+  target: _blank

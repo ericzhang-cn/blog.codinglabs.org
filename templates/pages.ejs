@@ -1,10 +1,4 @@
 <% include inc/header %>
-<div id="header">
-    <div id="header-inner">
-        <div id="title"><a href="/"><small>{</small> {%= TITLE %} <small>}</small></a></div>
-        <div id="subtitle">/&gt; {%= SUBTITLE %}</div>
-    </div>
-</div>
 <div id="main">
     <div id="main-inner">
         <div id="topnav">
@@ -12,19 +6,12 @@
                 <li><a href="/">首页</a></li>
                 <li class="sep"> | </li>
                 <li><a href="/tag.html">标签</a></li>
-                <li class="sep"> | </li>
-                <li><a href="/pages/about-me.html">关于我</a></li>
-                <li class="sep"> | </li>
-                <li><a href="http://feed.feedsky.com/EricZhangsTechBlog">+订阅</a></li>
-                <li class="sep"> | </li>
-                <li><a href="http://weibo.com/ericzhangbuaa" target="_blank">@微博</a></li>
-                <li class="sep"> | </li>
-                <li><a href="https://github.com/ericzhang-cn" target="_blank">@github</a></li>
+                <% include inc/navbar %>
             </ul>
             <div style="clear:both;"></div>
         </div>
-        <h1>{%= PAGE_TITLE %}</h1>
-        <div id="page-content">{%= PAGE_CONTENT %}</div>
+        <h1><%= page.title %></h1>
+        <div id="page-content"><%- page.content %></div>
     </div>
 </div>
-<% include inc/header %>
+<% include inc/footer %>

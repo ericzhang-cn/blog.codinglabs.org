@@ -10,54 +10,517 @@
         <title>CodingLabs - keep coding, keep foolish</title>
         <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
         <link rel="stylesheet" href="/assets/vendor/prettify.css"/>
-        <link rel="stylesheet" href="/assets/css/simplog.css"/>
         <link rel="shortcut icon" href="/fav.ico"/>
         <script type="text/javascript" src="/assets/vendor/prettify.js"></script>
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        <link rel="stylesheet" href="/assets/css/simplog.css"/>
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-            ga('create', 'UA-35712773-3', 'codinglabs.org');
-            ga('send', 'pageview');
-        </script>
+    ga('create', 'UA-35712773-3', 'codinglabs.org');
+    ga('send', 'pageview');
+</script>
+
     </head>
     <body onload="prettyPrint()">
-        <div id="header">
-            <div id="header-inner">
-                <div id="title"><a href="/"><small>{</small> CodingLabs <small>}</small></a></div>
-                <div id="subtitle">/&gt; keep coding, keep foolish</div>
-            </div>
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">CodingLabs</a></div>
+            <div id="subtitle">keep coding, keep foolish</div>
         </div>
-        <div id="main">
-            <div id="main-inner">
-                <div id="topnav">
-                    <ul>
-                        <li><a href="/">首页</a></li>
-                        <li class="sep"> | </li>
-                        <li><a href="/tag.html">标签</a></li>
-                        <li class="sep"> | </li>
-                        <li><a href="/pages/about-me.html">关于我</a></li>
-                        <li class="sep"> | </li>
-                        <li><a href="http://feed.feedsky.com/EricZhangsTechBlog">+订阅</a></li>
-                        <li class="sep"> | </li>
-                        <li><a href="http://weibo.com/ericzhangbuaa" target="_blank">@微博</a></li>
-                        <li class="sep"> | </li>
-                        <li><a href="https://github.com/ericzhang-cn" target="_blank">@github</a></li>
-                    </ul>
-                    <div style="clear:both;"></div>
-                </div>
-                <div id="tag-cloud"><a href="#Javascript">Javascript <span class="count">×2</span></a><a href="#SeaJS">SeaJS <span class="count">×1</span></a><a href="#机器学习">机器学习 <span class="count">×1</span></a><a href="#线性代数">线性代数 <span class="count">×2</span></a><a href="#PCA">PCA <span class="count">×1</span></a><a href="#概率">概率 <span class="count">×3</span></a><a href="#统计">统计 <span class="count">×1</span></a><a href="#数学">数学 <span class="count">×4</span></a><a href="#数据挖掘">数据挖掘 <span class="count">×1</span></a><a href="#数据分析">数据分析 <span class="count">×1</span></a><a href="#时间序列">时间序列 <span class="count">×1</span></a><a href="#ARIMA">ARIMA <span class="count">×1</span></a><a href="#R">R <span class="count">×1</span></a><a href="#算法">算法 <span class="count">×7</span></a><a href="#递推式">递推式 <span class="count">×1</span></a><a href="#时间复杂度">时间复杂度 <span class="count">×1</span></a><a href="#基数估计">基数估计 <span class="count">×5</span></a><a href="#大数据">大数据 <span class="count">×4</span></a><a href="#HyperLogLogCounting">HyperLogLogCounting <span class="count">×1</span></a><a href="#AdaptiveCounting">AdaptiveCounting <span class="count">×1</span></a><a href="#LogLogCounting">LogLogCounting <span class="count">×1</span></a><a href="#LinearCounting">LinearCounting <span class="count">×1</span></a><a href="#翻译">翻译 <span class="count">×1</span></a><a href="#数理统计">数理统计 <span class="count">×1</span></a><a href="#CPU">CPU <span class="count">×1</span></a><a href="#浮点数">浮点数 <span class="count">×1</span></a><a href="#汇编">汇编 <span class="count">×1</span></a><a href="#x86">x86 <span class="count">×1</span></a><a href="#网站统计">网站统计 <span class="count">×1</span></a><a href="#埋点">埋点 <span class="count">×1</span></a><a href="#Web">Web <span class="count">×1</span></a><a href="#Openresty">Openresty <span class="count">×2</span></a><a href="#素数">素数 <span class="count">×1</span></a><a href="#Google">Google <span class="count">×1</span></a><a href="#PageRank">PageRank <span class="count">×1</span></a><a href="#搜索引擎">搜索引擎 <span class="count">×1</span></a><a href="#PHP">PHP <span class="count">×5</span></a><a href="#Opcode">Opcode <span class="count">×1</span></a><a href="#ZendEngine">ZendEngine <span class="count">×3</span></a><a href="#哈希碰撞">哈希碰撞 <span class="count">×1</span></a><a href="#数据结构">数据结构 <span class="count">×1</span></a><a href="#闭包">闭包 <span class="count">×1</span></a><a href="#Scheme">Scheme <span class="count">×1</span></a><a href="#线程安全">线程安全 <span class="count">×1</span></a><a href="#Deamon">Deamon <span class="count">×1</span></a><a href="#系统扩展开发">系统扩展开发 <span class="count">×2</span></a><a href="#Nginx">Nginx <span class="count">×2</span></a><a href="#Memcache">Memcache <span class="count">×1</span></a><a href="#缓存">缓存 <span class="count">×1</span></a><a href="#高性能">高性能 <span class="count">×1</span></a><a href="#MySQL">MySQL <span class="count">×1</span></a><a href="#索引">索引 <span class="count">×1</span></a><a href="#B树">B树 <span class="count">×1</span></a><a href="#优化">优化 <span class="count">×1</span></a><a href="#分布式">分布式 <span class="count">×1</span></a><a href="#一致性哈希">一致性哈希 <span class="count">×1</span></a><div style="clear:both;"></div></div>
-                <div id="tag-index"><h1><a name="Javascript">Javascript</a></h1><p><a href="/articles/modularized-javascript-with-seajs.html">使用SeaJS实现模块化JavaScript开发</a></p><p><a href="/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html">闭包漫谈（从抽象代数及函数式编程角度）</a></p><h1><a name="SeaJS">SeaJS</a></h1><p><a href="/articles/modularized-javascript-with-seajs.html">使用SeaJS实现模块化JavaScript开发</a></p><h1><a name="机器学习">机器学习</a></h1><p><a href="/articles/pca-tutorial.html">PCA的数学原理</a></p><h1><a name="线性代数">线性代数</a></h1><p><a href="/articles/pca-tutorial.html">PCA的数学原理</a></p><p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p><h1><a name="PCA">PCA</a></h1><p><a href="/articles/pca-tutorial.html">PCA的数学原理</a></p><h1><a name="概率">概率</a></h1><p><a href="/articles/basic-statistics-calculate.html">期望、方差、协方差及相关系数的基本运算</a></p><p><a href="/articles/basis-of-probability-and-statistics.html">从抛硬币试验看概率论的基本内容及统计方法</a></p><p><a href="/articles/prime-test.html">聊聊如何检测素数</a></p><h1><a name="统计">统计</a></h1><p><a href="/articles/basic-statistics-calculate.html">期望、方差、协方差及相关系数的基本运算</a></p><h1><a name="数学">数学</a></h1><p><a href="/articles/basic-statistics-calculate.html">期望、方差、协方差及相关系数的基本运算</a></p><p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p><p><a href="/articles/basis-of-probability-and-statistics.html">从抛硬币试验看概率论的基本内容及统计方法</a></p><p><a href="/articles/prime-test.html">聊聊如何检测素数</a></p><h1><a name="数据挖掘">数据挖掘</a></h1><p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p><h1><a name="数据分析">数据分析</a></h1><p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p><h1><a name="时间序列">时间序列</a></h1><p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p><h1><a name="ARIMA">ARIMA</a></h1><p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p><h1><a name="R">R</a></h1><p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p><h1><a name="算法">算法</a></h1><p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p><p><a href="/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html">为什么算法渐进复杂度中对数的底数总为2</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-i.html">解读Cardinality Estimation算法（第一部分：基本概念）</a></p><p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p><h1><a name="递推式">递推式</a></h1><p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p><h1><a name="时间复杂度">时间复杂度</a></h1><p><a href="/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html">为什么算法渐进复杂度中对数的底数总为2</a></p><h1><a name="基数估计">基数估计</a></h1><p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-i.html">解读Cardinality Estimation算法（第一部分：基本概念）</a></p><p><a href="/articles/cardinality-estimation.html">基数估计算法概览</a></p><h1><a name="大数据">大数据</a></h1><p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p><p><a href="/articles/algorithms-for-cardinality-estimation-part-i.html">解读Cardinality Estimation算法（第一部分：基本概念）</a></p><h1><a name="HyperLogLogCounting">HyperLogLogCounting</a></h1><p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p><h1><a name="AdaptiveCounting">AdaptiveCounting</a></h1><p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p><h1><a name="LogLogCounting">LogLogCounting</a></h1><p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p><h1><a name="LinearCounting">LinearCounting</a></h1><p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p><h1><a name="翻译">翻译</a></h1><p><a href="/articles/cardinality-estimation.html">基数估计算法概览</a></p><h1><a name="数理统计">数理统计</a></h1><p><a href="/articles/basis-of-probability-and-statistics.html">从抛硬币试验看概率论的基本内容及统计方法</a></p><h1><a name="CPU">CPU</a></h1><p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p><h1><a name="浮点数">浮点数</a></h1><p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p><h1><a name="汇编">汇编</a></h1><p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p><h1><a name="x86">x86</a></h1><p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p><h1><a name="网站统计">网站统计</a></h1><p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p><h1><a name="埋点">埋点</a></h1><p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p><h1><a name="Web">Web</a></h1><p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p><h1><a name="Openresty">Openresty</a></h1><p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p><p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p><h1><a name="素数">素数</a></h1><p><a href="/articles/prime-test.html">聊聊如何检测素数</a></p><h1><a name="Google">Google</a></h1><p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p><h1><a name="PageRank">PageRank</a></h1><p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p><h1><a name="搜索引擎">搜索引擎</a></h1><p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p><h1><a name="PHP">PHP</a></h1><p><a href="/articles/opdumper-and-web-opcode-dumper.html">发布一个查看PHP opcode的扩展模块及Web服务</a></p><p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p><p><a href="/articles/zend-thread-safety.html">深入研究PHP及Zend Engine的线程安全模型</a></p><p><a href="/articles/write-daemon-with-php.html">如何使用PHP编写daemon process</a></p><p><a href="/articles/php-extension-dev-guide.html">PHP Extension开发基础</a></p><h1><a name="Opcode">Opcode</a></h1><p><a href="/articles/opdumper-and-web-opcode-dumper.html">发布一个查看PHP opcode的扩展模块及Web服务</a></p><h1><a name="ZendEngine">ZendEngine</a></h1><p><a href="/articles/opdumper-and-web-opcode-dumper.html">发布一个查看PHP opcode的扩展模块及Web服务</a></p><p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p><p><a href="/articles/zend-thread-safety.html">深入研究PHP及Zend Engine的线程安全模型</a></p><h1><a name="哈希碰撞">哈希碰撞</a></h1><p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p><h1><a name="数据结构">数据结构</a></h1><p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p><h1><a name="闭包">闭包</a></h1><p><a href="/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html">闭包漫谈（从抽象代数及函数式编程角度）</a></p><h1><a name="Scheme">Scheme</a></h1><p><a href="/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html">闭包漫谈（从抽象代数及函数式编程角度）</a></p><h1><a name="线程安全">线程安全</a></h1><p><a href="/articles/zend-thread-safety.html">深入研究PHP及Zend Engine的线程安全模型</a></p><h1><a name="Deamon">Deamon</a></h1><p><a href="/articles/write-daemon-with-php.html">如何使用PHP编写daemon process</a></p><h1><a name="系统扩展开发">系统扩展开发</a></h1><p><a href="/articles/php-extension-dev-guide.html">PHP Extension开发基础</a></p><p><a href="/articles/intro-of-nginx-module-development.html">Nginx模块开发入门</a></p><h1><a name="Nginx">Nginx</a></h1><p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p><p><a href="/articles/intro-of-nginx-module-development.html">Nginx模块开发入门</a></p><h1><a name="Memcache">Memcache</a></h1><p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p><h1><a name="缓存">缓存</a></h1><p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p><h1><a name="高性能">高性能</a></h1><p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p><h1><a name="MySQL">MySQL</a></h1><p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p><h1><a name="索引">索引</a></h1><p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p><h1><a name="B树">B树</a></h1><p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p><h1><a name="优化">优化</a></h1><p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p><h1><a name="分布式">分布式</a></h1><p><a href="/articles/consistent-hashing.html">一致性哈希算法及其在分布式系统中的应用</a></p><h1><a name="一致性哈希">一致性哈希</a></h1><p><a href="/articles/consistent-hashing.html">一致性哈希算法及其在分布式系统中的应用</a></p></div>
-            </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://feed.feedsky.com/EricZhangsTechBlog" target="_blank">订阅</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://weibo.com/ericzhangbuaa" target="_blank">微博</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn" target="_blank">github</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
         </div>
+        <div id="tag-cloud">
+        
+        <a href="/tag.html#Javascript">Javascript<span class="count">×2</span></a>
+        
+        <a href="/tag.html#SeaJS">SeaJS<span class="count">×1</span></a>
+        
+        <a href="/tag.html#机器学习">机器学习<span class="count">×1</span></a>
+        
+        <a href="/tag.html#线性代数">线性代数<span class="count">×2</span></a>
+        
+        <a href="/tag.html#PCA">PCA<span class="count">×1</span></a>
+        
+        <a href="/tag.html#概率">概率<span class="count">×3</span></a>
+        
+        <a href="/tag.html#统计">统计<span class="count">×1</span></a>
+        
+        <a href="/tag.html#数学">数学<span class="count">×4</span></a>
+        
+        <a href="/tag.html#数据挖掘">数据挖掘<span class="count">×1</span></a>
+        
+        <a href="/tag.html#数据分析">数据分析<span class="count">×1</span></a>
+        
+        <a href="/tag.html#时间序列">时间序列<span class="count">×1</span></a>
+        
+        <a href="/tag.html#ARIMA">ARIMA<span class="count">×1</span></a>
+        
+        <a href="/tag.html#R">R<span class="count">×1</span></a>
+        
+        <a href="/tag.html#算法">算法<span class="count">×7</span></a>
+        
+        <a href="/tag.html#递推式">递推式<span class="count">×1</span></a>
+        
+        <a href="/tag.html#时间复杂度">时间复杂度<span class="count">×1</span></a>
+        
+        <a href="/tag.html#基数估计">基数估计<span class="count">×5</span></a>
+        
+        <a href="/tag.html#大数据">大数据<span class="count">×4</span></a>
+        
+        <a href="/tag.html#HyperLogLogCounting">HyperLogLogCounting<span class="count">×1</span></a>
+        
+        <a href="/tag.html#AdaptiveCounting">AdaptiveCounting<span class="count">×1</span></a>
+        
+        <a href="/tag.html#LogLogCounting">LogLogCounting<span class="count">×1</span></a>
+        
+        <a href="/tag.html#LinearCounting">LinearCounting<span class="count">×1</span></a>
+        
+        <a href="/tag.html#翻译">翻译<span class="count">×1</span></a>
+        
+        <a href="/tag.html#数理统计">数理统计<span class="count">×1</span></a>
+        
+        <a href="/tag.html#CPU">CPU<span class="count">×1</span></a>
+        
+        <a href="/tag.html#浮点数">浮点数<span class="count">×1</span></a>
+        
+        <a href="/tag.html#汇编">汇编<span class="count">×1</span></a>
+        
+        <a href="/tag.html#x86">x86<span class="count">×1</span></a>
+        
+        <a href="/tag.html#网站统计">网站统计<span class="count">×1</span></a>
+        
+        <a href="/tag.html#埋点">埋点<span class="count">×1</span></a>
+        
+        <a href="/tag.html#Web">Web<span class="count">×1</span></a>
+        
+        <a href="/tag.html#Openresty">Openresty<span class="count">×2</span></a>
+        
+        <a href="/tag.html#素数">素数<span class="count">×1</span></a>
+        
+        <a href="/tag.html#Google">Google<span class="count">×1</span></a>
+        
+        <a href="/tag.html#PageRank">PageRank<span class="count">×1</span></a>
+        
+        <a href="/tag.html#搜索引擎">搜索引擎<span class="count">×1</span></a>
+        
+        <a href="/tag.html#PHP">PHP<span class="count">×5</span></a>
+        
+        <a href="/tag.html#Opcode">Opcode<span class="count">×1</span></a>
+        
+        <a href="/tag.html#ZendEngine">ZendEngine<span class="count">×3</span></a>
+        
+        <a href="/tag.html#哈希碰撞">哈希碰撞<span class="count">×1</span></a>
+        
+        <a href="/tag.html#数据结构">数据结构<span class="count">×1</span></a>
+        
+        <a href="/tag.html#闭包">闭包<span class="count">×1</span></a>
+        
+        <a href="/tag.html#Scheme">Scheme<span class="count">×1</span></a>
+        
+        <a href="/tag.html#线程安全">线程安全<span class="count">×1</span></a>
+        
+        <a href="/tag.html#Deamon">Deamon<span class="count">×1</span></a>
+        
+        <a href="/tag.html#系统扩展开发">系统扩展开发<span class="count">×2</span></a>
+        
+        <a href="/tag.html#Nginx">Nginx<span class="count">×2</span></a>
+        
+        <a href="/tag.html#Memcache">Memcache<span class="count">×1</span></a>
+        
+        <a href="/tag.html#缓存">缓存<span class="count">×1</span></a>
+        
+        <a href="/tag.html#高性能">高性能<span class="count">×1</span></a>
+        
+        <a href="/tag.html#MySQL">MySQL<span class="count">×1</span></a>
+        
+        <a href="/tag.html#索引">索引<span class="count">×1</span></a>
+        
+        <a href="/tag.html#B树">B树<span class="count">×1</span></a>
+        
+        <a href="/tag.html#优化">优化<span class="count">×1</span></a>
+        
+        <a href="/tag.html#分布式">分布式<span class="count">×1</span></a>
+        
+        <a href="/tag.html#一致性哈希">一致性哈希<span class="count">×1</span></a>
+        
+        <div style="clear:both;"></div></div>
+        <div id="tag-index">
+        
+            <h1><a name="Javascript">Javascript</a></h1>
+            
+            <p><a href="/articles/modularized-javascript-with-seajs.html">使用SeaJS实现模块化JavaScript开发</a></p>
+            
+            <p><a href="/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html">闭包漫谈（从抽象代数及函数式编程角度）</a></p>
+            
+        
+            <h1><a name="SeaJS">SeaJS</a></h1>
+            
+            <p><a href="/articles/modularized-javascript-with-seajs.html">使用SeaJS实现模块化JavaScript开发</a></p>
+            
+        
+            <h1><a name="机器学习">机器学习</a></h1>
+            
+            <p><a href="/articles/pca-tutorial.html">PCA的数学原理</a></p>
+            
+        
+            <h1><a name="线性代数">线性代数</a></h1>
+            
+            <p><a href="/articles/pca-tutorial.html">PCA的数学原理</a></p>
+            
+            <p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p>
+            
+        
+            <h1><a name="PCA">PCA</a></h1>
+            
+            <p><a href="/articles/pca-tutorial.html">PCA的数学原理</a></p>
+            
+        
+            <h1><a name="概率">概率</a></h1>
+            
+            <p><a href="/articles/basic-statistics-calculate.html">期望、方差、协方差及相关系数的基本运算</a></p>
+            
+            <p><a href="/articles/basis-of-probability-and-statistics.html">从抛硬币试验看概率论的基本内容及统计方法</a></p>
+            
+            <p><a href="/articles/prime-test.html">聊聊如何检测素数</a></p>
+            
+        
+            <h1><a name="统计">统计</a></h1>
+            
+            <p><a href="/articles/basic-statistics-calculate.html">期望、方差、协方差及相关系数的基本运算</a></p>
+            
+        
+            <h1><a name="数学">数学</a></h1>
+            
+            <p><a href="/articles/basic-statistics-calculate.html">期望、方差、协方差及相关系数的基本运算</a></p>
+            
+            <p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p>
+            
+            <p><a href="/articles/basis-of-probability-and-statistics.html">从抛硬币试验看概率论的基本内容及统计方法</a></p>
+            
+            <p><a href="/articles/prime-test.html">聊聊如何检测素数</a></p>
+            
+        
+            <h1><a name="数据挖掘">数据挖掘</a></h1>
+            
+            <p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p>
+            
+        
+            <h1><a name="数据分析">数据分析</a></h1>
+            
+            <p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p>
+            
+        
+            <h1><a name="时间序列">时间序列</a></h1>
+            
+            <p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p>
+            
+        
+            <h1><a name="ARIMA">ARIMA</a></h1>
+            
+            <p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p>
+            
+        
+            <h1><a name="R">R</a></h1>
+            
+            <p><a href="/articles/time-series-analysis-foundation.html">时间序列分析基础</a></p>
+            
+        
+            <h1><a name="算法">算法</a></h1>
+            
+            <p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p>
+            
+            <p><a href="/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html">为什么算法渐进复杂度中对数的底数总为2</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-i.html">解读Cardinality Estimation算法（第一部分：基本概念）</a></p>
+            
+            <p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p>
+            
+        
+            <h1><a name="递推式">递推式</a></h1>
+            
+            <p><a href="/articles/linear-algebra-for-recursion.html">算法分析中递推式的一般代数解法</a></p>
+            
+        
+            <h1><a name="时间复杂度">时间复杂度</a></h1>
+            
+            <p><a href="/articles/why-logarithm-base-of-asymptotic-time-complexity-always-two.html">为什么算法渐进复杂度中对数的底数总为2</a></p>
+            
+        
+            <h1><a name="基数估计">基数估计</a></h1>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-i.html">解读Cardinality Estimation算法（第一部分：基本概念）</a></p>
+            
+            <p><a href="/articles/cardinality-estimation.html">基数估计算法概览</a></p>
+            
+        
+            <h1><a name="大数据">大数据</a></h1>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-i.html">解读Cardinality Estimation算法（第一部分：基本概念）</a></p>
+            
+        
+            <h1><a name="HyperLogLogCounting">HyperLogLogCounting</a></h1>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p>
+            
+        
+            <h1><a name="AdaptiveCounting">AdaptiveCounting</a></h1>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iv.html">解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）</a></p>
+            
+        
+            <h1><a name="LogLogCounting">LogLogCounting</a></h1>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-iii.html">解读Cardinality Estimation算法（第三部分：LogLog Counting）</a></p>
+            
+        
+            <h1><a name="LinearCounting">LinearCounting</a></h1>
+            
+            <p><a href="/articles/algorithms-for-cardinality-estimation-part-ii.html">解读Cardinality Estimation算法（第二部分：Linear Counting）</a></p>
+            
+        
+            <h1><a name="翻译">翻译</a></h1>
+            
+            <p><a href="/articles/cardinality-estimation.html">基数估计算法概览</a></p>
+            
+        
+            <h1><a name="数理统计">数理统计</a></h1>
+            
+            <p><a href="/articles/basis-of-probability-and-statistics.html">从抛硬币试验看概率论的基本内容及统计方法</a></p>
+            
+        
+            <h1><a name="CPU">CPU</a></h1>
+            
+            <p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p>
+            
+        
+            <h1><a name="浮点数">浮点数</a></h1>
+            
+            <p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p>
+            
+        
+            <h1><a name="汇编">汇编</a></h1>
+            
+            <p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p>
+            
+        
+            <h1><a name="x86">x86</a></h1>
+            
+            <p><a href="/articles/trouble-of-x86-64-platform.html">x86-64体系下一个奇怪问题的定位</a></p>
+            
+        
+            <h1><a name="网站统计">网站统计</a></h1>
+            
+            <p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p>
+            
+        
+            <h1><a name="埋点">埋点</a></h1>
+            
+            <p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p>
+            
+        
+            <h1><a name="Web">Web</a></h1>
+            
+            <p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p>
+            
+        
+            <h1><a name="Openresty">Openresty</a></h1>
+            
+            <p><a href="/articles/how-web-analytics-data-collection-system-work.html">网站统计中的数据收集原理及实现</a></p>
+            
+            <p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p>
+            
+        
+            <h1><a name="素数">素数</a></h1>
+            
+            <p><a href="/articles/prime-test.html">聊聊如何检测素数</a></p>
+            
+        
+            <h1><a name="Google">Google</a></h1>
+            
+            <p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p>
+            
+        
+            <h1><a name="PageRank">PageRank</a></h1>
+            
+            <p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p>
+            
+        
+            <h1><a name="搜索引擎">搜索引擎</a></h1>
+            
+            <p><a href="/articles/intro-to-pagerank.html">浅析PageRank算法</a></p>
+            
+        
+            <h1><a name="PHP">PHP</a></h1>
+            
+            <p><a href="/articles/opdumper-and-web-opcode-dumper.html">发布一个查看PHP opcode的扩展模块及Web服务</a></p>
+            
+            <p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p>
+            
+            <p><a href="/articles/zend-thread-safety.html">深入研究PHP及Zend Engine的线程安全模型</a></p>
+            
+            <p><a href="/articles/write-daemon-with-php.html">如何使用PHP编写daemon process</a></p>
+            
+            <p><a href="/articles/php-extension-dev-guide.html">PHP Extension开发基础</a></p>
+            
+        
+            <h1><a name="Opcode">Opcode</a></h1>
+            
+            <p><a href="/articles/opdumper-and-web-opcode-dumper.html">发布一个查看PHP opcode的扩展模块及Web服务</a></p>
+            
+        
+            <h1><a name="ZendEngine">ZendEngine</a></h1>
+            
+            <p><a href="/articles/opdumper-and-web-opcode-dumper.html">发布一个查看PHP opcode的扩展模块及Web服务</a></p>
+            
+            <p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p>
+            
+            <p><a href="/articles/zend-thread-safety.html">深入研究PHP及Zend Engine的线程安全模型</a></p>
+            
+        
+            <h1><a name="哈希碰撞">哈希碰撞</a></h1>
+            
+            <p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p>
+            
+        
+            <h1><a name="数据结构">数据结构</a></h1>
+            
+            <p><a href="/articles/hash-collisions-attack-on-php.html">PHP哈希表碰撞攻击原理</a></p>
+            
+        
+            <h1><a name="闭包">闭包</a></h1>
+            
+            <p><a href="/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html">闭包漫谈（从抽象代数及函数式编程角度）</a></p>
+            
+        
+            <h1><a name="Scheme">Scheme</a></h1>
+            
+            <p><a href="/articles/closure-perspective-of-abstract-mathematic-and-functional-language.html">闭包漫谈（从抽象代数及函数式编程角度）</a></p>
+            
+        
+            <h1><a name="线程安全">线程安全</a></h1>
+            
+            <p><a href="/articles/zend-thread-safety.html">深入研究PHP及Zend Engine的线程安全模型</a></p>
+            
+        
+            <h1><a name="Deamon">Deamon</a></h1>
+            
+            <p><a href="/articles/write-daemon-with-php.html">如何使用PHP编写daemon process</a></p>
+            
+        
+            <h1><a name="系统扩展开发">系统扩展开发</a></h1>
+            
+            <p><a href="/articles/php-extension-dev-guide.html">PHP Extension开发基础</a></p>
+            
+            <p><a href="/articles/intro-of-nginx-module-development.html">Nginx模块开发入门</a></p>
+            
+        
+            <h1><a name="Nginx">Nginx</a></h1>
+            
+            <p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p>
+            
+            <p><a href="/articles/intro-of-nginx-module-development.html">Nginx模块开发入门</a></p>
+            
+        
+            <h1><a name="Memcache">Memcache</a></h1>
+            
+            <p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p>
+            
+        
+            <h1><a name="缓存">缓存</a></h1>
+            
+            <p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p>
+            
+        
+            <h1><a name="高性能">高性能</a></h1>
+            
+            <p><a href="/articles/nginx-memc-and-srcache.html">使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制</a></p>
+            
+        
+            <h1><a name="MySQL">MySQL</a></h1>
+            
+            <p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p>
+            
+        
+            <h1><a name="索引">索引</a></h1>
+            
+            <p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p>
+            
+        
+            <h1><a name="B树">B树</a></h1>
+            
+            <p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p>
+            
+        
+            <h1><a name="优化">优化</a></h1>
+            
+            <p><a href="/articles/theory-of-mysql-index.html">MySQL索引背后的数据结构及算法原理</a></p>
+            
+        
+            <h1><a name="分布式">分布式</a></h1>
+            
+            <p><a href="/articles/consistent-hashing.html">一致性哈希算法及其在分布式系统中的应用</a></p>
+            
+        
+            <h1><a name="一致性哈希">一致性哈希</a></h1>
+            
+            <p><a href="/articles/consistent-hashing.html">一致性哈希算法及其在分布式系统中的应用</a></p>
+            
+        
+        </div>
+    </div>
+</div>
         <div id="footer">
             <div id="footer-inner">
                 <p id="copyright">Copyright (c) 2011-2013 CodingLabs. <span id="madeonmymac" style="color:#999999;">Made on my Mac </span></p>
                 <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
             </div>
         </div>
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </body>
 </html>
+

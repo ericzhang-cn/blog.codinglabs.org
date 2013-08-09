@@ -1,268 +1,267 @@
-articles: 
-  - id: modularized-javascript-with-seajs
-    title: 使用SeaJS实现模块化JavaScript开发
-    postedOn: 2013-08-02
-    author: 张洋
-    tags: 
-      - Javascript
-      - SeaJS
-    category: 
-    abstract: SeaJS是一个遵循CommonJS规范的JavaScript模块加载框架，可以实现JavaScript的模块化开发及加载机制。与jQuery等JavaScript框架不同，SeaJS不会扩展封装语言特性，而只是实现JavaScript的模块化及按模块加载。SeaJS的主要目的是令JavaScript开发模块化并可以轻松愉悦进行加载，将前端工程师从繁重的JavaScript文件及对象依赖处理中解放出来，可以专注于代码本身的逻辑。SeaJS可以与jQuery这类框架完美集成。使用SeaJS可以提高JavaScript代码的可读性和清晰度，解决目前JavaScript编程中普遍存在的依赖关系混乱和代码纠缠等问题，方便代码的编写和维护。
-  - id: pca-tutorial
-    title: PCA的数学原理
-    postedOn: 2013-06-22
-    author: 张洋
-    tags: 
-      - 机器学习
-      - 线性代数
-      - PCA
-    category: 
-    abstract: PCA（Principal Component Analysis）是一种常用的数据分析方法。PCA通过线性变换将原始数据变换为一组各维度线性无关的表示，可用于提取数据的主要特征分量，常用于高维数据的降维。网上关于PCA的文章有很多，但是大多数只描述了PCA的分析过程，而没有讲述其中的原理。这篇文章的目的是介绍PCA的基本数学原理，帮助读者了解PCA的工作机制是什么。当然我并不打算把文章写成纯数学文章，而是希望用直观和易懂的方式叙述PCA的数学原理，所以整个文章不会引入严格的数学推导。希望读者在看完这篇文章后能更好的明白PCA的工作原理。
-  - id: basic-statistics-calculate
-    title: 期望、方差、协方差及相关系数的基本运算
-    postedOn: 2013-06-05
-    author: 张洋
-    tags: 
-      - 概率
-      - 统计
-      - 数学
-    category: 
-    abstract: 这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。
-  - id: time-series-analysis-foundation
-    title: 时间序列分析基础
-    postedOn: 2013-05-27
-    author: 张洋
-    tags: 
-      - 数据挖掘
-      - 数据分析
-      - 时间序列
-      - ARIMA
-      - R
-    category: 
-    abstract: 时间序列是现实生活中经常会碰到的数据形式。例如北京市连续一年的日平均气温、某股票的股票价格、淘宝上某件商品的日销售件数等等。时间序列分析的的目的是挖掘时间序列中隐含的信息与模式，并借此对此序列数据进行评估以及对系列的后续走势进行预测。由于工作需要，我最近简单学习了时间序列分析相关的基础理论和应用方法，这篇文章可以看做是我的学习笔记。文章主要内容会首先描述时间序列分析的基本概念和相关的统计学基础理论，然后着重讲述十分经典和常用的ARIMA模型，在这之后会讲述季节ARIMA模型。由于打算以学习笔记的形式写这篇文章，所以我不会一下子写完整篇文章才发布，而是持续更新这篇文章，写的过程中也可能会对前面的内容进行修订。文章中会穿插许多实例（兼有模拟数据和数据分析），分析过程中将使用R为分析工具。
-  - id: linear-algebra-for-recursion
-    title: 算法分析中递推式的一般代数解法
-    postedOn: 2013-03-17
-    author: 张洋
-    tags: 
-      - 算法
-      - 数学
-      - 线性代数
-      - 递推式
-    category: 
-    abstract: 算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如汉诺塔问题的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。因为递推式求解的重要性，许多算法书籍对其有专门介绍。Donald Knuth在Concrete Mathematics一书中多个章节都涉及递推式求解方法。算法导论也在第四章中专门论述的这个主题。在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。本文首先会给出两个例子：如何使用纯代数方法求解斐波那契数列和汉诺塔递推式；然后会借助线性代数论述这种方法背后的数学意义，说明线性递推式与线性方程的内在联系以及这种解法的数学原理；最后将例子中的方法推广到一般情况。
-  - id: why-logarithm-base-of-asymptotic-time-complexity-always-two
-    title: 为什么算法渐进复杂度中对数的底数总为2
-    postedOn: 2013-01-29
-    author: 张洋
-    tags: 
-      - 算法
-      - 时间复杂度
-    category: 
-    abstract: 各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。
-  - id: algorithms-for-cardinality-estimation-part-iv
-    title: 解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）
-    postedOn: 2013-01-09
-    author: 张洋
-    tags: 
-      - 算法
-      - 基数估计
-      - 大数据
-      - HyperLogLogCounting
-      - AdaptiveCounting
-    category: 
-    abstract: 在前一篇文章中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。
-  - id: algorithms-for-cardinality-estimation-part-iii
-    title: 解读Cardinality Estimation算法（第三部分：LogLog Counting）
-    postedOn: 2013-01-03
-    author: 张洋
-    tags: 
-      - 算法
-      - 基数估计
-      - 大数据
-      - LogLogCounting
-    category: 
-    abstract: 上一篇文章介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。
-  - id: algorithms-for-cardinality-estimation-part-ii
-    title: 解读Cardinality Estimation算法（第二部分：Linear Counting）
-    postedOn: 2012-12-31
-    author: 张洋
-    tags: 
-      - 算法
-      - 基数估计
-      - 大数据
-      - LinearCounting
-    category: 
-    abstract: 在上一篇文章中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。
-  - id: algorithms-for-cardinality-estimation-part-i
-    title: 解读Cardinality Estimation算法（第一部分：基本概念）
-    postedOn: 2012-12-30
-    author: 张洋
-    tags: 
-      - 算法
-      - 基数估计
-      - 大数据
-    category: 
-    abstract: 作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。
-  - id: cardinality-estimation
-    title: 基数估计算法概览
-    postedOn: 2012-11-23
-    author: 张洋
-    tags: 
-      - 基数估计
-      - 翻译
-    category: 
-    abstract: 翻译自《Damn Cool Algorithms:Cardinality Estimation》，原文链接：http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation
-  - id: basis-of-probability-and-statistics
-    title: 从抛硬币试验看概率论的基本内容及统计方法
-    postedOn: 2012-11-20
-    author: 张洋
-    tags: 
-      - 概率
-      - 数理统计
-      - 数学
-    category: 
-    abstract: 一般说到概率，就喜欢拿抛硬币做例子。大多数时候，会简单认为硬币正背面的概率各为二分之一，其实事情远没有这么简单。这篇文章会以抛硬币试验为例子并贯穿全文，引出一系列概率论和数理统计的基本内容。这篇文章会涉及的有古典概型、公理化概率、二项分布、正态分布、最大似然估计和假设检验等一系列内容。主要目的是以抛硬币试验为例说明现代数学观点下的概率是什么样子以及以概率论为基础的一些基本数理统计方法。
-  - id: trouble-of-x86-64-platform
-    title: x86-64体系下一个奇怪问题的定位
-    postedOn: 2012-11-13
-    author: 张洋
-    tags: 
-      - CPU
-      - 浮点数
-      - 汇编
-      - x86
-    category: 
-    abstract: 问题来源于一个朋友在百度的笔试题。上周六我一个朋友参加了百度举行的专场招聘会。当朋友参加完笔试和我聊起这道题时，我第一反应是这道题考察的是浮点数的内存表示，当然，在不同的CPU体系下，运行结果可能会有所不同，主要是受CPU位数和字节序的影响。
-  - id: how-web-analytics-data-collection-system-work
-    title: 网站统计中的数据收集原理及实现
-    postedOn: 2012-10-24
-    author: 张洋
-    tags: 
-      - 网站统计
-      - 埋点
-      - Web
-      - Openresty
-    category: 
-    abstract: 网站数据统计分析工具是网站站长和运营人员经常使用的一种工具，比较常用的有谷歌分析、百度统计和腾讯分析等等。所有这些统计分析工具的第一步都是网站访问数据的收集。目前主流的数据收集方式基本都是基于javascript的。本文将简要分析这种数据收集的原理，并一步一步实际搭建一个实际的数据收集系统。
-  - id: prime-test
-    title: 聊聊如何检测素数
-    postedOn: 2012-08-28
-    author: 张洋
-    tags: 
-      - 素数
-      - 概率
-      - 数学
-    category: 
-    abstract: 最近看到一则颇为有趣的新闻，说北大一名大一新生，以素数为标准选手机号，受到广大网友膜拜。其实素数的检测算法是很有趣的，并且会涉及到数论、概率算法等诸多内容，一直觉得素数探测算法是了解概率算法很好的入口。本文和大家简单聊聊如何确定一个数是素数。
-  - id: intro-to-pagerank
-    title: 浅析PageRank算法
-    postedOn: 2012-07-02
-    author: 张洋
-    tags: 
-      - Google
-      - PageRank
-      - 搜索引擎
-      - 算法
-    category: 
-    abstract: 直觉得素数探测算法是了解概率算法很好的入口。本文和大家简单聊聊如何确定一个数是素数。geRank产生的背景。第二部分会详细讨论PageRank的思想来源、基础框架，并结合互联网页面拓扑结构讨论PageRank处理Dead Ends及平滑化的方法。第三部分讨论Topic-Sensitive PageRank算法。最后将讨论对PageRank的Spam攻击方法：Spam Farm以及搜索引擎对Spam Farm的防御。
-  - id: opdumper-and-web-opcode-dumper
-    title: 发布一个查看PHP opcode的扩展模块及Web服务
-    postedOn: 2012-05-16
-    author: 张洋
-    tags: 
-      - PHP
-      - Opcode
-      - ZendEngine
-    category: 
-    abstract: 最近花了大约一星期的时间写了一个PHP扩展模块Opdumer，并封装成了Web服务。这个模块的主要内容是输出PHP代码对应的opcode。其实之前已经有一些用于查看opcode的扩展模块，如比较有名的vld。之所以重新实现一个这样的模块，主要是因为vld不支持PHP_FUNCTION API，也就是说vld只能用于CLI形式，而Opdumer同时拥有CLI API和PHP_FUNCTION API，另外，也想借助编写这个模块的机会学习Zend Engine中opcode的编译和执行机制。个人打算后面专门针对opcode的编译执行机制写一篇文章，而本文主要描述Opcode的使用方法及对应Web服务的使用。
-  - id: hash-collisions-attack-on-php
-    title: PHP哈希表碰撞攻击原理
-    postedOn: 2012-01-04
-    author: 张洋
-    tags: 
-      - PHP
-      - 哈希碰撞
-      - ZendEngine
-      - 数据结构
-    category: 
-    abstract: 最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。
-  - id: closure-perspective-of-abstract-mathematic-and-functional-language
-    title: 闭包漫谈（从抽象代数及函数式编程角度）
-    postedOn: 2011-12-05
-    author: 张洋
-    tags: 
-      - 闭包
-      - Javascript
-      - Scheme
-    category: 
-    abstract: 如果Google一下“闭包”这个词，会发现网上关于闭包的文章已经不计其数，甚至很多人将闭包看做面试JavaScript程序员的必考题（虽然闭包和JavaScript没有什么必然联系）。既然如此，我为什么还要写一篇关于闭包的文章呢？<p>首先，虽然网上关于闭包的文章甚多，但是很少以较为形式化的角度阐述闭包，而我认为理解闭包的关键之一就是从形式化角度理解其涵义；其次，大多数文章将闭包的概念与JavaScript语言绑定太死，这样容易局限对闭包概念的理解，而难以窥探到其本质。从JavaScript去理解闭包，个人认为这是本末倒置的，应该先理解纯粹意义上的闭包，然后再理解JavaScript中的闭包机制。</p><p>基于以上情况，本文将从较为形式化的角度阐述闭包概念，当做对现有网络的资料的一个补充。</p>
-  - id: zend-thread-safety
-    title: 深入研究PHP及Zend Engine的线程安全模型
-    postedOn: 2011-11-04
-    author: 张洋
-    tags: 
-      - PHP
-      - 线程安全
-      - ZendEngine
-    category: 
-    abstract: 在阅读PHP源码和学习PHP扩展开发的过程中，我接触到大量含有“TSRM”字眼的宏。通过查阅资料，知道这些宏与Zend的线程安全机制有关，而绝大多数资料中都建议按照既定规则使用这些宏就可以，而没有说明这些宏的具体作用。不知道怎么回事总是令人不舒服的，因此我通过阅读源码和查阅有限的资料简要了解一下相关机制，本文是我对研究内容的总结。<p>本文首先解释了线程安全的概念及PHP中线程安全的背景，然后详细研究了PHP的线程安全机制ZTS（Zend Thread Safety）及具体的实现TSRM，研究内容包括相关数据结构、实现细节及运行机制，最后研究了Zend对于单线程和多线程环境的选择性编译问题。</p>
-  - id: write-daemon-with-php
-    title: 如何使用PHP编写daemon process
-    postedOn: 2011-10-24
-    author: 张洋
-    tags: 
-      - PHP
-      - Deamon
-    category: 
-    abstract: 从php的架构体系来说，php分为三个层次：sapi、php core和zend engine。php core本身和web没有任何耦合，php通过sapi与其它应用程序通信，例如mod_php就是为apache编写的sapi实现，同样，fpm是一个基于fastcgi协议的sapi实现，这些sapi都是与web server配合用于处理web请求的。但是也有许多sapi与web无关，例如cli sapi可以使得在命令行环境下直接执行php，embed sapi可以将php嵌入其它语言（如Lua）那样。这里我并不打算详细讨论php的架构体系和sapi的话题，只是说明从架构体系角度目前的php早已被设计为支持各种环境，而非为web独有。<p>除了架构体系的支持外，php丰富的扩展模块也为php在不同环境发挥作用提供了后盾，例如本文要提到的pcntl模块和posix模块配合可以实现基本的进程管理、信号处理等操作系统级别的功能，而sockets模块可以使php具有socket通信的能力。因此php完全可以用于编写类似于shell或perl常做的工具性脚本，甚至是具有server性质的daemon process。</p><p>为了展示php如何编写daemon server，我用php编写了一个简单的http server，这个server以daemon process的形式运行。当然，为了把重点放在如何使用php编写daemon，我没有为这个http server实现具体业务逻辑，但它可以监听指定端口，接受http请求并返回给客户端一条固定的文本，整个过程通过socket实现，全部由php编写而成。</p>
-  - id: php-extension-dev-guide
-    title: PHP Extension开发基础
-    postedOn: 2011-10-21
-    author: 张洋
-    tags: 
-      - PHP
-      - 系统扩展开发
-    category: 
-    abstract: PHP是当前应用非常广泛的一门语言，从国外的Facebook、Twitter到国内的淘宝、腾讯、百度再到互联网上林林总总的各种大中小型网站都能见到它的身影。PHP的成功，应该说很大程度上依赖于其开放的扩展API机制和丰富的扩展组件（PHP Extension），正是这些扩展组件使得PHP从各种数据库操作到XML、JSON、加密、文件处理、图形处理、Socket等领域无所不能。有时候开发人员可能需要开发自己的PHP扩展，当前PHP5的扩展机制是基于Zend API的，Zend API提供了丰富的接口和宏定义，加上一些实用工具，使得PHP扩展开发起来难度并不算特别大。本文将介绍关于PHP扩展组件开发的基本知识，并通过一个实例展示开发PHP扩展的基本过程。
-  - id: nginx-memc-and-srcache
-    title: 使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制
-    postedOn: 2011-10-18
-    author: 张洋
-    tags: 
-      - Nginx
-      - Memcache
-      - 缓存
-      - 高性能
-      - Openresty
-    category: 
-    abstract: 为了提高性能，几乎所有互联网应用都有缓存机制，其中Memcache是使用非常广泛的一个分布式缓存系统。众所周知，LAMP是非常经典的Web架构方式，但是随着Nginx的成熟，越来越多的系统开始转型为LNMP（Linux+Nginx+MySQL+PHP with fpm），这是因为Nginx采用基于事件机制的I/O多路复用思想设计，在高并发情况下其性能远远优于默认采用prefork模式的Apache，另外，相对于Apache，Nginx更轻量，同时拥有大量优秀的扩展模块，使得在Nginx上可以实现一些美妙的功能。<p>传统上，PHP中使用memcache的方法是使用php-memcache或php-memached扩展操作memcache，然而在Nginx上有构建更高效缓存机制的方法，本文将首先介绍这种机制，然后介绍具体的操作步骤方法，最后将对这种机制和传统的PHP操作memcache的性能进行一个benchmark。</p>
-  - id: theory-of-mysql-index
-    title: MySQL索引背后的数据结构及算法原理
-    postedOn: 2011-10-18
-    author: 张洋
-    tags: 
-      - MySQL
-      - 索引
-      - B树
-      - 优化
-    category: 
-    abstract: 本文以MySQL数据库为研究对象，讨论与数据库索引相关的一些话题。特别需要说明的是，MySQL支持诸多存储引擎，而各种存储引擎对索引的支持也各不相同，因此MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。为了避免混乱，本文将只关注于BTree索引，因为这是平常使用MySQL时主要打交道的索引，至于哈希索引和全文索引本文暂不讨论。
-  - id: consistent-hashing
-    title: 一致性哈希算法及其在分布式系统中的应用
-    postedOn: 2011-10-18
-    author: 张洋
-    tags: 
-      - 分布式
-      - 一致性哈希
-    category: 
-    abstract: 本文将会从实际应用场景出发，介绍一致性哈希算法（Consistent Hashing）及其在分布式系统中的应用。首先本文会描述一个在日常开发中经常会遇到的问题场景，借此介绍一致性哈希算法以及这个算法如何解决此问题；接下来会对这个算法进行相对详细的描述，并讨论一些如虚拟节点等与此算法应用相关的话题。
-  - id: intro-of-nginx-module-development
-    title: Nginx模块开发入门
-    postedOn: 2011-10-18
-    author: 张洋
-    tags: 
-      - Nginx
-      - 系统扩展开发
-    category: 
-    abstract: Nginx是当前最流行的HTTP Server之一，根据W3Techs的统计，目前世界排名（根据Alexa）前100万的网站中，Nginx的占有率为6.8%。与Apache相比，Nginx在高并发情况下具有巨大的性能优势。<p>Nginx属于典型的微内核设计，其内核非常简洁和优雅，同时具有非常高的可扩展性。Nginx最初仅仅主要被用于做反向代理，后来随着HTTP核心的成熟和各种HTTP扩展模块的丰富，Nginx越来越多被用来取代Apache而单独承担HTTP Server的责任，例如目前淘宝内各个部门正越来越多使用Nginx取代Apache，据笔者了解，在腾讯和新浪等公司也存在类似情况。</p><p>同时，大量的第三方扩展模块也令Nginx越来越强大。例如，由淘宝的工程师清无（王晓哲）和春来（章亦春）所开发的nginx_lua_module可以将Lua语言嵌入到Nginx配置中，从而利用Lua极大增强了Nginx本身的编程能力，甚至可以不用配合其它脚本语言（如PHP或Python等），只靠Nginx本身就可以实现复杂业务的处理。而春来所开发的ngx_openresty更是通过集成LuaJIT等组件，将Nginx本身变成了一个完全的应用开发平台。目前淘宝数据平台与产品部量子统计的产品都是基于ngx_openresty所开发。对ngxin_lua_module或ngx_openresty感兴趣的朋友可以参考我在关键词上给出的链接，后续我也可能会写一些与其有关的文章。</p><p>本文将会重点关注Nginx模块开发入门及基础。目前Nginx的学习资料非常少，而扩展模块开发相关的资料几乎只有《Emiller's Guide To Nginx Module Development》一文，此文十分经典，但是由于Nginx版本的演进，其中少许内容可能有点过时。本文是笔者在研读这篇文章和Nginx源代码的基础上，对自己学习Nginx模块开发的一个总结。本文将通过一个完整的模块开发实例讲解Nginx模块开发的入门内容。</p>
+- id: modularized-javascript-with-seajs
+  title: 使用SeaJS实现模块化JavaScript开发
+  postedOn: 2013-08-02
+  author: 张洋
+  tags: 
+    - Javascript
+    - SeaJS
+  category: 
+  abstract: SeaJS是一个遵循CommonJS规范的JavaScript模块加载框架，可以实现JavaScript的模块化开发及加载机制。与jQuery等JavaScript框架不同，SeaJS不会扩展封装语言特性，而只是实现JavaScript的模块化及按模块加载。SeaJS的主要目的是令JavaScript开发模块化并可以轻松愉悦进行加载，将前端工程师从繁重的JavaScript文件及对象依赖处理中解放出来，可以专注于代码本身的逻辑。SeaJS可以与jQuery这类框架完美集成。使用SeaJS可以提高JavaScript代码的可读性和清晰度，解决目前JavaScript编程中普遍存在的依赖关系混乱和代码纠缠等问题，方便代码的编写和维护。
+- id: pca-tutorial
+  title: PCA的数学原理
+  postedOn: 2013-06-22
+  author: 张洋
+  tags: 
+    - 机器学习
+    - 线性代数
+    - PCA
+  category: 
+  abstract: PCA（Principal Component Analysis）是一种常用的数据分析方法。PCA通过线性变换将原始数据变换为一组各维度线性无关的表示，可用于提取数据的主要特征分量，常用于高维数据的降维。网上关于PCA的文章有很多，但是大多数只描述了PCA的分析过程，而没有讲述其中的原理。这篇文章的目的是介绍PCA的基本数学原理，帮助读者了解PCA的工作机制是什么。当然我并不打算把文章写成纯数学文章，而是希望用直观和易懂的方式叙述PCA的数学原理，所以整个文章不会引入严格的数学推导。希望读者在看完这篇文章后能更好的明白PCA的工作原理。
+- id: basic-statistics-calculate
+  title: 期望、方差、协方差及相关系数的基本运算
+  postedOn: 2013-06-05
+  author: 张洋
+  tags: 
+    - 概率
+    - 统计
+    - 数学
+  category: 
+  abstract: 这篇文章总结了概率统计中期望、方差、协方差和相关系数的定义、性质和基本运算规则。
+- id: time-series-analysis-foundation
+  title: 时间序列分析基础
+  postedOn: 2013-05-27
+  author: 张洋
+  tags: 
+    - 数据挖掘
+    - 数据分析
+    - 时间序列
+    - ARIMA
+    - R
+  category: 
+  abstract: 时间序列是现实生活中经常会碰到的数据形式。例如北京市连续一年的日平均气温、某股票的股票价格、淘宝上某件商品的日销售件数等等。时间序列分析的的目的是挖掘时间序列中隐含的信息与模式，并借此对此序列数据进行评估以及对系列的后续走势进行预测。由于工作需要，我最近简单学习了时间序列分析相关的基础理论和应用方法，这篇文章可以看做是我的学习笔记。文章主要内容会首先描述时间序列分析的基本概念和相关的统计学基础理论，然后着重讲述十分经典和常用的ARIMA模型，在这之后会讲述季节ARIMA模型。由于打算以学习笔记的形式写这篇文章，所以我不会一下子写完整篇文章才发布，而是持续更新这篇文章，写的过程中也可能会对前面的内容进行修订。文章中会穿插许多实例（兼有模拟数据和数据分析），分析过程中将使用R为分析工具。
+- id: linear-algebra-for-recursion
+  title: 算法分析中递推式的一般代数解法
+  postedOn: 2013-03-17
+  author: 张洋
+  tags: 
+    - 算法
+    - 数学
+    - 线性代数
+    - 递推式
+  category: 
+  abstract: 算法分析中经常遇到需要求解递推式的情况，即将递推式改写为等价的封闭形式。例如汉诺塔问题的时间复杂度递推形式为\(T(n)=2T(n-1)+1 \quad (n \geq 1)\)，可以解出封闭形式为\(T(n)=2^n-1\)（设初始状态\(T(0)=0\)）。因为递推式求解的重要性，许多算法书籍对其有专门介绍。Donald Knuth在Concrete Mathematics一书中多个章节都涉及递推式求解方法。算法导论也在第四章中专门论述的这个主题。在这些相关论述中，主要介绍了一些启发式方法，这些方法往往需要一些特殊的技巧和灵感才能完成。而本文将论述一种纯代数式的方法，这种方法将求解递推式转化为求解一个多项式的根和求解一组线性方程组，这样就使得整个求解过程不依赖于太多技巧，因此具有更好的易用性。本文首先会给出两个例子：如何使用纯代数方法求解斐波那契数列和汉诺塔递推式；然后会借助线性代数论述这种方法背后的数学意义，说明线性递推式与线性方程的内在联系以及这种解法的数学原理；最后将例子中的方法推广到一般情况。
+- id: why-logarithm-base-of-asymptotic-time-complexity-always-two
+  title: 为什么算法渐进复杂度中对数的底数总为2
+  postedOn: 2013-01-29
+  author: 张洋
+  tags: 
+    - 算法
+    - 时间复杂度
+  category: 
+  abstract: 各种算法时，经常看到\(O(\log_2n)\)或\(O(n\log_2n)\)这样的渐进复杂度。不知有没有同学困惑过，为什么算法的渐进复杂度中的对数都是以2为底？为什么没有见过\(O(n\log_3n)\)这样的渐进复杂度？本文解释这个问题。
+- id: algorithms-for-cardinality-estimation-part-iv
+  title: 解读Cardinality Estimation算法（第四部分：HyperLogLog Counting及Adaptive Counting）
+  postedOn: 2013-01-09
+  author: 张洋
+  tags: 
+    - 算法
+    - 基数估计
+    - 大数据
+    - HyperLogLogCounting
+    - AdaptiveCounting
+  category: 
+  abstract: 在前一篇文章中，我们了解了LogLog Counting。LLC算法的空间复杂度为\(O(log_2(log_2(N_{max})))\)，并且具有较高的精度，因此非常适合用于大数据场景的基数估计。不过LLC也有自己的问题，就是当基数不太大时，估计值的误差会比较大。这主要是因为当基数不太大时，可能存在一些空桶，这些空桶的\(\rho_{max}\)为0。由于LLC的估计值依赖于各桶\(\rho_{max}\)的几何平均数，而几何平均数对于特殊值（这里就是指0）非常敏感，因此当存在一些空桶时，LLC的估计效果就变得较差。
+- id: algorithms-for-cardinality-estimation-part-iii
+  title: 解读Cardinality Estimation算法（第三部分：LogLog Counting）
+  postedOn: 2013-01-03
+  author: 张洋
+  tags: 
+    - 算法
+    - 基数估计
+    - 大数据
+    - LogLogCounting
+  category: 
+  abstract: 上一篇文章介绍的Linear Counting算法相较于直接映射bitmap的方法能大大节省内存（大约只需后者1/10的内存），但毕竟只是一个常系数级的降低，空间复杂度仍然为\(O(N_{max})\)。而本文要介绍的LogLog Counting却只有\(O(log_2(log_2(N_{max})))\)。例如，假设基数的上限为1亿，原始bitmap方法需要12.5M内存，而LogLog Counting只需不到1K内存（640字节）就可以在标准误差不超过4%的精度下对基数进行估计，效果可谓十分惊人。
+- id: algorithms-for-cardinality-estimation-part-ii
+  title: 解读Cardinality Estimation算法（第二部分：Linear Counting）
+  postedOn: 2012-12-31
+  author: 张洋
+  tags: 
+    - 算法
+    - 基数估计
+    - 大数据
+    - LinearCounting
+  category: 
+  abstract: 在上一篇文章中，我们知道传统的精确基数计数算法在数据量大时会存在一定瓶颈，瓶颈主要来自于数据结构合并和内存使用两个方面。因此出现了很多基数估计的概率算法，这些算法虽然计算出的结果不是精确的，但误差可控，重要的是这些算法所使用的数据结构易于合并，同时比传统方法大大节省内存。
+- id: algorithms-for-cardinality-estimation-part-i
+  title: 解读Cardinality Estimation算法（第一部分：基本概念）
+  postedOn: 2012-12-30
+  author: 张洋
+  tags: 
+    - 算法
+    - 基数估计
+    - 大数据
+  category: 
+  abstract: 作为“解读Cardinality Estimation算法”系列文章的第一部分，本文将首先介绍基数的概念，然后通过一个电商数据分析的例子说明基数如何在具体业务场景中发挥作用以及为什么在大数据面前基数的计算是困难的，在这一部分也同时会详述传统基数计数的解决方案及遇到的难题。后面在第二部分-第四部分会分别详细介绍Linear Counting、LogLog Counting、HyperLogLog Counting及Adaptive Counting四个算法，会涉及算法的基本思路、概率分析及论文关键部分的解读。
+- id: cardinality-estimation
+  title: 基数估计算法概览
+  postedOn: 2012-11-23
+  author: 张洋
+  tags: 
+    - 基数估计
+    - 翻译
+  category: 
+  abstract: 翻译自《Damn Cool Algorithms:Cardinality Estimation》，原文链接：http://blog.notdot.net/2012/09/Dam-Cool-Algorithms-Cardinality-Estimation
+- id: basis-of-probability-and-statistics
+  title: 从抛硬币试验看概率论的基本内容及统计方法
+  postedOn: 2012-11-20
+  author: 张洋
+  tags: 
+    - 概率
+    - 数理统计
+    - 数学
+  category: 
+  abstract: 一般说到概率，就喜欢拿抛硬币做例子。大多数时候，会简单认为硬币正背面的概率各为二分之一，其实事情远没有这么简单。这篇文章会以抛硬币试验为例子并贯穿全文，引出一系列概率论和数理统计的基本内容。这篇文章会涉及的有古典概型、公理化概率、二项分布、正态分布、最大似然估计和假设检验等一系列内容。主要目的是以抛硬币试验为例说明现代数学观点下的概率是什么样子以及以概率论为基础的一些基本数理统计方法。
+- id: trouble-of-x86-64-platform
+  title: x86-64体系下一个奇怪问题的定位
+  postedOn: 2012-11-13
+  author: 张洋
+  tags: 
+    - CPU
+    - 浮点数
+    - 汇编
+    - x86
+  category: 
+  abstract: 问题来源于一个朋友在百度的笔试题。上周六我一个朋友参加了百度举行的专场招聘会。当朋友参加完笔试和我聊起这道题时，我第一反应是这道题考察的是浮点数的内存表示，当然，在不同的CPU体系下，运行结果可能会有所不同，主要是受CPU位数和字节序的影响。
+- id: how-web-analytics-data-collection-system-work
+  title: 网站统计中的数据收集原理及实现
+  postedOn: 2012-10-24
+  author: 张洋
+  tags: 
+    - 网站统计
+    - 埋点
+    - Web
+    - Openresty
+  category: 
+  abstract: 网站数据统计分析工具是网站站长和运营人员经常使用的一种工具，比较常用的有谷歌分析、百度统计和腾讯分析等等。所有这些统计分析工具的第一步都是网站访问数据的收集。目前主流的数据收集方式基本都是基于javascript的。本文将简要分析这种数据收集的原理，并一步一步实际搭建一个实际的数据收集系统。
+- id: prime-test
+  title: 聊聊如何检测素数
+  postedOn: 2012-08-28
+  author: 张洋
+  tags: 
+    - 素数
+    - 概率
+    - 数学
+  category: 
+  abstract: 最近看到一则颇为有趣的新闻，说北大一名大一新生，以素数为标准选手机号，受到广大网友膜拜。其实素数的检测算法是很有趣的，并且会涉及到数论、概率算法等诸多内容，一直觉得素数探测算法是了解概率算法很好的入口。本文和大家简单聊聊如何确定一个数是素数。
+- id: intro-to-pagerank
+  title: 浅析PageRank算法
+  postedOn: 2012-07-02
+  author: 张洋
+  tags: 
+    - Google
+    - PageRank
+    - 搜索引擎
+    - 算法
+  category: 
+  abstract: 直觉得素数探测算法是了解概率算法很好的入口。本文和大家简单聊聊如何确定一个数是素数。geRank产生的背景。第二部分会详细讨论PageRank的思想来源、基础框架，并结合互联网页面拓扑结构讨论PageRank处理Dead Ends及平滑化的方法。第三部分讨论Topic-Sensitive PageRank算法。最后将讨论对PageRank的Spam攻击方法：Spam Farm以及搜索引擎对Spam Farm的防御。
+- id: opdumper-and-web-opcode-dumper
+  title: 发布一个查看PHP opcode的扩展模块及Web服务
+  postedOn: 2012-05-16
+  author: 张洋
+  tags: 
+    - PHP
+    - Opcode
+    - ZendEngine
+  category: 
+  abstract: 最近花了大约一星期的时间写了一个PHP扩展模块Opdumer，并封装成了Web服务。这个模块的主要内容是输出PHP代码对应的opcode。其实之前已经有一些用于查看opcode的扩展模块，如比较有名的vld。之所以重新实现一个这样的模块，主要是因为vld不支持PHP_FUNCTION API，也就是说vld只能用于CLI形式，而Opdumer同时拥有CLI API和PHP_FUNCTION API，另外，也想借助编写这个模块的机会学习Zend Engine中opcode的编译和执行机制。个人打算后面专门针对opcode的编译执行机制写一篇文章，而本文主要描述Opcode的使用方法及对应Web服务的使用。
+- id: hash-collisions-attack-on-php
+  title: PHP哈希表碰撞攻击原理
+  postedOn: 2012-01-04
+  author: 张洋
+  tags: 
+    - PHP
+    - 哈希碰撞
+    - ZendEngine
+    - 数据结构
+  category: 
+  abstract: 最近哈希表碰撞攻击（Hashtable collisions as DOS attack）的话题不断被提起，各种语言纷纷中招。本文结合PHP内核源码，聊一聊这种攻击的原理及实现。
+- id: closure-perspective-of-abstract-mathematic-and-functional-language
+  title: 闭包漫谈（从抽象代数及函数式编程角度）
+  postedOn: 2011-12-05
+  author: 张洋
+  tags: 
+    - 闭包
+    - Javascript
+    - Scheme
+  category: 
+  abstract: 如果Google一下“闭包”这个词，会发现网上关于闭包的文章已经不计其数，甚至很多人将闭包看做面试JavaScript程序员的必考题（虽然闭包和JavaScript没有什么必然联系）。既然如此，我为什么还要写一篇关于闭包的文章呢？<p>首先，虽然网上关于闭包的文章甚多，但是很少以较为形式化的角度阐述闭包，而我认为理解闭包的关键之一就是从形式化角度理解其涵义；其次，大多数文章将闭包的概念与JavaScript语言绑定太死，这样容易局限对闭包概念的理解，而难以窥探到其本质。从JavaScript去理解闭包，个人认为这是本末倒置的，应该先理解纯粹意义上的闭包，然后再理解JavaScript中的闭包机制。</p><p>基于以上情况，本文将从较为形式化的角度阐述闭包概念，当做对现有网络的资料的一个补充。</p>
+- id: zend-thread-safety
+  title: 深入研究PHP及Zend Engine的线程安全模型
+  postedOn: 2011-11-04
+  author: 张洋
+  tags: 
+    - PHP
+    - 线程安全
+    - ZendEngine
+  category: 
+  abstract: 在阅读PHP源码和学习PHP扩展开发的过程中，我接触到大量含有“TSRM”字眼的宏。通过查阅资料，知道这些宏与Zend的线程安全机制有关，而绝大多数资料中都建议按照既定规则使用这些宏就可以，而没有说明这些宏的具体作用。不知道怎么回事总是令人不舒服的，因此我通过阅读源码和查阅有限的资料简要了解一下相关机制，本文是我对研究内容的总结。<p>本文首先解释了线程安全的概念及PHP中线程安全的背景，然后详细研究了PHP的线程安全机制ZTS（Zend Thread Safety）及具体的实现TSRM，研究内容包括相关数据结构、实现细节及运行机制，最后研究了Zend对于单线程和多线程环境的选择性编译问题。</p>
+- id: write-daemon-with-php
+  title: 如何使用PHP编写daemon process
+  postedOn: 2011-10-24
+  author: 张洋
+  tags: 
+    - PHP
+    - Deamon
+  category: 
+  abstract: 从php的架构体系来说，php分为三个层次：sapi、php core和zend engine。php core本身和web没有任何耦合，php通过sapi与其它应用程序通信，例如mod_php就是为apache编写的sapi实现，同样，fpm是一个基于fastcgi协议的sapi实现，这些sapi都是与web server配合用于处理web请求的。但是也有许多sapi与web无关，例如cli sapi可以使得在命令行环境下直接执行php，embed sapi可以将php嵌入其它语言（如Lua）那样。这里我并不打算详细讨论php的架构体系和sapi的话题，只是说明从架构体系角度目前的php早已被设计为支持各种环境，而非为web独有。<p>除了架构体系的支持外，php丰富的扩展模块也为php在不同环境发挥作用提供了后盾，例如本文要提到的pcntl模块和posix模块配合可以实现基本的进程管理、信号处理等操作系统级别的功能，而sockets模块可以使php具有socket通信的能力。因此php完全可以用于编写类似于shell或perl常做的工具性脚本，甚至是具有server性质的daemon process。</p><p>为了展示php如何编写daemon server，我用php编写了一个简单的http server，这个server以daemon process的形式运行。当然，为了把重点放在如何使用php编写daemon，我没有为这个http server实现具体业务逻辑，但它可以监听指定端口，接受http请求并返回给客户端一条固定的文本，整个过程通过socket实现，全部由php编写而成。</p>
+- id: php-extension-dev-guide
+  title: PHP Extension开发基础
+  postedOn: 2011-10-21
+  author: 张洋
+  tags: 
+    - PHP
+    - 系统扩展开发
+  category: 
+  abstract: PHP是当前应用非常广泛的一门语言，从国外的Facebook、Twitter到国内的淘宝、腾讯、百度再到互联网上林林总总的各种大中小型网站都能见到它的身影。PHP的成功，应该说很大程度上依赖于其开放的扩展API机制和丰富的扩展组件（PHP Extension），正是这些扩展组件使得PHP从各种数据库操作到XML、JSON、加密、文件处理、图形处理、Socket等领域无所不能。有时候开发人员可能需要开发自己的PHP扩展，当前PHP5的扩展机制是基于Zend API的，Zend API提供了丰富的接口和宏定义，加上一些实用工具，使得PHP扩展开发起来难度并不算特别大。本文将介绍关于PHP扩展组件开发的基本知识，并通过一个实例展示开发PHP扩展的基本过程。
+- id: nginx-memc-and-srcache
+  title: 使用memc-nginx和srcache-nginx模块构建高效透明的缓存机制
+  postedOn: 2011-10-18
+  author: 张洋
+  tags: 
+    - Nginx
+    - Memcache
+    - 缓存
+    - 高性能
+    - Openresty
+  category: 
+  abstract: 为了提高性能，几乎所有互联网应用都有缓存机制，其中Memcache是使用非常广泛的一个分布式缓存系统。众所周知，LAMP是非常经典的Web架构方式，但是随着Nginx的成熟，越来越多的系统开始转型为LNMP（Linux+Nginx+MySQL+PHP with fpm），这是因为Nginx采用基于事件机制的I/O多路复用思想设计，在高并发情况下其性能远远优于默认采用prefork模式的Apache，另外，相对于Apache，Nginx更轻量，同时拥有大量优秀的扩展模块，使得在Nginx上可以实现一些美妙的功能。<p>传统上，PHP中使用memcache的方法是使用php-memcache或php-memached扩展操作memcache，然而在Nginx上有构建更高效缓存机制的方法，本文将首先介绍这种机制，然后介绍具体的操作步骤方法，最后将对这种机制和传统的PHP操作memcache的性能进行一个benchmark。</p>
+- id: theory-of-mysql-index
+  title: MySQL索引背后的数据结构及算法原理
+  postedOn: 2011-10-18
+  author: 张洋
+  tags: 
+    - MySQL
+    - 索引
+    - B树
+    - 优化
+  category: 
+  abstract: 本文以MySQL数据库为研究对象，讨论与数据库索引相关的一些话题。特别需要说明的是，MySQL支持诸多存储引擎，而各种存储引擎对索引的支持也各不相同，因此MySQL数据库支持多种索引类型，如BTree索引，哈希索引，全文索引等等。为了避免混乱，本文将只关注于BTree索引，因为这是平常使用MySQL时主要打交道的索引，至于哈希索引和全文索引本文暂不讨论。
+- id: consistent-hashing
+  title: 一致性哈希算法及其在分布式系统中的应用
+  postedOn: 2011-10-18
+  author: 张洋
+  tags: 
+    - 分布式
+    - 一致性哈希
+  category: 
+  abstract: 本文将会从实际应用场景出发，介绍一致性哈希算法（Consistent Hashing）及其在分布式系统中的应用。首先本文会描述一个在日常开发中经常会遇到的问题场景，借此介绍一致性哈希算法以及这个算法如何解决此问题；接下来会对这个算法进行相对详细的描述，并讨论一些如虚拟节点等与此算法应用相关的话题。
+- id: intro-of-nginx-module-development
+  title: Nginx模块开发入门
+  postedOn: 2011-10-18
+  author: 张洋
+  tags: 
+    - Nginx
+    - 系统扩展开发
+  category: 
+  abstract: Nginx是当前最流行的HTTP Server之一，根据W3Techs的统计，目前世界排名（根据Alexa）前100万的网站中，Nginx的占有率为6.8%。与Apache相比，Nginx在高并发情况下具有巨大的性能优势。<p>Nginx属于典型的微内核设计，其内核非常简洁和优雅，同时具有非常高的可扩展性。Nginx最初仅仅主要被用于做反向代理，后来随着HTTP核心的成熟和各种HTTP扩展模块的丰富，Nginx越来越多被用来取代Apache而单独承担HTTP Server的责任，例如目前淘宝内各个部门正越来越多使用Nginx取代Apache，据笔者了解，在腾讯和新浪等公司也存在类似情况。</p><p>同时，大量的第三方扩展模块也令Nginx越来越强大。例如，由淘宝的工程师清无（王晓哲）和春来（章亦春）所开发的nginx_lua_module可以将Lua语言嵌入到Nginx配置中，从而利用Lua极大增强了Nginx本身的编程能力，甚至可以不用配合其它脚本语言（如PHP或Python等），只靠Nginx本身就可以实现复杂业务的处理。而春来所开发的ngx_openresty更是通过集成LuaJIT等组件，将Nginx本身变成了一个完全的应用开发平台。目前淘宝数据平台与产品部量子统计的产品都是基于ngx_openresty所开发。对ngxin_lua_module或ngx_openresty感兴趣的朋友可以参考我在关键词上给出的链接，后续我也可能会写一些与其有关的文章。</p><p>本文将会重点关注Nginx模块开发入门及基础。目前Nginx的学习资料非常少，而扩展模块开发相关的资料几乎只有《Emiller's Guide To Nginx Module Development》一文，此文十分经典，但是由于Nginx版本的演进，其中少许内容可能有点过时。本文是笔者在研读这篇文章和Nginx源代码的基础上，对自己学习Nginx模块开发的一个总结。本文将通过一个完整的模块开发实例讲解Nginx模块开发的入门内容。</p>

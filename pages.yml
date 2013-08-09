@@ -1,3 +1,2 @@
-pages: 
-  - title: About me
-    content: "about-me"
+- id: about-me
+  title: About me
