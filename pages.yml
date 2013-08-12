@@ -1,2 +1,5 @@
 - id: about-me
   title: About me
+
+- id: !!str 404
+  title: !!str 404
