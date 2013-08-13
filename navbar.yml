@@ -2,7 +2,7 @@
   href: /pages/about-me.html
   target: _self
 
-- label: 订阅
+- label: +订阅
   href: /rss.xml
   target: _self
 
@@ -10,10 +10,6 @@
   href: http://weibo.com/ericzhangbuaa
   target: _blank
 
-- label: github
-  href: https://github.com/ericzhang-cn
-  target: _blank
-
-- label: 这个博客是用什么搭建的
+- label: 这个博客是如何搭建的
   href: https://github.com/ericzhang-cn/papery
   target: _blank
