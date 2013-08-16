@@ -1,2 +1,4 @@
 .DS_Store
 assets/vendor/mathjax
+*.html
+*.xml
