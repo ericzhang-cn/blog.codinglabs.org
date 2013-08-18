@@ -1,3 +1,14 @@
+- id: accurately-measuring-model-prediction-error
+  title: 准确测量机器学习模型的误差
+  postedOn: !!str 2013-08-16
+  author: 张洋
+  tags: 
+    - 机器学习
+    - 数据挖掘
+    - 翻译
+    - 误差分析
+  abstract: 在机器学习模型的效果评估中，预测误差的分析是重中之重。对于现有的各种误差测量技术，如果使用不当，会得出极具误导性的结论。这些结论会误导模型设计者设计出过拟合的模型，过拟合是指训练出的模型对于训练集拟合的很好，但是对于新的样本集则预测效果极差。这篇文章描述了如何正确的测量模型误差，以避免此类问题。
+
 - id: papery-is-released
   title: 我的博客系统折腾手记暨papery正式发布
   postedOn: !!str 2013-08-12
