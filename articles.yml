@@ -1,3 +1,13 @@
+- id: cardinality-estimate-exper
+  title: 五种常用基数估计算法效果实验及实践建议
+  postedOn: !!str 2013-08-30
+  author: 张洋
+  tags: 
+    - 算法
+    - 基数估计
+    - 大数据
+  abstract: 之前我曾写过一系列关于基数估计（cardinality estimation）算法的文章，文中介绍了一些常用基数估计算法的原理。最近对常用的基数估计算法做了一些实验，这篇文章描述了实验结果，包括这些算法的估计效果及误差状况，主要通过图表展示。通过观察实验数据和可视化图表可以加强对各种基数估计算法理论分析的直观理解。文章首先会对实验做一些说明，然后通过图表详细展示实验数据，最后会根据实验结果总结一些实践中有用的结论。同时文末会附上相关的参考文献及原始数据。
+
 - id: accurately-measuring-model-prediction-error
   title: 准确测量机器学习模型的误差
   postedOn: !!str 2013-08-16
