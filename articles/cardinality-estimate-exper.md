@@ -151,7 +151,7 @@ LogLog Counting的表现基本与理论相符，可以看到当基数不太大�
 <p class="picture"><img alt="" src="/uploads/pictures/cardinality-estimate-exper/ac-error-16.png"/></p>
 
 #### 结论
-由于分别在基数较小和较大时使用Linear Counting和LogLog Counting，Adaptive Counting克服了两者的缺陷，属于比较稳定的技术估计方法。而且随着分桶数的增加，估计的偏差和方差均明显减小。
+由于分别在基数较小和较大时使用Linear Counting和LogLog Counting，Adaptive Counting克服了两者的缺陷，属于比较稳定的基数估计方法。而且随着分桶数的增加，估计的偏差和方差均明显减小。
 
 ### HyperLogLog Counting
 #### 估计效果
@@ -175,7 +175,7 @@ LogLog Counting的表现基本与理论相符，可以看到当基数不太大�
 <p class="picture"><img alt="" src="/uploads/pictures/cardinality-estimate-exper/hllc-error-16.png"/></p>
 
 #### 结论
-HyperLogLog Counting采用调和平均数取代LogLog Counting中的几何平均数，旨在减小离群点的影响，并且对Linear Counting转折阈值做了调整。从实验效果看，在分桶数较小时，改进效果并不明显，不过在\\(2^16\\)分桶下，整体偏差和稳定程度优于Adaptive Counting。
+HyperLogLog Counting采用调和平均数取代LogLog Counting中的几何平均数，旨在减小离群点的影响，并且对Linear Counting转折阈值做了调整。从实验效果看，在分桶数较小时，改进效果并不明显，不过在\\(2^{16}\\)分桶下，整体偏差和稳定程度优于Adaptive Counting。
 
 但是从误差图中可以看到，在200,000附近出现了一个明显的脉冲。其原因在Google关于HyperLogLog++ Counting的论文中[<sup>5<sup>](#ref5)有分析，其主要是因为在Linear Counting刚转折后的一小段区域内存在一个偏差，HyperLogLog++ Counting的一个改进就是对这个区域的偏差进行了修正。
 
@@ -220,7 +220,7 @@ HyperLogLog Counting采用调和平均数取代LogLog Counting中的几何平均
 # 实践建议
 下面根据实验结果从个人角度给出一些基数估计算法的实践性建议，当然只代表个人意见，不同人对实验结果可能有不同解读。
 
-+ Linear Counting和LogLog Counting由于分别在基数较大和基数较小（阈值可解析分析，具体方法和公司请参考后文列出的相关论文）时存在严重的失效，因此不适合在实际中单独使用。一种例外是，如果对节省存储空间要求不强烈，不要求空间复杂度为常数（实际为\\(O(n)\\)，则在保证bitmap全满概率很小的条件下，Linear Counting的效果要优于其它算法。
++ Linear Counting和LogLog Counting由于分别在基数较大和基数较小（阈值可解析分析，具体方法和公式请参考后文列出的相关论文）时存在严重的失效，因此不适合在实际中单独使用。一种例外是，如果对节省存储空间要求不强烈，不要求空间复杂度为常数（Linear Counting的空间复杂度为\\(O(n)\\)，其它算法均为\\(O(1)\\)），则在保证bitmap全满概率很小的条件下，Linear Counting的效果要优于其它算法。
 + 总体来看，不论哪种算法，提高分桶数都可以降低偏差和方差，因此总体来看基数估计算法中分桶数的选择是最重要的一个权衡——在精度和存储空间间的权衡。
 + 实际中，Adaptive Counting或HyperLogLog Counting都是不错的选择，前者偏差较小，后者对离群点容忍性更好，方差较小。
 + Google的HyperLogLog Counting++算法属于实验性改进，缺乏严格的数学分析基础，通用性存疑，不宜在实际中贸然使用。
