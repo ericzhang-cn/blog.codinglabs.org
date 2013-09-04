@@ -1,7 +1,7 @@
 <div style="margin: 0 auto 20px;text-align:center;">
     <img src="http://www.gravatar.com/avatar/63fc09f93a4996df87b2543ea27879a0.png?s=300" alt="avatar" />
 </div>
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 #include&lt;stdio.h&gt;
 
 int main(int argc, char** argv) {

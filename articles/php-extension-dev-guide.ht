@@ -5,9 +5,9 @@
 <h1>下载PHP源代码</h1>
 <p>要开发PHP扩展，第一步要下载PHP源代码，因为里面有开发扩展需要的工具。我下载的是PHP最新版本5.3.3，格式为tar.bz2压缩包。下载地址为：<a href="http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror">http://cn.php.net/get/php-5.3.3.tar.bz2/from/a/mirror</a>。</p>
 <p>下载后，将源代码移动到合适的目录并解压。解压命令为：</p>
-<pre class="prettyprint">tar -jxvf 源码包名称</pre>
+<pre class="prettyprint linenums">tar -jxvf 源码包名称</pre>
 <p>若下载的是tar.gz压缩包，解压命令为</p>
-<pre class="prettyprint">tar -zxvf 源码包名称</pre>
+<pre class="prettyprint linenums">tar -zxvf 源码包名称</pre>
 <p>解压后，在源代码目录中有个ext目录，这里便是和PHP扩展有关的目录。进入目录后用ls查看，可以看到许多已经存在的扩展。下图是在我的环境下查看的结果：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/1.png"/></p>
 <p>其中蓝色的均是扩展包目录，其中可以看到我们很熟悉的mysql、iconv和gd等等。而ext_skel是Unix环境下用于自动生成PHP扩展框架的脚本工具，后面我们马上会用到，ext_skel_win32.php是windows下对应的脚本。</p>
@@ -15,9 +15,9 @@
 <p>下面我们开发一个PHP扩展：say_hello。这个扩展很简单，只是接受一个字符串参数，然后输出“Hello xxx!”。这个例子只是为了介绍PHP扩展组件的开发流程，不承担实际功能。</p>
 <h2>生成扩展组件框架</h2>
 <p>PHP的扩展组件开发目录和文件是有固定组织结构的，你可以随便进入一个已有扩展组件目录，查看其所有文件，我想你一定眼花缭乱了。当然你可以选择手工完成框架的搭建，不过我相信你更希望有什么东西来帮你完成。上文提到的ext_skel脚本就是用来自动构建扩展包框架的工具。ext_skel的完整命令为：</p>
-<pre class="prettyprint">ext_skel --extname=module [--proto=file] [--stubs=file] [--xml[=file]] [--skel=dir] [--full-xml] [--no-help]</pre>
+<pre class="prettyprint linenums">ext_skel --extname=module [--proto=file] [--stubs=file] [--xml[=file]] [--skel=dir] [--full-xml] [--no-help]</pre>
 <p>作为初学者，我们不必了解所有命令参数，实际上，大多数情况下只需要提供第一个参数就可以了，也就是扩展模块的名字。因此，我们在ext目录中键入如下命令：</p>
-<pre class="prettyprint">./ext_skel --extname=say_hello</pre>
+<pre class="prettyprint linenums">./ext_skel --extname=say_hello</pre>
 <p>（如果你希望详细了解ext_skel的各项命令参数，请<a href="http://www.php.net/manual/en/internals2.buildsys.skeleton.php" target="_blank">参考这里</a>）</p>
 <p>这时再用ls查看，会发现多了一个“say_hello”目录，进入这个目录，会发现ext_skel已经为我们建立好了say_hello的基本框架，如下图：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/2.png"/></p>
@@ -30,7 +30,7 @@
 <p>开发PHP扩展组件的第一步不是写实现代码，而是要先配置好Build System选项。由于我们是在Linux下开发，所以这里的配置主要与config.m4有关。</p>
 <p>关于Build System配置这一块，要是写起来能写一大堆，而且与Unix系统很多东西相关，就算我有兴趣写估计大家也没兴趣看，所以这里我们从略，只拣关键地方说一下，关于config.m4更多细节可以<a href="http://www.php.net/manual/en/internals2.buildsys.configunix.php" target="_blank">参考这里</a>。</p>
 <p>打开生成的config.m4文件，内容大致如下：</p>
-<pre class="prettyprint">dnl $Id$
+<pre class="prettyprint linenums">dnl $Id$
 dnl config.m4 for extension say_hello
 dnl Comments in this file start with the string 'dnl'.
 dnl Remove where necessary. This file will not work
@@ -87,7 +87,7 @@ PHP_NEW_EXTENSION(say_hello, say_hello.c, $ext_shared)
 fi
 </pre>
 <p>不要看这么多，因为所有以“dnl”开头的全是注释，所以真正起作用没几行。这里需要配置的只有下面几行：</p>
-<pre class="prettyprint">dnl If your extension references something external, use with:
+<pre class="prettyprint linenums">dnl If your extension references something external, use with:
 dnl PHP_ARG_WITH(say_hello, for say_hello support,
 dnl Make sure that the comment is aligned:
 dnl [ --with-say_hello Include say_hello support])
@@ -97,16 +97,16 @@ dnl PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,
 dnl Make sure that the comment is aligned:
 dnl [ --enable-say_hello Enable say_hello support])</pre>
 <p>我想大家也都能看明白，意思就是“如果你的扩展引用了外部组件，使用…，否则使用…”。我们的say_hello扩展并没有引用外部组件，所以将“Otherwise use enable”下面三行的“dnl”去掉，改为：</p>
-<pre class="prettyprint">dnl Otherwise use enable:
+<pre class="prettyprint linenums">dnl Otherwise use enable:
 PHP_ARG_ENABLE(say_hello, whether to enable say_hello support,
 Make sure that the comment is aligned:
 [ --enable-say_hello Enable say_hello support])</pre>
 <p>保存，这样关于Build System配置就大功告成了。</p>
 <h2>PHP Extension及Zend_Module结构分析</h2>
 <p>以上可以看成是为开发PHP扩展而做的准备工作，下面就要编写核心代码了。上文说过，编写PHP扩展是基于Zend API和一些宏的，所以如果要编写核心代码，我们首先要弄清楚PHP Extension的结构。因为一个PHP Extension在C语言层面实际上就是一个zend_module_entry结构体，这点可以从“php_say_hello.h”中得到证实。打开“php_say_hello.h”，会看到里面有怎么一行：</p>
-<pre class="prettyprint">extern zend_module_entry say_hello_module_entry;</pre>
+<pre class="prettyprint linenums">extern zend_module_entry say_hello_module_entry;</pre>
 <p>say_hello_module_entry就是say_hello扩展的C语言对应元素，而关于其类型zend_module_entry的定义可以在PHP源代码的“Zend/zend_modules.h”文件里找到，下面代码是zend_module_entry的定义：</p>
-<pre class="prettyprint">typedef struct _zend_module_entry zend_module_entry;
+<pre class="prettyprint linenums">typedef struct _zend_module_entry zend_module_entry;
 
 struct _zend_module_entry {
     unsigned short size;
@@ -148,7 +148,7 @@ struct _zend_module_entry {
 <p>第14个字段“version”是模块的版本。</p>
 <p>（关于zend_module_entry更详尽的介绍请<a href="http://www.php.net/manual/en/internals2.structure.modstruct.php" target="_blank">参考这里</a>）</p>
 <p>介绍完以上字段，我们可以看看“say_hello.c”中自动生成的“say_hello_module_entry”框架代码了。</p>
-<pre class="prettyprint">/* {{{ say_hello_module_entry
+<pre class="prettyprint linenums">/* {{{ say_hello_module_entry
 */
 zend_module_entry say_hello_module_entry = {
     #if ZEND_MODULE_API_NO &gt;= 20010901
@@ -176,7 +176,7 @@ zend_module_entry say_hello_module_entry = {
 <p>php_info_print_table_row()——输出表格内容。第一个参数是整形，指明这一行的列数，然后后面的参数是与列数等量的(char*)类型参数用于指定显示的文字。</p>
 <p>php_info_print_table_end()——结束phpinfo表格。无参数。</p>
 <p>下面是“say_hello.c”中需要编写的info_func的具体代码：</p>
-<pre class="prettyprint">/* {{{ PHP_MINFO_FUNCTION
+<pre class="prettyprint linenums">/* {{{ PHP_MINFO_FUNCTION
 */
 PHP_MINFO_FUNCTION(say_hello)
 {
@@ -193,7 +193,7 @@ PHP_MINFO_FUNCTION(say_hello)
 <h2>编写核心函数</h2>
 <p>编写核心函数，总共分为三步：1、使用宏PHP_FUNCTION定义函数体；2、使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息；3、使用宏PHP_FE将函数加入到say_hello_functions中。下面分步说明。</p>
 <h3>使用宏PHP_FUNCTION定义函数体</h3>
-<pre class="prettyprint">PHP_FUNCTION(say_hello_func)
+<pre class="prettyprint linenums">PHP_FUNCTION(say_hello_func)
 {
     char *name;
     int name_len;
@@ -214,17 +214,17 @@ PHP_MINFO_FUNCTION(say_hello)
 <p>最后的返回值也是通过宏实现的。RETURN_TRUE宏是返回布尔值“true”。</p>
 <h3>使用宏ZEND_BEGIN_ARG_INFO和ZEND_END_ARG_INFO定义参数信息</h3>
 <p>参数信息是函数所必要部分，这里不做深究，直接给出相应代码：</p>
-<pre class="prettyprint">ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0) ZEND_END_ARG_INFO()</pre>
+<pre class="prettyprint linenums">ZEND_BEGIN_ARG_INFO(arginfo_say_hello_func, 0) ZEND_END_ARG_INFO()</pre>
 <p>如需了解具体信息请阅读相关宏定义。</p>
 <h3>使用宏PHP_FE将函数加入到say_hello_functions中</h3>
 <p>最后，我们需要将刚才定义的函数和参数信息加入到say_hello_functions数组里，代码如下：</p>
-<pre class="prettyprint">const zend_function_entry say_hello_functions[] = {
+<pre class="prettyprint linenums">const zend_function_entry say_hello_functions[] = {
 PHP_FE(say_hello_func, arginfo_say_hello_func)
     {NULL, NULL, NULL}
 };</pre>
 <p>这一步就是通过PHP_EF宏实现，注意这个数组最后一行必须是{NULL, NULL, NULL} ，请不要删除。</p>
 <p>下面是编写完成后的say_hello.c全部代码：</p>
-<pre class="prettyprint">/*
+<pre class="prettyprint linenums">/*
 +----------------------------------------------------------------------+
 | PHP Version 5                                                        |
 +----------------------------------------------------------------------+
@@ -333,7 +333,7 @@ PHP_MINFO_FUNCTION(say_hello)
 /* }}} */</pre>
 <h2>编译并安装扩展</h2>
 <p>在say_hello目录下输入下面命令：</p>
-<pre class="prettyprint">/usr/bin/phpize
+<pre class="prettyprint linenums">/usr/bin/phpize
 ./configure
 make
 make install</pre>
@@ -345,7 +345,7 @@ make install</pre>
 <p>如果上面顺利完成，这时运行phpinfo()，应该能看到如下信息：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/5.png"/></p>
 <p>这说明扩展已经安装成功了。然后我们编写一个测试用PHP脚本：</p>
-<pre class="prettyprint">&lt;?php say_hello_func('Zhang Yang'); ?&gt;;</pre>
+<pre class="prettyprint linenums">&lt;?php say_hello_func('Zhang Yang'); ?&gt;;</pre>
 <p>执行这个脚本，结果如下：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/php-extension-dev-guide/6.png"/></p>
 <p>说明扩展已经正常工作了。</p>

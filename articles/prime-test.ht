@@ -24,7 +24,7 @@
 <h2>因子检测法</h2>
 <p>最直观的素数检测算法就是因子检测法。说白了，就是从2到n-1一个个拿来试，看能否整除n，如果有能整除的（找到一个因子），则输出不是质数，否则则认为n为质数。当然，实际上不需要试探到n-1，只要到\(\sqrt{n}\)就好了，原因如下：</p>
 <p>设\(n=a\times b\)，且a、b均为n的非平凡约数，显然\(a&gt;\sqrt{n}\)和\(b&gt;\sqrt{n}\)不可能同时成立，因为同时成立时a*b就会大于n，所以，如果n存在非平凡约数，则至少有一个小于等于\(\sqrt{n}\)，因此只要遍历到\(\sqrt{n}\)就可以了。</p>
-<p>因子检测法的实现代码如下（python）：</p><pre class="prettyprint">def prime_test_factor(n):
+<p>因子检测法的实现代码如下（python）：</p><pre class="prettyprint linenums">def prime_test_factor(n):
     if n == 1:
         return False
     for i in range(2, 1 + int(floor(sqrt(n)))):
@@ -32,7 +32,7 @@
             return False
     return True</pre>
 <p>做几个测试：</p>
-<pre class="prettyprint">print prime_test_factor(2) #True
+<pre class="prettyprint linenums">print prime_test_factor(2) #True
 print prime_test_factor(11) #True
 print prime_test_factor(15) #False
 print prime_test_factor(2147483647) #True</pre>
@@ -73,7 +73,7 @@ print prime_test_factor(2147483647) #True</pre>
 2^{[101]_2} &amp;\times 2^{[101]_2} &amp;         &amp;= 2^{[1010]_2}
 \end{align}\)</p>
 <p>可以看到这样一个规律：对中间结果d自身进行平方，等于在二进制指数的尾部“生出”一个0；对中间结果d自身进行平方再乘以底数，等于在二进制指数尾部“生出”一个1。靠这样不断让指数“生长”，就可以构造出幂。如果在每次运算时取模，就可以得到模幂了，下面是这个算法的python实现：</p>
-<pre class="prettyprint">def compute_power(a, p, m):
+<pre class="prettyprint linenums">def compute_power(a, p, m):
     result = 1
     p_bin = bin(p)[2:]
     length = len(p_bin)
@@ -84,11 +84,11 @@ print prime_test_factor(2147483647) #True</pre>
 
     return result</pre>
 <p>这个算法的复杂度正比于a、p和m中位数最多的数的二进制位数，要远远低于朴素的模幂求解法。</p>
-<p>例如，下面的代码在我的机器上瞬间可以完成：</p><pre class="prettyprint">compute_power(2, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057150, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151)</pre>
+<p>例如，下面的代码在我的机器上瞬间可以完成：</p><pre class="prettyprint linenums">compute_power(2, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057150, 6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151)</pre>
 <p>而用直观方法计算如此大指数的幂基本是不可能的。</p>
 <h3>费马检测的实现</h3>
 <p>有了上的铺垫，下面可以实现费马检测了：</p>
-<pre class="prettyprint">def prime_test_fermat(p):
+<pre class="prettyprint linenums">def prime_test_fermat(p):
     if p == 1:
         return False
     if p == 2:
@@ -98,7 +98,7 @@ print prime_test_factor(2147483647) #True</pre>
         return True
     return False</pre>
 <p>以下是一些测试：</p>
-<pre class="prettyprint">print prime_test_fermat(7) #True
+<pre class="prettyprint linenums">print prime_test_fermat(7) #True
 print prime_test_fermat(11) #True
 print prime_test_fermat(15) #False
 print prime_test_fermat(121) #False
@@ -125,7 +125,7 @@ print prime_test_fermat(68647976601306097149819007990813932172694353001433054093
 \end{align}\)</p>
 <p>由于找到了一个非平凡平方根67，所以可以断言561是合数。因此2就成为了561是合数的一个证据。</p>
 <p>一般的，Miller-Rabin算法的python实现如下：</p>
-<pre class="prettyprint">def miller_rabin_witness(a, p):
+<pre class="prettyprint linenums">def miller_rabin_witness(a, p):
     if p == 1:
         return False
     if p == 2:
@@ -159,7 +159,7 @@ def prime_test_miller_rabin(p, k):
         k = k - 1
     return True</pre>
 <p>其中miller_rabin_witness用于确认a是否为p为合数的证据，prime_test_miller_rabin共探测k次，每次随机产生一个1至p-1间的整数。只要有一次发现p为合数的证据就认为p为合数，否则认为p为素数。一些测试：</p>
-<pre class="prettyprint">print prime_test_miller_rabin(7, 5) #True
+<pre class="prettyprint linenums">print prime_test_miller_rabin(7, 5) #True
 print prime_test_miller_rabin(21, 5) #False
 print prime_test_miller_rabin(561, 50) #False
 print prime_test_miller_rabin(6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151, 50) #True</pre>

@@ -16,7 +16,7 @@ SeaJS本身遵循KISS（Keep It Simple, Stupid）理念进行开发，其本身�
 
 使用传统的开发方法，各个js文件代码如下：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 //module1.js
 var module1 = {
     run: function() {
@@ -48,7 +48,7 @@ var module4 = {
 
 此时index.html需要引用module1.js及其所有下层依赖（注意顺序）：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 &lt;!DOCTYPE HTML&gt;
 &lt;html lang="zh-CN"&gt;
 &lt;head&gt;
@@ -77,7 +77,7 @@ var module4 = {
 
 首先是index.html：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 &lt;!DOCTYPE HTML&gt;
 &lt;html lang="zh-CN"&gt;
 &lt;head&gt;
@@ -102,7 +102,7 @@ index.html加载了init模块，并使用此模块的initPage方法初始化页�
 
 下面看一下模块化后JavaScript的写法：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 //jquery.js
 define(function(require, exports, module) = {
  
@@ -191,7 +191,7 @@ SeaJS项目目前托管在GitHub上，主页为 https://github.com/seajs/seajs/ 
 
 SeaJS中使用“define”函数定义一个模块。因为SeaJS的文档并没有关于define的完整参考，所以我阅读了SeaJS源代码，发现define可以接收三个参数：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 /**
 * Defines a module.
 * @param {string=} id The module id.
@@ -213,7 +213,7 @@ fn.define = function(id, deps, factory) {
 
 但是，包括SeaJS的官方示例在内几乎所有用到define的地方都只传递一个工厂函数进去，类似与如下代码：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 define(function(require, exports, module) {
     //code of the module...
 });
@@ -243,7 +243,7 @@ id是一个模块的标识字符串，define只有一个参数时，id会被默�
 
 第一种定义模块的模式是基于exports的模式：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 define(function(require, exports, module) {
     var a = require('a'); //引入a模块
     var b = require('b'); //引入b模块
@@ -264,7 +264,7 @@ define(function(require, exports, module) {
 
 上面是一种比较“正宗”的模块定义模式。除了将公共数据和方法附加在exports上，也可以直接返回一个对象表示模块，如下面的代码与上面的代码功能相同：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 define(function(require) {
     var a = require('a'); //引入a模块
     var b = require('b'); //引入b模块
@@ -286,7 +286,7 @@ define(function(require) {
 
 如果模块定义没有其它代码，只返回一个对象，还可以有如下简化写法：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 define({
     data: 1,
     func: function() {
@@ -307,7 +307,7 @@ define({
 
 如
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 require("http://example/js/a");
 </pre>
 
@@ -317,7 +317,7 @@ require("http://example/js/a");
 
 例如在 http://example/js/b.js 中载入
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 require("./c");
 </pre>
 
@@ -329,19 +329,19 @@ require("./c");
 
 载入css时，如
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 require("./module1-style.css");
 </pre>
 
 路径中含有”?”时，如
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 require(&lt;a href="http://example/js/a.json?cb=func"&gt;http://example/js/a.json?cb=func&lt;/a&gt;);
 </pre>
 
 路径以”#”结尾时，如
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 require("http://example/js/a.json#");
 </pre>
 
@@ -351,7 +351,7 @@ require("http://example/js/a.json#");
 
 seajs.use主要用于载入入口模块。入口模块相当于C程序的main函数，同时也是整个模块依赖树的根。上面在TinyApp小例子中，init就是入口模块。seajs.use用法如下：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 //单一模式
 seajs.use('./a');
  
@@ -369,7 +369,7 @@ seajs.use(['./a', './b'], function(a, b) {
 
 一般seajs.use只用在页面载入入口模块，SeaJS会顺着入口模块解析所有依赖模块并将它们加载。如果入口模块只有一个，也可以通过给引入sea.js的script标签加入”data-main”属性来省略seajs.use，例如，上面TinyApp的index.html也可以改为如下写法：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 &lt;!DOCTYPE HTML&gt;
 &lt;html lang="zh-CN"&gt;
 &lt;head&gt;
@@ -389,7 +389,7 @@ seajs.use(['./a', './b'], function(a, b) {
 
 require是SeaJS主要的模块加载方法，当在一个模块中需要用到其它模块时一般用require加载：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 var m = require('/path/to/module/file');
 </pre>
 
@@ -399,7 +399,7 @@ var m = require('/path/to/module/file');
 
 传给require的路径标识必须是字符串字面量，不能是表达式，如下面使用require的方法是错误的：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 require('module' + '1');
  
 require('Module'.toLowerCase());
@@ -411,7 +411,7 @@ require('Module'.toLowerCase());
 
 上文说过SeaJS会在html页面打开时通过静态分析一次性记载所有需要的js文件，如果想要某个js文件在用到时才下载，可以使用require.async：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 require.async('/path/to/module/file', function(m) {
     //code of callback...
 });
@@ -423,7 +423,7 @@ require.async('/path/to/module/file', function(m) {
 
 SeaJS提供了一个seajs.config方法可以设置全局配置，接收一个表示全局配置的配置对象。具体使用方法如下：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 seajs.config({
     base: 'path/to/jslib/',
     alias: {
@@ -437,7 +437,7 @@ seajs.config({
 
 其中base表示基址寻址时的基址路径。例如base设置为 http://example.com/js/3-party/ ，则
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 var $ = require('jquery');
 </pre>
 
@@ -455,7 +455,7 @@ debug表示是否工作在调试模式下。
 
 要将现有JS库如jQuery与SeaJS一起使用，只需根据SeaJS的的模块定义规则对现有库进行一个封装。例如，下面是对jQuery的封装方法：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 define(function() {
  
 //{{{jQuery原有代码开始
@@ -501,7 +501,7 @@ SeaJS本来集成了一个打包部署工具spm，后来作者为了更KISS一�
 
 html：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 &lt;!DOCTYPE HTML&gt;
 &lt;html lang="zh-CN"&gt;
 &lt;head&gt;
@@ -521,7 +521,7 @@ html：
 
 javascript：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 //init.js
 define(function(require, exports, module) {
     var $ = require('./jquery');
@@ -541,7 +541,7 @@ define({
 
 css：
 
-<pre class="prettyprint">
+<pre class="prettyprint linenums">
 .author{color:red;font-size:10pt;}
 .blog{font-size:10pt;}
 </pre>

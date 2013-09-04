@@ -16,7 +16,7 @@
 <h2>数据结构</h2>
 <p>TSRM中比较重要的数据结构有两个：tsrm_tls_entry和tsrm_resource_type。下面先看tsrm_tls_entry。</p>
 <p>tsrm_tls_entry定义在TSRM/TSRM.c中：</p>
-<pre class="prettyprint">typedef struct _tsrm_tls_entry tsrm_tls_entry;
+<pre class="prettyprint linenums">typedef struct _tsrm_tls_entry tsrm_tls_entry;
 
 struct _tsrm_tls_entry {
     void **storage;
@@ -27,7 +27,7 @@ struct _tsrm_tls_entry {
 <p>每个tsrm_tls_entry结构负责表示一个线程的所有全局变量资源，其中thread_id存储线程ID，count记录全局变量数，next指向下一个节点。storage可以看做指针数组，其中每个元素是一个指向本节点代表线程的一个全局变量。最终各个线程的tsrm_tls_entry被组成一个链表结构，并将链表头指针赋值给一个全局静态变量tsrm_tls_table。注意，因为tsrm_tls_table是一个货真价实的全局变量，所以所有线程会共享这个变量，这就实现了线程间的内存管理一致性。tsrm_tls_entry和tsrm_tls_table结构的示意图如下：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/zend-thread-safety/2.png"/></p>
 <p>tsrm_resource_type的内部结构相对简单一些：</p>
-<pre class="prettyprint">typedef struct {
+<pre class="prettyprint linenums">typedef struct {
     size_t size;
     ts_allocate_ctor ctor;
     ts_allocate_dtor dtor;
@@ -37,7 +37,7 @@ struct _tsrm_tls_entry {
 <h2>实现细节</h2>
 <p>这一小节分析TSRM一些算法的实现细节。因为整个TSRM涉及代码比较多，这里拣其中具有代表性的两个函数分析。</p>
 <p>第一个值得注意的是tsrm_startup函数，这个函数在进程起始阶段被sapi调用，用于初始化TSRM的环境。由于tsrm_startup略长，这里摘录出我认为应该注意的地方：</p>
-<pre class="prettyprint">/* Startup TSRM (call once for the entire process) */
+<pre class="prettyprint linenums">/* Startup TSRM (call once for the entire process) */
 TSRM_API int tsrm_startup(int expected_threads, int expected_resources, int debug_level, char *debug_filename)
 {
     /* code... */
@@ -69,7 +69,7 @@ TSRM_API int tsrm_startup(int expected_threads, int expected_resources, int debu
 <p>可以看到比较常用的sapi如mod_php5、php-fpm和cgi都是预分配一个线程和一个资源，这样是因为不愿浪费内存空间，而且多数情况下PHP还是运行于单线程环境。</p>
 <p>这里还可以看到一个id_count变量，这个变量是一个全局静态变量，其作用就是通过自增产生资源ID，这个变量在这里被初始化为0。所以TSRM产生资源ID的方式非常简单：就是一个整形变量的自增。</p>
 <p>第二个需要仔细分析的就是ts_allocate_id，编写过PHP扩展的朋友对这个函数肯定不陌生，这个函数用于在多线程环境下申请一个全局变量并返回资源ID。</p>
-<pre class="prettyprint">/* allocates a new thread-safe-resource id */
+<pre class="prettyprint linenums">/* allocates a new thread-safe-resource id */
 TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate_ctor ctor, ts_allocate_dtor dtor)
 {
     int i;
@@ -124,9 +124,9 @@ TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate
     return *rsrc_id;
 }</pre>
 <p>rsrc_id最终存放的就是新资源的ID。其实这个函数的一些实现方式让我比较费解，首先是返回ID的方式。因为rsrc_id是按引入传入的，所以最终也就应该包含资源ID，那么最后完全不必在return *rsrc_id，可以返回一个预订整数表示成功或失败（例如1成功，0失败），这里有点费两遍事的意思，而且多了一次寻址。另外“*rsrc_id = TSRM_SHUFFLE_RSRC_ID(id_count++); ”让我感觉很奇怪，因为TSRM_SHUFFLE_RSRC_ID被定义为“((rsrc_id)+1)”，那么这里展开就是：</p>
-<pre class="prettyprint">*rsrc_id = ((id_count++)+1)</pre>
+<pre class="prettyprint linenums">*rsrc_id = ((id_count++)+1)</pre>
 <p>为什么不写成这样呢：</p>
-<pre class="prettyprint">*rsrc_id = ++id_count</pre>
+<pre class="prettyprint linenums">*rsrc_id = ++id_count</pre>
 <p>真是怪哉。</p>
 <p>好的，且不管实现是否合理，我们先继续研究这个函数吧。</p>
 <p>首先要将id_count自增，生成一个新的资源ID，然后为这个新资源创建一个tsrm_resource_type并放入resource_type_table，接着遍历所有线程（注意是所有）为每一个线程的tsrm_tls_entry分配这个线程全局变量需要的内存空间（p-&gt;storage[j] = (void *) malloc(resource_types_table[j].size); ）。</p>
@@ -148,7 +148,7 @@ TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate
 <p>为了看看模块是如何实现选择性编译代码的，我们建立一个空的PHP扩展模块。到PHP源码的ext目录下执行如下命令：</p>
 <pre class="brush:bash">./ext_skel --extname=zts_research</pre>
 <p>ext_skel是一个脚手架程序，用于创建PHP扩展模块。此时会看到ext目录下多了个zts_research目录。ext_skel为为什么生成了一个模块的架子，并附带了很多提示性注释。在这个目录下找到php_zts_research.h并打开，比较有趣的是一下一段代码：</p>
-<pre class="prettyprint">/* 
+<pre class="prettyprint linenums">/* 
     Declare any global variables you may need between the BEGIN
     and END macros here:     
 
@@ -158,26 +158,26 @@ TSRM_API ts_rsrc_id ts_allocate_id(ts_rsrc_id *rsrc_id, size_t size, ts_allocate
     ZEND_END_MODULE_GLOBALS(zts_research)
 */</pre>
 <p>很明显这里提示了定义全局变量的方法：用ZEND_BEGIN_MODULE_GLOBALS和ZEND_END_MODULE_GLOBALS两个宏包住所有全局变量。下面看一下这两个宏，这两个宏定义在Zend/zend_API.h文件里：</p>
-<pre class="prettyprint">#define ZEND_BEGIN_MODULE_GLOBALS(module_name)     \
+<pre class="prettyprint linenums">#define ZEND_BEGIN_MODULE_GLOBALS(module_name)     \
 typedef struct _zend_##module_name##_globals {
 #define ZEND_END_MODULE_GLOBALS(module_name)        \
 } zend_##module_name##_globals;</pre>
 <p>原来这两个宏只是将一个模块的所有全局变量封装为一个结构体定义，名称为zend_module_name_globals。关于为什么要封装成结构体，上文有提到。</p>
 <p>php_zts_research.h另外比较有意思的一处就是：</p>
-<pre class="prettyprint">#ifdef ZTS
+<pre class="prettyprint linenums">#ifdef ZTS
 #define ZTS_RESEARCH_G(v) TSRMG(zts_research_globals_id, zend_zts_research_globals *, v)
 #else
 #define ZTS_RESEARCH_G(v) (zts_research_globals.v)
 #endif</pre>
 <p>zts_research_globals是zts_research模块全局变量结构的变量名称，类型为zend_module_name_globals，在哪定义的稍后会研究。这里ZTS_RESEARCH_G就是这个模块获取全局变量的宏，如果ZTS没有定义（非线程安全时），就直接从这个结构中获取相应字段，如果线程安全开启时，则使用TSRMG这个宏。</p>
-<pre class="prettyprint">#define TSRMG(id, type, element)   (((type) (*((void ***) tsrm_ls))[TSRM_UNSHUFFLE_RSRC_ID(id)])-&gt;element)</pre>
+<pre class="prettyprint linenums">#define TSRMG(id, type, element)   (((type) (*((void ***) tsrm_ls))[TSRM_UNSHUFFLE_RSRC_ID(id)])-&gt;element)</pre>
 <p>这个宏就不具体细究了，因为实在太难懂了，基本思想就是使用上文提到的TSRM机制从线程全局变量池中获取对应的数据，其中tsrm_ls可以看作是线程全局变量池的指针，获取变量的凭证就是资源ID。</p>
 <p>看到这里可能还有点晕，例如zts_research_globals这个变量哪来的？zts_research_globals_id又是哪来的？为了弄清这个问题，需要打开ext/zts_research/zts_research.c这个文件，其中有这样的代码：</p>
-<pre class="prettyprint">/* If you declare any globals in php_zts_research.h uncomment this:
+<pre class="prettyprint linenums">/* If you declare any globals in php_zts_research.h uncomment this:
 ZEND_DECLARE_MODULE_GLOBALS(zts_research)
 */</pre>
 <p>提示很清楚，如果在php_zts_research.h中定义了任何全局变量则将这段代码的注释消除，看来这个ZEND_DECLARE_MODULE_GLOBALS宏就是关键了。然后在Zend/zend_API中有这样的代码：</p>
-<pre class="prettyprint">#ifdef ZTS
+<pre class="prettyprint linenums">#ifdef ZTS
 
 #define ZEND_DECLARE_MODULE_GLOBALS(module_name)                            \
 ts_rsrc_id module_name##_globals_id;
@@ -195,7 +195,7 @@ zend_##module_name##_globals module_name##_globals;
 <p>当线程安全开启时，这里实际定义了一个整形的资源ID（ts_rsrc_id 被typedef定义为int），而当线程安全不开启时，则直接定义一个结构体。在这个模块中分别对应zts_research_globals_id和zts_research_globals。</p>
 <p>到这里思路基本理顺了：如果ZTS没有被启用，则直接声明一个全局变量结构体，并直接通过存取其字段实现全局变量存取；如果ZTS开启，则定义一个整形变量作为资源ID，然后通过ts_allocate_id函数向TSRM申请一块内存放置结构体（需要程序员手工在MINIT函数中实现，脚手架生成的程序中没有），并通过TSRM存取数据。</p>
 <p>最后一个疑问：tsrm_ls在哪里？如果通过上述方法从TSRM中取数据，那么一定要知道线程全局变量内存池的指针tsrm_ls。这就是我说过的最污染PHP的地方，如果你阅读过PHP源码或编写过模块，对以下四个宏肯定眼熟：TSRMLS_D，TSRMLS_DC，TSRMLS_DTSRMLS_C，TSRMLS_CC。实际在PHP内部每次定义方法或调用方法时都要在参数列表最后加上其中的一个宏，其实就是为了将tsrm_ls传给函数以便存取全局变量，这四个宏的定义如下：</p>
-<pre class="prettyprint">#ifdef ZTS
+<pre class="prettyprint linenums">#ifdef ZTS
 
 #define TSRMLS_D    void ***tsrm_ls
 #define TSRMLS_DC   , TSRMLS_D

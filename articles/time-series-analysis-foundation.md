@@ -67,7 +67,7 @@ t的均值函数值表示在t时刻随机变量\\(Y\_t\\)的期望。
 
 <p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/whitenoise.png"/></p>
 
-<pre class="prettyprint">Y = ts(rnorm(100, mean=0, sd=1));
+<pre class="prettyprint linenums">Y = ts(rnorm(100, mean=0, sd=1));
 plot(Y, family="simhei", main="白噪声", type="b", col="red");
 abline(h=0)
 </pre>
@@ -95,7 +95,7 @@ Y\_t & = & e\_1+e\_2+\\cdots +e\_t \\\\
 
 <p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/randwalk.png"/></p>
 
-<pre class="prettyprint">Y = ts(rnorm(100, mean=0, sd=1));
+<pre class="prettyprint linenums">Y = ts(rnorm(100, mean=0, sd=1));
 for (i in 2:length(Y)) {
     Y[i] = Y[i] + Y[i-1];
 }
@@ -204,7 +204,7 @@ ARIMA中的p、d和q分别表示自相关、差分和滑动平均。当p和d均�
 
 <p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/ma1.png"/></p>
 
-<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+<pre class="prettyprint linenums">Ye = rnorm(100, mean=0, sd=1);
 Y = c();
 Y[1] = Ye[1];
 for (i in 2:length(Ye)) {
@@ -257,7 +257,7 @@ abline(h=0)
 
 <p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/ma2.png"/></p>
 
-<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+<pre class="prettyprint linenums">Ye = rnorm(100, mean=0, sd=1);
 Y = c();
 Y[1] = Ye[1];
 Y[2] = Ye[2] - (-0.8) * Ye[1];
@@ -316,7 +316,7 @@ AR(1)的序列公式如下：
 
 <p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/ar1.png"/></p>
 
-<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+<pre class="prettyprint linenums">Ye = rnorm(100, mean=0, sd=1);
 Y = c();
 Y[1] = Ye[1];
 for (i in 2:length(Ye)) {
@@ -398,7 +398,7 @@ abline(h=0)
 
 <p class="picture"><img alt="" src="/uploads/pictures/time-series-analysis-foundation/arma11.png"/></p>
 
-<pre class="prettyprint">Ye = rnorm(100, mean=0, sd=1);
+<pre class="prettyprint linenums">Ye = rnorm(100, mean=0, sd=1);
 Y = c();
 Y[1] = Ye[1];
 for (i in 2:length(Ye)) {

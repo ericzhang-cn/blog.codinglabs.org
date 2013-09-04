@@ -3,34 +3,34 @@
 <h1>Opdumper</h1>
 <h2>安装</h2>
 <p>Opdumper的源码已经托管在github上，其地址为：<a href="https://github.com/ericzhang-cn/opdumper" target="_blank">https://github.com/ericzhang-cn/opdumper</a>。可以通过以下命令克隆源代码：</p>
-<pre class="prettyprint">git clone https://github.com/ericzhang-cn/opdumper.git</pre>
+<pre class="prettyprint linenums">git clone https://github.com/ericzhang-cn/opdumper.git</pre>
 <p>Opdumper是一个标准的PHP Extension，安装方法如下：</p>
 <p>首先将Opdumper源码放到PHP源码包的ext/opdumper目录下，进入此目录执行如下命令：</p>
-<pre class="prettyprint">phpize
+<pre class="prettyprint linenums">phpize
 ./configure
 make
 make install</pre>
 <p>然后在php.ini中添加一行配置：</p>
-<pre class="prettyprint">extension=opdumper.so</pre>
+<pre class="prettyprint linenums">extension=opdumper.so</pre>
 <p>目前opdumper支持PHP&gt;=5.3，在Linux和MacOS下测试通过，Windows下未做测试。</p>
 <h2>CLI API</h2>
 <p>Opdumper支持类似vld的命令行方式输出opcode，只需在执行php命令时通过-d参数将opdumper.active=1传入。例如我们有一个foo.php：</p>
-<pre class="prettyprint">&lt;?php
+<pre class="prettyprint linenums">&lt;?php
 $a = 'hello';
 echo $a;
 ?&gt;</pre>
 <p>执行如下命令：</p>
-<pre class="prettyprint">php -d opdumper.active=1 foo.php</pre>
+<pre class="prettyprint linenums">php -d opdumper.active=1 foo.php</pre>
 <p>结果如下：</p>
 <p class="picture"><img alt="" src="/uploads/pictures/opdumper-and-web-opcode-dumper/1.png"/></p>
 <h2>PHP_FUNCTION API</h2>
 <p>Opdumper还支持vld不支持的PHP_FUNCTION API，Opdumper提供了两个PHP函数：od_dump_opcodes_string和od_dump_opcodes_file。前者接受一个字符串作为产生，字符串是一段PHP代码；后者接受一个PHP文件作为参数，返回值均是一个存有opcode结果的PHP数组。以od_dump_opcodes_file为例，我们在foo.php同一目录下再写一个bar.php：</p>
-<pre class="prettyprint">&lt;?php
+<pre class="prettyprint linenums">&lt;?php
 $opcodes = od_dump_opcodes_file('./foo.php');
 var_dump($opcodes);
 ?&gt;</pre>
 <p>执行结果如下：</p>
-<pre class="prettyprint">array(3) {
+<pre class="prettyprint linenums">array(3) {
     [0]=&gt;
     array(8) {
         ["lineno"]=&gt;
