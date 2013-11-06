@@ -1,3 +1,13 @@
+- id: using-mplayer-for-coursera
+  title: 使用MPlayer观看Coursera课程视频的一些心得
+  postedOn: !!str 2013-10-06
+  author: 张洋
+  tags: 
+    - MPlayer
+    - Coursera
+    - 经验技巧
+  abstract: 之前一直是在线看Coursera上的课程视频。最近迫于租住的房子网速太差，加之Coursera访问经常不稳定，为了使得流畅学习的过程不被破坏，开始考虑将视频下载到本地观看。因为之前一直没有在本地看视频的习惯，很少使用播放器，所以找个顺心的播放器就成了重中之重。经过一番折腾，最终选择了MPlayer。下面和大家分享一下用MPlayer看Coursera视频的心得。
+
 - id: cardinality-estimate-exper
   title: 五种常用基数估计算法效果实验及实践建议
   postedOn: !!str 2013-08-30
