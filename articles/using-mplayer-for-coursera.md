@@ -19,7 +19,7 @@ Mac下建议用[Homebrew](http://brew.sh/)安装：
 brew install mplayer
 </pre>
 
-注意，如果你和我一样用的是OSX 10.9 Mavericks，那么直接安装会失败。这是因为brew的mplayer安装脚本不兼容10.9，这块我折腾了好久。最后在github上找到了相关的补丁：https://github.com/i8degrees/homebrew/commit/d0ba78cf321bb7fa005284377e50e98d57bf13a7。这个补丁目前还在brew的hotfix分支下，没有合并到master，可以手工将这个文件覆盖我们本地brew下的mplayer.rb文件就可以正常安转了。
+注意，如果你和我一样用的是OSX 10.9 Mavericks，那么直接安装会失败。这是因为brew的mplayer安装脚本不兼容10.9，这块我折腾了好久。最后在github上找到了[相关的补丁](https://github.com/i8degrees/homebrew/commit/d0ba78cf321bb7fa005284377e50e98d57bf13a7)。这个补丁目前还在brew的hotfix分支下，没有合并到master，我们可以手工应用补丁，将这个补丁文件覆盖掉我们本地brew下的mplayer.rb文件，再执行上面的命令就可以正常安装了。
 
 Linux下可以用相应发行版的软件源安装。例如Ubuntu或Linux Mint（我使用的发行版），可以通过apt安装：
 
@@ -42,12 +42,12 @@ mplayer 视频文件
 ## 基本操作
 MPlayer的播放界面只有一个画面框，所有操作都是通过键盘完成。基本操作如下：
 
-左右箭头 - 快退或快进10秒
-上下箭头 - 快退或快进1分钟
-PageUp和PageDown - 快进或快退10分钟
-p或空格键 - 暂停/继续
-q或ESC键 - 退出播放
-/和\* - 减小或增大音量
++ 左右箭头 - 快退或快进10秒
++ 上下箭头 - 快退或快进1分钟
++ PageUp和PageDown - 快进或快退10分钟
++ p或空格键 - 暂停/继续
++ q或ESC键 - 退出播放
++ /和\* - 减小或增大音量
 
 其它还有一些常用操作可以通过以下命令查看：
 
