@@ -80,7 +80,7 @@
 //9</pre>
 <p>其中f返回的匿名函数与其自由变量x组成了一个闭包系统。</p>
 <p>如果用命令式重写上面的程序，就得到了我们熟悉的闭包：</p>
-<pre class="prettyprint linenums">function f(x{
+<pre class="prettyprint linenums">function f(x) {
     return function(y) {
         return x + y;
     };
