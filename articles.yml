@@ -1,3 +1,14 @@
+- id: index-condition-pushdown
+  title: MySQL索引与Index Condition Pushdown
+  postedOn: !!str 2013-12-05
+  author: 张洋
+  tags: 
+    - MySQL
+    - MariaDB
+    - 索引
+    - IndexConditionPushdown
+  abstract: 大约在两年前，我写了一篇关于MySQL索引的文章。最近有同学在文章的评论中对文章的内容提出质疑，质疑主要集中在联合索引的使用方式上。在那篇文章中，我说明联合索引是将各个索引字段做字符串连接后作为key，使用时将整体做前缀匹配。而这名同学找到了如下一句话：index condition pushdown is usually useful with multi-column indexes:the first component(s) is what index access is done for, the subsequent have columns that we read and check conditions on。从而认为联合索引的使用方式与文中不符。实际上，这个页面所讲述的是在MariaDB 5.3.3（MySQL是在5.6）开始引入的一种叫做Index Condition Pushdown（以下简称ICP）的查询优化方式。由于本身不是一个层面的东西，前文中说的是Index Access，而这里是Query Optimization，所以并不构成对前文正确性的影响。在写前文时，MySQL还没有ICP，所以文中没有涉及相关内容，但考虑到新版本的MariaDB或MySQL中ICP的启用确实影响了一些查询行为的外在表现。所以决定写这篇文章详细讲述一下ICP的原理以及对索引使用方式的优化。
+
 - id: using-mplayer-for-coursera
   title: 使用MPlayer观看Coursera课程视频的一些心得
   postedOn: !!str 2013-10-06
