@@ -1,3 +1,11 @@
+- id: getting-started-with-ubuntu
+  title: 开始使用Ubuntu作为工作环境
+  postedOn: !!str 2013-12-30
+  author: 张洋
+  tags: 
+    - Ubuntu
+  abstract: 2012年3月，我自购了一台13寸的Macbook Air，从那时开始至今近两年时间，我一直用它作为工作本。但是最近越来越觉得4G的内存和128G的SSD力不从心，苦于Air无法升级硬件，于是终于下决心拿出入职时公司给配的Dell E6410，自己买了内存和SSD，升级成了8G内存+370G混合硬盘（120G SSD做主盘，250G硬盘做从盘）。硬件升级事小，关键是系统的迁移代价比较大。我在Dell本上装的是Ubuntu 13.10，由于我平时习惯使用Dropbox等云端服务，浏览器配置也都通过Google账号漫游，所以这部分迁移几乎没有成本，主要的成本在开发环境配置和常用软件迁移。虽然都是Unix系，但是Mac OSX下很多软件Linux下并没有。花了大约一个周末，总算把我的Ubuntu配置的比较顺手了，目前也已经正式投入工作。其中的重头戏便是开发环境（主要是terminal和vim）的配置，另外就是一些常用工具。这篇文章记录了我一些主要的工作，算是给自己留一个文档，也希望能给打算从Mac迁移到Linux的同学做一个借鉴。
+
 - id: bitcoin-mechanism-make-easy
   title: 一个故事告诉你比特币的原理及运作机制
   postedOn: !!str 2013-12-16
