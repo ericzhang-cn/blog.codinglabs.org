@@ -69,10 +69,10 @@ curl https://raw.github.com/ghuntley/terminator-solarized/master/config > ~/.con
 		background_color = "#002b36"
 	[[solarized-dark]]
 		palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
+		background_color = "#002b36"
 		background_image = None
 		cursor_color = "#eee8d5"
 		foreground_color = "#839496"
-		background_color = "#002b36"
 	[[solarized-light]]
 		palette = "#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"
 		background_color = "#fdf6e3"
@@ -159,11 +159,15 @@ cd vim-conf && ./init.sh
 
 <p class="picture"><img alt="" src="/uploads/pictures/getting-started-with-ubuntu/02.png"/></p>
 
+（更新：当前我已经换用[maximum-awesome-linux](https://github.com/ericzhang-cn/maximum-awesome-linux)，不再维护之前那个配置脚本）
+
 ### 快捷键
 其中并没有对vim默认的快捷键做过多重设，只有两个：
 
 + ,-d：打开或关闭NERDTree
 + ,-t：打开或关闭taglist
+
+（更新：换用maximum-awesome-linux后快捷键会不一样，具体请参考[README](https://github.com/ericzhang-cn/maximum-awesome-linux/blob/master/README.md)）
 
 常用工具
 ========
