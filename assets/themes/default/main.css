@@ -1,9 +1,9 @@
 body {
-    font-family: arial,sans-serif; 
+    font-family: arial,sans-serif;
 }
 a {
     text-decoration: none;
-    color: #0099CC;
+    color: rgb(61,146,201);
 }
 a:hover {
     text-decoration: underline;
@@ -11,7 +11,7 @@ a:hover {
 p {
     font-size: 16px;
     line-height: 1.8em;
-    color: #333333;
+    color: #444;
 }
 li {
     line-height: 1.8em;
@@ -19,10 +19,10 @@ li {
 h1, h2, h3, h4 {
 }
 pre.prettyprint {
-	font-size: 12px;
+    font-size: 16px;
 }
 div#header {
-    background-color: #0099CC;
+    background-color: rgb(61,79,93);
     height: 50px;
 }
 div#header-inner {
@@ -46,7 +46,7 @@ div#subtitle {
     color: #FFFFFF;
 }
 div#footer-inner {
-    border-top: 1px solid #0099CC;
+    border-top: 1px solid rgb(61,79,93);
     width: 1024px;
     margin: 20px auto 0;
 }
@@ -65,26 +65,30 @@ div#article-title {
     padding-left: 12px;
 }
 div#article-title a {
-    color: #333333;
+    color: rgb(75,75,75);
 }
 div#article-content p.picture {
     text-align: center;
 }
 div#article-content h1 {
-	background-color: #999999;
-	color: #FFFFFF;
-	padding: 2px;
+    background-color: #999999;
+    color: #FFFFFF;
+    padding: 2px;
 }
 div#article-content h2 {
-	border-bottom: 1px dashed #666666;
+    border-bottom: 1px dashed #666;
 }
 div#article-content h3 {
 }
 div#article-content blockquote {
     margin-left: 5px;
     padding-left: 30px;
-	border-left: 5px solid #0099CC;
-	font-size: 14px;
+    border-left: 5px solid rgb(61,79,93);
+    font-size: 14px;
+}
+div#article-content ul li {
+    margin: 7px 0;
+    color: #444;
 }
 div#article-meta {
     color: #999999;
@@ -97,13 +101,16 @@ div.article-block p.title {
     font-size: 24px;
     font-weight: bold;
 }
+div.article-block p.title a {
+    color:#333;
+}
 div.article-block p.meta {
     text-align: right;
     color: #999999;
 }
 div.article-block a.tag {
     margin-right: 6px;
-    background-color: #0099CC;
+    background-color: #999;
     color: #FFFFFF;
     padding: 3px;
     font-size: 14px;
@@ -114,7 +121,7 @@ div#aboutme {
 div#aboutme p {
     font-size: 14px;
     font-weight: bold;
-    color: #666666;
+    color: #666;
 }
 div#rss {
     border-bottom: 1px dashed #CCCCCC;
@@ -122,8 +129,12 @@ div#rss {
     text-align: right;
 }
 pre.prettyprint {
-    padding: 10px 20px;
-    font-family: Monaco,Consolas,'Lucida Console','Liberation Mono','DejaVu Sans Mono','Bitstream Vera Sans Mono','Courier New','宋体';
+    font-family: Monaco,Consolas,Monospace,'Lucida Console','Liberation Mono','DejaVu Sans Mono','Bitstream Vera Sans Mono','Courier New','宋体';
+    border: 1px solid #E1E1E8;
+    border-radius: 4px;
+}
+pre.prettyprint ol {
+    margin: 0;
 }
 div#tag-cloud {
     border: 1px dashed #CCCCCC;
@@ -134,7 +145,7 @@ div#tag-cloud a {
     margin: 6px;
     display: block;
     float: left;
-    background-color: #0099CC;
+    background-color: rgb(61,79,93);
     color: #FFFFFF;
     padding: 3px;
     font-size: 14px;
@@ -147,7 +158,7 @@ div#tag-index h1 {
     border-bottom: 1px dashed #CCCCCC;
 }
 div#tag-index h1 a {
-    color: #666666;
+    color: #333;
     font-size: 24px;
 }
 div#article-tags {
@@ -155,7 +166,7 @@ div#article-tags {
 }
 div#article-tags a.tag {
     margin-right: 6px;
-    background-color: #0099CC;
+    background-color: #999;
     color: #FFFFFF;
     padding: 3px;
     font-size: 14px;
@@ -171,6 +182,7 @@ div#topnav ul li {
 }
 div#topnav ul li a {
     display: block;
+    color: rgb(61,79,93);
 }
 div#topnav ul li.sep {
     color: #CCCCCC;

@@ -1,161 +1,70 @@
-/* Tomorrow Night Eighties Theme */
-/* Original theme - https://github.com/chriskempson/tomorrow-theme */
-/* Pretty printing styles. Used with prettify.js. */
-/* SPAN elements with the classes below are added by prettyprint. */
-/* plain text */
+/* Pretty printing styles. Used with prettify.js.
+ *
+ * This version is slight modified based on the original version.
+ *
+ * Name:	Stanley Ng
+ * Email: 	stanleyhlng@googlegroups.com
+ * 
+ * Reference:
+ * http://code.google.com/p/google-code-prettify/source/browse/trunk/src/prettify.css
+ */
 .pln {
-  color: #cccccc;
-}
+  color: #bd3613; }
 
-@media screen {
-  /* string content */
-  .str {
-    color: #99cc99;
-  }
+.str {
+  color: #269186; }
 
-  /* a keyword */
-  .kwd {
-    color: #cc99cc;
-  }
+.kwd {
+  color: #859900; }
 
-  /* a comment */
-  .com {
-    color: #999999;
-  }
+.com {
+  color: #586175;
+  font-style: italic; }
 
-  /* a type name */
-  .typ {
-    color: #6699cc;
-  }
+.typ {
+  color: #b58900; }
 
-  /* a literal value */
-  .lit {
-    color: #f99157;
-  }
+.lit {
+  color: #2aa198; }
 
-  /* punctuation */
-  .pun {
-    color: #cccccc;
-  }
+.pun {
+  color: #839496; }
 
-  /* lisp open bracket */
-  .opn {
-    color: #cccccc;
-  }
+.opn {
+  color: #839496; }
 
-  /* lisp close bracket */
-  .clo {
-    color: #cccccc;
-  }
+.clo {
+  color: #839496; }
 
-  /* a markup tag name */
-  .tag {
-    color: #f2777a;
-  }
+.tag {
+  color: #268bd2; }
 
-  /* a markup attribute name */
-  .atn {
-    color: #f99157;
-  }
+.atn {
+  color: #586175; }
 
-  /* a markup attribute value */
-  .atv {
-    color: #66cccc;
-  }
+.atv {
+  color: #2aa198; }
 
-  /* a declaration */
-  .dec {
-    color: #f99157;
-  }
+.dec {
+  color: #268bd2; }
 
-  /* a variable name */
-  .var {
-    color: #f2777a;
-  }
+.var {
+  color: #268bd2; }
 
-  /* a function name */
-  .fun {
-    color: #6699cc;
-  }
-}
-/* Use higher contrast and text-weight for printable form. */
-@media print, projection {
-  .str {
-    color: #006600;
-  }
+.fun {
+  color: #FF0000; }
 
-  .kwd {
-    color: #006;
-    font-weight: bold;
-  }
-
-  .com {
-    color: #600;
-    font-style: italic;
-  }
-
-  .typ {
-    color: #404;
-    font-weight: bold;
-  }
-
-  .lit {
-    color: #004444;
-  }
-
-  .pun, .opn, .clo {
-    color: #444400;
-  }
-
-  .tag {
-    color: #006;
-    font-weight: bold;
-  }
-
-  .atn {
-    color: #440044;
-  }
-
-  .atv {
-    color: #006600;
-  }
-}
-/* Style */
+/* Put a border around prettyprinted code snippets. */
 pre.prettyprint {
-  background: #2d2d2d;
-  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
-  font-size: 12px;
-  line-height: 1.5;
-  border: 1px solid #cccccc;
+  background-color: #042029;
   padding: 10px;
-}
+  border: 1px solid #E1E1E8; }
 
 /* Specify class=linenums on a pre to get line numbering */
 ol.linenums {
-  margin-top: 0;
-  margin-bottom: 0;
-  color: grey;
-}
+  color: #4c666c;
+  margin: 0 0 0 40px; }
 
-/* IE indents via margin-left */
-li.L0,
-li.L1,
-li.L2,
-li.L3,
-li.L4,
-li.L5,
-li.L6,
-li.L7,
-li.L8,
-li.L9 {
-  /* */
-}
-
-/* Alternate shading for lines */
-li.L1,
-li.L3,
-li.L5,
-li.L7,
-li.L9 {
-  /* */
-}
+ol.linenums li {
+  line-height: 18px;
+  padding-left: 12px; }
