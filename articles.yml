@@ -1,3 +1,13 @@
+- id: convert-html-to-kindle-book
+  title: 抓取网页内容生成Kindle电子书
+  postedOn: !!str 2014-03-27
+  author: 张洋
+  tags: 
+    - Kindle
+    - 电子书
+    - 经验技巧
+  abstract: 自从买了kindle后，总是想着如何最大效用发挥其效用。虽然多看上有很多书可以购买，网上也有很多免费的电子书，但是仍然有很多感兴趣的内容是以网页的形式存在的。例如O’Reilly Atlas就提供了诸多电子书，但是只提供免费的在线阅读；另外还有很多资料或文档都只有网页形式。于是就希望通过某种方法讲这些在线资料转为epub或mobi格式，以便在kindle上阅读。这篇文章介绍了如何借助calibre并编写少量代码来达到这个目的。
+
 - id: getting-started-with-ubuntu
   title: 开始使用Ubuntu作为工作环境
   postedOn: !!str 2013-12-30
