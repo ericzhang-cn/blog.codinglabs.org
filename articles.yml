@@ -1,3 +1,14 @@
+- id: 2048-ai-analysis
+  title: 2048-AI程序算法分析
+  postedOn: !!str 2014-04-03
+  author: 张洋
+  tags: 
+    - 2048
+    - Minimax
+    - 人工智能
+    - 算法
+  abstract: 针对目前火爆的2048游戏，有人实现了一个AI程序，可以以较大概率（高于90%）赢得游戏，并且作者在stackoverflow上简要介绍了AI的算法框架和实现思路。但是这个回答主要集中在启发函数的选取上，对AI用到的核心算法并没有仔细说明。这篇文章将主要分为两个部分，第一部分介绍其中用到的基础算法，即minimax和alpha-beta剪枝；第二部分分析作者具体的实现。
+
 - id: convert-html-to-kindle-book
   title: 抓取网页内容生成Kindle电子书
   postedOn: !!str 2014-03-27
