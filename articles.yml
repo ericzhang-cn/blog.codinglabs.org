@@ -240,7 +240,7 @@
     - PageRank
     - 搜索引擎
     - 算法
-  abstract: 直觉得素数探测算法是了解概率算法很好的入口。本文和大家简单聊聊如何确定一个数是素数。geRank产生的背景。第二部分会详细讨论PageRank的思想来源、基础框架，并结合互联网页面拓扑结构讨论PageRank处理Dead Ends及平滑化的方法。第三部分讨论Topic-Sensitive PageRank算法。最后将讨论对PageRank的Spam攻击方法：Spam Farm以及搜索引擎对Spam Farm的防御。
+  abstract: 本文首先会讨论搜索引擎的核心难题，同时讨论早期搜索引擎关于结果页面重要性评价算法的困境，借此引出PageRank产生的背景。第二部分会详细讨论PageRank的思想来源、基础框架，并结合互联网页面拓扑结构讨论PageRank处理Dead Ends及平滑化的方法。第三部分讨论Topic-Sensitive PageRank算法。最后将讨论对PageRank的Spam攻击方法：Spam Farm以及搜索引擎对Spam Farm的防御。
 
 - id: opdumper-and-web-opcode-dumper
   title: 发布一个查看PHP opcode的扩展模块及Web服务
