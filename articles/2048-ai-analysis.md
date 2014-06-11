@@ -146,7 +146,7 @@ Alpha-beta算法可以看成变种的Minimax，基本方法是从根节点开始
 
 具体来说，2048-AI在评价格局时，对这些启发指标采用了加权策略。具体代码如下：
 
-```javascript
+```js
 // static evaluation function
 AI.prototype.eval = function() {
     var emptyCells = this.grid.availableCells().length;
@@ -174,7 +174,7 @@ AI.prototype.eval = function() {
 
 相关剪枝代码如下：
 
-```javascript
+```js
 // try a 2 and 4 in each cell and measure how annoying it is
 // with metrics from eval
 var candidates = [];
@@ -205,7 +205,7 @@ for (var value in scores) { // 2 and 4
 ## 搜索深度
 在2048-AI的实现中，并没有限制搜索的最大深度，而是限制每次“思考”的时间。这里设定了一个超时时间，默认为100ms，在这个时间内，会从1开始，搜索到所能达到的深度。相关代码：
 
-```javascript
+```js
 // performs iterative deepening over the alpha-beta search
 AI.prototype.iterativeDeep = function() {
     var start = (new Date()).getTime();

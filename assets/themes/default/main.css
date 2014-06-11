@@ -23,12 +23,15 @@ h1, h2, h3, h4 {
 
 /* 为代码块定义的样式 */
 pre.prettyprint {
-    font-family: Monaco,Consolas,Monospace,'Lucida Console','Liberation Mono','DejaVu Sans Mono','Bitstream Vera Sans Mono','Courier New','宋体';
-    font-size: 14px;
+    font-family: Menlo,Monaco,"Andale Mono","lucida console","Courier New",monospace !important;
+    font-size: 11px;
     border: 1px solid #e1e1e8;
     border-radius: 4px;
 }
 pre.prettyprint ol {
+    margin: 0;
+}
+div#article-content pre.prettyprint li {
     margin: 0;
 }
 
