@@ -139,6 +139,26 @@ div#rss {
     text-align: right;
 }
 
+/* 独立页面 */
+div#page-content p.picture {
+    text-align: center;
+}
+div#page-content h1,
+                    h2,
+                    h3 {
+    color: #2a2a2a;
+}
+div#page-content blockquote {
+    margin-left: 5px;
+    padding-left: 30px;
+    border-left: 5px solid #ccc;
+    font-size: 14px;
+}
+div#page-content li {
+    margin: 7px 0;
+    color: #5a5a5a;
+}
+
 /* 标签配置 */
 div#tag-cloud {
     border: 1px dashed #ccc;
