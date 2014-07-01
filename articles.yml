@@ -1,3 +1,13 @@
+- id: methods-for-generating-random-number-distributions
+  title: 生成特定分布随机数的方法
+  postedOn: !!str 2014-06-14
+  author: 张洋
+  tags: 
+    - 概率
+    - 算法
+    - 随机数
+  abstract: 生成随机数是程序设计里常见的需求。一般的编程语言都会自带一个随机数生成函数，用于生成服从均匀分布的随机数。不过有时需要生成服从其它分布的随机数，例如高斯分布或指数分布等。有些编程语言已经有比较完善的实现，例如Python的NumPy。这篇文章介绍如何通过均匀分布随机数生成函数生成符合特定概率分布的随机数，主要介绍Inverse Ttransform和Acceptance-Rejection两种基础算法以及一些相关的衍生方法。下文我们均假设已经拥有一个可以生成0到1之间均匀分布的随机数生成函数，关于如何生成均匀分布等更底层的随机数生成理论，请参考其它资料，本文不做讨论。
+
 - id: 2048-ai-analysis
   title: 2048-AI程序算法分析
   postedOn: !!str 2014-04-04
