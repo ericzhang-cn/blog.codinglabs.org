@@ -1,3 +1,13 @@
+- id: a-malloc-tutorial
+  title: 如何实现一个malloc
+  postedOn: !!str 2014-07-03
+  author: 张洋
+  tags: 
+    - C
+    - malloc
+    - 操作系统
+  abstract: 任何一个用过或学过C的人对malloc都不会陌生。大家都知道malloc可以分配一段连续的内存空间，并且在不再使用时可以通过free释放掉。但是，许多程序员对malloc背后的事情并不熟悉，许多人甚至把malloc当做操作系统所提供的系统调用或C的关键字。实际上，malloc只是C的标准库中提供的一个普通函数，而且实现malloc的基本思想并不复杂，任何一个对C和操作系统有些许了解的程序员都可以很容易理解。这篇文章通过实现一个简单的malloc来描述malloc背后的机制。当然与现有C的标准库实现（例如glibc）相比，我们实现的malloc并不是特别高效，但是这个实现比目前真实的malloc实现要简单很多，因此易于理解。重要的是，这个实现和真实实现在基本原理上是一致的。这篇文章将首先介绍一些所需的基本知识，如操作系统对进程的内存管理以及相关的系统调用，然后逐步实现一个简单的malloc。为了简单起见，这篇文章将只考虑x86_64体系结构，操作系统为Linux。
+
 - id: methods-for-generating-random-number-distributions
   title: 生成特定分布随机数的方法
   postedOn: !!str 2014-06-14
