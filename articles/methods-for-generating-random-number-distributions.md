@@ -95,7 +95,7 @@ def standard_normal_rand():
     while True:
         X = random.uniform(-3.0,3.0)
         Y = random.uniform(0.0, 0.5)
-        if X < ss.norm.pdf(Y):
+        if Y < ss.norm.pdf(X):
             return X
 ```
 
