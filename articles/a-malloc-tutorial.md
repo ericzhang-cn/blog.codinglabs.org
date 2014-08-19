@@ -67,7 +67,7 @@ MMU映射单位并不是字节，而是页，这个映射通过查一个常驻�
 
 以Linux 64位系统为例。理论上，64bit内存地址可用空间为0x0000000000000000 ~ 0xFFFFFFFFFFFFFFFF，这是个相当庞大的空间，Linux实际上只用了其中一小部分（256T）。
 
-根据[Linux内核相关文档](https://www.kernel.org/doc/Documentation/x86/x86_64/mm.txt)描述，Linux64位操作系统仅使用低47位，高17位使用第47位做扩展（也就是全填第47位的值）。所以，实际用到的地址为空间为0x0000000000000000 ~ 0x00007FFFFFFFFFFF和0xFFFF800000000000 ~ 0xFFFFFFFFFFFFFFFF，其中前面为用户空间（User Space），后者为内核空间（Kernel Space）。图示如下：
+根据[Linux内核相关文档](https://www.kernel.org/doc/Documentation/x86/x86_64/mm.txt)描述，Linux64位操作系统仅使用低47位，高17位做扩展（只能是全0或全1）。所以，实际用到的地址为空间为0x0000000000000000 ~ 0x00007FFFFFFFFFFF和0xFFFF800000000000 ~ 0xFFFFFFFFFFFFFFFF，其中前面为用户空间（User Space），后者为内核空间（Kernel Space）。图示如下：
 
 ![Linux进程地址排布][4]
 
@@ -238,9 +238,9 @@ void split_block(t_block b, size_t s) {
 
 ```c
 size_t align8(size_t s) {
-    if(s % 8 == 0)
+    if(s & 0x7 == 0)
         return s;
-    return (s / 8 + 1) * 8;
+    return ((s >> 3) + 1) << 3;
 }
 ```
 
@@ -254,7 +254,7 @@ void *malloc(size_t size) {
     t_block b, last;
     size_t s;
     /* 对齐地址 */
-    s = align8(s);
+    s = align8(size);
     if(first_block) {
         /* 查找合适的block */
         last = first_block;
@@ -341,7 +341,7 @@ t_block get_block(void *p) {
 int valid_addr(void *p) {
     if(first_block) {
         if(p > first_block && p < sbrk(0)) {
-            return p == (get_block(p))->ptr);
+            return p == (get_block(p))->ptr;
         }
     }
     return 0;
@@ -486,3 +486,4 @@ void *realloc(void *p, size_t size) {
   [5]: http://blog-codinglabs-org.qiniudn.com/image/a-malloc-tutorial-05.png
   [6]: http://blog-codinglabs-org.qiniudn.com/image/a-malloc-tutorial-06.png
   [7]: http://blog-codinglabs-org.qiniudn.com/image/a-malloc-tutorial-07.png
+
