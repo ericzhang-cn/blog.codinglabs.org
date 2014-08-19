@@ -1,6 +1,6 @@
 - id: a-malloc-tutorial
   title: 如何实现一个malloc
-  postedOn: !!str 2014-08-17
+  postedOn: !!str 2014-08-19
   author: 张洋
   tags: 
     - C

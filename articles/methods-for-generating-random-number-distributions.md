@@ -1,16 +1,18 @@
 生成随机数是程序设计里常见的需求。一般的编程语言都会自带一个随机数生成函数，用于生成服从均匀分布的随机数。不过有时需要生成服从其它分布的随机数，例如高斯分布或指数分布等。有些编程语言已经有比较完善的实现，例如Python的NumPy。这篇文章介绍如何通过均匀分布随机数生成函数生成符合特定概率分布的随机数，主要介绍Inverse Ttransform和Acceptance-Rejection两种基础算法以及一些相关的衍生方法。下文我们均假设已经拥有一个可以生成0到1之间均匀分布的随机数生成函数，关于如何生成均匀分布等更底层的随机数生成理论，请参考其它资料，本文不做讨论。
 
+<!-- toc -->
+
 基础算法
 ========
 Inverse Transform Method
 ------------------------
 最简单的生成算法是Inverse Transform Method（下文简称ITM）。如果我们可以给出概率分布的累积分布函数（下文简称CDF）及其逆函数的解析表达式，则可以非常简单便捷的生成指定分布随机数。
 
-### 算法描述
+### ITM算法描述
 > 1. 生成一个服从均匀分布的随机数\\(U \\sim Uni(0,1)\\)
 > 2. 设\\(F(X)\\)为指定分布的CDF，\\(F^{-1}(Y)\\)是其逆函数。返回\\(X=F^{-1}(U)\\)作为结果
 
-### 算法说明
+### ITM算法说明
 这是一个非常简洁高效的算法，下面说明其原理及正确性。
 
 我们通过图示可以更直观的明白算法的原理。下图是某概率分布的CDF：
@@ -29,7 +31,7 @@ Inverse Transform Method
 
 而根据CDF的定义，这刚好说明\\(X\\)服从以\\(F(x)\\)为CDF的分布，因此我们的生成算法是正确的。
 
-### 实现示例
+### ITM实现示例
 下面以[指数分布](http://en.wikipedia.org/wiki/Exponential_distribution)为例说明如何应用ITM。
 
 首先我们需要求解CDF的逆函数。我们知道指数分布的CDF为
@@ -62,12 +64,12 @@ Acceptance-Rejection Method
 
 当无法给出CDF逆函数的解析表达式时，Acceptance-Rejection Method（下文简称ARM）是另外的选择。ARM的适用范围比ITM要大，只要给出概率密度函数（下文简称PDF）的解析表达式即可，而大多数常用分布的PDF是可以查到的。
 
-### 算法描述
+### ARM算法描述
 > 1. 设PDF为\\(f(x)\\)。首先生成一个均匀分布随机数\\(X \\sim Uni(x\_{min},x\_{max})\\)
 > 2. 独立的生成另一个均匀分布随机数\\(Y \\sim Uni(y\_{min},y\_{max})\\)
 > 3. 如果\\(Y \\leq f(X)\\)，则返回\\(X\\)，否则回到第1步
 
-### 算法说明
+### ARM算法说明
 通过一幅图可以清楚的看到ARM的工作原理。
 
 <p class="picture"><img alt="" src="/uploads/pictures/methods-for-generating-random-number-distributions/accept-reject.png"/></p>
@@ -76,7 +78,7 @@ ARM本质上是一种模拟方法，而非直接数学方法。它每次生成�
 
 显然ARM从效率上不如ITM，但是其适应性更广，在无法得到CDF的逆函数时，ARM是不错的选择。
 
-### 实现示例
+### ARM实现示例
 下面使用ARM实现一个能产生[标准正态分布](http://en.wikipedia.org/wiki/Gauss_distribution)的随机数生成函数。
 
 首先我们要得到标准正态分布的PDF，其数学表示为：
