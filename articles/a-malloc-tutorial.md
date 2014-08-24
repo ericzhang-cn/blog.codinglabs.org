@@ -465,6 +465,7 @@ void *realloc(void *p, size_t size) {
 ## 3.3 遗留问题和优化
 以上是一个较为简陋，但是初步可用的malloc实现。还有很多遗留的可能优化点，例如：
 
++ 同时兼容32位和64位系统
 + 在分配较大快内存时，考虑使用mmap而非sbrk，这通常更高效
 + 可以考虑维护多个链表而非单个，每个链表中的block大小均为一个范围内，例如8字节链表、16字节链表、24-32字节链表等等。此时可以根据size到对应链表中做分配，可以有效减少碎片，并提高查询block的速度
 + 可以考虑链表中只存放free的block，而不存放已分配的block，可以减少查找block的次数，提高效率
@@ -475,7 +476,7 @@ void *realloc(void *p, size_t size) {
 1. 这篇文章大量参考了[A malloc Tutorial](http://www.inf.udec.cl/~leo/Malloc_tutorial.pdf)，其中一些图片和代码直接引用了文中的内容，这里特别指出
 2. [Computer Systems: A Programmer's Perspective, 2/E](http://csapp.cs.cmu.edu/)一书有许多值得参考的地方
 3. 关于Linux的虚拟内存模型，[Anatomy of a Program in Memory](http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory/)是很好的参考资料，另外作者还有一篇[How the Kernel Manages Your Memory](http://duartes.org/gustavo/blog/post/how-the-kernel-manages-your-memory/)对于Linux内核中虚拟内存管理的部分有很好的讲解
-4. 对于真实世界的malloc实现，可以参考[glic的实现](http://repo.or.cz/w/glibc.git/blob/HEAD:/malloc/malloc.c)
+4. 对于真实世界的malloc实现，可以参考[glibc的实现](http://repo.or.cz/w/glibc.git/blob/HEAD:/malloc/malloc.c)
 5. 本文写作过程中大量参考了[维基百科](http://www.wikipedia.org/)，再次感谢这个伟大的网站，并且呼吁大家在手头允许的情况下可以适当捐助维基百科，帮助这个造福人类的系统运行下去
 
 

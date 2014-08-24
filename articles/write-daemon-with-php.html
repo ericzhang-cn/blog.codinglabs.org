@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="keep coding, keep foolish"/>
+        <meta name="keywords" content="代码,数学,数据挖掘,机器学习,算法,编译器,分布式,PHP,Nginx"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 如何使用PHP编写daemon process
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/google-code-prettify/prettify-solarized-dark.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">CodingLabs</a></div>
+            <div id="subtitle">keep coding, keep foolish</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/rss.xml" target="_self">+订阅</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://weibo.com/ericzhangbuaa" target="_blank">微博</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/write-daemon-with-php.html">如何使用PHP编写daemon process</a>
+        </div>
+        <div id="article-meta">
+            作者 张洋 | 发布于 2011-10-24
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#PHP">PHP</a>
+        
+        <a class="tag" href="/tag.html#Deamon">Deamon</a>
+        
+        </div>
+        <div id="article-content">
+            <p>今天下午在<a href="http://segmentfault.com">segmentfault.com</a>看到一个<a href="http://segmentfault.com/question/585/php%E6%80%8E%E4%B9%88%E5%81%9A%E6%9C%8D%E5%8A%A1%E5%8C%96" target="_blank">提问</a>，提问标题是“PHP怎么做服务化”，其中问道php是不是只能以web方式调用。其实很多人对PHP的使用场景都有误解，认为php只能用于编写web脚本，实际上，从PHP4开始，php的使用场景早已不限于处理web请求。</p>
+<p>从php的架构体系来说，php分为三个层次：sapi、php core和zend engine。php core本身和web没有任何耦合，php通过sapi与其它应用程序通信，例如mod_php就是为apache编写的sapi实现，同样，fpm是一个基于fastcgi协议的sapi实现，这些sapi都是与web server配合用于处理web请求的。但是也有许多sapi与web无关，例如cli sapi可以使得在命令行环境下直接执行php，embed sapi可以将php嵌入其它语言（如Lua）那样。这里我并不打算详细讨论php的架构体系和sapi的话题，只是说明从架构体系角度目前的php早已被设计为支持各种环境，而非为web独有。</p>
+<p>除了架构体系的支持外，php丰富的扩展模块也为php在不同环境发挥作用提供了后盾，例如本文要提到的<a href="http://cn.php.net/manual/en/book.pcntl.php" target="_blank">pcntl模块</a>和<a href="http://cn.php.net/manual/en/book.posix.php" target="_blank">posix模块</a>配合可以实现基本的进程管理、信号处理等操作系统级别的功能，而<a href="http://cn.php.net/manual/en/book.sockets.php" target="_blank">sockets模块</a>可以使php具有socket通信的能力。因此php完全可以用于编写类似于shell或perl常做的工具性脚本，甚至是具有server性质的daemon process。</p>
+<p>为了展示php如何编写daemon server，我用php编写了一个简单的http server，这个server以daemon process的形式运行。当然，为了把重点放在如何使用php编写daemon，我没有为这个http server实现具体业务逻辑，但它可以监听指定端口，接受http请求并返回给客户端一条固定的文本，整个过程通过socket实现，全部由php编写而成。</p>
+<!--more-->
+<h1>代码实例</h1>
+<p>下面是这个程序的完整代码：</p>
+<pre class="prettyprint linenums">&lt;?php
+
+//Accpet the http client request and generate response content.
+//As a demo, this function just send "PHP HTTP Server" to client.
+function handle_http_request($address, $port)
+{
+    $max_backlog = 16;
+    $res_content = "HTTP/1.1 200 OK
+        Content-Length: 15
+        Content-Type: text/plain; charset=UTF-8
+
+        PHP HTTP Server";
+    $res_len = strlen($res_content);
+
+    //Create, bind and listen to socket
+    if(($socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === FALSE)
+    {
+        echo "Create socket failed!\n";
+        exit;
+    }   
+
+    if((socket_bind($socket, $address, $port)) === FALSE)
+    {
+        echo "Bind socket failed!\n";
+        exit;
+    }
+
+    if((socket_listen($socket, $max_backlog)) === FALSE)
+    {
+        echo "Listen to socket failed!\n";
+        exit;
+    }
+
+    //Loop
+    while(TRUE)
+    {
+        if(($accept_socket = socket_accept($socket)) === FALSE)
+        {
+            continue;
+        }
+        else
+        {
+            socket_write($accept_socket, $res_content, $res_len);   
+            socket_close($accept_socket);
+        }
+    }
+}
+
+//Run as daemon process.
+function run()
+{
+    if(($pid1 = pcntl_fork()) === 0)
+    //First child process
+    {
+        posix_setsid(); //Set first child process as the session leader.
+
+        if(($pid2 = pcntl_fork()) === 0)
+        //Second child process, which run as daemon.
+        {
+            //Replaced with your own domain or address.
+            handle_http_request('www.codinglabs.org', 9999); 
+        }
+        else
+        {
+            //First child process exit;
+            exit;
+        }
+    }
+    else
+    {
+        //Wait for first child process exit;
+        pcntl_wait($status);
+    }
+}
+
+//Entry point.
+run();
+
+?&gt;</pre>
+<p>这里我假设各位对Unix环境编程都比较了解，所以不做太多细节的解释，只梳理一下。简单来看，这个程序主要由两个部分组成，handle_http_request函数负责处理http请求，其编写方法与用C编写的tcp server类似：创建socket、绑定、监听，然后通过一个循环处理每个connect过来的客户端，一旦accept到一个连接，则输出固定的文本“PHP HTTP Server”（当然http头需要首先构建好），这里没有考虑多路复用和非阻塞等情况，而只是一个简单的同步阻塞tcp server。</p>
+<p>run函数负责将整个程序变为daemon process，方法和Unix环境下C的方法很类似，通过两次fork，第一次fork后调用setsid将子进程1变为session leader，这样就可以让子进程2与其祖先detach，即使祖先进程结束了它也会继续运行（托孤给init进程）。相关细节我不再赘述，对Unix进程相关不熟悉的朋友可以参考《<a href="http://www.kohala.com/start/apue.html" target="_blank">Advanced Programming in the UNIX Environment</a>》一书。</p>
+<p>注意，在这里<a href="http://cn.php.net/manual/en/function.pcntl-fork.php" target="_blank">pcntl_fork</a>对应Unix中的fork，<a href="http://cn.php.net/manual/en/function.pcntl-wait.php" target="_blank">pcntl_wait</a>对应wait，而<a href="http://cn.php.net/manual/en/function.posix-setsid.php" target="_blank">posix_setsid</a>对应setsid，更多函数可以参考PHP Manual中的pcntl和fork模块相关内容。</p>
+<h1>检验</h1>
+<p>下面在命令行下启动这个脚本：</p><pre class="prettyprint linenums">php httpserver.php</pre>
+<p>用ps命令可以看到我们已经启动了一个daemon进程：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/write-daemon-with-php/1.png"/></p>
+<p>这里我绑定的是我博客的域名www.codinglabs.org，端口是9999，可以按需要进行修改。</p>
+<p>下面我先用curl命令看下这个http server是否正常运行：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/write-daemon-with-php/2.png"/></p>
+<p>看来是没问题，再到浏览器中看一下：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/write-daemon-with-php/3.png"/></p>
+<h1>结语</h1>
+<p>当然，这个程序算不上真正的http server，即使作为一个daemon process，也是不完善的，很多必要的事情如修改执行目录（php中可以通过chroot实现）、信号绑定、日志功能等等都没有去做，不过作为一个demo，它已经足够说明php不只是可以编写动态网页处理脚本。如果有的朋友有兴趣，可以使用php将我上面说的功能为这个的http server加上。</p>
+<p>还有一点要说明的是，pcntl和sockets模块默认是不安装的，如果在安装php时没有通过参数指定安装，则需要单独安装这两个扩展模块。</p>
+
+        </div>
+        <!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {num:12,picSize:84,textHeight:45};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+
+<!-- 百度分享 BEGIN -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 END -->
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="write-daemon-with-php" data-title="如何使用PHP编写daemon process" data-url="http://blog.codinglabs.org/articles/write-daemon-with-php.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+ var ds = document.createElement('script');
+ ds.type = 'text/javascript';ds.async = true;
+ ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ ds.charset = 'UTF-8';
+ (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+ })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2014 CodingLabs 本博客内容采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">知识共享署名 3.0 中国大陆许可协议</a>进行许可</p>
+              <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [['$','$'], ['\\(','\\)']],
+                    processEscapes: true
+                }
+            });
+        </script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
+

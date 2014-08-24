@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="keep coding, keep foolish"/>
+        <meta name="keywords" content="代码,数学,数据挖掘,机器学习,算法,编译器,分布式,PHP,Nginx"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 生成特定分布随机数的方法
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/google-code-prettify/prettify-solarized-dark.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">CodingLabs</a></div>
+            <div id="subtitle">keep coding, keep foolish</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/rss.xml" target="_self">+订阅</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://weibo.com/ericzhangbuaa" target="_blank">微博</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/methods-for-generating-random-number-distributions.html">生成特定分布随机数的方法</a>
+        </div>
+        <div id="article-meta">
+            作者 张洋 | 发布于 2014-06-14
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#概率">概率</a>
+        
+        <a class="tag" href="/tag.html#算法">算法</a>
+        
+        <a class="tag" href="/tag.html#随机数">随机数</a>
+        
+        </div>
+        <div id="article-content">
+            <p>生成随机数是程序设计里常见的需求。一般的编程语言都会自带一个随机数生成函数，用于生成服从均匀分布的随机数。不过有时需要生成服从其它分布的随机数，例如高斯分布或指数分布等。有些编程语言已经有比较完善的实现，例如Python的NumPy。这篇文章介绍如何通过均匀分布随机数生成函数生成符合特定概率分布的随机数，主要介绍Inverse Ttransform和Acceptance-Rejection两种基础算法以及一些相关的衍生方法。下文我们均假设已经拥有一个可以生成0到1之间均匀分布的随机数生成函数，关于如何生成均匀分布等更底层的随机数生成理论，请参考其它资料，本文不做讨论。</p>
+<!-- toc -->
+
+<ul>
+<li><a href="#基础算法">基础算法</a><ul>
+<li><a href="#inverse-transform-method">Inverse Transform Method</a><ul>
+<li><a href="#itm算法描述">ITM算法描述</a></li>
+<li><a href="#itm算法说明">ITM算法说明</a></li>
+<li><a href="#itm实现示例">ITM实现示例</a></li>
+</ul>
+</li>
+<li><a href="#acceptance-rejection-method">Acceptance-Rejection Method</a><ul>
+<li><a href="#arm算法描述">ARM算法描述</a></li>
+<li><a href="#arm算法说明">ARM算法说明</a></li>
+<li><a href="#arm实现示例">ARM实现示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#衍生算法">衍生算法</a><ul>
+<li><a href="#组合算法">组合算法</a></li>
+<li><a href="#生成具有相关性的随机数">生成具有相关性的随机数</a></li>
+</ul>
+</li>
+<li><a href="#更多参考">更多参考</a></li>
+</ul>
+<!-- toc stop -->
+
+
+<h1 id="基础算法">基础算法</h1>
+<h2 id="inverse-transform-method">Inverse Transform Method</h2>
+<p>最简单的生成算法是Inverse Transform Method（下文简称ITM）。如果我们可以给出概率分布的累积分布函数（下文简称CDF）及其逆函数的解析表达式，则可以非常简单便捷的生成指定分布随机数。</p>
+<h3 id="itm算法描述">ITM算法描述</h3>
+<blockquote>
+<ol>
+<li>生成一个服从均匀分布的随机数\(U \sim Uni(0,1)\)</li>
+<li>设\(F(X)\)为指定分布的CDF，\(F^{-1}(Y)\)是其逆函数。返回\(X=F^{-1}(U)\)作为结果</li>
+</ol>
+</blockquote>
+<h3 id="itm算法说明">ITM算法说明</h3>
+<p>这是一个非常简洁高效的算法，下面说明其原理及正确性。</p>
+<p>我们通过图示可以更直观的明白算法的原理。下图是某概率分布的CDF：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/methods-for-generating-random-number-distributions/inverse-transformation.png"/></p>
+
+<p>我们从横轴上标注两点\(x_a\)和\(x_b\)，其CDF值分别为\(F(x_a)\)和\(F(x_b)\)。</p>
+<p>由于U服从0到1之间的均匀分布，因此对于一次U的取样，U落入\(F(x_a)\)和\(F(x_b)\)之间的概率为:</p>
+<p>\[P(U \in (F(x_a),F(x_b))) = F(x_b) - F(x_a)\]</p>
+<p>而由于CDF都是单调非减函数，因此这个概率同时等于\(X\)落入\(x_a\)和\(x_b\)之间的概率，即：</p>
+<p>\[P(U \in (F(x_a),F(x_b))) = P(F^{-1}(U) \in (F^{-1}(F(x_a)),F^{-1}(F(x_b)))) = P(X \in (x_a,x_b)) = F(x_b) - F(x_a)\]</p>
+<p>而根据CDF的定义，这刚好说明\(X\)服从以\(F(x)\)为CDF的分布，因此我们的生成算法是正确的。</p>
+<h3 id="itm实现示例">ITM实现示例</h3>
+<p>下面以<a href="http://en.wikipedia.org/wiki/Exponential_distribution">指数分布</a>为例说明如何应用ITM。</p>
+<p>首先我们需要求解CDF的逆函数。我们知道指数分布的CDF为</p>
+<p>\[F(X)=1-e^{-\lambda X}\]</p>
+<p>通过简单的代数运算，可以得到其逆函数为</p>
+<p>\[F^{-1}(Y)=-\frac{1}{\lambda}\ln(1-Y)\]</p>
+<p>由于\(U\)服从从0到1的均匀分布蕴含着\(1-U\)服从同样的分布，因此在实际实现时可以用\(Y\)代替\(1-Y\)，得到：</p>
+<p>\[F^{-1}(Y)=-\frac{1}{\lambda}\ln(Y)\]</p>
+<p>下面给出一个Python的实现示例程序。</p>
+<pre class="prettyprint linenums lang-python">import random
+import math
+def exponential_rand(lam):
+    if lam &lt;= 0:
+        return -1
+    U = random.uniform(0.0, 1.0)
+    return (-1.0 / lam) * math.log(U)
+</pre>
+<h2 id="acceptance-rejection-method">Acceptance-Rejection Method</h2>
+<p>一般来说ITM是一种很好的算法，简单且高效，如果可以使用的话，是第一选择。但是ITM有自身的局限性，就是要求必须能给出CDF逆函数的解析表达式，有些时候要做到这点比较困难，这限制了ITM的适用范围。</p>
+<p>当无法给出CDF逆函数的解析表达式时，Acceptance-Rejection Method（下文简称ARM）是另外的选择。ARM的适用范围比ITM要大，只要给出概率密度函数（下文简称PDF）的解析表达式即可，而大多数常用分布的PDF是可以查到的。</p>
+<h3 id="arm算法描述">ARM算法描述</h3>
+<blockquote>
+<ol>
+<li>设PDF为\(f(x)\)。首先生成一个均匀分布随机数\(X \sim Uni(x_{min},x_{max})\)</li>
+<li>独立的生成另一个均匀分布随机数\(Y \sim Uni(y_{min},y_{max})\)</li>
+<li>如果\(Y \leq f(X)\)，则返回\(X\)，否则回到第1步</li>
+</ol>
+</blockquote>
+<h3 id="arm算法说明">ARM算法说明</h3>
+<p>通过一幅图可以清楚的看到ARM的工作原理。</p>
+<p class="picture"><img alt="" src="/uploads/pictures/methods-for-generating-random-number-distributions/accept-reject.png"/></p>
+
+<p>ARM本质上是一种模拟方法，而非直接数学方法。它每次生成新的随机数后，通过另一个随机数来保证其被接受概率服从指定的PDF。</p>
+<p>显然ARM从效率上不如ITM，但是其适应性更广，在无法得到CDF的逆函数时，ARM是不错的选择。</p>
+<h3 id="arm实现示例">ARM实现示例</h3>
+<p>下面使用ARM实现一个能产生<a href="http://en.wikipedia.org/wiki/Gauss_distribution">标准正态分布</a>的随机数生成函数。</p>
+<p>首先我们要得到标准正态分布的PDF，其数学表示为：</p>
+<p>\[f(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}\]</p>
+<p>为了方便，这里我会直接使用<a href="http://www.scipy.org/">SciPy</a>来计算其PDF。</p>
+<p>程序如下。</p>
+<pre class="prettyprint linenums lang-python">import random
+import scipy.stats as ss
+
+def standard_normal_rand():
+    while True:
+        X = random.uniform(-3.0,3.0)
+        Y = random.uniform(0.0, 0.5)
+        if Y &lt; ss.norm.pdf(X):
+            return X
+</pre>
+<p><strong>注意</strong>：标准正态分布的x取值范围从理论上说是\((-\infty,\infty)\)，但是当离开均值点很远后，其概率密度可忽略不计。这里只取\((-3.0,3.0)\)，实际使用时可以根据具体需要扩大这个取值范围。</p>
+<h1 id="衍生算法">衍生算法</h1>
+<h2 id="组合算法">组合算法</h2>
+<p>当目标分布可以用其它分布经过四则运算表示时，可以使用组合算法生成对应随机数。</p>
+<p>最常见的就是某分布可以表示成多个独立同分布（下文简称IID）随机变量之和。例如二项分布可以表示成多个0-1分布之和，<a href="http://en.wikipedia.org/wiki/Erlang_distribution">Erlang分布</a>可以由多个IID的指数分布得出。</p>
+<p>以Erlang分布为例说明如何生成这类随机数。</p>
+<p>设\(X_1,X_2,\cdots,X_k\)为服从0到1均匀分布的IID随机数，则\(-\frac{1}{\lambda}lnX_1,-\frac{1}{\lambda}lnX_2,\cdots,-\frac{1}{\lambda}lnX_k\)为服从指数分布的IID随机数，因此</p>
+<p>\[X=-\frac{1}{\lambda}lnX_1-\frac{1}{\lambda}lnX_2-\cdots-\frac{1}{\lambda}lnX_k=-\frac{1}{\lambda}ln\prod_{i=1}^k{X_i}\sim Erl(k,\lambda)\]</p>
+<p>所以生成Erlang分布随机数的算法如下：</p>
+<blockquote>
+<ol>
+<li>生成\(X_1,X_2,\cdots,X_k\sim Uni(0,1)\)</li>
+<li>返回\(-\frac{1}{\lambda}ln\prod_{i=1}^k{X_i}\)</li>
+</ol>
+</blockquote>
+<p>这类分布的随机数生成算法很直观，就是先生成相关的n个IID随机数，然后带入简单求和公式或其它四则公式得出最终随机数。其数学理论基础是<a href="http://en.wikipedia.org/wiki/Convolution">卷积理论</a>，稍微有些复杂，这里不再讨论，有兴趣的同学可以查阅相关资料。</p>
+<h2 id="生成具有相关性的随机数">生成具有相关性的随机数</h2>
+<p>现在考虑生成多维随机数，以最简单的二维随机数为例。</p>
+<p>如果两个维度的随机数是相互独立的，那么只要分别生成两个列就可以了。但是如果要求两列具有一定的相关系数，则需要做一些特殊处理。</p>
+<p>下列算法可以生成两列具有相关系数\(\rho\)的随机数。</p>
+<blockquote>
+<ol>
+<li>生成IID随机变量\(X\)和\(Y\)</li>
+<li>计算\(X&#39;=\rho X+\sqrt{1-\rho^2}Y\)</li>
+<li>返回\((X,X&#39;)\)</li>
+</ol>
+</blockquote>
+<p>可以这样验证其正确性：</p>
+<p>\[corr(X,X&#39;)=\rho corr(X,X)+\sqrt{1-\rho^2}corr(X,Y)=\rho\]</p>
+<p><strong>注意</strong>：\(corr(X,X)=1\)，\(corr(X,Y)=0\)。</p>
+<p>因此\(X\)和\(X&#39;\)确实具有相关系数\(\rho\)。</p>
+<h1 id="更多参考">更多参考</h1>
+<p>这篇文章讨论了生成指定分布随机数的基本方法。这篇文章只打算讨论基础方法，所以还有很多有趣的内容，本文没有深入的探讨。这里给出一些扩展阅读资料，供有兴趣的朋友深入学习。首先是一篇<a href="http://ftp.arl.mil/random/random.pdf">非常好的文档</a>，这篇文章来自美国陆军实验室，对计算机生成指定分布随机数的方方面面进行了全面深入描述，是不可多得的好资料。</p>
+<p>在实现方面，可以参考<a href="https://github.com/numpy/numpy/blob/master/numpy/random/mtrand/distributions.c">NumPy中关于random的实现</a>以及我开发的<a href="https://github.com/ericzhang-cn/random.js">JavaScript实现</a>。另外我做过一个<a href="http://blog.codinglabs.org/demo/distributions.html">不同概率分布的可视化页面</a>，可以帮助你直观理解不同分布及PDF参数对分布的影响。</p>
+
+        </div>
+        <!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {num:12,picSize:84,textHeight:45};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+
+<!-- 百度分享 BEGIN -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 END -->
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="methods-for-generating-random-number-distributions" data-title="生成特定分布随机数的方法" data-url="http://blog.codinglabs.org/articles/methods-for-generating-random-number-distributions.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+ var ds = document.createElement('script');
+ ds.type = 'text/javascript';ds.async = true;
+ ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ ds.charset = 'UTF-8';
+ (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+ })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2014 CodingLabs 本博客内容采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">知识共享署名 3.0 中国大陆许可协议</a>进行许可</p>
+              <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [['$','$'], ['\\(','\\)']],
+                    processEscapes: true
+                }
+            });
+        </script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
+

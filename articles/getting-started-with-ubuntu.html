@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="keep coding, keep foolish"/>
+        <meta name="keywords" content="代码,数学,数据挖掘,机器学习,算法,编译器,分布式,PHP,Nginx"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 开始使用Ubuntu作为工作环境
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/google-code-prettify/prettify-solarized-dark.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">CodingLabs</a></div>
+            <div id="subtitle">keep coding, keep foolish</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/rss.xml" target="_self">+订阅</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://weibo.com/ericzhangbuaa" target="_blank">微博</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/getting-started-with-ubuntu.html">开始使用Ubuntu作为工作环境</a>
+        </div>
+        <div id="article-meta">
+            作者 张洋 | 发布于 2013-12-30
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#Ubuntu">Ubuntu</a>
+        
+        </div>
+        <div id="article-content">
+            <p>2012年3月，我自购了一台13寸的Macbook Air，从那时开始至今近两年时间，我一直用它作为工作本。但是最近越来越觉得4G的内存和128G的SSD力不从心，苦于Air无法升级硬件，于是终于下决心拿出入职时公司给配的Dell E6410，自己买了内存和SSD，升级成了8G内存+370G混合硬盘（120G SSD做主盘，250G硬盘做从盘）。</p>
+<p>硬件升级事小，关键是系统的迁移代价比较大。我在Dell本上装的是Ubuntu 13.10，由于我平时习惯使用Dropbox等云端服务，浏览器配置也都通过Google账号漫游，所以这部分迁移几乎没有成本，主要的成本在开发环境配置和常用软件迁移。虽然都是Unix系，但是Mac OSX下很多软件Linux下并没有。</p>
+<p>花了大约一个周末，总算把我的Ubuntu配置的比较顺手了，目前也已经正式投入工作。其中的重头戏便是开发环境（主要是terminal和vim）的配置，另外就是一些常用工具。这篇文章记录了我一些主要的工作，算是给自己留一个文档，也希望能给打算从Mac迁移到Linux的同学做一个借鉴。</p>
+<h1 id="开发环境配置">开发环境配置</h1>
+<p>之前在Mac下，我直接使用的是<a href="https://github.com/square/maximum-awesome">maximum-awesome</a>，开发环境这块完全不用自己操心。可惜maximum-awesome只能在Mac下使用，并没有Linux版。于是需要自己做一些工作，以便让开发环境够顺手。</p>
+<h2 id="使用terminator作为终端">使用terminator作为终端</h2>
+<h3 id="安装terminator">安装terminator</h3>
+<p>Ubuntu自带的终端是gnome-terminal，虽然也还不错，但是不能支持屏幕分割、选择复制等功能让我很不爽，于是我换用terminator作为终端，terminator可以支持屏幕分割，并且默认快捷键和gnome-terminal无异，熟悉gnome-terminal的话可以快速上手。</p>
+<p>Ubuntu下可以这样安装terminator：</p>
+<pre class="prettyprint linenums lang-bash">sudo apt-get install terminator
+</pre>
+<h3 id="terminator常用快捷键">terminator常用快捷键</h3>
+<ul>
+<li>Ctrl-Shift-c 拷贝</li>
+<li>Ctrl-Shift-v 粘贴</li>
+<li>Ctrl-Shift-t 开新Tab窗口</li>
+<li>Ctrl-Shift-o 上下拆分屏幕</li>
+<li>Ctrl-Shift-e 左右拆分屏幕</li>
+<li>Ctrl-Shift-w 关闭当前窗口</li>
+<li>Ctrl-Shift-q 关闭整个终端</li>
+</ul>
+<h2 id="配置terminator使用solarized配色">配置terminator使用solarized配色</h2>
+<h3 id="使用terminator-solarized">使用terminator-solarized</h3>
+<p>maximum-awesome所使用的<a href="http://ethanschoonover.com/solarized">solarized</a>配色是相当不错的，所以自然希望继续使用。针对terminator的solarized配色已经有人专门做好了：<a href="https://github.com/ghuntley/terminator-solarized">terminator-solarized</a>，只要按如下操作就可以使用：</p>
+<pre class="prettyprint linenums lang-bash">mkdir -p ~/.config/terminator/
+curl https://raw.github.com/ghuntley/terminator-solarized/master/config &gt; ~/.config/terminator/config
+</pre>
+<p>然后重新打开terminator就已经是solarized配色了。</p>
+<h3 id="对terminator更多的配置">对terminator更多的配置</h3>
+<p>接下来，可以在terminator-solarized配置文件的基础上进行更多的配置，例如背景透明、启用选择复制等。</p>
+<p>关于terminator的详细配置选项可以参考<a href="http://manpages.ubuntu.com/manpages/intrepid/man5/terminator_config.5.html">terminator manpage</a>，下面贴出我的~/.config/terminator/config供参考：</p>
+<pre class="prettyprint linenums lang-bash">[global_config]
+    title_transmit_bg_color = &quot;#d30102&quot;
+    focus = system
+    suppress_multiple_term_dialog = True
+[keybindings]
+[profiles]
+    [[default]]
+        palette = &quot;#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3&quot;
+        copy_on_selection = True
+        background_image = None
+        background_darkness = 0.95
+        background_type = transparent
+        use_system_font = False
+        cursor_color = &quot;#eee8d5&quot;
+        foreground_color = &quot;#839496&quot;
+        show_titlebar = False
+        font = Monospace 11
+        background_color = &quot;#002b36&quot;
+    [[solarized-dark]]
+        palette = &quot;#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3&quot;
+        background_color = &quot;#002b36&quot;
+        background_image = None
+        cursor_color = &quot;#eee8d5&quot;
+        foreground_color = &quot;#839496&quot;
+    [[solarized-light]]
+        palette = &quot;#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3&quot;
+        background_color = &quot;#fdf6e3&quot;
+        background_image = None
+        cursor_color = &quot;#002b36&quot;
+        foreground_color = &quot;#657b83&quot;
+[layouts]
+    [[default]]
+        [[[child1]]]
+            type = Terminal
+            parent = window0
+            profile = default
+        [[[window0]]]
+            type = Window
+            parent = &quot;&quot;
+[plugins]
+</pre>
+<h3 id="配置dircolors">配置dircolors</h3>
+<p>完成上述配置后，你会发现用ls命令查看目录和文件时是一片灰色。这是因为默认情况下solarized各种bright方案基本都是灰色，而系统默认显示目录和文件时多用bright色，此时需要配置dircolors才能显示出彩色的文件和目录。</p>
+<p><a href="https://github.com/seebi/dircolors-solarized">dircolors-solarized</a>项目提供了适合于solarized的dircolors配色方案，只要选择合适的方案使用就可以了。例如我是用的solarized dark配色，所以可以选择适合这个配色的dircolors.ansi-dark：</p>
+<pre class="prettyprint linenums lang-bash">curl https://raw.github.com/seebi/dircolors-solarized/master/dircolors.ansi-dark &gt; ~/.dircolors
+</pre>
+<p>然后在~/.bashrc中加入如下配置：</p>
+<pre class="prettyprint linenums lang-bash"># enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;
+    alias ls=&#39;ls --color=auto&#39;
+    #alias dir=&#39;dir --color=auto&#39;
+    #alias vdir=&#39;vdir --color=auto&#39;
+
+    alias grep=&#39;grep --color=auto&#39;
+    alias fgrep=&#39;fgrep --color=auto&#39;
+    alias egrep=&#39;egrep --color=auto&#39;
+fi
+
+# some more ls aliases
+alias ll=&#39;ls -alF&#39;
+alias la=&#39;ls -A&#39;
+alias l=&#39;ls -CF&#39;
+</pre>
+<p>执行</p>
+<pre class="prettyprint linenums lang-bash">source ~/.bashrc
+</pre>
+<p>后，再执行ls或ll就可以看到彩色的目录或文件了。</p>
+<p>配置完的terminator效果如下：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/getting-started-with-ubuntu/01.png"/></p>
+
+<h2 id="配置vim">配置VIM</h2>
+<p>vim作为我日常使用频率最高的代码编辑器，自然要好好配置一番。之前的maximum-awesome自带了很多vim插件，这里我没有精力完全按照maximum-awesome的插件配置，只选取了日常比较常用的几个插件先配上，后面需要的话可以再加。</p>
+<h3 id="插件">插件</h3>
+<p>我目前安装的插件有：</p>
+<ul>
+<li><a href="https://github.com/scrooloose/nerdtree">NERDTree</a>：可以在单独的window中浏览目录和文件，方便打开的选取文件。</li>
+<li><a href="https://github.com/vim-scripts/taglist.vim">taglist</a>：可以通过ctags生成的tag文件索引定位代码中的常量、函数、类等结构，阅读代码和写代码必备。</li>
+<li><a href="https://github.com/Lokaltog/vim-powerline">powerline</a>：在底部显示一个非常漂亮的状态条，还可以通过不同的颜色提醒用户当前处于什么状态（如normal、insert或visual）。</li>
+<li><a href="https://github.com/altercation/vim-colors-solarized">vim-colors-solarized</a>：vim的solarized配色插件。</li>
+</ul>
+<p>如果所有插件都按vim标准方法安装，各种插件会非常分散，不便于管理，于是我选用<a href="https://github.com/tpope/vim-pathogen">pathogen</a>安装和管理vim插件。pathogen允许将各个插件放在.vim/bundle/下各自的目录中，通过启动时自动加载所有插件。</p>
+<h3 id="自动配置工具">自动配置工具</h3>
+<p>整个配置过程过于繁琐不再赘述，我已经将配置过程写成了一个自动配置脚本并放到了github：<a href="https://github.com/ericzhang-cn/vim-conf">https://github.com/ericzhang-cn/vim-conf</a>，需要的朋友只要clone下来并运行init.sh脚本就可以自动完成整个配置：</p>
+<pre class="prettyprint linenums lang-bash">git clone https://github.com/ericzhang-cn/vim-conf.git
+cd vim-conf &amp;&amp; ./init.sh
+</pre>
+<p>最终配置效果如下：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/getting-started-with-ubuntu/02.png"/></p>
+
+<p>（更新：当前我已经换用<a href="https://github.com/ericzhang-cn/maximum-awesome-linux">maximum-awesome-linux</a>，不再维护之前那个配置脚本）</p>
+<h3 id="快捷键">快捷键</h3>
+<p>其中并没有对vim默认的快捷键做过多重设，只有两个：</p>
+<ul>
+<li>,-d：打开或关闭NERDTree</li>
+<li>,-t：打开或关闭taglist</li>
+</ul>
+<p>（更新：换用maximum-awesome-linux后快捷键会不一样，具体请参考<a href="https://github.com/ericzhang-cn/maximum-awesome-linux/blob/master/README.md">README</a>）</p>
+<h1 id="常用工具">常用工具</h1>
+<h2 id="浏览器">浏览器</h2>
+<p>Ubuntu自带的是Firefox，我平常使用的是Chromium，这点在Ubuntu下没任何问题，可以直接安装：</p>
+<pre class="prettyprint linenums lang-bash">sudo apt-get install chromium-browser
+</pre>
+<p>用Google账号登录后，书签、插件等会自动同步，非常方便。</p>
+<h2 id="搜狗输入法-amp-谷歌输入法">搜狗输入法&amp;谷歌输入法</h2>
+<p>Mac下有搜狗输入法或百度输入法。不过目前搜狗也基于fcitx做了linux版的搜狗输入法。</p>
+<p>Ubuntu自带的ibus直接卸掉，然后安装<a href="https://fcitx-im.org/wiki/Fcitx">fcitx</a>：</p>
+<pre class="prettyprint linenums lang-bash">sudo add-apt-repository ppa:fcitx-team/nightly &amp;&amp; sudo apt-get update
+sudo apt-get install fcitx-sogoupinyin
+</pre>
+<p>当然谷歌拼音也不错：</p>
+<pre class="prettyprint linenums lang-bash">sudo apt-get install fcitx-googlepinyin
+</pre>
+<h2 id="邮件">邮件</h2>
+<p>Mac下是使用Foxmail for Mac，linux下可以选择ThunderBird，用起来很顺手。</p>
+<h2 id="dropbox">Dropbox</h2>
+<p>Dropbox有官方linux客户端，可以到其官网下载安装。不过安装后也许会发现dropbox的icon没有出现在上面的indicator上，可以这样修复：</p>
+<pre class="prettyprint linenums lang-bash">sudo apt-get install libappindicator1
+dropbox stop &amp;&amp; dropbox start
+</pre>
+<h2 id="evernote">Evernote</h2>
+<p>很不幸，我平常用来做笔记的evernote没有linux官方客户端，不过可以选择使用web版，或者安装第三方linux客户端everpad：</p>
+<pre class="prettyprint linenums lang-bash">sudo add-apt-repository ppa:nvbn-rm/ppa
+sudo apt-get update
+sudo apt-get install everpad
+</pre>
+<p>当然功能和美观程度都没法和Mac下官方的客户端相比，不过日常使用还是足够了。</p>
+<h2 id="办公office">办公Office</h2>
+<p>Ubuntu自带的LibreOffice可以很好的满足需求，试用了WPS for linux，无法正常打开Office 2010的文件，故而弃用之。LibreOffice打开Office 2010的文件没有问题。</p>
+<h2 id="pdf及论文管理">PDF及论文管理</h2>
+<p>平常使用的<a href="http://www.mendeley.com/">Mendeley</a>有官方linux客户端，可以到官网下载。</p>
+<h2 id="绘图及图像处理">绘图及图像处理</h2>
+<p>平常工程文档做图一般用<a href="http://www.yworks.com/en/products_yed_about.html">yEd</a>，是java开发的，所以在linux下可以直接使用。</p>
+<p>图像处理可以用gimp：</p>
+<pre class="prettyprint linenums lang-bash">sudo apt-get install gimp
+</pre>
+<h2 id="影音播放">影音播放</h2>
+<p>平常很少离线看视频，如果需要的话，vlc应该够了：</p>
+<pre class="prettyprint linenums lang-bash">sudo apt-get install vlc
+</pre>
+<h2 id="截图工具">截图工具</h2>
+<p>截图工具非shutter莫属：</p>
+<pre class="prettyprint linenums lang-bash">sudo apt-get install shutter
+</pre>
+<h2 id="阿里旺旺">阿里旺旺</h2>
+<p>因为工作关系，平常必须使用旺旺交流。Mac下有非常好用的官方版，linux下并没有官方旺旺，有个内部版本巨烂无比。不过之前参加活动获赠一个<a href="http://www.codeweavers.com/products/">CrossOver</a>正版授权序列号。</p>
+<p>目前CrossOver运行阿里旺旺2013非常流畅。</p>
+<h2 id="qq">QQ</h2>
+<p>这个对我来说不是刚需。CrossOver可以运行TM2013，另外WebQQ或开VirtualBox在虚拟机中运行QQ都可以。</p>
+<h2 id="专业软件">专业软件</h2>
+<p>其它常用软件特别是如R或Octave等专业软件，本身就有linux版，所以可以按需安装。如Git等开发工具本来就是linux下的软件，当然更不在话下。</p>
+<p>目前已经用Ubuntu工作了一段时间，总体来说从Mac转过来肯定需要一点适应，不过目前感觉没有遇到特别大的问题，毕竟同属Unix系，对码农来说大多数使用习惯几乎是无缝切换。</p>
+<p>另外，重新回到OSS的感觉不错！最后上张图吧：</p>
+<p class="picture"><img alt="" src="/uploads/pictures/getting-started-with-ubuntu/03.png"/></p>
+
+        </div>
+        <!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {num:12,picSize:84,textHeight:45};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+
+<!-- 百度分享 BEGIN -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 END -->
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="getting-started-with-ubuntu" data-title="开始使用Ubuntu作为工作环境" data-url="http://blog.codinglabs.org/articles/getting-started-with-ubuntu.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+ var ds = document.createElement('script');
+ ds.type = 'text/javascript';ds.async = true;
+ ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ ds.charset = 'UTF-8';
+ (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+ })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2014 CodingLabs 本博客内容采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">知识共享署名 3.0 中国大陆许可协议</a>进行许可</p>
+              <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [['$','$'], ['\\(','\\)']],
+                    processEscapes: true
+                }
+            });
+        </script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
+

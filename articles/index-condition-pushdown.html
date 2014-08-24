@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="keep coding, keep foolish"/>
+        <meta name="keywords" content="代码,数学,数据挖掘,机器学习,算法,编译器,分布式,PHP,Nginx"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - MySQL索引与Index Condition Pushdown
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/google-code-prettify/prettify-solarized-dark.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">CodingLabs</a></div>
+            <div id="subtitle">keep coding, keep foolish</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/rss.xml" target="_self">+订阅</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://weibo.com/ericzhangbuaa" target="_blank">微博</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/index-condition-pushdown.html">MySQL索引与Index Condition Pushdown</a>
+        </div>
+        <div id="article-meta">
+            作者 张洋 | 发布于 2013-12-05
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#MySQL">MySQL</a>
+        
+        <a class="tag" href="/tag.html#MariaDB">MariaDB</a>
+        
+        <a class="tag" href="/tag.html#索引">索引</a>
+        
+        <a class="tag" href="/tag.html#IndexConditionPushdown">IndexConditionPushdown</a>
+        
+        </div>
+        <div id="article-content">
+            <p>大约在两年前，我写了<a href="/articles/theory-of-mysql-index.html">一篇关于MySQL索引的文章</a>。最近有同学在文章的评论中对文章的内容提出质疑，质疑主要集中在联合索引的使用方式上。在那篇文章中，我说明联合索引是将各个索引字段做字符串连接后作为key，使用时将整体做前缀匹配。</p>
+<p>而这名同学在<a href="https://mariadb.com/kb/en/index-condition-pushdown/">这个页面</a>找到了如下一句话：index condition pushdown is usually useful with multi-column indexes: the first component(s) is what index access is done for, the subsequent have columns that we read and check conditions on。从而认为联合索引的使用方式与文中不符。</p>
+<p>实际上，这个页面所讲述的是在MariaDB 5.3.3（MySQL是在5.6）开始引入的一种叫做Index Condition Pushdown（以下简称ICP）的查询优化方式。由于本身不是一个层面的东西，前文中说的是Index Access，而这里是Query Optimization，所以并不构成对前文正确性的影响。在写前文时，MySQL还没有ICP，所以文中没有涉及相关内容，但考虑到新版本的MariaDB或MySQL中ICP的启用确实影响了一些查询行为的外在表现。所以决定写这篇文章详细讲述一下ICP的原理以及对索引使用方式的优化。</p>
+<h1 id="实验">实验</h1>
+<p>先从一个简单的实验开始直观认识ICP的作用。</p>
+<h2 id="安装数据库">安装数据库</h2>
+<p>首先需要安装一个支持ICP的MariaDB或MySQL数据库。我使用的是MariaDB 5.5.34，如果是使用MySQL则需要5.6版本以上。</p>
+<p>Mac环境下可以通过brew安装：</p>
+<pre class="prettyprint linenums lang-bash">brew install mairadb
+</pre>
+<p>其它环境下的安装请参考<a href="https://www.mariadb.com/kb/en/getting-installing-and-upgrading-mariadb/">MariaDB官网关于下载安装的文档</a>。</p>
+<h2 id="导入示例数据">导入示例数据</h2>
+<p>与前文一样，我们使用<a href="https://launchpad.net/test-db/">Employees Sample Database</a>，作为示例数据库。完整示例数据库的下载地址为：<a href="https://launchpad.net/test-db/employees-db-1/1.0.6/+download/employees_db-full-1.0.6.tar.bz2">https://launchpad.net/test-db/employees-db-1/1.0.6/+download/employees_db-full-1.0.6.tar.bz2</a>。</p>
+<p>将下载的压缩包解压后，会看到一系列的文件，其中employees.sql就是导入数据的命令文件。执行</p>
+<pre class="prettyprint linenums lang-bash">mysql -h[host] -u[user] -p &lt; employees.sql
+</pre>
+<p>就可以完成建库、建表和load数据等一系列操作。此时数据库中会多一个叫做employees的数据库。库中的表如下：</p>
+<pre class="prettyprint linenums lang-sql">MariaDB [employees]&gt; SHOW TABLES;
++---------------------+
+| Tables_in_employees |
++---------------------+
+| departments         |
+| dept_emp            |
+| dept_manager        |
+| employees           |
+| salaries            |
+| titles              |
++---------------------+
+6 rows in set (0.00 sec)
+</pre>
+<p>我们将使用employees表做实验。</p>
+<h2 id="建立联合索引">建立联合索引</h2>
+<p>employees表包含雇员的基本信息，表结构如下：</p>
+<pre class="prettyprint linenums lang-sql">MariaDB [employees]&gt; DESC employees.employees;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| emp_no     | int(11)       | NO   | PRI | NULL    |       |
+| birth_date | date          | NO   |     | NULL    |       |
+| first_name | varchar(14)   | NO   |     | NULL    |       |
+| last_name  | varchar(16)   | NO   |     | NULL    |       |
+| gender     | enum(&#39;M&#39;,&#39;F&#39;) | NO   |     | NULL    |       |
+| hire_date  | date          | NO   |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+6 rows in set (0.01 sec)
+</pre>
+<p>这个表默认只有一个主索引，因为ICP只能作用于二级索引，所以我们建立一个二级索引：</p>
+<pre class="prettyprint linenums lang-sql">ALTER TABLE employees.employees ADD INDEX first_name_last_name (first_name, last_name);
+</pre>
+<p>这样就建立了一个first_name和last_name的联合索引。</p>
+<h2 id="查询">查询</h2>
+<p>为了明确看到查询性能，我们启用profiling并关闭query cache：</p>
+<pre class="prettyprint linenums lang-sql">SET profiling = 1;
+SET query_cache_type = 0;
+SET GLOBAL query_cache_size = 0;
+</pre>
+<p>然后我们看下面这个查询：</p>
+<pre class="prettyprint linenums lang-sql">MariaDB [employees]&gt; SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39;;
++--------+------------+------------+-----------+--------+------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+------------+------------+-----------+--------+------------+
+| 254642 | 1959-01-17 | Mary       | Botman    | M      | 1989-11-24 |
+| 471495 | 1960-09-24 | Mary       | Dymetman  | M      | 1988-06-09 |
+| 211941 | 1962-08-11 | Mary       | Hofman    | M      | 1993-12-30 |
+| 217707 | 1962-09-05 | Mary       | Lichtman  | F      | 1987-11-20 |
+| 486361 | 1957-10-15 | Mary       | Oberman   | M      | 1988-09-06 |
+| 457469 | 1959-07-15 | Mary       | Weedman   | M      | 1996-11-21 |
++--------+------------+------------+-----------+--------+------------+
+</pre>
+<p>根据MySQL索引的前缀匹配原则，两者对索引的使用是一致的，即只有first_name采用索引，last_name由于使用了模糊前缀，没法使用索引进行匹配。我将查询联系执行三次，结果如下：</p>
+<pre class="prettyprint linenums lang-sql">+----------+------------+---------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                     |
++----------+------------+---------------------------------------------------------------------------+
+|       38 | 0.00084400 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       39 | 0.00071800 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       40 | 0.00089600 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
++----------+------------+---------------------------------------------------------------------------+
+</pre>
+<p>然后我们关闭ICP：</p>
+<pre class="prettyprint linenums lang-sql">SET optimizer_switch=&#39;index_condition_pushdown=off&#39;;
+</pre>
+<p>在运行三次相同的查询，结果如下：</p>
+<pre class="prettyprint linenums lang-sql">+----------+------------+---------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                     |
++----------+------------+---------------------------------------------------------------------------+
+|       42 | 0.00264400 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       43 | 0.01418900 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       44 | 0.00234200 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
++----------+------------+---------------------------------------------------------------------------+
+</pre>
+<p>有意思的事情发生了，关闭ICP后，同样的查询，耗时是之前的三倍以上。下面我们用explain看看两者有什么区别：</p>
+<pre class="prettyprint linenums lang-sql">MariaDB [employees]&gt; EXPLAIN SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39;;
++------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-----------------------+
+| id   | select_type | table     | type | possible_keys        | key                  | key_len | ref   | rows | Extra                 |
++------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-----------------------+
+|    1 | SIMPLE      | employees | ref  | first_name_last_name | first_name_last_name | 44      | const |  224 | Using index condition |
++------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-----------------------+
+1 row in set (0.00 sec)
+</pre>
+<pre class="prettyprint linenums lang-sql">MariaDB [employees]&gt; EXPLAIN SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39;;
++------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-------------+
+| id   | select_type | table     | type | possible_keys        | key                  | key_len | ref   | rows | Extra       |
++------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-------------+
+|    1 | SIMPLE      | employees | ref  | first_name_last_name | first_name_last_name | 44      | const |  224 | Using where |
++------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-------------+
+1 row in set (0.00 sec)
+</pre>
+<p>前者是开启ICP，后者是关闭ICP。可以看到区别在于Extra，开启ICP时，用的是Using index condition；关闭ICP时，是Using where。</p>
+<p>其中Using index condition就是ICP提高查询性能的关键。下一节说明ICP提高查询性能的原理。</p>
+<h1 id="原理">原理</h1>
+<p>ICP的原理简单说来就是将可以利用索引筛选的where条件在存储引擎一侧进行筛选，而不是将所有index access的结果取出放在server端进行where筛选。</p>
+<p>以上面的查询为例，在没有ICP时，首先通过索引前缀从存储引擎中读出224条first_name为Mary的记录，然后在server段用where筛选last_name的like条件；而启用ICP后，由于last_name的like筛选可以通过索引字段进行，那么存储引擎内部通过索引与where条件的对比来筛选掉不符合where条件的记录，这个过程不需要读出整条记录，同时只返回给server筛选后的6条记录，因此提高了查询性能。</p>
+<p>下面通过图两种查询的原理详细解释。</p>
+<h2 id="关闭icp">关闭ICP</h2>
+<p class="picture"><img alt="" src="/uploads/pictures/index-condition-pushdown/01.png"/></p>
+
+<p>在不支持ICP的系统下，索引仅仅作为data access使用。</p>
+<h2 id="开启icp">开启ICP</h2>
+<p class="picture"><img alt="" src="/uploads/pictures/index-condition-pushdown/02.png"/></p>
+
+<p>在ICP优化开启时，在存储引擎端首先用索引过滤可以过滤的where条件，然后再用索引做data access，被index condition过滤掉的数据不必读取，也不会返回server端。</p>
+<h2 id="注意事项">注意事项</h2>
+<p>有几个关于ICP的事情要注意：</p>
+<ul>
+<li>ICP只能用于二级索引，不能用于主索引。</li>
+<li>也不是全部where条件都可以用ICP筛选，如果某where条件的字段不在索引中，当然还是要读取整条记录做筛选，在这种情况下，仍然要到server端做where筛选。</li>
+<li>ICP的加速效果取决于在存储引擎内通过ICP筛选掉的数据的比例。</li>
+</ul>
+<h1 id="参考">参考</h1>
+<p>[1] <a href="https://mariadb.com/kb/en/index-condition-pushdown/">https://mariadb.com/kb/en/index-condition-pushdown/</a></p>
+<p>[2] <a href="http://dev.mysql.com/doc/refman/5.6/en/index-condition-pushdown-optimization.html">http://dev.mysql.com/doc/refman/5.6/en/index-condition-pushdown-optimization.html</a></p>
+
+        </div>
+        <!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {num:12,picSize:84,textHeight:45};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+
+<!-- 百度分享 BEGIN -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 END -->
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="index-condition-pushdown" data-title="MySQL索引与Index Condition Pushdown" data-url="http://blog.codinglabs.org/articles/index-condition-pushdown.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+ var ds = document.createElement('script');
+ ds.type = 'text/javascript';ds.async = true;
+ ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ ds.charset = 'UTF-8';
+ (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+ })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2014 CodingLabs 本博客内容采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">知识共享署名 3.0 中国大陆许可协议</a>进行许可</p>
+              <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [['$','$'], ['\\(','\\)']],
+                    processEscapes: true
+                }
+            });
+        </script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
+

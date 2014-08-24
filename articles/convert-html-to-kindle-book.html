@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="keep coding, keep foolish"/>
+        <meta name="keywords" content="代码,数学,数据挖掘,机器学习,算法,编译器,分布式,PHP,Nginx"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 抓取网页内容生成Kindle电子书
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/google-code-prettify/prettify-solarized-dark.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">CodingLabs</a></div>
+            <div id="subtitle">keep coding, keep foolish</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/rss.xml" target="_self">+订阅</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://weibo.com/ericzhangbuaa" target="_blank">微博</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/convert-html-to-kindle-book.html">抓取网页内容生成Kindle电子书</a>
+        </div>
+        <div id="article-meta">
+            作者 张洋 | 发布于 2014-03-27
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#Kindle">Kindle</a>
+        
+        <a class="tag" href="/tag.html#电子书">电子书</a>
+        
+        <a class="tag" href="/tag.html#经验技巧">经验技巧</a>
+        
+        </div>
+        <div id="article-content">
+            <p>自从买了kindle后，总是想着如何最大效用发挥其效用。虽然多看上有很多书可以购买，网上也有很多免费的电子书，但是仍然有很多感兴趣的内容是以网页的形式存在的。例如<a href="http://chimera.labs.oreilly.com/books/">O’Reilly Atlas</a>就提供了诸多电子书，但是只提供免费的在线阅读；另外还有很多资料或文档都只有网页形式。于是就希望通过某种方法讲这些在线资料转为epub或mobi格式，以便在kindle上阅读。这篇文章介绍了如何借助calibre并编写少量代码来达到这个目的。</p>
+<h1 id="calibre">Calibre</h1>
+<h2 id="calibre简介">Calibre简介</h2>
+<p><a href="http://calibre-ebook.com/">Calibre</a>是一个免费的电子书管理工具，可以兼容Windows, OS X及Linux，令人欣喜的是，除了GUI外，calibre还提供了诸多命令行工具，其中的ebook-convert命令可以根据用户编写的recipes文件（实际是python代码）抓取指定页面内容并生成mobi等格式的电子书。通过编写recipes可以自定制抓取行为，以适应不同的网页结构。</p>
+<h2 id="安装calibre">安装Calibre</h2>
+<p>Calibre的下载地址是<a href="http://calibre-ebook.com/download">http://calibre-ebook.com/download</a>，可以根据自己的操作系统下载相应的安装程序。</p>
+<p>如果是Linux操作系统，还可以通过软件仓库安装：</p>
+<p>Archlinux：</p>
+<pre class="prettyprint linenums lang-bash">pacman -S calibre
+</pre>
+<p>Debian/Ubuntu：</p>
+<pre class="prettyprint linenums lang-bash">apt-get install calibre
+</pre>
+<p>RedHat/Fedora/CentOS：</p>
+<pre class="prettyprint linenums lang-bash">yum -y install calibre
+</pre>
+<p>注意，如果你使用OSX，需要单独安装<a href="http://manual.calibre-ebook.com/cli/cli-index.html">Command Line Tool</a>。</p>
+<h1 id="抓取网页生成电子书">抓取网页生成电子书</h1>
+<p>下面以<a href="http://chimera.labs.oreilly.com/books/1230000000561">Git Pocket Guide</a>为例，说明如何通过calibre从网页生成电子书。</p>
+<h2 id="找到index页">找到index页</h2>
+<p>要抓取整本书，第一件事就是找到index页，这个页面一般是Table of Contents，也就是目录页，其中每个目录项链接到相应内容页。index页将会指导抓取哪些页面以及生成电子书时内容组织顺序。在这个例子中，index页面是<a href="http://chimera.labs.oreilly.com/books/1230000000561/index.html">http://chimera.labs.oreilly.com/books/1230000000561/index.html</a>。</p>
+<h2 id="编写recipes">编写recipes</h2>
+<p>Recipes是一个以recipe为扩展名的脚本，内容实际上是一段python代码，用来定义calibre抓取页面的范围和行为，下面是用于抓取Git Pocket Guide的recipes：</p>
+<pre class="prettyprint linenums lang-python">from calibre.web.feeds.recipes import BasicNewsRecipe
+
+class Git_Pocket_Guide(BasicNewsRecipe):
+
+    title = &#39;Git Pocket Guide&#39;
+    description = &#39;&#39;
+    cover_url = &#39;http://akamaicovers.oreilly.com/images/0636920024972/lrg.jpg&#39;
+
+    url_prefix = &#39;http://chimera.labs.oreilly.com/books/1230000000561/&#39;
+    no_stylesheets = True
+    keep_only_tags = [{ &#39;class&#39;: &#39;chapter&#39; }]
+
+    def get_title(self, link):
+        return link.contents[0].strip()
+
+    def parse_index(self):
+        soup = self.index_to_soup(self.url_prefix + &#39;index.html&#39;)
+
+        div = soup.find(&#39;div&#39;, { &#39;class&#39;: &#39;toc&#39; })
+
+        articles = []
+        for link in div.findAll(&#39;a&#39;):
+            if &#39;#&#39; in link[&#39;href&#39;]:
+                continue
+
+            if not &#39;ch&#39; in link[&#39;href&#39;]:
+                continue
+
+            til = self.get_title(link)
+            url = self.url_prefix + link[&#39;href&#39;]
+            a = { &#39;title&#39;: til, &#39;url&#39;: url }
+
+            articles.append(a)
+
+        ans = [(&#39;Git_Pocket_Guide&#39;, articles)]
+
+        return ans
+</pre>
+<p>下面分别解释代码中不同部分。</p>
+<h3 id="总体结构">总体结构</h3>
+<p>总体来看，一个recipes就是一个python class，只不过这个class必须继承calibre.web.feeds.recipes.BasicNewsRecipe。</p>
+<h3 id="parse_index">parse_index</h3>
+<p>整个recipes的核心方法是parse_index，也是recipes唯一必须实现的方法。这个方法的目标是通过分析index页面的内容，返回一个稍显复杂的数据结构（稍后介绍），这个数据结构定义了整个电子书的内容及内容组织顺序。</p>
+<h3 id="总体属性设置">总体属性设置</h3>
+<p>在class的开始，定义了一些全局属性：</p>
+<pre class="prettyprint linenums lang-python">title = &#39;Git Pocket Guide&#39;
+description = &#39;&#39;
+cover_url = &#39;http://akamaicovers.oreilly.com/images/0636920024972/lrg.jpg&#39;
+
+url_prefix = &#39;http://chimera.labs.oreilly.com/books/1230000000561/&#39;
+no_stylesheets = True
+keep_only_tags = [{ &#39;class&#39;: &#39;chapter&#39; }]
+</pre>
+<ul>
+<li>title：电子书标题</li>
+<li>description：电子书描述</li>
+<li>cover_url：电子书的封面图片</li>
+<li>url_prefix：这是我自用的属性，是内容页面的前缀，用于后面拼装内容页的完整url</li>
+<li>no_stylesheets：不要使用页面CSS样式</li>
+<li>keep_only_tags：这一行告诉calibre分析index页时仅考虑class属性为“chapter”的DOM元素，如果你看index页的源码会发现这对应一级标题。之所以这样是因为在这个例子中，index页面每个一级标题对应一个独立内容页，而二级标题仅链接到页面中某个锚点（anchor），所以仅需考虑一级标题</li>
+</ul>
+<h3 id="parse_index返回值">parse_index返回值</h3>
+<p>下面介绍parse_index需要通过分析index页面返回的数据结构。</p>
+<p class="picture"><img alt="" src="/uploads/pictures/convert-html-to-kindle-book/01.png"/></p>
+
+<p>总体返回数据结构是一个list，其中每个元素是一个tuple，一个tuple表示一卷（volume）。在这个例子中只有一卷，所以list中只有一个tuple。</p>
+<p>每个tuple有两个元素，第一个元素是卷名，第二个元素是一个list，list中每个元素是一个map，表示一章（chapter），map中有两个元素：title和url，title是章节标题，url是章节所在内容页的url。</p>
+<p>Calibre会根据parse_index的返回结果抓取并组织整个书，并且会自行抓取并处理内容中外链的图片。</p>
+<p>整个parse_index使用soup解析index页并生成上述数据结构。</p>
+<h3 id="更多">更多</h3>
+<p>上面是最基本的recipes，想了解更多的使用方法，可以参考<a href="http://manual.calibre-ebook.com/news_recipe.html">API文档</a>。</p>
+<h2 id="生成mobi">生成mobi</h2>
+<p>编写好recipes后，在命令行下通过如下命令即可生成电子书：</p>
+<pre class="prettyprint linenums lang-bash">ebook-convert Git_Pocket_Guide.recipe Git_Pocket_Guide.mobi
+</pre>
+<p>即可生成mobi格式的电子书。ebook-convert会根据recipes代码自行抓取相关内容并组织结构。</p>
+<h1 id="最终效果">最终效果</h1>
+<p>下面是在kindle上看到的效果。</p>
+<p>目录</p>
+<p class="picture"><img alt="" src="/uploads/pictures/convert-html-to-kindle-book/02.jpg"/></p>
+
+<p>内容一</p>
+<p class="picture"><img alt="" src="/uploads/pictures/convert-html-to-kindle-book/03.jpg"/></p>
+
+<p>内容二</p>
+<p class="picture"><img alt="" src="/uploads/pictures/convert-html-to-kindle-book/04.jpg"/></p>
+
+<p>含有图片的页</p>
+<p class="picture"><img alt="" src="/uploads/pictures/convert-html-to-kindle-book/05.jpg"/></p>
+
+<p>实际效果</p>
+<p class="picture"><img alt="" src="/uploads/pictures/convert-html-to-kindle-book/06.jpg"/></p>
+
+<h1 id="我的recipes仓库">我的recipes仓库</h1>
+<p>我在github上建了一个<a href="https://github.com/ericzhang-cn/kindle-open-books/">kindle-open-books</a>，里面放了一些recipes，有我写的，也有其他同学贡献的。欢迎任何人贡献的recipes。</p>
+
+        </div>
+        <!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {num:12,picSize:84,textHeight:45};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+
+<!-- 百度分享 BEGIN -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 END -->
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="convert-html-to-kindle-book" data-title="抓取网页内容生成Kindle电子书" data-url="http://blog.codinglabs.org/articles/convert-html-to-kindle-book.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+ var ds = document.createElement('script');
+ ds.type = 'text/javascript';ds.async = true;
+ ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ ds.charset = 'UTF-8';
+ (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+ })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2014 CodingLabs 本博客内容采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">知识共享署名 3.0 中国大陆许可协议</a>进行许可</p>
+              <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [['$','$'], ['\\(','\\)']],
+                    processEscapes: true
+                }
+            });
+        </script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
+

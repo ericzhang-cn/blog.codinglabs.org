@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="description" content="keep coding, keep foolish"/>
+        <meta name="keywords" content="代码,数学,数据挖掘,机器学习,算法,编译器,分布式,PHP,Nginx"/>
+        <meta name="author" content="张洋"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <title>CodingLabs - 我的博客系统折腾手记暨papery正式发布
+</title>
+        <link rel="stylesheet" href="/assets/vendor/normalize.css"/>
+        <link rel="stylesheet" href="/assets/vendor/google-code-prettify/prettify-solarized-dark.css"/>
+        <link rel="stylesheet" href="/assets/themes/default/main.css"/>
+        <link rel="shortcut icon" href="/fav.ico"/>
+        <script type="text/javascript" src="/assets/vendor/google-code-prettify/prettify.js"></script>
+        <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F75dfda8ff8a93fa0b94adeb17da37a2f' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+    </head>
+    <body onload="prettyPrint()">
+    <div id="header">
+        <div id="header-inner">
+            <div id="title"><a href="/">CodingLabs</a></div>
+            <div id="subtitle">keep coding, keep foolish</div>
+        </div>
+    </div>
+
+<div id="main">
+    <div id="main-inner">
+        <div id="topnav">
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li class="sep"> | </li>
+                <li><a href="/tag.html">标签</a></li>
+                
+<li class="sep"> | </li>
+<li><a href="/pages/about-me.html" target="_self">关于我</a></li>
+
+<li class="sep"> | </li>
+<li><a href="/rss.xml" target="_self">+订阅</a></li>
+
+<li class="sep"> | </li>
+<li><a href="http://weibo.com/ericzhangbuaa" target="_blank">微博</a></li>
+
+<li class="sep"> | </li>
+<li><a href="https://github.com/ericzhang-cn/papery" target="_blank">这个博客是如何搭建的</a></li>
+
+
+            </ul>
+            <div style="clear:both;"></div>
+        </div>
+        <div id="article-title">
+            <a href="/articles/papery-is-released.html">我的博客系统折腾手记暨papery正式发布</a>
+        </div>
+        <div id="article-meta">
+            作者 张洋 | 发布于 2013-08-12
+        </div>
+        <div id="article-tags">
+        
+        <a class="tag" href="/tag.html#papery">papery</a>
+        
+        </div>
+        <div id="article-content">
+            <p>上周花了一个周末的时间，把我自己的博客生成系统彻底重构成较为通用的系统了。这件事其实一直就想做，不过一直没想好怎么在简单和通用间做好权衡。上周接连接到几名同学在微博上问我的博客是用什么系统搭建的，终于促使我下决心把这件事情做掉。目前这个系统已经定名为papery，源码在<a href="https://github.com/ericzhang-cn/papery">github</a>上，并可以通过<a href="https://npmjs.org/package/papery">npm</a>直接安装使用。</p>
+<p>我写博客也有一段时间了。最早是在博客园上写，后来自己买了VPS，就尝试自己搭建和维护博客。刚开始是用<a href="https://wordpress.org/">wordpress</a>搭建，不过用了一段时间觉得对于仅仅需要一个系统发布文章的我来说，wordpress太重了，随着内心对纯文本和简洁高效越来越强的偏执，我终于决定放弃wordpress，于是大约在2012年年底，世界末日来临前夕，我大约花了三天写了几个nodejs脚本，用于从markdown格式的文本自动生成网站。</p>
+<p>当时只是零散的几个脚本，完全谈不上通用，另外由于没有使用模板引擎，代码也其丑无比，四处散落着html拼接，冗余代码也非常多。不过好歹凑活能用了，就一直没太去管。不过每次想到这个玩意，心里的代码洁癖被触发，还是不太舒服。</p>
+<p>其间还对这个系统简单补充了一些文档，放到了github上，当时的名字叫simplog。这次重构本来想继续沿用这个名字，不过在发布npm项目时发现simplog已经被用了，于是改名为papery。</p>
+<p>当然当时放到github上的代码仍然是丑陋不堪且没有通用性的。当时心里就有了一定要重构这个项目的想法。</p>
+<p>终于上周我做了这件事情，在做之前，我简单调研了一些类似的项目，如<a href="http://jekyllrb.com/">jekyll</a>，并对自己这半年使用过程中的不爽和痛点做了总结，列出了整个重构的todo list，包括：</p>
+<ul>
+<li>简化安装和使用方式。由于系统是用nodejs写的，所以很自然的希望重构后的系统能完全通过npm安装和升级。</li>
+<li>引入模板引擎。我对之前手工拼接html的方式不能忍受了。</li>
+<li>通用部分和特化部分分离。之前通用性差的一大原因是里面有很多通用和特化的东西杂糅在一起。</li>
+<li>要能通过命令行创建新博客并有调试服务器功能。之前每次修改都需要推到线上才能看到效果实在太痛苦了。</li>
+<li>用<a href="http://www.yaml.org/">yaml</a>代替json作为配置文件格式。关于这点如果你比较一下yaml和json的写法就知道多么必要了。</li>
+<li>模板系统、主题皮肤要有可扩展性，用户可以方便的自定义并且支持通过插件实现评论、分享等功能。说实话，这块功能要真做的NB，不免系统会特别复杂，所以我用比较简单的方式实现了基本够用的扩展性。</li>
+<li>不做重复劳动。我的核心是要实现博客生成的功能，基础功能充分利用node社区丰富的开源组件，例如用js-yaml做yaml解析，用ejs做模板引擎，用log4js做日志，用connect做server，用ncp实现目录递归拷贝等等。基于npm的包依赖机制可以让这些工作轻松愉快。</li>
+<li>把代码写清晰一点。这个就见招拆招了。</li>
+<li>详细的使用文档。</li>
+</ul>
+<p>经过一个周末的折腾，很高兴上面的目标基本都实现了。至于是不是真的变好了我不敢说，不过我自己用着确实爽多了，代码看着也舒服多了，总算这个项目不会成为我洁癖发作时的心结了。</p>
+<p>以上就是我折腾的总结了。最后附上相关资源，papery的详细使用文档已经放在github的README上了，我就不在这里赘述了。</p>
+<ul>
+<li>github - <a href="https://github.com/ericzhang-cn/papery">https://github.com/ericzhang-cn/papery</a></li>
+<li>npm - <a href="https://npmjs.org/package/papery">https://npmjs.org/package/papery</a></li>
+</ul>
+<p>至于papery能做到什么样子，你看到的这个博客就是它目前能做到的样子了。总的来说，papery作为一个新的项目，问题肯定是有不少的，不过作为这个项目的用户，我会不断解决自己的痛点。当然如果你有什么建议或意见也非常欢迎提给我。</p>
+
+        </div>
+        <!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {num:12,picSize:84,textHeight:45};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=894207"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+
+<!-- 百度分享 BEGIN -->
+<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<!-- 百度分享 END -->
+
+<!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="papery-is-released" data-title="我的博客系统折腾手记暨papery正式发布" data-url="http://blog.codinglabs.org/articles/papery-is-released.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"coding-labs"};
+(function() {
+ var ds = document.createElement('script');
+ ds.type = 'text/javascript';ds.async = true;
+ ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+ ds.charset = 'UTF-8';
+ (document.getElementsByTagName('head')[0] 
+  || document.getElementsByTagName('body')[0]).appendChild(ds);
+ })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+    </div>
+</div>
+        <div id="footer">
+            <div id="footer-inner">
+                <p id="copyright">Copyright (c) 2011-2014 CodingLabs 本博客内容采用<a href="http://creativecommons.org/licenses/by/3.0/cn/" target="_blank">知识共享署名 3.0 中国大陆许可协议</a>进行许可</p>
+              <p id="icp"><a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备12043064-1号</a></p>
+            </div>
+        </div>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                    inlineMath: [['$','$'], ['\\(','\\)']],
+                    processEscapes: true
+                }
+            });
+        </script>
+        <script type="text/javascript" src="/assets/vendor/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </body>
+</html>
+
