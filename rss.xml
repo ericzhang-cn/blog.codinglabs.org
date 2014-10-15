@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Sun, 24 Aug 2014 17:55:31 +0800</lastBuildDate>
+        <lastBuildDate>Wed, 15 Oct 2014 11:36:17 +0800</lastBuildDate>
         <language>zh-cn</language>
         
         <item> 
@@ -388,7 +388,7 @@ struct s_block {
 &lt;h1 id=&quot;4-其它参考&quot;&gt;4 其它参考&lt;/h1&gt;
 &lt;ol&gt;
 &lt;li&gt;这篇文章大量参考了&lt;a href=&quot;http://www.inf.udec.cl/~leo/Malloc_tutorial.pdf&quot;&gt;A malloc Tutorial&lt;/a&gt;，其中一些图片和代码直接引用了文中的内容，这里特别指出&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://csapp.cs.cmu.edu/&quot;&gt;Computer Systems: A Programmer&amp;#39;s Perspective, 2/E&lt;/a&gt;一书有许多值得参考的地方&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://csapp.cs.cmu.edu/&quot;&gt;Computer Systems: A Programmer&#39;s Perspective, 2/E&lt;/a&gt;一书有许多值得参考的地方&lt;/li&gt;
 &lt;li&gt;关于Linux的虚拟内存模型，&lt;a href=&quot;http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory/&quot;&gt;Anatomy of a Program in Memory&lt;/a&gt;是很好的参考资料，另外作者还有一篇&lt;a href=&quot;http://duartes.org/gustavo/blog/post/how-the-kernel-manages-your-memory/&quot;&gt;How the Kernel Manages Your Memory&lt;/a&gt;对于Linux内核中虚拟内存管理的部分有很好的讲解&lt;/li&gt;
 &lt;li&gt;对于真实世界的malloc实现，可以参考&lt;a href=&quot;http://repo.or.cz/w/glibc.git/blob/HEAD:/malloc/malloc.c&quot;&gt;glibc的实现&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;本文写作过程中大量参考了&lt;a href=&quot;http://www.wikipedia.org/&quot;&gt;维基百科&lt;/a&gt;，再次感谢这个伟大的网站，并且呼吁大家在手头允许的情况下可以适当捐助维基百科，帮助这个造福人类的系统运行下去&lt;/li&gt;
@@ -499,14 +499,14 @@ def standard_normal_rand():
 &lt;blockquote&gt;
 &lt;ol&gt;
 &lt;li&gt;生成IID随机变量\(X\)和\(Y\)&lt;/li&gt;
-&lt;li&gt;计算\(X&amp;#39;=\rho X+\sqrt{1-\rho^2}Y\)&lt;/li&gt;
-&lt;li&gt;返回\((X,X&amp;#39;)\)&lt;/li&gt;
+&lt;li&gt;计算\(X&#39;=\rho X+\sqrt{1-\rho^2}Y\)&lt;/li&gt;
+&lt;li&gt;返回\((X,X&#39;)\)&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;可以这样验证其正确性：&lt;/p&gt;
-&lt;p&gt;\[corr(X,X&amp;#39;)=\rho corr(X,X)+\sqrt{1-\rho^2}corr(X,Y)=\rho\]&lt;/p&gt;
+&lt;p&gt;\[corr(X,X&#39;)=\rho corr(X,X)+\sqrt{1-\rho^2}corr(X,Y)=\rho\]&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：\(corr(X,X)=1\)，\(corr(X,Y)=0\)。&lt;/p&gt;
-&lt;p&gt;因此\(X\)和\(X&amp;#39;\)确实具有相关系数\(\rho\)。&lt;/p&gt;
+&lt;p&gt;因此\(X\)和\(X&#39;\)确实具有相关系数\(\rho\)。&lt;/p&gt;
 &lt;h1 id=&quot;更多参考&quot;&gt;更多参考&lt;/h1&gt;
 &lt;p&gt;这篇文章讨论了生成指定分布随机数的基本方法。这篇文章只打算讨论基础方法，所以还有很多有趣的内容，本文没有深入的探讨。这里给出一些扩展阅读资料，供有兴趣的朋友深入学习。首先是一篇&lt;a href=&quot;http://ftp.arl.mil/random/random.pdf&quot;&gt;非常好的文档&lt;/a&gt;，这篇文章来自美国陆军实验室，对计算机生成指定分布随机数的方方面面进行了全面深入描述，是不可多得的好资料。&lt;/p&gt;
 &lt;p&gt;在实现方面，可以参考&lt;a href=&quot;https://github.com/numpy/numpy/blob/master/numpy/random/mtrand/distributions.c&quot;&gt;NumPy中关于random的实现&lt;/a&gt;以及我开发的&lt;a href=&quot;https://github.com/ericzhang-cn/random.js&quot;&gt;JavaScript实现&lt;/a&gt;。另外我做过一个&lt;a href=&quot;http://blog.codinglabs.org/demo/distributions.html&quot;&gt;不同概率分布的可视化页面&lt;/a&gt;，可以帮助你直观理解不同分布及PDF参数对分布的影响。&lt;/p&gt;
@@ -694,14 +694,14 @@ AI.prototype.iterativeDeep = function() {
     do {
         var newBest = this.search(depth, -10000, 10000, 0 ,0);
         if (newBest.move == -1) {
-            //console.log(&amp;#39;BREAKING EARLY&amp;#39;);
+            //console.log(&#39;BREAKING EARLY&#39;);
             break;
         } else {
             best = newBest;
         }
         depth++;
     } while ( (new Date()).getTime() - start &lt; minSearchTime);
-    //console.log(&amp;#39;depth&amp;#39;, --depth);
+    //console.log(&#39;depth&#39;, --depth);
     //console.log(this.translate(best.move));
     //console.log(best);
     return best
@@ -759,37 +759,37 @@ AI.prototype.iterativeDeep = function() {
 
 class Git_Pocket_Guide(BasicNewsRecipe):
 
-    title = &amp;#39;Git Pocket Guide&amp;#39;
-    description = &amp;#39;&amp;#39;
-    cover_url = &amp;#39;http://akamaicovers.oreilly.com/images/0636920024972/lrg.jpg&amp;#39;
+    title = &#39;Git Pocket Guide&#39;
+    description = &#39;&#39;
+    cover_url = &#39;http://akamaicovers.oreilly.com/images/0636920024972/lrg.jpg&#39;
 
-    url_prefix = &amp;#39;http://chimera.labs.oreilly.com/books/1230000000561/&amp;#39;
+    url_prefix = &#39;http://chimera.labs.oreilly.com/books/1230000000561/&#39;
     no_stylesheets = True
-    keep_only_tags = [{ &amp;#39;class&amp;#39;: &amp;#39;chapter&amp;#39; }]
+    keep_only_tags = [{ &#39;class&#39;: &#39;chapter&#39; }]
 
     def get_title(self, link):
         return link.contents[0].strip()
 
     def parse_index(self):
-        soup = self.index_to_soup(self.url_prefix + &amp;#39;index.html&amp;#39;)
+        soup = self.index_to_soup(self.url_prefix + &#39;index.html&#39;)
 
-        div = soup.find(&amp;#39;div&amp;#39;, { &amp;#39;class&amp;#39;: &amp;#39;toc&amp;#39; })
+        div = soup.find(&#39;div&#39;, { &#39;class&#39;: &#39;toc&#39; })
 
         articles = []
-        for link in div.findAll(&amp;#39;a&amp;#39;):
-            if &amp;#39;#&amp;#39; in link[&amp;#39;href&amp;#39;]:
+        for link in div.findAll(&#39;a&#39;):
+            if &#39;#&#39; in link[&#39;href&#39;]:
                 continue
 
-            if not &amp;#39;ch&amp;#39; in link[&amp;#39;href&amp;#39;]:
+            if not &#39;ch&#39; in link[&#39;href&#39;]:
                 continue
 
             til = self.get_title(link)
-            url = self.url_prefix + link[&amp;#39;href&amp;#39;]
-            a = { &amp;#39;title&amp;#39;: til, &amp;#39;url&amp;#39;: url }
+            url = self.url_prefix + link[&#39;href&#39;]
+            a = { &#39;title&#39;: til, &#39;url&#39;: url }
 
             articles.append(a)
 
-        ans = [(&amp;#39;Git_Pocket_Guide&amp;#39;, articles)]
+        ans = [(&#39;Git_Pocket_Guide&#39;, articles)]
 
         return ans
 &lt;/pre&gt;
@@ -800,13 +800,13 @@ class Git_Pocket_Guide(BasicNewsRecipe):
 &lt;p&gt;整个recipes的核心方法是parse_index，也是recipes唯一必须实现的方法。这个方法的目标是通过分析index页面的内容，返回一个稍显复杂的数据结构（稍后介绍），这个数据结构定义了整个电子书的内容及内容组织顺序。&lt;/p&gt;
 &lt;h3 id=&quot;总体属性设置&quot;&gt;总体属性设置&lt;/h3&gt;
 &lt;p&gt;在class的开始，定义了一些全局属性：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint linenums lang-python&quot;&gt;title = &amp;#39;Git Pocket Guide&amp;#39;
-description = &amp;#39;&amp;#39;
-cover_url = &amp;#39;http://akamaicovers.oreilly.com/images/0636920024972/lrg.jpg&amp;#39;
+&lt;pre class=&quot;prettyprint linenums lang-python&quot;&gt;title = &#39;Git Pocket Guide&#39;
+description = &#39;&#39;
+cover_url = &#39;http://akamaicovers.oreilly.com/images/0636920024972/lrg.jpg&#39;
 
-url_prefix = &amp;#39;http://chimera.labs.oreilly.com/books/1230000000561/&amp;#39;
+url_prefix = &#39;http://chimera.labs.oreilly.com/books/1230000000561/&#39;
 no_stylesheets = True
-keep_only_tags = [{ &amp;#39;class&amp;#39;: &amp;#39;chapter&amp;#39; }]
+keep_only_tags = [{ &#39;class&#39;: &#39;chapter&#39; }]
 &lt;/pre&gt;
 &lt;ul&gt;
 &lt;li&gt;title：电子书标题&lt;/li&gt;
@@ -940,19 +940,19 @@ curl https://raw.github.com/ghuntley/terminator-solarized/master/config &gt; ~/.
 &lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;# enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors &amp;&amp; eval &quot;$(dircolors -b ~/.dircolors)&quot; || eval &quot;$(dircolors -b)&quot;
-    alias ls=&amp;#39;ls --color=auto&amp;#39;
-    #alias dir=&amp;#39;dir --color=auto&amp;#39;
-    #alias vdir=&amp;#39;vdir --color=auto&amp;#39;
+    alias ls=&#39;ls --color=auto&#39;
+    #alias dir=&#39;dir --color=auto&#39;
+    #alias vdir=&#39;vdir --color=auto&#39;
 
-    alias grep=&amp;#39;grep --color=auto&amp;#39;
-    alias fgrep=&amp;#39;fgrep --color=auto&amp;#39;
-    alias egrep=&amp;#39;egrep --color=auto&amp;#39;
+    alias grep=&#39;grep --color=auto&#39;
+    alias fgrep=&#39;fgrep --color=auto&#39;
+    alias egrep=&#39;egrep --color=auto&#39;
 fi
 
 # some more ls aliases
-alias ll=&amp;#39;ls -alF&amp;#39;
-alias la=&amp;#39;ls -A&amp;#39;
-alias l=&amp;#39;ls -CF&amp;#39;
+alias ll=&#39;ls -alF&#39;
+alias la=&#39;ls -A&#39;
+alias l=&#39;ls -CF&#39;
 &lt;/pre&gt;
 &lt;p&gt;执行&lt;/p&gt;
 &lt;pre class=&quot;prettyprint linenums lang-bash&quot;&gt;source ~/.bashrc
@@ -1299,7 +1299,7 @@ sudo apt-get install everpad
 | birth_date | date          | NO   |     | NULL    |       |
 | first_name | varchar(14)   | NO   |     | NULL    |       |
 | last_name  | varchar(16)   | NO   |     | NULL    |       |
-| gender     | enum(&amp;#39;M&amp;#39;,&amp;#39;F&amp;#39;) | NO   |     | NULL    |       |
+| gender     | enum(&#39;M&#39;,&#39;F&#39;) | NO   |     | NULL    |       |
 | hire_date  | date          | NO   |     | NULL    |       |
 +------------+---------------+------+-----+---------+-------+
 6 rows in set (0.01 sec)
@@ -1315,7 +1315,7 @@ SET query_cache_type = 0;
 SET GLOBAL query_cache_size = 0;
 &lt;/pre&gt;
 &lt;p&gt;然后我们看下面这个查询：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;MariaDB [employees]&gt; SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39;;
+&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;MariaDB [employees]&gt; SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39;;
 +--------+------------+------------+-----------+--------+------------+
 | emp_no | birth_date | first_name | last_name | gender | hire_date  |
 +--------+------------+------------+-----------+--------+------------+
@@ -1331,25 +1331,25 @@ SET GLOBAL query_cache_size = 0;
 &lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;+----------+------------+---------------------------------------------------------------------------+
 | Query_ID | Duration   | Query                                                                     |
 +----------+------------+---------------------------------------------------------------------------+
-|       38 | 0.00084400 | SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39; |
-|       39 | 0.00071800 | SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39; |
-|       40 | 0.00089600 | SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39; |
+|       38 | 0.00084400 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       39 | 0.00071800 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       40 | 0.00089600 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
 +----------+------------+---------------------------------------------------------------------------+
 &lt;/pre&gt;
 &lt;p&gt;然后我们关闭ICP：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;SET optimizer_switch=&amp;#39;index_condition_pushdown=off&amp;#39;;
+&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;SET optimizer_switch=&#39;index_condition_pushdown=off&#39;;
 &lt;/pre&gt;
 &lt;p&gt;在运行三次相同的查询，结果如下：&lt;/p&gt;
 &lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;+----------+------------+---------------------------------------------------------------------------+
 | Query_ID | Duration   | Query                                                                     |
 +----------+------------+---------------------------------------------------------------------------+
-|       42 | 0.00264400 | SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39; |
-|       43 | 0.01418900 | SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39; |
-|       44 | 0.00234200 | SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39; |
+|       42 | 0.00264400 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       43 | 0.01418900 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
+|       44 | 0.00234200 | SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39; |
 +----------+------------+---------------------------------------------------------------------------+
 &lt;/pre&gt;
 &lt;p&gt;有意思的事情发生了，关闭ICP后，同样的查询，耗时是之前的三倍以上。下面我们用explain看看两者有什么区别：&lt;/p&gt;
-&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;MariaDB [employees]&gt; EXPLAIN SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39;;
+&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;MariaDB [employees]&gt; EXPLAIN SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39;;
 +------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-----------------------+
 | id   | select_type | table     | type | possible_keys        | key                  | key_len | ref   | rows | Extra                 |
 +------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-----------------------+
@@ -1357,7 +1357,7 @@ SET GLOBAL query_cache_size = 0;
 +------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-----------------------+
 1 row in set (0.00 sec)
 &lt;/pre&gt;
-&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;MariaDB [employees]&gt; EXPLAIN SELECT * FROM employees WHERE first_name=&amp;#39;Mary&amp;#39; AND last_name LIKE &amp;#39;%man&amp;#39;;
+&lt;pre class=&quot;prettyprint linenums lang-sql&quot;&gt;MariaDB [employees]&gt; EXPLAIN SELECT * FROM employees WHERE first_name=&#39;Mary&#39; AND last_name LIKE &#39;%man&#39;;
 +------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-------------+
 | id   | select_type | table     | type | possible_keys        | key                  | key_len | ref   | rows | Extra       |
 +------+-------------+-----------+------+----------------------+----------------------+---------+-------+------+-------------+
@@ -1759,7 +1759,7 @@ mplayer -af scaletempo -speed 1.5 path/to/video/file
 &lt;h2 id=&quot;信息论方法&quot;&gt;信息论方法&lt;/h2&gt;
 &lt;p&gt;有一些方法可以用于评估相对于真实模型来说我们的模型&lt;em&gt;丢失了多少信息&lt;/em&gt;。当然我们是无法获知真实模型的（真正产生训练数据的实际模型），但是在一些前提下我们仍然有办法估计模型的信息丢失程度。信息丢失越多，则模型误差越高，效果越差。&lt;/p&gt;
 &lt;p&gt;信息论方法假设模型是一个参数模型（parametric model）。在这个前提下，我们可以根据参数和数据来定义训练数据的似然率（likelihood），不严格的说，似然率是指观测到的这组训练数据出现的概率&lt;a href=&quot;#ref4&quot;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;。如果我们调整参数使得这组数据的似然率最大，则得到这组参数的最大似然估计。于是我们就可以利用信息论的方法来比较不同模型和它们的复杂度，以此确定哪个模型最接近真实模型。&lt;/p&gt;
-&lt;p&gt;最常用的信息论方法是Akaike信息准则（Akaike&amp;#39;s Information Criteria，简称AIC）。AIC被定义为一个关于模型似然率及模型参数的函数：&lt;/p&gt;
+&lt;p&gt;最常用的信息论方法是Akaike信息准则（Akaike&#39;s Information Criteria，简称AIC）。AIC被定义为一个关于模型似然率及模型参数的函数：&lt;/p&gt;
 &lt;p&gt;\[AIC=-2ln(Likelihood)+2p\]&lt;/p&gt;
 &lt;p&gt;如同其它误差评价准则，我们的目标是最小化AIC。AIC的公式很简洁。第一部分（\(−2ln(Likelihood)\)）可以被视为训练集下的误差率，第二部分（\(2p\)）可视为对模型乐观性的惩罚。&lt;/p&gt;
 &lt;p&gt;除了AIC外还有许多基于信息论的判定准则。下面列举两个其它信息准则，与AIC相比其区别在于对乐观性的惩罚方式不同，下面两个准则对乐观性的惩罚还与样本容量n有关。&lt;/p&gt;
