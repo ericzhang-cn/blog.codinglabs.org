@@ -67,7 +67,6 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
         <div id="article-content">
             <p>生成随机数是程序设计里常见的需求。一般的编程语言都会自带一个随机数生成函数，用于生成服从均匀分布的随机数。不过有时需要生成服从其它分布的随机数，例如高斯分布或指数分布等。有些编程语言已经有比较完善的实现，例如Python的NumPy。这篇文章介绍如何通过均匀分布随机数生成函数生成符合特定概率分布的随机数，主要介绍Inverse Ttransform和Acceptance-Rejection两种基础算法以及一些相关的衍生方法。下文我们均假设已经拥有一个可以生成0到1之间均匀分布的随机数生成函数，关于如何生成均匀分布等更底层的随机数生成理论，请参考其它资料，本文不做讨论。</p>
 <!-- toc -->
-
 <ul>
 <li><a href="#基础算法">基础算法</a><ul>
 <li><a href="#inverse-transform-method">Inverse Transform Method</a><ul>
@@ -92,8 +91,6 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <li><a href="#更多参考">更多参考</a></li>
 </ul>
 <!-- toc stop -->
-
-
 <h1 id="基础算法">基础算法</h1>
 <h2 id="inverse-transform-method">Inverse Transform Method</h2>
 <p>最简单的生成算法是Inverse Transform Method（下文简称ITM）。如果我们可以给出概率分布的累积分布函数（下文简称CDF）及其逆函数的解析表达式，则可以非常简单便捷的生成指定分布随机数。</p>

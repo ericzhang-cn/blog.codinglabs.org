@@ -4,7 +4,7 @@
         <title>CodingLabs</title>
         <link>http://blog.codinglabs.org</link>
         <description>keep coding, keep foolish</description>
-        <lastBuildDate>Wed, 15 Oct 2014 11:36:17 +0800</lastBuildDate>
+        <lastBuildDate>Wed, 08 Apr 2015 11:30:21 +0800</lastBuildDate>
         <language>zh-cn</language>
         
         <item> 
@@ -17,7 +17,6 @@
 &lt;p&gt;这篇文章通过实现一个简单的malloc来描述malloc背后的机制。当然与现有C的标准库实现（例如glibc）相比，我们实现的malloc并不是特别高效，但是这个实现比目前真实的malloc实现要简单很多，因此易于理解。重要的是，这个实现和真实实现在基本原理上是一致的。&lt;/p&gt;
 &lt;p&gt;这篇文章将首先介绍一些所需的基本知识，如操作系统对进程的内存管理以及相关的系统调用，然后逐步实现一个简单的malloc。为了简单起见，这篇文章将只考虑x86_64体系结构，操作系统为Linux。&lt;/p&gt;
 &lt;!-- toc --&gt;
-
 &lt;h1 id=&quot;1-什么是malloc&quot;&gt;1 什么是malloc&lt;/h1&gt;
 &lt;p&gt;在实现malloc之前，先要相对正式地对malloc做一个定义。&lt;/p&gt;
 &lt;p&gt;根据标准C库函数的定义，malloc具有如下原型：&lt;/p&gt;
@@ -404,7 +403,6 @@ struct s_block {
             <pubDate>Sat, 14 Jun 2014 00:00:00 +0800</pubDate> 
             <description>&lt;p&gt;生成随机数是程序设计里常见的需求。一般的编程语言都会自带一个随机数生成函数，用于生成服从均匀分布的随机数。不过有时需要生成服从其它分布的随机数，例如高斯分布或指数分布等。有些编程语言已经有比较完善的实现，例如Python的NumPy。这篇文章介绍如何通过均匀分布随机数生成函数生成符合特定概率分布的随机数，主要介绍Inverse Ttransform和Acceptance-Rejection两种基础算法以及一些相关的衍生方法。下文我们均假设已经拥有一个可以生成0到1之间均匀分布的随机数生成函数，关于如何生成均匀分布等更底层的随机数生成理论，请参考其它资料，本文不做讨论。&lt;/p&gt;
 &lt;!-- toc --&gt;
-
 &lt;h1 id=&quot;基础算法&quot;&gt;基础算法&lt;/h1&gt;
 &lt;h2 id=&quot;inverse-transform-method&quot;&gt;Inverse Transform Method&lt;/h2&gt;
 &lt;p&gt;最简单的生成算法是Inverse Transform Method（下文简称ITM）。如果我们可以给出概率分布的累积分布函数（下文简称CDF）及其逆函数的解析表达式，则可以非常简单便捷的生成指定分布随机数。&lt;/p&gt;

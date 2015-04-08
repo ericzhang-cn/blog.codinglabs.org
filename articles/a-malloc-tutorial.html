@@ -69,7 +69,6 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <p>这篇文章通过实现一个简单的malloc来描述malloc背后的机制。当然与现有C的标准库实现（例如glibc）相比，我们实现的malloc并不是特别高效，但是这个实现比目前真实的malloc实现要简单很多，因此易于理解。重要的是，这个实现和真实实现在基本原理上是一致的。</p>
 <p>这篇文章将首先介绍一些所需的基本知识，如操作系统对进程的内存管理以及相关的系统调用，然后逐步实现一个简单的malloc。为了简单起见，这篇文章将只考虑x86_64体系结构，操作系统为Linux。</p>
 <!-- toc -->
-
 <ul>
 <li><a href="#1-什么是malloc">1 什么是malloc</a></li>
 <li><a href="#2-预备知识">2 预备知识</a><ul>
@@ -107,8 +106,6 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <li><a href="#4-其它参考">4 其它参考</a></li>
 </ul>
 <!-- toc stop -->
-
-
 <h1 id="1-什么是malloc">1 什么是malloc</h1>
 <p>在实现malloc之前，先要相对正式地对malloc做一个定义。</p>
 <p>根据标准C库函数的定义，malloc具有如下原型：</p>
